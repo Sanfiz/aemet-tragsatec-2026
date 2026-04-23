@@ -1,0 +1,45 @@
+---
+title: "Weighting"
+toc: true
+---
+
+```{=html}
+<div style="max-width:900px;margin:2rem auto;padding:0 1.5rem;">
+
+  <span class="section-label">Metodología EOF · PLS</span>
+  <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;">Ponderación de ensemble</h2>
+  <p style="color:#4a5568;margin-bottom:2rem;">
+    La ponderación de miembros del ensemble asigna mayor peso a aquellos cuya fase de circulación
+    (proyección sobre modos EOF o PLS) es más cercana a la observada o predicha. Este marco
+    generaliza el submuestreo (ponderación 0/1) y mejora la consistencia dinámica de las predicciones.
+  </p>
+
+  <div class="grid-2" style="margin-bottom:2rem;">
+    <div class="info-card">
+      <h3>Modos EOF</h3>
+      <p>Calculados a partir de anomalías de MSLP de ERA5 sobre el sector Euro-Atlántico (90°W–60°E, 20°–85°N).
+      Los cuatro primeros EOFs capturan los principales patrones de teleconexión: <strong>NAO, EA, EAWR y SCA</strong>,
+      que modulan la temperatura y precipitación en Iberia.</p>
+    </div>
+    <div class="info-card">
+      <h3>Modos PLS</h3>
+      <p>Teleconexiones dirigidas obtenidas mediante regresión PLS (<em>Partial Least Squares</em>).
+      Las anomalías de MSLP actúan como predictores y las anomalías de T2M o precipitación sobre Iberia
+      como predictandos. Mejoran el skill en temperatura en la estación cálida (AMJ–ASO).</p>
+    </div>
+  </div>
+
+  <div class="info-card" style="margin-bottom:2rem;border-left:4px solid #003087;">
+    <h3>Referencia metodológica</h3>
+    <p>La metodología PLS y su aplicación a la ponderación estacional de ensemble están descritas en:
+    Dalelane, C. (2025). <em>Targeted Teleconnections and their Application to the Postprocessing of Climate Predictions</em>.</p>
+  </div>
+
+  <h3 style="color:#003087;margin-top:2rem;">Resultados</h3>
+  <p style="font-size:0.9rem;color:#8892a4;font-style:italic;padding:2rem;text-align:center;
+     border:1px dashed #dde3ed;border-radius:8px;">
+    Próximamente — resultados de weighting EOF y PLS para la temporada en curso.
+  </p>
+
+</div>
+```
