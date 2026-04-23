@@ -5,7 +5,7 @@ project:
 website:
   title: "Predicción Estacional · AEMET–Tragsatec"
   description: "Resultados del servicio de predicción estacional estadística para España"
-  site-url: https://sanfiz.github.io/pred-estacional/
+  site-url: https://sanfiz.github.io/aemet-tragsatec-2026/
   favicon: images/logos/aemet.png
 
   navbar:
