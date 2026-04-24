@@ -1,1 +1,1 @@
-Sitemap: https://sanfiz.github.io/pred-estacional/sitemap.xml
+Sitemap: https://sanfiz.github.io/aemet-tragsatec-2026/sitemap.xml

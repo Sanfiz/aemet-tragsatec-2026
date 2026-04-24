@@ -6,13 +6,10 @@ toc: false
 ```{=html}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-<!-- ── HERO PRINCIPAL ─────────────────────────────────── -->
+<!-- ── HERO ───────────────────────────────────────────── -->
 <div class="cover" id="cover">
-
-  <!-- Partículas de fondo -->
   <canvas id="particle-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.25;"></canvas>
 
-  <!-- Columna texto izquierda -->
   <div class="cover-text" id="cover-text">
     <span class="cover-eyebrow">Encargo de servicio · Tragsatec para AEMET</span>
     <h1 class="cover-title">Predicción<br>Estacional</h1>
@@ -32,16 +29,113 @@ toc: false
     </div>
   </div>
 
-  <!-- Globo Three.js derecha -->
   <div class="cover-globe">
     <div id="earth-canvas" style="width:100%;height:100%;"></div>
   </div>
-
 </div>
 
+<!-- ── STRIP AUTORES ──────────────────────────────────── -->
+<div class="authors-strip">
+  Marta Domínguez · Martín Senande · Sabela Sanfiz
+  <span style="opacity:0.5;margin:0 0.5rem;"></span>
+  <em>(Tragsatec)</em>
+  <span style="opacity:0.5;margin:0 0.8rem;">·</span>
+  Esteban Rodríguez
+  <span style="opacity:0.5;margin:0 0.5rem;"></span>
+  <em>(AEMET)</em>
+</div>
 
+<!-- ── CONTADORES ─────────────────────────────────────── -->
+<div class="counters-section reveal-section">
+  <div class="counter-item">
+    <span class="counter-value" data-target="20945" data-suffix="">0</span>
+    <span class="counter-label">celdas de la malla</span>
+    <span class="counter-sub">5×5 km · Península + Baleares</span>
+  </div>
+  <div class="counter-divider"></div>
+  <div class="counter-item">
+    <span class="counter-value" data-target="3" data-suffix="">0</span>
+    <span class="counter-label">modelos globales</span>
+    <span class="counter-sub">ECMWF-SEAS5.1 · DWD · CMCC</span>
+  </div>
+  <div class="counter-divider"></div>
+  <div class="counter-item">
+    <span class="counter-value" data-target="5" data-suffix=" km">0</span>
+    <span class="counter-label">resolución espacial</span>
+    <span class="counter-sub">20× más fina que los modelos globales</span>
+  </div>
+  <div class="counter-divider"></div>
+  <div class="counter-item">
+    <span class="counter-value" data-target="6" data-suffix=" meses">0</span>
+    <span class="counter-label">horizonte de predicción</span>
+    <span class="counter-sub">Actualización periódica</span>
+  </div>
+</div>
 
+<!-- ── FLIP CARDS ─────────────────────────────────────── -->
+<div class="flip-section">
 
+  <div class="flip-wrap reveal-section" data-delay="0">
+    <div class="flip-card">
+      <div class="flip-front">
+        <span class="flip-icon">📡</span>
+        <h3>Datos</h3>
+        <p>C3S · ECMWF-SEAS5.1 · DWD · CMCC</p>
+        <span class="flip-hint">hover para más info</span>
+      </div>
+      <div class="flip-back">
+        <h3>Datos</h3>
+        <p>Descarga mediante la API oficial de Copernicus (<code>cdsapi</code>). Variables: MSL, Z500, T2M, TP. Período: hindcast + predicción en tiempo real.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flip-wrap reveal-section" data-delay="100">
+    <div class="flip-card">
+      <div class="flip-front">
+        <span class="flip-icon">🗺️</span>
+        <h3>Downscaling</h3>
+        <p>Análogos sinópticos · 5×5 km</p>
+        <span class="flip-hint">hover para más info</span>
+      </div>
+      <div class="flip-back">
+        <h3>Downscaling</h3>
+        <p>Algoritmo de análogos sinópticos de AEMET. Calibración con ERA5 (1981–1996) y base de precipitación ROCÍO_IBEB. 20.945 celdas sobre la Península e Islas Baleares.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flip-wrap reveal-section" data-delay="200">
+    <div class="flip-card">
+      <div class="flip-front">
+        <span class="flip-icon">⚖️</span>
+        <h3>Weighting</h3>
+        <p>EOF · PLS · ponderación de ensemble</p>
+        <span class="flip-hint">hover para más info</span>
+      </div>
+      <div class="flip-back">
+        <h3>Weighting</h3>
+        <p>Modos de variabilidad Euro-Atlánticos (NAO, EA, EAWR, SCA). Ponderación EOF para invierno, PLS para temperatura en estación cálida (AMJ–ASO).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flip-wrap reveal-section" data-delay="300">
+    <div class="flip-card">
+      <div class="flip-front">
+        <span class="flip-icon">🌊</span>
+        <h3>Cuencas</h3>
+        <p>Cuencas hidrográficas españolas</p>
+        <span class="flip-hint">hover para más info</span>
+      </div>
+      <div class="flip-back">
+        <h3>Cuencas</h3>
+        <p>Análisis de predicción estacional desagregado por cuenca hidrográfica. Proyecto en desarrollo — próximamente disponible.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <style>
 /* ── Cover ───────────────────────────────────────────── */
@@ -105,8 +199,11 @@ toc: false
 .cover-logos img {
   height: 42px;
   object-fit: contain;
-  opacity: 0.85;
+  opacity: 0.9;
+  transition: opacity 0.2s;
 }
+
+.cover-logos img:hover { opacity: 1; }
 
 .cover-sep {
   width: 1px;
@@ -134,50 +231,163 @@ toc: false
   letter-spacing: 0.03em;
 }
 
-/* ── Parallax cards ──────────────────────────────────── */
-.parallax-section {
+/* ── Counters ────────────────────────────────────────── */
+.counters-section {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr;
+  align-items: center;
+  padding: 2.5rem 4rem;
+  background: #003087;
+}
+
+.counter-item {
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.counter-value {
+  display: block;
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: white;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.counter-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  margin-top: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.counter-sub {
+  display: block;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.45);
+  margin-top: 0.3rem;
+}
+
+.counter-divider {
+  width: 1px;
+  height: 60px;
+  background: rgba(255,255,255,0.15);
+  justify-self: center;
+}
+
+/* ── Flip cards ──────────────────────────────────────── */
+.flip-section {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
   padding: 3rem 4rem;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(4px);
+  background: #f4f8fd;
 }
 
-.px-card {
-  background: white;
-  border: 1px solid #dde3ed;
+.flip-wrap {
+  perspective: 1000px;
+  height: 220px;
+}
+
+.flip-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(.4,0,.2,1);
+}
+
+.flip-wrap:hover .flip-card {
+  transform: rotateY(180deg);
+}
+
+.flip-front,
+.flip-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   border-radius: 12px;
   padding: 1.8rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+}
+
+.flip-front {
+  background: white;
+  border: 1px solid #dde3ed;
   box-shadow: 0 4px 20px rgba(0,48,135,0.07);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  will-change: transform;
 }
 
-.px-card:hover {
-  transform: translateY(-6px) !important;
-  box-shadow: 0 12px 32px rgba(0,48,135,0.14);
+.flip-back {
+  background: #003087;
+  transform: rotateY(180deg);
 }
 
-.px-icon {
+.flip-icon {
   font-size: 2rem;
   display: block;
   margin-bottom: 0.8rem;
 }
 
-.px-card h3 {
+.flip-front h3 {
   font-size: 1rem;
   font-weight: 700;
   color: #003087;
-  margin-bottom: 0.4rem;
+  margin: 0 0 0.4rem;
 }
 
-.px-card p {
+.flip-front p {
   font-size: 0.78rem;
   color: #8892a4;
   line-height: 1.5;
   margin: 0;
+}
+
+.flip-hint {
+  font-size: 0.62rem;
+  color: #c0cce0;
+  margin-top: 0.8rem;
+  letter-spacing: 0.06em;
+}
+
+.flip-back h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 0.6rem;
+}
+
+.flip-back p {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.flip-back code {
+  background: rgba(255,255,255,0.15);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 0.72rem;
+}
+
+/* ── Scroll reveal ───────────────────────────────────── */
+.reveal-section {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal-section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ── Animations ──────────────────────────────────────── */
@@ -195,7 +405,9 @@ toc: false
   .cover { flex-direction: column; padding: 3rem 2rem; min-height: auto; }
   .cover-globe { flex: 0 0 300px; height: 300px; margin-right: 0; }
   .cover-title { font-size: 3rem; }
-  .parallax-section { grid-template-columns: 1fr 1fr; padding: 2rem; }
+  .counters-section { grid-template-columns: 1fr 1fr; padding: 2rem; }
+  .counter-divider { display: none; }
+  .flip-section { grid-template-columns: 1fr 1fr; padding: 2rem; }
 }
 </style>
 
@@ -237,19 +449,43 @@ toc: false
   draw();
 })();
 
-/* ── Parallax suave al mover el ratón ── */
+/* ── Scroll reveal ───────────────────────────────────── */
 (function() {
-  const cards = document.querySelectorAll('.px-card[data-depth]');
-  document.addEventListener('mousemove', e => {
-    const cx = window.innerWidth / 2;
-    const cy = window.innerHeight / 2;
-    const dx = (e.clientX - cx) / cx;
-    const dy = (e.clientY - cy) / cy;
-    cards.forEach(card => {
-      const d = parseFloat(card.dataset.depth);
-      card.style.transform = `translate(${dx * d * 20}px, ${dy * d * 20}px)`;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const delay = entry.target.dataset.delay || 0;
+        setTimeout(() => entry.target.classList.add('visible'), parseInt(delay));
+      }
     });
-  });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal-section').forEach(el => obs.observe(el));
+})();
+
+/* ── Contadores animados ─────────────────────────────── */
+(function() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.querySelectorAll('.counter-value').forEach(el => {
+        if (el.dataset.animated) return;
+        el.dataset.animated = 'true';
+        const target = parseInt(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const duration = target > 1000 ? 2000 : 1000;
+        const start = performance.now();
+        function step(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(target * eased).toLocaleString('es-ES') + suffix;
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+      obs.unobserve(entry.target);
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.counters-section').forEach(el => obs.observe(el));
 })();
 
 /* ── Globo Three.js con órbitas reales ── */

@@ -94,6 +94,10 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Inicio</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./datos.html"> 
 <span class="menu-text">Datos</span></a>
   </li>  
@@ -127,103 +131,372 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<!-- Logos institucionales -->
-<div class="logos-bar">
-  <img src="images/logos/aemet.png" alt="AEMET">
-  <div class="sep"></div>
-  <img src="images/logos/tragsatec.jpg" alt="Tragsatec">
-</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-<!-- Hero -->
-<div class="hero">
-  <span class="section-label">Servicio de predicción estacional · 2024–2026</span>
-  <h1>Predicción Estacional Estadística<br>para España</h1>
-  <div class="divider"></div>
-  <p class="subtitle">
-    Contrato de servicio AEMET–Tragsatec en el marco del Área de Evaluación y Modelización del Clima
-  </p>
-  <div style="display:flex;gap:0.6rem;justify-content:center;flex-wrap:wrap;margin-top:1rem;">
-    <span class="tag" style="border-color:rgba(255,255,255,0.5);color:white;">Copernicus C3S</span>
-    <span class="tag" style="border-color:rgba(255,255,255,0.5);color:white;">ECMWF-SEAS5.1</span>
-    <span class="tag" style="border-color:rgba(255,255,255,0.5);color:white;">DWD</span>
-    <span class="tag" style="border-color:rgba(255,255,255,0.5);color:white;">CMCC</span>
-    <span class="tag" style="border-color:rgba(255,255,255,0.5);color:white;">Downscaling 5×5 km</span>
-  </div>
-</div>
+<!-- ── HERO PRINCIPAL ─────────────────────────────────── -->
+<div class="cover" id="cover">
 
-<!-- Descripción del proyecto -->
-<div style="max-width:900px;margin:2.5rem auto;padding:0 1.5rem;">
+  <!-- Partículas de fondo -->
+  <canvas id="particle-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.25;"></canvas>
 
-  <h2 style="color:#003087;font-size:1.3rem;font-weight:700;margin-bottom:1rem;" class="anchored">Sobre el proyecto</h2>
-
-  <p style="font-size:0.95rem;line-height:1.75;color:#1a2332;margin-bottom:1.2rem;">
-    Este proyecto se enmarca en un contrato de servicio en el que <strong>Tragsatec</strong> actúa como subcontratista de la 
-    <strong>Agencia Estatal de Meteorología (AEMET)</strong>, dentro del Área de Evaluación y Modelización del Clima.
-    El objetivo principal es el desarrollo de metodologías estadísticas avanzadas para la predicción estacional 
-    sobre España, combinando datos de modelos globales con técnicas de regionalización y ponderación de conjuntos.
-  </p>
-
-  <div class="grid-3" style="margin-bottom:2rem;">
-
-    <div class="info-card">
-      <h3 class="anchored">📡 Datos</h3>
-      <p>Predicciones estacionales de Copernicus Climate Data Store (C3S): modelos ECMWF-SEAS5.1, DWD y CMCC, descargados mediante la API oficial de Copernicus.</p>
-    </div>
-
-    <div class="info-card">
-      <h3 class="anchored">🗺️ Downscaling</h3>
-      <p>Algoritmo de análogos sinópticos desarrollado en AEMET. Proporciona precipitación diaria en una malla de alta resolución de 5×5 km sobre la Península Ibérica e Islas Baleares (20.945 celdas).</p>
-    </div>
-
-    <div class="info-card">
-      <h3 class="anchored">⚖️ Weighting</h3>
-      <p>Ponderación de miembros del ensemble mediante modos de variabilidad (EOF, PLS). Mejora la consistencia dinámica de las predicciones estacionales, especialmente para el NAO en invierno.</p>
-    </div>
-
-  </div>
-
-  <h2 style="color:#003087;font-size:1.3rem;font-weight:700;margin-bottom:1rem;" class="anchored">Variables principales</h2>
-
-  <div class="grid-4" style="margin-bottom:2rem;">
-    <div class="info-card" style="text-align:center;">
-      <h3 class="anchored">SLP</h3>
-      <p>Presión al nivel del mar</p>
-    </div>
-    <div class="info-card" style="text-align:center;">
-      <h3 class="anchored">Z500</h3>
-      <p>Altura geopotencial 500 hPa</p>
-    </div>
-    <div class="info-card" style="text-align:center;">
-      <h3 class="anchored">T2M</h3>
-      <p>Temperatura a 2 metros</p>
-    </div>
-    <div class="info-card" style="text-align:center;">
-      <h3 class="anchored">TP</h3>
-      <p>Precipitación total</p>
+  <!-- Columna texto izquierda -->
+  <div class="cover-text" id="cover-text">
+    <span class="cover-eyebrow">Encargo de servicio · Tragsatec para AEMET</span>
+    <h1 class="cover-title">Predicción<br>Estacional</h1>
+    <div class="cover-line"></div>
+    <p class="cover-sub">
+      Área de Evaluación y Modelización del Clima<br>
+      <strong>AEMET · 2024–2026</strong>
+    </p>
+    <div class="cover-logos">
+      <a href="https://www.aemet.es/es/portada" target="_blank">
+        <img src="images/logos/aemet.png" alt="AEMET">
+      </a>
+      <span class="cover-sep"></span>
+      <a href="https://www.tragsa.es/es/Paginas/default.aspx" target="_blank">
+        <img src="images/logos/tragsatec.jpg" alt="Tragsatec">
+      </a>
     </div>
   </div>
 
-  <h2 style="color:#003087;font-size:1.3rem;font-weight:700;margin-bottom:1rem;" class="anchored">Estructura del proyecto</h2>
-
-  <div class="grid-2" style="margin-bottom:2rem;">
-    <div class="info-card">
-      <h3 class="anchored">📅 Vigencia</h3>
-      <p>El contrato de servicio está en vigor hasta el verano de 2026. Los resultados se actualizan de forma periódica con cada nueva predicción estacional.</p>
-    </div>
-    <div class="info-card">
-      <h3 class="anchored">🏛️ Marco institucional</h3>
-      <p>AEMET lidera el trabajo dentro del área de predicción estacional. Tragsatec contribuye al desarrollo de las metodologías estadísticas de postproceso.</p>
-    </div>
-  </div>
-
-  <!-- Autores -->
-  <div class="autores">
-    <strong style="color:#003087;">Equipo</strong> &nbsp;·&nbsp;
-    Marta Domínguez · Martín Senande · Sabela Sanfiz <em>(Tragsatec)</em>
-    &nbsp;·&nbsp; Esteban Rodríguez <em>(AEMET)</em>
+  <!-- Globo Three.js derecha -->
+  <div class="cover-globe">
+    <div id="earth-canvas" style="width:100%;height:100%;"></div>
   </div>
 
 </div>
+
+
+
+
+
+<style>
+/* ── Cover ───────────────────────────────────────────── */
+.cover {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 65vh;
+  padding: 0 4rem;
+  gap: 2rem;
+  overflow: hidden;
+  background: linear-gradient(135deg, #001a5e 0%, #003087 50%, #005aad 100%);
+}
+
+.cover-text {
+  flex: 1;
+  position: relative;
+  z-index: 2;
+  animation: fadeInLeft 0.9s ease both;
+}
+
+.cover-eyebrow {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 1rem;
+}
+
+.cover-title {
+  font-size: 4.5rem;
+  font-weight: 800;
+  color: white;
+  line-height: 1;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.cover-line {
+  width: 60px;
+  height: 3px;
+  background: rgba(255,255,255,0.5);
+  margin: 1.2rem 0;
+}
+
+.cover-sub {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.cover-logos {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.cover-logos img {
+  height: 42px;
+  object-fit: contain;
+  opacity: 0.85;
+}
+
+.cover-sep {
+  width: 1px;
+  height: 32px;
+  background: rgba(255,255,255,0.3);
+}
+
+.cover-globe {
+  flex: 0 0 500px;
+  height: 500px;
+  position: relative;
+  z-index: 2;
+  animation: fadeInRight 1s ease both;
+  margin-right: -2rem;
+}
+
+/* ── Authors strip ───────────────────────────────────── */
+.authors-strip {
+  background: white;
+  border-bottom: 1px solid #dde3ed;
+  text-align: center;
+  padding: 0.7rem 1rem;
+  font-size: 0.75rem;
+  color: #4a5568;
+  letter-spacing: 0.03em;
+}
+
+/* ── Parallax cards ──────────────────────────────────── */
+.parallax-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  padding: 3rem 4rem;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(4px);
+}
+
+.px-card {
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 12px;
+  padding: 1.8rem 1.6rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,48,135,0.07);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.px-card:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0 12px 32px rgba(0,48,135,0.14);
+}
+
+.px-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.8rem;
+}
+
+.px-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #003087;
+  margin-bottom: 0.4rem;
+}
+
+.px-card p {
+  font-size: 0.78rem;
+  color: #8892a4;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Animations ──────────────────────────────────────── */
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@media (max-width: 900px) {
+  .cover { flex-direction: column; padding: 3rem 2rem; min-height: auto; }
+  .cover-globe { flex: 0 0 300px; height: 300px; margin-right: 0; }
+  .cover-title { font-size: 3rem; }
+  .parallax-section { grid-template-columns: 1fr 1fr; padding: 2rem; }
+}
+</style>
+
+<script>
+/* ── Partículas ── */
+(function() {
+  const canvas = document.getElementById('particle-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  const particles = Array.from({length: 50}, () => ({
+    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+    r: Math.random() * 1.5 + 0.4,
+    vx: (Math.random() - 0.5) * 0.25, vy: (Math.random() - 0.5) * 0.25,
+    alpha: Math.random() * 0.5 + 0.2
+  }));
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(150,200,255,${p.alpha})`; ctx.fill();
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+    });
+    particles.forEach((p, i) => {
+      particles.slice(i+1).forEach(q => {
+        const d = Math.hypot(p.x-q.x, p.y-q.y);
+        if (d < 100) {
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = `rgba(150,200,255,${0.06*(1-d/100)})`; ctx.lineWidth = 0.5; ctx.stroke();
+        }
+      });
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── Parallax suave al mover el ratón ── */
+(function() {
+  const cards = document.querySelectorAll('.px-card[data-depth]');
+  document.addEventListener('mousemove', e => {
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    const dx = (e.clientX - cx) / cx;
+    const dy = (e.clientY - cy) / cy;
+    cards.forEach(card => {
+      const d = parseFloat(card.dataset.depth);
+      card.style.transform = `translate(${dx * d * 20}px, ${dy * d * 20}px)`;
+    });
+  });
+})();
+
+/* ── Globo Three.js con órbitas reales ── */
+(function() {
+  function initEarth() {
+    const mount = document.getElementById('earth-canvas');
+    if (!mount || mount.dataset.mounted === 'true') return;
+    mount.dataset.mounted = 'true';
+    const w = mount.clientWidth, h = mount.clientHeight;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, w/h, 0.1, 1000);
+    camera.position.z = 3.9;
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    mount.appendChild(renderer.domElement);
+
+    const loader = new THREE.TextureLoader();
+    const earthSolid = new THREE.Mesh(
+      new THREE.SphereGeometry(0.99, 48, 32),
+      new THREE.MeshBasicMaterial({
+        map: loader.load('https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/planets/earth_atmos_2048.jpg'),
+        transparent: true, opacity: 0.95
+      })
+    );
+    scene.add(earthSolid);
+
+    const earth = new THREE.Mesh(
+      new THREE.SphereGeometry(1, 48, 32),
+      new THREE.MeshBasicMaterial({ color: 0x4499ff, wireframe: true, transparent: true, opacity: 0.20 })
+    );
+    scene.add(earth);
+
+    const DEG = Math.PI / 180;
+    const orbitDefs = [
+      { name:'ISS',       a:1.12, inc:51.6, raan:0,   color:0x88ccff, r:0.022, phase:0.0 },
+      { name:'Polar Met', a:1.13, inc:90,   raan:60,  color:0xffffff, r:0.018, phase:1.2 },
+      { name:'Sentinel',  a:1.14, inc:98,   raan:130, color:0x88ff44, r:0.018, phase:2.5 },
+      { name:'GPS',       a:1.55, inc:55,   raan:200, color:0xffcc00, r:0.026, phase:0.8 },
+      { name:'GPS-2',     a:1.55, inc:55,   raan:320, color:0xffcc00, r:0.026, phase:3.5 },
+      { name:'GEO',       a:1.80, inc:0,    raan:0,   color:0xff6688, r:0.024, phase:0.0 },
+    ];
+
+    function orbitalToWorld(a, theta, incDeg, raanDeg) {
+      const inc = incDeg * DEG, raan = raanDeg * DEG;
+      const xO = a * Math.cos(theta), zO = a * Math.sin(theta);
+      const yI = zO * Math.sin(inc), zI = zO * Math.cos(inc);
+      return {
+        x: xO * Math.cos(raan) - zI * Math.sin(raan),
+        y: yI,
+        z: xO * Math.sin(raan) + zI * Math.cos(raan)
+      };
+    }
+
+    function createOrbitLine(def) {
+      const pts = [];
+      for (let i = 0; i <= 256; i++) {
+        const theta = (i/256) * Math.PI * 2;
+        const p = orbitalToWorld(def.a, theta, def.inc, def.raan);
+        pts.push(new THREE.Vector3(p.x, p.y, p.z));
+      }
+      return new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(pts),
+        new THREE.LineBasicMaterial({ color: def.color, transparent: true, opacity: 0.15 })
+      );
+    }
+
+    const wLEO = 0.012;
+    const sats = orbitDefs.map(def => {
+      scene.add(createOrbitLine(def));
+      const mesh = new THREE.Mesh(
+        new THREE.SphereGeometry(def.r, 8, 8),
+        new THREE.MeshBasicMaterial({ color: def.color })
+      );
+      const halo = new THREE.Mesh(
+        new THREE.SphereGeometry(def.r * 2, 8, 8),
+        new THREE.MeshBasicMaterial({ color: def.color, transparent: true, opacity: 0.2 })
+      );
+      mesh.add(halo);
+      scene.add(mesh);
+      return { mesh, def, phase: def.phase, w: wLEO * Math.pow(1.12/def.a, 1.5) };
+    });
+
+    const wEarth = wLEO * Math.pow(1.12/1.80, 1.5);
+    let t = 0, dragging = false, lastX = 0, lastY = 0, rx = 0.15, ry = 0;
+    renderer.domElement.addEventListener('mousedown', e => { dragging=true; lastX=e.clientX; lastY=e.clientY; });
+    window.addEventListener('mouseup', () => dragging=false);
+    window.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      ry += (e.clientX-lastX)*0.01; rx += (e.clientY-lastY)*0.01;
+      lastX=e.clientX; lastY=e.clientY;
+    });
+
+    function animate() {
+      t += 1;
+      if (!dragging) ry += wEarth;
+      earthSolid.rotation.y = ry; earthSolid.rotation.x = rx;
+      earth.rotation.y = ry; earth.rotation.x = rx;
+      sats.forEach(s => {
+        const theta = t * s.w + s.phase;
+        const p = orbitalToWorld(s.def.a, theta, s.def.inc, s.def.raan);
+        s.mesh.position.set(p.x, p.y, p.z);
+      });
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      const nw = mount.clientWidth, nh = mount.clientHeight;
+      if (!nw || !nh) return;
+      camera.aspect = nw/nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initEarth);
+  } else { setTimeout(initEarth, 100); }
+})();
+</script>
 
 
 
@@ -320,7 +593,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/sanfiz\.github\.io\/pred-estacional\/");
+      var filterRegex = new RegExp("https:\/\/sanfiz\.github\.io\/aemet-tragsatec-2026\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }

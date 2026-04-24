@@ -1,0 +1,83 @@
+---
+title: ""
+toc: false
+---
+
+```{=html}
+<!-- Logos institucionales -->
+<div class="logos-bar">
+  <img src="images/logos/aemet.png" alt="AEMET"/>
+  <div class="sep"></div>
+  <img src="images/logos/tragsatec.jpg" alt="Tragsatec"/>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <span class="section-label">Servicio de predicción estacional · 2024–2026</span>
+  <h1>Predicción Estacional Estadística<br>para España</h1>
+  <div class="divider"></div>
+  <p class="subtitle">
+    Contrato de servicio de AEMET a Tragsatec
+  </p>
+  <div style="display:flex;gap:0.6rem;justify-content:center;flex-wrap:wrap;margin-top:1rem;">
+    <span class="tag" style="border-color:rgba(255,255,255,0.5);color:white;">AEMET</span>
+    <span class="tag" style="border-color:rgba(255,255,255,0.5);color:white;">Tragsatec</span>
+    <span class="tag" style="border-color:rgba(255,255,255,0.5);color:white;">Ministerio para la Transición Ecológica y el Reto Demográfico</span>
+  </div>
+</div>
+
+<!-- Descripción del proyecto -->
+<div style="max-width:900px;margin:2.5rem auto;padding:0 1.5rem;">
+
+  <h2 style="color:#003087;font-size:1.3rem;font-weight:700;margin-bottom:1rem;">Sobre el proyecto</h2>
+
+  <p style="font-size:0.95rem;line-height:1.75;color:#1a2332;margin-bottom:1.2rem;">
+    Este proyecto se enmarca en un contrato de servicio en el que <strong>Tragsatec</strong> actúa como subcontratista de la 
+    <strong>Agencia Estatal de Meteorología (AEMET)</strong>, dentro del Área de Evaluación y Modelización del Clima.
+    El objetivo principal es el desarrollo de metodologías estadísticas avanzadas para mejorar la predicción estacional 
+    sobre España, combinando datos de modelos globales de predicción estacional descargados de Copernicus con técnicas de regionalización y ponderación de conjuntos.
+  </p>
+
+  <div class="grid-3" style="margin-bottom:2rem;">
+
+    <div class="info-card">
+      <h3>📡 Datos</h3>
+      <p>Predicciones estacionales de Copernicus Climate Data Store (C3S): modelos ECMWF-SEAS5.1, DWD y CMCC, descargados mediante la API oficial de Copernicus.</p>
+    </div>
+
+    <div class="info-card">
+      <h3>🗺️ Downscaling</h3>
+      <p>Algoritmo de análogos sinópticos desarrollado en AEMET. Proporciona precipitación diaria en una malla de alta resolución de 5×5 km sobre la Península Ibérica e Islas Baleares (20.945 celdas).</p>
+    </div>
+
+    <div class="info-card">
+      <h3>⚖️ Weighting</h3>
+      <p>Ponderación de miembros del ensemble mediante modos de variabilidad (EOF, PLS). Mejora la consistencia dinámica de las predicciones estacionales, especialmente para el NAO en invierno.</p>
+    </div>
+
+  </div>
+
+<!--------------------- Estructura del proyecto --------------------- >
+
+  <h2 style="color:#003087;font-size:1.3rem;font-weight:700;margin-bottom:1rem;">Estructura del proyecto</h2>
+
+  <div class="grid-2" style="margin-bottom:2rem;">
+    <div class="info-card">
+      <h3>📅 Vigencia</h3>
+      <p>El contrato de servicio está en vigor hasta el verano de 2026. Los resultados se actualizan de forma periódica con cada nueva predicción estacional.</p>
+    </div>
+    <div class="info-card">
+      <h3>🏛️ Marco institucional</h3>
+      <p>AEMET lidera el trabajo dentro del área de predicción estacional. Tragsatec contribuye al desarrollo de las metodologías estadísticas de postproceso.</p>
+    </div>
+  </div>
+
+  <!-- Autores -->
+  <div class="autores">
+    <strong style="color:#003087;">Equipo</strong> &nbsp;·&nbsp;
+    Marta Domínguez · Martín Senande · Sabela Sanfiz <em>(Tragsatec)</em>
+    &nbsp;·&nbsp; Esteban Rodríguez <em>(AEMET)</em>
+  </div>
+
+</div>
+```

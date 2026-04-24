@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://sanfiz.github.io/pred-estacional/weighting.html</loc>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/weighting.html</loc>
     <lastmod>2026-04-23T11:18:12.000Z</lastmod>
   </url>
   <url>
-    <loc>https://sanfiz.github.io/pred-estacional/index.html</loc>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/index.html</loc>
+    <lastmod>2026-04-23T15:21:46.621Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/cuencas.html</loc>
     <lastmod>2026-04-23T11:18:12.000Z</lastmod>
   </url>
   <url>
-    <loc>https://sanfiz.github.io/pred-estacional/datos.html</loc>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/datos.html</loc>
     <lastmod>2026-04-23T11:18:12.000Z</lastmod>
   </url>
   <url>
-    <loc>https://sanfiz.github.io/pred-estacional/cuencas.html</loc>
-    <lastmod>2026-04-23T11:18:12.000Z</lastmod>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/about.html</loc>
+    <lastmod>2026-04-23T15:06:28.003Z</lastmod>
   </url>
   <url>
-    <loc>https://sanfiz.github.io/pred-estacional/downscaling.html</loc>
-    <lastmod>2026-04-23T11:18:12.000Z</lastmod>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/downscaling.html</loc>
+    <lastmod>2026-04-23T15:19:06.543Z</lastmod>
   </url>
 </urlset>

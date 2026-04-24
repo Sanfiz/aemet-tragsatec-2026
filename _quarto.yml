@@ -17,6 +17,8 @@ website:
     left:
       - text: "Inicio"
         href: index.qmd
+      - text: "About"
+        href: about.qmd        
       - text: "Datos"
         href: datos.qmd
       - text: "Downscaling"

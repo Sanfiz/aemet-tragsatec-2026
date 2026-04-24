@@ -1,0 +1,303 @@
+---
+title: "Downscaling"
+toc: true
+---
+
+```{=html}
+<div style="max-width:960px;margin:2rem auto;padding:0 1.5rem;">
+
+  <span class="section-label">Metodología y resultados</span>
+  <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;">Downscaling estadístico</h2>
+  <p style="color:#4a5568;margin-bottom:1.5rem;">
+    El algoritmo de análogos sinópticos proporciona precipitación diaria en una malla de 5×5 km (20.945 celdas) sobre la Península Ibérica e Islas Baleares, a partir de datos de baja resolución de los modelos de predicción estacional.
+  </p>
+
+  <!-- Descripción metodológica -->
+  <div class="grid-2" style="margin-bottom:2rem;">
+    <div class="info-card">
+      <h3>Fase 1 · Calibración</h3>
+      <p>Clasificación de tipos de tiempo mediante <em>K-means clustering</em> para identificar la base de datos sinóptica de referencia (1981–1996). La similitud se calcula a partir de distancias euclídeas ponderadas de las componentes del viento geostrófico en superficie y a 500 hPa (ERA5).</p>
+    </div>
+    <div class="info-card">
+      <h3>Fase 2 · Estimación</h3>
+      <p>La precipitación para cada celda se estima como la media ponderada de la precipitación asociada a las situaciones más análogas de la base de referencia, usando la similitud de los campos de viento geostrófico en superficie y a 500 hPa de los modelos C3S.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- DESPLEGABLES POR MODELO                                       -->
+  <!-- ============================================================ -->
+  <h3 style="color:#003087;margin-top:2.5rem;margin-bottom:1rem;">Resultados por modelo</h3>
+  <p style="font-size:0.85rem;color:#4a5568;margin-bottom:1rem;">Período de validez: <strong>AMJ 2026</strong> · Lead: marzo 2026</p>
+
+  <div class="accordion" id="accordion-modelos">
+
+    <!-- ECMWF -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#mod-ecmwf">
+          ECMWF-SEAS5.1
+        </button>
+      </h2>
+      <div id="mod-ecmwf" class="accordion-collapse collapse show" data-bs-parent="#accordion-modelos">
+        <div class="accordion-body">
+          <div class="grid-2">
+            <div>
+              <img src="images/downscaling/3_terciles_ecmwf_lead032026_AMJ.png" class="result-img" alt="Terciles ECMWF"/>
+              <p class="img-caption">Probabilidad por terciles · Precipitación · AMJ 2026</p>
+            </div>
+            <div>
+              <img src="images/downscaling/4_corr-spearman_ecmwf_lead032026_AMJ.png" class="result-img" alt="Correlación ECMWF"/>
+              <p class="img-caption">Correlación de Spearman · AMJ 2026</p>
+            </div>
+            <div>
+              <img src="images/downscaling/5_roc_3_pr_ecmwf_lead032026_AMJ.png" class="result-img" alt="ROC ECMWF"/>
+              <p class="img-caption">Curvas ROC · Precipitación · AMJ 2026</p>
+            </div>
+            <div>
+              <img src="images/downscaling/6_rps_pr_ecmwf_lead032026_AMJ.png" class="result-img" alt="RPS ECMWF"/>
+              <p class="img-caption">Ranked Probability Score (RPS) · AMJ 2026</p>
+            </div>
+            <div>
+              <img src="images/downscaling/7_bs_3_pr_ecmwf_lead032026_AMJ.png" class="result-img" alt="BS ECMWF"/>
+              <p class="img-caption">Brier Score · AMJ 2026</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DWD -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mod-dwd">
+          DWD
+        </button>
+      </h2>
+      <div id="mod-dwd" class="accordion-collapse collapse" data-bs-parent="#accordion-modelos">
+        <div class="accordion-body">
+          <div class="grid-2">
+            <div>
+              <img src="images/downscaling/3_terciles_dwd_lead032026_AMJ.png" class="result-img" alt="Terciles DWD"/>
+              <p class="img-caption">Probabilidad por terciles · Precipitación · AMJ 2026</p>
+            </div>
+            <div>
+              <img src="images/downscaling/4_corr-spearman_dwd_lead032026_AMJ.png" class="result-img" alt="Correlación DWD"/>
+              <p class="img-caption">Correlación de Spearman · AMJ 2026</p>
+            </div>
+            <div>
+              <img src="images/downscaling/5_roc_3_pr_dwd_lead032026_AMJ.png" class="result-img" alt="ROC DWD"/>
+              <p class="img-caption">Curvas ROC · Precipitación · AMJ 2026</p>
+            </div>
+            <div>
+              <img src="images/downscaling/6_rps_pr_dwd_lead032026_AMJ.png" class="result-img" alt="RPS DWD"/>
+              <p class="img-caption">Ranked Probability Score (RPS) · AMJ 2026</p>
+            </div>
+            <div>
+              <img src="images/downscaling/7_bs_3_pr_dwd_lead032026_AMJ.png" class="result-img" alt="BS DWD"/>
+              <p class="img-caption">Brier Score · AMJ 2026</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CMCC -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mod-cmcc">
+          CMCC
+        </button>
+      </h2>
+      <div id="mod-cmcc" class="accordion-collapse collapse" data-bs-parent="#accordion-modelos">
+        <div class="accordion-body">
+          <div class="grid-2">
+            <div>
+              <img src="images/downscaling/3_terciles_cmcc_lead032026_AMJ.png" class="result-img" alt="Terciles CMCC"/>
+              <p class="img-caption">Probabilidad por terciles · Precipitación · AMJ 2026</p>
+            </div>
+            <div>
+              <img src="images/downscaling/4_corr-spearman_cmcc_lead032026_AMJ.png" class="result-img" alt="Correlación CMCC"/>
+              <p class="img-caption">Correlación de Spearman · AMJ 2026</p>
+            </div>
+            <div>
+              <img src="images/downscaling/5_roc_3_pr_cmcc_lead032026_AMJ.png" class="result-img" alt="ROC CMCC"/>
+              <p class="img-caption">Curvas ROC · Precipitación · AMJ 2026</p>
+            </div>
+            <div>
+              <img src="images/downscaling/6_rps_pr_cmcc_lead032026_AMJ.png" class="result-img" alt="RPS CMCC"/>
+              <p class="img-caption">Ranked Probability Score (RPS) · AMJ 2026</p>
+            </div>
+            <div>
+              <img src="images/downscaling/7_bs_3_pr_cmcc_lead032026_AMJ.png" class="result-img" alt="BS CMCC"/>
+              <p class="img-caption">Brier Score · AMJ 2026</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Météo-France -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mod-mf">
+          Météo-France
+        </button>
+      </h2>
+      <div id="mod-mf" class="accordion-collapse collapse" data-bs-parent="#accordion-modelos">
+        <div class="accordion-body">
+          <div class="grid-2">
+            <div>
+              <img src="images/downscaling/3_terciles_meteo_france_lead032026_AMJ.png" class="result-img" alt="Terciles Météo-France"/>
+              <p class="img-caption">Probabilidad por terciles · Precipitación · AMJ 2026</p>
+            </div>
+            <div>
+              <img src="images/downscaling/4_corr-spearman_meteo_france_lead032026_AMJ.png" class="result-img" alt="Correlación Météo-France"/>
+              <p class="img-caption">Correlación de Spearman · AMJ 2026</p>
+            </div>
+            <div>
+              <img src="images/downscaling/5_roc_3_pr_meteo_france_lead032026_AMJ.png" class="result-img" alt="ROC Météo-France"/>
+              <p class="img-caption">Curvas ROC · Precipitación · AMJ 2026</p>
+            </div>
+            <div>
+              <img src="images/downscaling/6_rps_pr_meteo_france_lead032026_AMJ.png" class="result-img" alt="RPS Météo-France"/>
+              <p class="img-caption">Ranked Probability Score (RPS) · AMJ 2026</p>
+            </div>
+            <div>
+              <img src="images/downscaling/7_bs_3_pr_meteo_france_lead032026_AMJ.png" class="result-img" alt="BS Météo-France"/>
+              <p class="img-caption">Brier Score · AMJ 2026</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- fin accordion-modelos -->
+
+
+  <!-- ============================================================ -->
+  <!-- DESPLEGABLES POR TIPO DE GRÁFICO                              -->
+  <!-- ============================================================ -->
+  <h3 style="color:#003087;margin-top:3rem;margin-bottom:1rem;">Resultados por tipo de gráfico</h3>
+
+  <div class="accordion" id="accordion-graficos">
+
+    <!-- Terciles -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#graf-terciles">
+          Probabilidad por terciles
+        </button>
+      </h2>
+      <div id="graf-terciles" class="accordion-collapse collapse show" data-bs-parent="#accordion-graficos">
+        <div class="accordion-body">
+          <div class="grid-2">
+            <div><img src="images/downscaling/3_terciles_ecmwf_lead032026_AMJ.png" class="result-img" alt="ECMWF"/><p class="img-caption">ECMWF-SEAS5.1</p></div>
+            <div><img src="images/downscaling/3_terciles_dwd_lead032026_AMJ.png" class="result-img" alt="DWD"/><p class="img-caption">DWD</p></div>
+            <div><img src="images/downscaling/3_terciles_cmcc_lead032026_AMJ.png" class="result-img" alt="CMCC"/><p class="img-caption">CMCC</p></div>
+            <div><img src="images/downscaling/3_terciles_meteo_france_lead032026_AMJ.png" class="result-img" alt="Météo-France"/><p class="img-caption">Météo-France</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Correlación Spearman -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#graf-corr">
+          Correlación de Spearman
+        </button>
+      </h2>
+      <div id="graf-corr" class="accordion-collapse collapse" data-bs-parent="#accordion-graficos">
+        <div class="accordion-body">
+          <div class="grid-2">
+            <div><img src="images/downscaling/4_corr-spearman_ecmwf_lead032026_AMJ.png" class="result-img" alt="ECMWF"/><p class="img-caption">ECMWF-SEAS5.1</p></div>
+            <div><img src="images/downscaling/4_corr-spearman_dwd_lead032026_AMJ.png" class="result-img" alt="DWD"/><p class="img-caption">DWD</p></div>
+            <div><img src="images/downscaling/4_corr-spearman_cmcc_lead032026_AMJ.png" class="result-img" alt="CMCC"/><p class="img-caption">CMCC</p></div>
+            <div><img src="images/downscaling/4_corr-spearman_meteo_france_lead032026_AMJ.png" class="result-img" alt="Météo-France"/><p class="img-caption">Météo-France</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROC -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#graf-roc">
+          Curvas ROC
+        </button>
+      </h2>
+      <div id="graf-roc" class="accordion-collapse collapse" data-bs-parent="#accordion-graficos">
+        <div class="accordion-body">
+          <div class="grid-2">
+            <div><img src="images/downscaling/5_roc_3_pr_ecmwf_lead032026_AMJ.png" class="result-img" alt="ECMWF"/><p class="img-caption">ECMWF-SEAS5.1</p></div>
+            <div><img src="images/downscaling/5_roc_3_pr_dwd_lead032026_AMJ.png" class="result-img" alt="DWD"/><p class="img-caption">DWD</p></div>
+            <div><img src="images/downscaling/5_roc_3_pr_cmcc_lead032026_AMJ.png" class="result-img" alt="CMCC"/><p class="img-caption">CMCC</p></div>
+            <div><img src="images/downscaling/5_roc_3_pr_meteo_france_lead032026_AMJ.png" class="result-img" alt="Météo-France"/><p class="img-caption">Météo-France</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RPS -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#graf-rps">
+          Ranked Probability Score (RPS)
+        </button>
+      </h2>
+      <div id="graf-rps" class="accordion-collapse collapse" data-bs-parent="#accordion-graficos">
+        <div class="accordion-body">
+          <div class="grid-2">
+            <div><img src="images/downscaling/6_rps_pr_ecmwf_lead032026_AMJ.png" class="result-img" alt="ECMWF"/><p class="img-caption">ECMWF-SEAS5.1</p></div>
+            <div><img src="images/downscaling/6_rps_pr_dwd_lead032026_AMJ.png" class="result-img" alt="DWD"/><p class="img-caption">DWD</p></div>
+            <div><img src="images/downscaling/6_rps_pr_cmcc_lead032026_AMJ.png" class="result-img" alt="CMCC"/><p class="img-caption">CMCC</p></div>
+            <div><img src="images/downscaling/6_rps_pr_meteo_france_lead032026_AMJ.png" class="result-img" alt="Météo-France"/><p class="img-caption">Météo-France</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brier Score -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#graf-bs">
+          Brier Score
+        </button>
+      </h2>
+      <div id="graf-bs" class="accordion-collapse collapse" data-bs-parent="#accordion-graficos">
+        <div class="accordion-body">
+          <div class="grid-2">
+            <div><img src="images/downscaling/7_bs_3_pr_ecmwf_lead032026_AMJ.png" class="result-img" alt="ECMWF"/><p class="img-caption">ECMWF-SEAS5.1</p></div>
+            <div><img src="images/downscaling/7_bs_3_pr_dwd_lead032026_AMJ.png" class="result-img" alt="DWD"/><p class="img-caption">DWD</p></div>
+            <div><img src="images/downscaling/7_bs_3_pr_cmcc_lead032026_AMJ.png" class="result-img" alt="CMCC"/><p class="img-caption">CMCC</p></div>
+            <div><img src="images/downscaling/7_bs_3_pr_meteo_france_lead032026_AMJ.png" class="result-img" alt="Météo-France"/><p class="img-caption">Météo-France</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- fin accordion-graficos -->
+
+
+  <!-- ============================================================ -->
+  <!-- INFORME PDF                                                    -->
+  <!-- ============================================================ -->
+  <h3 style="color:#003087;margin-top:3rem;margin-bottom:0.8rem;">Informe de verificación</h3>
+  <p style="font-size:0.85rem;color:#4a5568;margin-bottom:1rem;">
+    Informe completo de verificación estacional · AMJ 2026 ·
+    <a href="images/downscaling/verificacion_estacional_AMJ_2026.pdf" download style="color:#0072bc;font-weight:600;">
+      ↓ Descargar PDF
+    </a>
+  </p>
+
+  <div class="pdf-container">
+    <iframe src="images/downscaling/verificacion_estacional_AMJ_2026.pdf"
+            width="100%" height="100%" style="border:none;">
+      Tu navegador no soporta la visualización de PDF.
+      <a href="images/downscaling/verificacion_estacional_AMJ_2026.pdf">Descargar aquí</a>
+    </iframe>
+  </div>
+
+</div>
+```
