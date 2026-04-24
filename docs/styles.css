@@ -1,7 +1,11 @@
 /* ── Fuentes ──────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
 
-/* ── Variables ───────────────────────────────────────── */
+/* ── Hamburguer - desplegable ───────────────────────────────────────── */
+body { padding-top: 0 !important; }
+#quarto-content { padding-top: 1rem; }
+
+/* ── Colores ───────────────────────────────────────── */
 :root {
   --aemet-blue:    #003087;
   --aemet-sky:     #0072bc;
@@ -56,7 +60,7 @@ body, html {
 
 /* ── Contenido principal ─────────────────────────────── */
 #quarto-content {
-  background: rgba(255,255,255,0.88);
+  background: transparent;
   backdrop-filter: blur(2px);
   min-height: calc(100vh - 120px);
 }

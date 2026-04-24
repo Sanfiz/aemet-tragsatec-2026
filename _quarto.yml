@@ -4,40 +4,22 @@ project:
 
 website:
   title: "Predicción Estacional · AEMET–Tragsatec"
-  description: "Resultados del servicio de predicción estacional estadística para España"
+  description: "Resultados del servicio de predicción estacional"
   site-url: https://sanfiz.github.io/aemet-tragsatec-2026/
   favicon: images/logos/aemet.png
-
-  navbar:
-    background: "#003087"
-    foreground: white
-    logo: images/logos/aemet.png
-    logo-alt: "AEMET"
-    title: false
-    left:
-      - text: "Inicio"
-        href: index.qmd
-      - text: "About"
-        href: about.qmd        
-      - text: "Datos"
-        href: datos.qmd
-      - text: "Downscaling"
-        href: downscaling.qmd
-      - text: "Weighting"
-        href: weighting.qmd
-      - text: "Cuencas"
-        href: cuencas.qmd
-
+  navbar: false
   page-footer:
-    left: "Tragsatec · AEMET · Predicción Estacional · 2024–2026"
-    right: "Marta Domínguez · Martín Senande · Sabela Sanfiz (Tragsatec) · Esteban Rodríguez (AEMET)"
-
+    left: "© 2026 · Generado por los autores con HTML & CSS"
+    center: "Marta Domínguez · Martín Senande · Sabela Sanfiz (Tragsatec) · Esteban Rodríguez (AEMET)"
+    right: "Tragsatec · AEMET · Predicción Estacional · 2024–2026"
+  
 format:
   html:
     theme: flatly
     css: styles.css
     toc: false
     page-layout: full
-    
+    include-before-body: hamburger.html
+
 resources:
   - images/
