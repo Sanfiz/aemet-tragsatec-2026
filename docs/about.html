@@ -102,7 +102,7 @@ ul.task-list li input[type="checkbox"] {
     <a href="datos.html" class="nav-link">Datos</a>
     <a href="downscaling.html" class="nav-link">Downscaling</a>
     <a href="weighting.html" class="nav-link">Weighting</a>
-    <a href="cuencas.html" class="nav-link">Cuencas</a>
+    <a href="embalses.html" class="nav-link">Embalses</a>
   </div>
 </nav>
 
@@ -122,6 +122,7 @@ ul.task-list li input[type="checkbox"] {
   width: 100%;
   margin-bottom: 0 !important;
   padding-bottom: 0 !important;
+  top: 0 !important;
 }
 
 #header-logos {
@@ -221,6 +222,17 @@ document.addEventListener('DOMContentLoaded', function() {
       link.classList.add('active');
     }
   });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.body.style.paddingTop = '0';
+  document.body.style.marginTop = '0';
+  // Quarto añade padding-top inline al body, este lo sobreescribe
+  document.body.setAttribute('style', 
+    document.body.getAttribute('style') + '; padding-top: 0 !important; margin-top: 0 !important;'
+  );
 });
 </script>
 

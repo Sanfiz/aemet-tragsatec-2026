@@ -21,15 +21,7 @@ toc: false
       Área de Evaluación y Modelización del Clima<br>
       <strong>AEMET · 2024–2026</strong>
     </p>
-    <div class="cover-logos">
-      <a href="https://www.aemet.es/es/portada" target="_blank">
-        <img src="images/logos/aemet.png" alt="AEMET"/>
-      </a>
-      <span class="cover-sep"></span>
-      <a href="https://www.tragsa.es/es/Paginas/default.aspx" target="_blank">
-        <img src="images/logos/tragsatec.jpg" alt="Tragsatec"/>
-      </a>
-    </div>
+
   </div>
 
   <!-- Globo Three.js derecha -->

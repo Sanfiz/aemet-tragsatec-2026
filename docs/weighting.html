@@ -24,7 +24,6 @@ ul.task-list li input[type="checkbox"] {
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
@@ -41,11 +40,11 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
+  "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
+  "panel-placement": "start",
+  "type": "textbox",
   "limit": 50,
   "keyboard-shortcut": [
     "f",
@@ -72,51 +71,11 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed">
+<body>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
-<span class="menu-text">Inicio</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
-<span class="menu-text">El proyecto</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./datos.html"> 
-<span class="menu-text">Datos</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./downscaling.html"> 
-<span class="menu-text">Downscaling</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="./weighting.html" aria-current="page"> 
-<span class="menu-text">Weighting</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./cuencas.html"> 
-<span class="menu-text">Cuencas</span></a>
-  </li>  
-</ul>
-          </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
-</div>
-      </div> <!-- /container-fluid -->
-    </nav>
-</header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
@@ -124,23 +83,160 @@ ul.task-list li input[type="checkbox"] {
     </div>
 <!-- main -->
 <main class="content column-page" id="quarto-document-content">
-<div style="
-  display:flex;
-  align-items:center;
-  gap:2rem;
-  padding:0.8rem 2rem;
-  background:white;
-  border-bottom:1px solid #dde3ed;
-  box-shadow:0 1px 4px rgba(0,0,0,0.06);
-">
-  <a href="https://www.aemet.es/es/portada" target="_blank">
-    <img src="images/logos/aemet.png" alt="AEMET" style="height:50px;object-fit:contain;">
-  </a>
-  <div style="width:1px;height:40px;background:#dde3ed;"></div>
-  <a href="https://www.tragsa.es/es/Paginas/default.aspx" target="_blank">
-    <img src="images/logos/tragsatec.jpg" alt="Tragsatec" style="height:50px;object-fit:contain;">
-  </a>
+<!-- ── BARRA BLANCA CON LOGOS ─────────────────────────── -->
+<div id="site-header">
+  <div id="header-logos">
+    <a href="https://www.aemet.es/es/portada" target="_blank">
+      <img src="images/logos/aemet.png" alt="AEMET">
+    </a>
+    <div class="header-sep"></div>
+    <a href="https://www.tragsa.es/es/Paginas/default.aspx" target="_blank">
+      <img src="images/logos/tragsatec.jpg" alt="Tragsatec">
+    </a>
+  </div>
 </div>
+
+<!-- ── BARRA AZUL DE NAVEGACIÓN ──────────────────────── -->
+<nav id="site-nav">
+  <div id="site-nav-inner">
+    <a href="index.html" class="nav-link">Inicio</a>
+    <a href="about.html" class="nav-link">El proyecto</a>
+    <a href="datos.html" class="nav-link">Datos</a>
+    <a href="downscaling.html" class="nav-link">Downscaling</a>
+    <a href="weighting.html" class="nav-link">Weighting</a>
+    <a href="cuencas.html" class="nav-link">Cuencas</a>
+  </div>
+</nav>
+
+<style>
+/* ── Oculta el navbar de Quarto si quedase ── */
+.navbar { display: none !important; }
+#quarto-header { display: none !important; }
+
+/* ── Barra blanca logos ── */
+#site-header {
+  background: white;
+  border-bottom: 1px solid #dde3ed;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  top: 0 !important;
+}
+
+#header-logos {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.6rem 2rem;
+  max-width: 100%;
+}
+
+#header-logos img {
+  height: 52px;
+  object-fit: contain;
+  transition: opacity 0.2s;
+}
+
+#header-logos img:hover { opacity: 0.85; }
+
+.header-sep {
+  width: 1px;
+  height: 44px;
+  background: #dde3ed;
+}
+
+/* ── Barra azul navegación ── */
+#site-nav {
+  background: #003087;
+  border-bottom: 3px solid #0072bc;
+  box-shadow: 0 2px 8px rgba(0,48,135,0.2);
+  position: sticky;
+  top: 76px;
+  z-index: 999;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  position: relative;
+  left: 0;
+  margin-top: 0 !important;
+  top: 0;
+}
+
+#site-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  gap: 0;
+  width: 100%;
+}
+
+#site-nav .nav-link {
+  font-family: 'Open Sans', Arial, sans-serif;
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  display: block;
+}
+
+#site-nav .nav-link:hover {
+  color: white;
+  border-bottom-color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.07);
+}
+
+/* Resalta la página activa */
+#site-nav .nav-link.active {
+  color: white;
+  border-bottom-color: white;
+}
+
+/* ── Ajusta el contenido para no quedar tapado ── */
+#quarto-content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+@media (max-width: 768px) {
+  #header-logos { padding: 0.5rem 1rem; }
+  #header-logos img { height: 38px; }
+  #site-nav-inner { flex-wrap: wrap; padding: 0 1rem; }
+  #site-nav .nav-link { font-size: 0.78rem; padding: 0.6rem 0.7rem; }
+}
+</style>
+
+<script>
+/* Resalta el enlace activo según la URL */
+document.addEventListener('DOMContentLoaded', function() {
+  const links = document.querySelectorAll('#site-nav .nav-link');
+  const current = window.location.pathname.split('/').pop() || 'index.html';
+  links.forEach(link => {
+    if (link.getAttribute('href') === current) {
+      link.classList.add('active');
+    }
+  });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.body.style.paddingTop = '0';
+  document.body.style.marginTop = '0';
+  // Quarto añade padding-top inline al body, este lo sobreescribe
+  document.body.setAttribute('style', 
+    document.body.getAttribute('style') + '; padding-top: 0 !important; margin-top: 0 !important;'
+  );
+});
+</script>
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
