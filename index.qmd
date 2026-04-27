@@ -54,6 +54,7 @@ toc: false
   gap: 2rem;
   overflow: hidden;
   background: linear-gradient(135deg, #001a5e 0%, #003087 50%, #005aad 100%);
+  margin-top: 1.5rem;
 }
 
 .cover-text {

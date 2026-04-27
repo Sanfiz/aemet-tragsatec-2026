@@ -24,6 +24,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
@@ -40,11 +41,11 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
+  "panel-placement": "end",
+  "type": "overlay",
   "limit": 50,
   "keyboard-shortcut": [
     "f",
@@ -71,11 +72,51 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Inicio</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">El proyecto</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./datos.html"> 
+<span class="menu-text">Datos</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./downscaling.html" aria-current="page"> 
+<span class="menu-text">Downscaling</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./weighting.html"> 
+<span class="menu-text">Weighting</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./cuencas.html"> 
+<span class="menu-text">Cuencas</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
@@ -83,80 +124,23 @@ ul.task-list li input[type="checkbox"] {
     </div>
 <!-- main -->
 <main class="content column-page" id="quarto-document-content">
-<div id="hm-btn" onclick="toggleMenu()">
-  <span></span><span></span><span></span>
+<div style="
+  display:flex;
+  align-items:center;
+  gap:2rem;
+  padding:0.8rem 2rem;
+  background:white;
+  border-bottom:1px solid #dde3ed;
+  box-shadow:0 1px 4px rgba(0,0,0,0.06);
+">
+  <a href="https://www.aemet.es/es/portada" target="_blank">
+    <img src="images/logos/aemet.png" alt="AEMET" style="height:50px;object-fit:contain;">
+  </a>
+  <div style="width:1px;height:40px;background:#dde3ed;"></div>
+  <a href="https://www.tragsa.es/es/Paginas/default.aspx" target="_blank">
+    <img src="images/logos/tragsatec.jpg" alt="Tragsatec" style="height:50px;object-fit:contain;">
+  </a>
 </div>
-
-<div id="hm-overlay" onclick="toggleMenu()"></div>
-
-<nav id="hm-menu">
-  <div id="hm-logo">
-    <img src="images/logos/aemet.png" alt="AEMET">
-  </div>
-  <a href="index.html">Inicio</a>
-  <a href="about.html">El proyecto</a>
-  <a href="datos.html">Datos</a>
-  <a href="downscaling.html">Downscaling</a>
-  <a href="weighting.html">Weighting</a>
-  <a href="cuencas.html">Cuencas</a>
-</nav>
-
-<style>
-#hm-btn {
-  position: fixed; top: 1rem; left: 1rem; z-index: 9999;
-  width: 40px; height: 40px; cursor: pointer;
-  display: flex; flex-direction: column;
-  justify-content: space-between; padding: 8px;
-  background: #003087; border-radius: 6px;
-  box-shadow: 0 2px 10px rgba(0,48,135,0.3);
-}
-#hm-btn span {
-  display: block; height: 2px; background: white;
-  border-radius: 2px; transition: all 0.3s;
-}
-#hm-btn.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
-#hm-btn.open span:nth-child(2) { opacity: 0; }
-#hm-btn.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
-
-#hm-overlay {
-  display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,0.4); z-index: 9997;
-  backdrop-filter: blur(2px);
-}
-#hm-overlay.open { display: block; }
-
-#hm-menu {
-  position: fixed; top: 0; left: -280px; height: 100vh;
-  width: 260px; background: #003087; z-index: 9998;
-  transition: left 0.35s cubic-bezier(.4,0,.2,1);
-  padding: 5rem 2rem 2rem;
-  box-shadow: 4px 0 20px rgba(0,0,0,0.2);
-  display: flex; flex-direction: column; gap: 0.3rem;
-}
-#hm-menu.open { left: 0; }
-
-#hm-logo { margin-bottom: 2rem; }
-#hm-logo img { height: 40px; filter: brightness(0) invert(1); opacity: 0.9; }
-
-#hm-menu a {
-  color: rgba(255,255,255,0.85); text-decoration: none;
-  font-size: 1rem; font-weight: 600; padding: 0.7rem 1rem;
-  border-radius: 8px; transition: all 0.2s;
-  letter-spacing: 0.03em;
-}
-#hm-menu a:hover {
-  background: rgba(255,255,255,0.12); color: white;
-  padding-left: 1.4rem;
-}
-</style>
-
-<script>
-function toggleMenu() {
-  document.getElementById('hm-btn').classList.toggle('open');
-  document.getElementById('hm-menu').classList.toggle('open');
-  document.getElementById('hm-overlay').classList.toggle('open');
-}
-</script>
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -903,13 +887,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>Tragsatec · AEMET · Predicción Estacional · 2024–2026</p>
+<p>© 2026 · Generado por los autores con HTML &amp; CSS</p>
 </div>   
     <div class="nav-footer-center">
-      &nbsp;
-    </div>
-    <div class="nav-footer-right">
 <p>Marta Domínguez · Martín Senande · Sabela Sanfiz (Tragsatec) · Esteban Rodríguez (AEMET)</p>
+</div>
+    <div class="nav-footer-right">
+<p>Tragsatec · AEMET · Predicción Estacional · 2024–2026</p>
 </div>
   </div>
 </footer>
