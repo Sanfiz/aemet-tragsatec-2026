@@ -3,7 +3,10 @@ title: "Downscaling"
 toc: true
 ---
 
+
 ```{=html}
+
+<div style="max-width:960px;margin:6rem auto;padding:0 1.5rem;">
 
 <!-- ── CONTADORES (ancho completo, fuera del max-width) ── -->
 <div class="counters-section">
@@ -14,9 +17,10 @@ toc: true
   </div>
   <div class="counter-divider"></div>
   <div class="counter-item">
-    <span class="counter-value" data-target="6" data-suffix="">0</span>
+    <span class="counter-value" data-target="8" data-suffix="">0</span>
     <span class="counter-label">modelos globales</span>
-    <span class="counter-sub">ECMWF-SEAS5.1 · DWD · CMCC</span>
+    <span class="counter-sub">ECMWF · DWD · CMCC · METEO-FRANCE </span>
+    <span class="counter-sub">ECCC · NCEP · UKMO · JMA </span>
   </div>
   <div class="counter-divider"></div>
   <div class="counter-item">

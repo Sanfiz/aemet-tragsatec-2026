@@ -1,0 +1,28 @@
+---
+title: "Cuencas"
+toc: false
+---
+
+```{=html}
+<div style="max-width:900px;margin:2rem auto;padding:0 1.5rem;">
+
+  <span class="section-label">Proyecto en desarrollo</span>
+  <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;">Cuencas hidrográficas españolas</h2>
+  <p style="color:#4a5568;margin-bottom:2rem;">
+    Análisis y predicción estacional de precipitación a escala de cuenca hidrográfica sobre España peninsular.
+    Esta sección está en construcción y se irá completando con nuevos resultados.
+  </p>
+
+  <div style="padding:3rem;text-align:center;border:2px dashed #dde3ed;border-radius:12px;
+              background:rgba(0,48,135,0.03);">
+    <span style="font-size:3rem;">🌊</span>
+    <h3 style="color:#003087;margin-top:1rem;">Contenido en preparación</h3>
+    <p style="color:#4a5568;max-width:480px;margin:0 auto;">
+      Próximamente se añadirán resultados de predicción estacional desagregados por
+      cuenca hidrográfica, incluyendo mapas de terciles, verificación y series temporales
+      de precipitación acumulada.
+    </p>
+  </div>
+
+</div>
+```

@@ -27,13 +27,14 @@
 /* ── Oculta el navbar de Quarto si quedase ── */
 .navbar { display: none !important; }
 #quarto-header { display: none !important; }
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
 /* ── Barra blanca logos ── */
 #site-header {
   background: white;
   border-bottom: 1px solid #dde3ed;
   box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-  position: sticky;
+  position: fixed;
   top: 0;
   z-index: 1000;
   width: 100%;
@@ -42,6 +43,8 @@
   top: 0 !important;
 }
 
+
+    
 #header-logos {
   display: flex;
   align-items: center;
@@ -65,19 +68,17 @@
 }
 
 /* ── Barra azul navegación ── */
+
 #site-nav {
   background: #003087;
   border-bottom: 3px solid #0072bc;
   box-shadow: 0 2px 8px rgba(0,48,135,0.2);
-  position: sticky;
-  top: 76px;
-  z-index: 999;
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  position: relative;
+  position: fixed;
+  top: 74px;
   left: 0;
-  margin-top: 0 !important;
-  top: 0;
+  width: 100%;
+  z-index: 999;
+  margin: 0;
 }
 
 #site-nav-inner {
@@ -90,11 +91,11 @@
 }
 
 #site-nav .nav-link {
-  font-family: 'Open Sans', Arial, sans-serif;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
   color: rgba(255,255,255,0.88);
   text-decoration: none;
-  font-size: 0.88rem;
-  font-weight: 600;
+  font-size: 0.89rem;
+  font-weight: 100;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   padding: 0.85rem 1.1rem;
@@ -121,6 +122,12 @@
   padding-top: 0 !important;
 }
 
+/* ── Espacio para header fijo ────────────────────────── */
+body {
+  padding-top: 180px !important;
+}
+
+    
 @media (max-width: 768px) {
   #header-logos { padding: 0.5rem 1rem; }
   #header-logos img { height: 38px; }
@@ -144,7 +151,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  document.body.style.paddingTop = '0';
   document.body.style.marginTop = '0';
   // Quarto añade padding-top inline al body, este lo sobreescribe
   document.body.setAttribute('style', 

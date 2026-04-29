@@ -1,9 +1,11 @@
 ---
-title: ""
+title: "Tragsatec"
 toc: false
 ---
 
 ```{=html}
+<div style="max-width:960px;margin:6rem auto;padding:0 1.5rem;">
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <!-- ── HERO PRINCIPAL ─────────────────────────────────── -->

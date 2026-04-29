@@ -1,15 +1,10 @@
 ---
-title: ""
+title: "About"
 toc: false
 ---
 
 ```{=html}
-<!-- Logos institucionales -->
-<div class="logos-bar">
-  <img src="images/logos/aemet.png" alt="AEMET"/>
-  <div class="sep"></div>
-  <img src="images/logos/tragsatec.jpg" alt="Tragsatec"/>
-</div>
+<div style="max-width:960px;margin:6rem auto;padding:0 1.5rem;">
 
 <!-- Hero -->
 <div class="hero">

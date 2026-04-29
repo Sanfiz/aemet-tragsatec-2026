@@ -1,5 +1,20 @@
 /* ── Fuentes ──────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap');
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-weight: 400;
+  src: url('images/fonts/IBMPlexSans-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-weight: 600;
+  src: url('images/fonts/IBMPlexSans-SemiBold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-weight: 700;
+  src: url('images/fonts/IBMPlexSans-Bold.woff2') format('woff2');
+}
+
 
 /* ── Hamburguer - desplegable ───────────────────────────────────────── */
 body { padding-top: 0 !important; }
@@ -31,7 +46,6 @@ body, html {
   background-size: cover !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
-  padding-top: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
 }
@@ -261,9 +275,27 @@ body, html {
 
 /* ── Footer ──────────────────────────────────────────── */
 .nav-footer {
-  background: var(--aemet-blue) !important;
-  color: rgba(255,255,255,0.7) !important;
-  font-size: 0.75rem;
+  background: #0072bc !important;
+  color: rgba(255,255,255,0.9) !important;
+  font-size: 0.78rem;
+  padding: 1.2rem 2rem;
+  border-top: 3px solid #005aad;
+}
+
+.nav-footer a {
+  color: rgba(255,255,255,0.85) !important;
+  text-decoration: none;
+}
+
+.nav-footer a:hover {
+  color: white !important;
+  text-decoration: underline;
+}
+
+.nav-footer-left,
+.nav-footer-center,
+.nav-footer-right {
+  color: rgba(255,255,255,0.85) !important;
 }
 
 /* ── Imágenes resultados ─────────────────────────────── */
