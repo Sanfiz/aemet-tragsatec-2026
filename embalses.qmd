@@ -26,7 +26,7 @@ toc: false
 
   <div class="emb-sidebar">
     <div class="emb-control-group">
-      <label class="emb-label">Demarcación</label>
+      <label class="emb-label">Cuencas</label>
       <select id="sel-cuenca" class="emb-select">
         <option value="">Todas las demarcaciones</option>
       </select>
@@ -59,30 +59,24 @@ toc: false
 
 <!-- ── DISTRIBUCIÓN r_LOOCV ────────────────────────────── -->
 <div class="emb-section">
-  <h3 class="emb-section-title">Distribución de skill (r LOOCV) por demarcación</h3>
+  <h3 class="emb-section-title">Distribución de skill (r LOOCV) por cuenca</h3>
   <div id="chart-dist"></div>
 </div>
 
 <!-- ── TABLA RESUMEN POR CUENCA ────────────────────────── -->
 <div class="emb-section">
-  <h3 class="emb-section-title">Resumen por demarcación hidrográfica</h3>
+  <h3 class="emb-section-title">Resumen por cuenca hidrográfica</h3>
   <div class="emb-table-wrap">
-    <table class="emb-table" id="table-cuencas"></table>
+    <div id="table-cuencas-wrap">
+      <table class="emb-table" id="table-cuencas"><tbody></tbody></table>
+    </div>
   </div>
 </div>
 
 </div><!-- fin embalses-app -->
+</div><!-- fin max-width wrapper  ← AQUÍ cierra el wrapper -->
 
-<!-- ── LIGHTBOX ─────────── -->
-<div id="lightbox" onclick="if(event.target===this)closeLightbox()">
-  <div style="position:relative;max-width:70vw;max-height:70vh;">
-    <img id="lightbox-img" style="max-width:70vw;max-height:70vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
-    <div style="display:flex;gap:1rem;justify-content:center;margin-top:1rem;">
-      <a id="lightbox-dl" download style="padding:0.5rem 1.4rem;background:#003087;color:white;border-radius:6px;text-decoration:none;font-size:0.85rem;font-weight:600;">↓ Descargar</a>
-      <button onclick="closeLightbox()" style="padding:0.5rem 1.4rem;background:rgba(0,0,0,0.1);color:#1a2332;border:1px solid #dde3ed;border-radius:6px;cursor:pointer;font-size:0.85rem;">✕ Cerrar</button>
-    </div>
-  </div>
-</div>
+
 
 <style>
 #lightbox {
@@ -126,7 +120,7 @@ toc: false
 }
 .emb-dropdown-item:hover { background: #e8f4fc; color: #003087; }
 .emb-list {
-  max-height: 250px; overflow-y: auto;
+  max-height: 450px; overflow-y: auto;
   border: 1px solid #dde3ed; border-radius: 8px; background: white;
 }
 .emb-list-item {
@@ -231,10 +225,26 @@ function rBadge(r) {
 
 /* ── Lightbox ── */
 function openLightbox(src, nombre) {
+  let lb = document.getElementById('lightbox');
+  if (!lb) {
+    lb = document.createElement('div');
+    lb.id = 'lightbox';
+    lb.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99999;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(4px);';
+    lb.innerHTML = `
+      <div style="position:relative;">
+        <img id="lightbox-img" style="max-width:75vw;max-height:75vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+        <div style="display:flex;gap:1rem;justify-content:center;margin-top:1rem;">
+          <a id="lightbox-dl" download style="padding:0.5rem 1.4rem;background:#003087;color:white;border-radius:6px;text-decoration:none;font-size:0.85rem;font-weight:600;">↓ Descargar</a>
+          <button onclick="closeLightbox()" style="padding:0.5rem 1.4rem;background:white;color:#1a2332;border:1px solid #dde3ed;border-radius:6px;cursor:pointer;font-size:0.85rem;">✕ Cerrar</button>
+        </div>
+      </div>`;
+    lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+    document.body.appendChild(lb);
+  }
   document.getElementById('lightbox-img').src = src;
   document.getElementById('lightbox-dl').href = src;
   document.getElementById('lightbox-dl').download = nombre + '_hindcast.png';
-  document.getElementById('lightbox').style.display = 'flex';
+  lb.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 }
 function closeLightbox() {
