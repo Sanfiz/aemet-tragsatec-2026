@@ -23,9 +23,9 @@
   {
     "objectID": "embalses.html",
     "href": "embalses.html",
-    "title": "Cuencas",
+    "title": "Embalses",
     "section": "",
-    "text": "Inicio\n    El proyecto\n    Datos\n    Downscaling\n    Weighting\n    Embalses\n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n  Proyecto en desarrollo\n  Cuencas hidrográficas españolas\n  \n    Análisis y predicción estacional de precipitación a escala de cuenca hidrográfica sobre España peninsular.\n    Esta sección está en construcción y se irá completando con nuevos resultados.\n  \n\n  \n    🌊\n    Contenido en preparación\n    \n      Próximamente se añadirán resultados de predicción estacional desagregados por\n      cuenca hidrográfica, incluyendo mapas de terciles, verificación y series temporales\n      de precipitación acumulada."
+    "text": "Inicio\n    El proyecto\n    Datos\n    Downscaling\n    Weighting\n    Embalses\n  \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n  Predicción estacional · ROCIO_IBEB · ECMWF SEAS5.1\n  Embalses — Resultados del modelo PLS\n  \n    Modelo de regresión PLS entrenado con precipitación ROCIO_IBEB (NDJFM, 1997–2015) y validado mediante LOOCV.\n    Aplicación al hindcast ECMWF-SEAS5.1. 183 embalses seleccionados en 8 cuencas.\n  \n\n\n\n\n\n  \n    \n      Demarcación\n      \n        Todas las demarcaciones\n      \n    \n    \n      Embalse\n      \n      \n    \n    \n      Ordenar por\n      \n        r LOOCV (mayor primero)\n        r LOOCV (menor primero)\n        Brier Score (menor primero)\n        Nombre A–Z\n      \n    \n    \n  \n\n  \n    \n      🌊\n      Selecciona un embalse de la lista para ver sus resultados\n    \n  \n\n\n\n\n\n  Distribución de skill (r LOOCV) por demarcación\n  \n\n\n\n\n  Resumen por demarcación hidrográfica\n  \n    \n  \n\n\n\n\n\n\n  \n    \n    \n      ↓ Descargar\n      ✕ Cerrar"
   },
   {
     "objectID": "about.html",
