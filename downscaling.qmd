@@ -19,8 +19,6 @@ toc: true
   <div class="counter-item">
     <span class="counter-value" data-target="8" data-suffix="">0</span>
     <span class="counter-label">modelos globales</span>
-    <span class="counter-sub">ECMWF · DWD · CMCC · METEO-FRANCE </span>
-    <span class="counter-sub">ECCC · NCEP · UKMO · JMA </span>
   </div>
   <div class="counter-divider"></div>
   <div class="counter-item">
@@ -31,7 +29,7 @@ toc: true
   <div class="counter-divider"></div>
   <div class="counter-item">
     <span class="counter-value" data-target="6" data-suffix=" meses">0</span>
-    <span class="counter-label">horizonte de predicción</span>
+    <span class="counter-label">predicción</span>
     <span class="counter-sub">Actualización periódica C3S</span>
   </div>
 </div>
