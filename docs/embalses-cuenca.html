@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Embalses · Análisis por cuenca – Predicción Estacional · AEMET–Tragsatec</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./images/logos/favicon.ico" rel="icon">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content column-page" id="quarto-document-content">
+<!-- ── BARRA BLANCA CON LOGOS ─────────────────────────── -->
+<div id="site-header">
+  <div id="header-logos">
+    <a href="https://www.aemet.es/es/portada" target="_blank">
+      <img src="images/logos/aemet.png" alt="AEMET">
+    </a>
+    <div class="header-sep"></div>
+    <a href="https://www.tragsa.es/es/Paginas/default.aspx" target="_blank">
+      <img src="images/logos/tragsatec.jpg" alt="Tragsatec">
+    </a>
+  </div>
+</div>
+
+<!-- ── BARRA AZUL DE NAVEGACIÓN ──────────────────────── -->
+<nav id="site-nav">
+  <div id="site-nav-inner">
+    <a href="index.html" class="nav-link">Inicio</a>
+    <a href="about.html" class="nav-link">El proyecto</a>
+    <a href="datos.html" class="nav-link">Datos</a>
+    <a href="downscaling.html" class="nav-link">Downscaling</a>
+    <a href="weighting.html" class="nav-link">Weighting</a>
+    <!-- ── Embalses: menú desplegable ── -->
+    <div class="nav-dropdown">
+      <a href="embalses-prediccion.html" class="nav-link nav-link-dropdown">
+        Embalses
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="embalses-cuenca.html" class="nav-dropdown-item">Análisis por cuenca</a>
+        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<style>
+/* ── Oculta el navbar de Quarto si quedase ── */
+.navbar { display: none !important; }
+#quarto-header { display: none !important; }
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+/* ── Barra blanca logos ── */
+#site-header {
+  background: white;
+  border-bottom: 1px solid #dde3ed;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  top: 0 !important;
+}
+
+
+    
+#header-logos {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.6rem 2rem;
+  max-width: 100%;
+}
+
+#header-logos img {
+  height: 52px;
+  object-fit: contain;
+  transition: opacity 0.2s;
+}
+
+#header-logos img:hover { opacity: 0.85; }
+
+.header-sep {
+  width: 1px;
+  height: 44px;
+  background: #dde3ed;
+}
+
+/* ── Barra azul navegación ── */
+
+#site-nav {
+  background: #003087;
+  border-bottom: 3px solid #0072bc;
+  box-shadow: 0 2px 8px rgba(0,48,135,0.2);
+  position: fixed;
+  top: 74px;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  margin: 0;
+}
+
+#site-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  gap: 0;
+  width: 100%;
+}
+
+#site-nav .nav-link {
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  font-size: 0.89rem;
+  font-weight: 100;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  display: block;
+}
+
+#site-nav .nav-link:hover {
+  color: white;
+  border-bottom-color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.07);
+}
+
+/* Resalta la página activa */
+#site-nav .nav-link.active {
+  color: white;
+  border-bottom-color: white;
+}
+
+/* ── Dropdown menú ── */
+.nav-dropdown {
+  position: relative;
+}
+.nav-link-dropdown {
+  display: flex !important;
+  align-items: center;
+  gap: 0.3rem;
+}
+.nav-caret {
+  font-size: 0.7rem;
+  transition: transform 0.2s;
+}
+.nav-dropdown:hover .nav-caret {
+  transform: rotate(180deg);
+}
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #003087;
+  min-width: 220px;
+  box-shadow: 0 4px 12px rgba(0,48,135,0.3);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  z-index: 1001;
+}
+.nav-dropdown:hover .nav-dropdown-menu {
+  display: block;
+}
+.nav-dropdown-item {
+  display: block;
+  padding: 0.7rem 1.2rem;
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 100;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+}
+.nav-dropdown-item:hover {
+  background: rgba(255,255,255,0.08);
+  border-left-color: white;
+  color: white;
+}
+.nav-dropdown-item.active {
+  background: rgba(255,255,255,0.05);
+  border-left-color: white;
+  color: white;
+}
+
+/* ── Ajusta el contenido para no quedar tapado ── */
+#quarto-content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* ── Espacio para header fijo ────────────────────────── */
+body {
+  padding-top: 180px !important;
+}
+
+    
+@media (max-width: 768px) {
+  #header-logos { padding: 0.5rem 1rem; }
+  #header-logos img { height: 38px; }
+  #site-nav-inner { flex-wrap: wrap; padding: 0 1rem; }
+  #site-nav .nav-link { font-size: 0.78rem; padding: 0.6rem 0.7rem; }
+  .nav-dropdown-menu { position: static; box-shadow: none; min-width: auto; }
+}
+</style>
+
+<script>
+/* Resalta el enlace activo según la URL */
+document.addEventListener('DOMContentLoaded', function() {
+  const current = window.location.pathname.split('/').pop() || 'index.html';
+  // Enlaces normales
+  document.querySelectorAll('#site-nav .nav-link').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === current) {
+      link.classList.add('active');
+    }
+  });
+  // Items del dropdown
+  document.querySelectorAll('.nav-dropdown-item').forEach(item => {
+    const href = item.getAttribute('href');
+    if (href === current) {
+      item.classList.add('active');
+      // También activar el "Embalses" padre
+      const parent = item.closest('.nav-dropdown').querySelector('.nav-link-dropdown');
+      if (parent) parent.classList.add('active');
+    }
+  });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.body.style.marginTop = '0';
+  // Quarto añade padding-top inline al body, este lo sobreescribe
+  document.body.setAttribute('style', 
+    document.body.getAttribute('style') + '; padding-top: 0 !important; margin-top: 0 !important;'
+  );
+});
+</script>
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Embalses · Análisis por cuenca</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="emb-header">
+  <div class="emb-eyebrow">PREDICCIÓN ESTACIONAL · ROCIO_IBEB · ECMWF SEAS5.1 + QDM</div>
+  <h1>Análisis por demarcación hidrográfica</h1>
+  <p class="emb-lead">Distribución del skill del modelo SEAS5+PLS+QDM en las 8 demarcaciones cubiertas. Selecciona una métrica para colorear el mapa y comparar cuencas.</p>
+</div>
+
+<div class="cuenca-controls">
+  <div class="cuenca-control-group">
+    <label>MÉTRICA:</label>
+    <select id="sel-metrica">
+      <option value="r_QDM" selected="">Correlación r</option>
+      <option value="hit_rate_QDM">Hit rate</option>
+      <option value="BSS_lower_QDM">BSS lower (T1 seco)</option>
+      <option value="BSS_upper_QDM">BSS upper (T3 húmedo)</option>
+      <option value="AUC_lower_QDM">AUC lower (T1 seco)</option>
+      <option value="AUC_upper_QDM">AUC upper (T3 húmedo)</option>
+    </select>
+  </div>
+</div>
+
+<div class="cuenca-main">
+  <div class="cuenca-mapa-card">
+    <div class="cuenca-card-title">Distribución espacial — <span id="metrica-titulo">Correlación r</span></div>
+    <svg id="mapa-cuencas" preserveaspectratio="xMidYMid meet"></svg>
+    <div class="cuenca-leyenda">
+      <div class="cuenca-leyenda-titulo">Mediana por cuenca</div>
+      <div class="cuenca-leyenda-gradient" id="leyenda-grad"></div>
+      <div class="cuenca-leyenda-labels">
+        <span id="leyenda-min">—</span>
+        <span id="leyenda-mid">—</span>
+        <span id="leyenda-max">—</span>
+      </div>
+      <div class="cuenca-leyenda-nodata">
+        <span class="cuenca-color-nodata"></span> Sin datos
+      </div>
+    </div>
+  </div>
+
+  <div class="cuenca-detail-card" id="cuenca-detail">
+    <div class="cuenca-detail-placeholder">
+      Haz clic en una cuenca del mapa para ver sus métricas detalladas
+    </div>
+  </div>
+</div>
+
+<div class="cuenca-boxplots-card">
+  <div class="cuenca-card-title">Distribución de skill por cuenca — todas las métricas</div>
+  <svg id="boxplots-cuencas" viewbox="0 0 1100 380" preserveaspectratio="xMidYMid meet"></svg>
+</div>
+
+<div class="cuenca-tabla-card">
+  <div class="cuenca-card-title">Resumen por demarcación</div>
+  
+<table id="tabla-cuencas" class="cuenca-tabla caption-top" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Demarcación</th>
+<th data-quarto-table-cell-role="th">N embalses</th>
+<th data-quarto-table-cell-role="th">r</th>
+<th data-quarto-table-cell-role="th">Hit rate</th>
+<th data-quarto-table-cell-role="th">BSS lower</th>
+<th data-quarto-table-cell-role="th">BSS upper</th>
+<th data-quarto-table-cell-role="th">AUC lower</th>
+<th data-quarto-table-cell-role="th">AUC upper</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+</div>
+
+<style>
+.emb-header { padding: 0 1.5rem; max-width: 1300px; margin: 1rem auto 1.5rem; }
+.emb-eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #0072bc; text-transform: uppercase; margin-bottom: 0.3rem; }
+.emb-header h1 { color: #003087; font-size: 2rem; margin: 0 0 0.5rem; font-weight: 700; border-bottom: 1px solid #dde3ed; padding-bottom: 0.5rem; }
+.emb-lead { color: #4a5568; font-size: 0.95rem; max-width: 800px; margin: 0; }
+
+.cuenca-controls { max-width: 1300px; margin: 0 auto 1rem; padding: 0 1.5rem; }
+.cuenca-control-group { display: inline-flex; align-items: center; gap: 0.6rem; }
+.cuenca-control-group label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: #4a5568; text-transform: uppercase; }
+.cuenca-control-group select { padding: 0.4rem 0.7rem; font-size: 0.85rem; border: 1px solid #cbd5e0; border-radius: 4px; background: white; cursor: pointer; }
+
+.cuenca-main { display: grid; grid-template-columns: 1.3fr 1fr; gap: 1.2rem; max-width: 1300px; margin: 0 auto 1.5rem; padding: 0 1.5rem; }
+.cuenca-mapa-card, .cuenca-detail-card, .cuenca-boxplots-card, .cuenca-tabla-card {
+  background: white; border: 1px solid #dde3ed; border-radius: 8px; padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.cuenca-card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #003087; margin-bottom: 0.8rem; padding-bottom: 0.4rem; border-bottom: 1px solid #dde3ed; }
+
+#mapa-cuencas { 
+  width: 100%; 
+  height: 580px; 
+  display: block; 
+  background: #f0f5fa; 
+  border-radius: 4px;
+  border: 1px solid #dde3ed;
+}
+.pais-bg { 
+  fill: #c4c8cc; 
+  stroke: #8a8e92; 
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+.cuenca-poly { 
+  stroke: #6b7280; 
+  stroke-width: 1px; 
+  vector-effect: non-scaling-stroke;
+  cursor: pointer; 
+  transition: opacity 0.15s, filter 0.15s; 
+}
+.cuenca-poly:hover { opacity: 0.85; filter: brightness(1.05); }
+.cuenca-poly.selected { stroke: #003087; stroke-width: 2.5px; }
+.cuenca-poly.nodata { 
+  fill: #a0a0a0; 
+  cursor: default; 
+}
+.cuenca-poly.nodata:hover { opacity: 1; filter: none; }
+.rio-line { 
+  fill: none; 
+  stroke: #6ba6d4; 
+  stroke-linecap: round; 
+  vector-effect: non-scaling-stroke;
+  pointer-events: none; 
+  opacity: 0.7;
+}
+
+.cuenca-leyenda { margin-top: 0.8rem; padding: 0.6rem; background: #f8fafc; border-radius: 4px; }
+.cuenca-leyenda-titulo { font-size: 0.65rem; font-weight: 700; color: #4a5568; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+.cuenca-leyenda-gradient { height: 14px; border-radius: 99px; background: linear-gradient(to right, #dc2626, #f59e0b, #10b981); }
+.cuenca-leyenda-labels { display: flex; justify-content: space-between; margin-top: 0.2rem; font-size: 0.7rem; color: #4a5568; }
+.cuenca-leyenda-nodata { margin-top: 0.5rem; font-size: 0.7rem; color: #4a5568; display: flex; align-items: center; gap: 0.4rem; }
+.cuenca-color-nodata { display: inline-block; width: 14px; height: 14px; background: #a0a0a0; border-radius: 3px; border: 1px solid #6b7280; }
+
+.cuenca-detail-placeholder { color: #9ca3af; text-align: center; padding: 4rem 1rem; font-style: italic; font-size: 0.9rem; }
+.cuenca-detail-title { font-size: 1.25rem; font-weight: 700; color: #003087; margin-bottom: 0.2rem; }
+.cuenca-detail-sub { font-size: 0.8rem; color: #6b7280; margin-bottom: 1rem; }
+.cuenca-detail-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.8rem; }
+.cuenca-detail-metric-card { background: #f8fafc; padding: 0.6rem; border-radius: 6px; text-align: center; border: 1px solid #e5e7eb; }
+.cuenca-detail-metric-val { display: block; font-size: 1.3rem; font-weight: 700; }
+.cuenca-detail-metric-lbl { font-size: 0.65rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em; }
+.cuenca-detail-rank { margin-top: 0.8rem; }
+.cuenca-detail-rank-title { font-size: 0.7rem; font-weight: 700; color: #4a5568; text-transform: uppercase; margin-bottom: 0.4rem; }
+.cuenca-detail-rank-row { display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; padding: 0.3rem 0.4rem; border-bottom: 1px solid #f3f4f6; font-size: 0.78rem; align-items: center; }
+.cuenca-detail-rank-row:hover { background: #f8fafc; }
+.cuenca-detail-rank-nombre { color: #1a2332; }
+.cuenca-detail-rank-val { font-weight: 700; font-family: 'JetBrains Mono', Consolas, monospace; }
+.cuenca-detail-list { max-height: 280px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 4px; }
+
+#boxplots-cuencas { width: 100%; height: 380px; display: block; }
+.box-rect { stroke: #003087; stroke-width: 1; fill: rgba(0,114,188,0.3); }
+.box-median { stroke: #003087; stroke-width: 2; }
+.box-whisker { stroke: #003087; stroke-width: 1; fill: none; }
+.box-outlier { fill: #dc2626; opacity: 0.6; }
+.box-ref-line { stroke: #dc2626; stroke-width: 1; stroke-dasharray: 3,2; }
+.box-axis-label { font-size: 10px; fill: #4a5568; font-family: sans-serif; }
+.box-title { font-size: 12px; fill: #003087; font-family: sans-serif; font-weight: 700; }
+
+.cuenca-tabla-card { max-width: 1300px; margin: 0 auto 2rem; }
+.cuenca-tabla { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.cuenca-tabla th { background: #003087; color: white; padding: 0.6rem; text-align: left; font-weight: 600; font-size: 0.78rem; }
+.cuenca-tabla td { padding: 0.5rem 0.6rem; border-bottom: 1px solid #e5e7eb; }
+.cuenca-tabla tr:hover { background: #f8fafc; cursor: pointer; }
+.cuenca-tabla tr.selected-row { background: #dbeafe !important; }
+.cuenca-tabla td.metrica { font-family: 'JetBrains Mono', Consolas, monospace; font-weight: 700; }
+
+@media (max-width: 900px) { .cuenca-main { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+const DATA_CUENCAS = {"ES010":{"cod":"ES010","nombre":"MIÑO-SIL","n_embalses":32,"medianas":{"r_QDM":0.316,"hit_rate_QDM":0.474,"BS_total_QDM":0.201,"BSS_lower_QDM":0.131,"BSS_upper_QDM":0.177,"AUC_lower_QDM":0.72,"AUC_upper_QDM":0.782},"valores":{"r_QDM":[0.25,0.23,0.324,0.34,0.246,0.323,0.334,0.312,0.326,0.307,0.365,0.122,0.289,0.207,0.272,0.333,0.42,0.273,0.392,0.319,0.193,0.321,0.341,0.315,0.284,0.325,0.296,0.323,0.345,0.317,0.247,0.249],"hit_rate_QDM":[0.579,0.579,0.579,0.526,0.526,0.474,0.474,0.526,0.474,0.474,0.474,0.474,0.368,0.5,0.389,0.579,0.526,0.474,0.474,0.579,0.286,0.579,0.5,0.579,0.474,0.474,0.421,0.474,0.474,0.526,0.474,0.538],"BS_total_QDM":[0.204,0.212,0.191,0.197,0.199,0.198,0.196,0.196,0.199,0.198,0.19,0.214,0.222,0.221,0.211,0.196,0.2,0.212,0.193,0.201,0.24,0.2,0.198,0.202,0.203,0.201,0.211,0.199,0.205,0.195,0.205,0.234],"BSS_lower_QDM":[0.081,0.052,0.132,0.077,0.171,0.143,0.145,0.134,0.158,0.188,0.206,0.009,0.129,0.076,0.142,0.142,0.179,0.117,0.102,0.16,0.033,0.159,0.134,0.16,0.112,0.123,0.113,0.123,0.099,0.175,0.025,0.02],"BSS_upper_QDM":[0.148,0.123,0.168,0.26,0.187,0.239,0.246,0.247,0.228,0.088,0.198,0.149,-0.008,0.095,0.053,0.236,0.125,0.072,0.246,0.212,-0.213,0.225,0.234,0.23,0.225,0.213,0.077,0.244,0.132,0.116,0.147,-0.218],"AUC_lower_QDM":[0.679,0.637,0.708,0.637,0.792,0.738,0.738,0.714,0.75,0.798,0.81,0.631,0.756,0.625,0.681,0.732,0.786,0.714,0.732,0.732,0.656,0.738,0.694,0.732,0.72,0.72,0.708,0.72,0.696,0.792,0.661,0.725],"AUC_upper_QDM":[0.66,0.679,0.686,0.821,0.84,0.859,0.865,0.878,0.853,0.628,0.782,0.756,0.545,0.757,0.611,0.853,0.788,0.615,0.827,0.853,0.4,0.84,0.861,0.865,0.821,0.782,0.615,0.821,0.66,0.635,0.763,0.5]},"embalses":[{"ref_ceh":1627,"nombre":"BELESAR","r_QDM":0.25,"hit_rate_QDM":0.579,"BS_total_QDM":0.204,"BSS_lower_QDM":0.081,"BSS_upper_QDM":0.148,"AUC_lower_QDM":0.679,"AUC_upper_QDM":0.66},{"ref_ceh":1629,"nombre":"PEARES, LOS","r_QDM":0.23,"hit_rate_QDM":0.579,"BS_total_QDM":0.212,"BSS_lower_QDM":0.052,"BSS_upper_QDM":0.123,"AUC_lower_QDM":0.637,"AUC_upper_QDM":0.679},{"ref_ceh":1709,"nombre":"BARCENA","r_QDM":0.324,"hit_rate_QDM":0.579,"BS_total_QDM":0.191,"BSS_lower_QDM":0.132,"BSS_upper_QDM":0.168,"AUC_lower_QDM":0.708,"AUC_upper_QDM":0.686},{"ref_ceh":1710,"nombre":"FUENTE DEL AZUFRE","r_QDM":0.34,"hit_rate_QDM":0.526,"BS_total_QDM":0.197,"BSS_lower_QDM":0.077,"BSS_upper_QDM":0.26,"AUC_lower_QDM":0.637,"AUC_upper_QDM":0.821},{"ref_ceh":1718,"nombre":"MONTEARENAS","r_QDM":0.246,"hit_rate_QDM":0.526,"BS_total_QDM":0.199,"BSS_lower_QDM":0.171,"BSS_upper_QDM":0.187,"AUC_lower_QDM":0.792,"AUC_upper_QDM":0.84},{"ref_ceh":1712,"nombre":"PEÑARRUBIA","r_QDM":0.323,"hit_rate_QDM":0.474,"BS_total_QDM":0.198,"BSS_lower_QDM":0.143,"BSS_upper_QDM":0.239,"AUC_lower_QDM":0.738,"AUC_upper_QDM":0.859},{"ref_ceh":1716,"nombre":"PUMARES","r_QDM":0.334,"hit_rate_QDM":0.474,"BS_total_QDM":0.196,"BSS_lower_QDM":0.145,"BSS_upper_QDM":0.246,"AUC_lower_QDM":0.738,"AUC_upper_QDM":0.865},{"ref_ceh":1713,"nombre":"SANTIAGO","r_QDM":0.312,"hit_rate_QDM":0.526,"BS_total_QDM":0.196,"BSS_lower_QDM":0.134,"BSS_upper_QDM":0.247,"AUC_lower_QDM":0.714,"AUC_upper_QDM":0.878},{"ref_ceh":1740,"nombre":"SAN MARTIN","r_QDM":0.326,"hit_rate_QDM":0.474,"BS_total_QDM":0.199,"BSS_lower_QDM":0.158,"BSS_upper_QDM":0.228,"AUC_lower_QDM":0.75,"AUC_upper_QDM":0.853},{"ref_ceh":1741,"nombre":"SAN SEBASTIAN","r_QDM":0.307,"hit_rate_QDM":0.474,"BS_total_QDM":0.198,"BSS_lower_QDM":0.188,"BSS_upper_QDM":0.088,"AUC_lower_QDM":0.798,"AUC_upper_QDM":0.628},{"ref_ceh":1745,"nombre":"PIAS O SAN AGUSTIN","r_QDM":0.365,"hit_rate_QDM":0.474,"BS_total_QDM":0.19,"BSS_lower_QDM":0.206,"BSS_upper_QDM":0.198,"AUC_lower_QDM":0.81,"AUC_upper_QDM":0.782},{"ref_ceh":1770,"nombre":"PORTAS, LAS","r_QDM":0.122,"hit_rate_QDM":0.474,"BS_total_QDM":0.214,"BSS_lower_QDM":0.009,"BSS_upper_QDM":0.149,"AUC_lower_QDM":0.631,"AUC_upper_QDM":0.756},{"ref_ceh":1781,"nombre":"EDRADA-CONSO","r_QDM":0.289,"hit_rate_QDM":0.368,"BS_total_QDM":0.222,"BSS_lower_QDM":0.129,"BSS_upper_QDM":-0.008,"AUC_lower_QDM":0.756,"AUC_upper_QDM":0.545},{"ref_ceh":1743,"nombre":"BAO","r_QDM":0.207,"hit_rate_QDM":0.5,"BS_total_QDM":0.221,"BSS_lower_QDM":0.076,"BSS_upper_QDM":0.095,"AUC_lower_QDM":0.625,"AUC_upper_QDM":0.757},{"ref_ceh":1791,"nombre":"PRADA","r_QDM":0.272,"hit_rate_QDM":0.389,"BS_total_QDM":0.211,"BSS_lower_QDM":0.142,"BSS_upper_QDM":0.053,"AUC_lower_QDM":0.681,"AUC_upper_QDM":0.611},{"ref_ceh":1792,"nombre":"SANTA EULALIA","r_QDM":0.333,"hit_rate_QDM":0.579,"BS_total_QDM":0.196,"BSS_lower_QDM":0.142,"BSS_upper_QDM":0.236,"AUC_lower_QDM":0.732,"AUC_upper_QDM":0.853},{"ref_ceh":1748,"nombre":"GUISTOLAS","r_QDM":0.42,"hit_rate_QDM":0.526,"BS_total_QDM":0.2,"BSS_lower_QDM":0.179,"BSS_upper_QDM":0.125,"AUC_lower_QDM":0.786,"AUC_upper_QDM":0.788},{"ref_ceh":1790,"nombre":"CHANDREJA","r_QDM":0.273,"hit_rate_QDM":0.474,"BS_total_QDM":0.212,"BSS_lower_QDM":0.117,"BSS_upper_QDM":0.072,"AUC_lower_QDM":0.714,"AUC_upper_QDM":0.615},{"ref_ceh":1744,"nombre":"MONTEFURADO","r_QDM":0.392,"hit_rate_QDM":0.474,"BS_total_QDM":0.193,"BSS_lower_QDM":0.102,"BSS_upper_QDM":0.246,"AUC_lower_QDM":0.732,"AUC_upper_QDM":0.827},{"ref_ceh":1751,"nombre":"SEQUEIROS","r_QDM":0.319,"hit_rate_QDM":0.579,"BS_total_QDM":0.201,"BSS_lower_QDM":0.16,"BSS_upper_QDM":0.212,"AUC_lower_QDM":0.732,"AUC_upper_QDM":0.853},{"ref_ceh":1795,"nombre":"LEBOREIRO-MAO","r_QDM":0.193,"hit_rate_QDM":0.286,"BS_total_QDM":0.24,"BSS_lower_QDM":0.033,"BSS_upper_QDM":-0.213,"AUC_lower_QDM":0.656,"AUC_upper_QDM":0.4},{"ref_ceh":1768,"nombre":"SAN ESTEBAN","r_QDM":0.321,"hit_rate_QDM":0.579,"BS_total_QDM":0.2,"BSS_lower_QDM":0.159,"BSS_upper_QDM":0.225,"AUC_lower_QDM":0.738,"AUC_upper_QDM":0.84},{"ref_ceh":1796,"nombre":"VILASOUTO","r_QDM":0.341,"hit_rate_QDM":0.5,"BS_total_QDM":0.198,"BSS_lower_QDM":0.134,"BSS_upper_QDM":0.234,"AUC_lower_QDM":0.694,"AUC_upper_QDM":0.861},{"ref_ceh":1769,"nombre":"SAN PEDRO","r_QDM":0.315,"hit_rate_QDM":0.579,"BS_total_QDM":0.202,"BSS_lower_QDM":0.16,"BSS_upper_QDM":0.23,"AUC_lower_QDM":0.732,"AUC_upper_QDM":0.865},{"ref_ceh":1631,"nombre":"VELLE","r_QDM":0.284,"hit_rate_QDM":0.474,"BS_total_QDM":0.203,"BSS_lower_QDM":0.112,"BSS_upper_QDM":0.225,"AUC_lower_QDM":0.72,"AUC_upper_QDM":0.821},{"ref_ceh":1634,"nombre":"CASTRELO","r_QDM":0.325,"hit_rate_QDM":0.474,"BS_total_QDM":0.201,"BSS_lower_QDM":0.123,"BSS_upper_QDM":0.213,"AUC_lower_QDM":0.72,"AUC_upper_QDM":0.782},{"ref_ceh":1637,"nombre":"ALBARELLOS","r_QDM":0.296,"hit_rate_QDM":0.421,"BS_total_QDM":0.211,"BSS_lower_QDM":0.113,"BSS_upper_QDM":0.077,"AUC_lower_QDM":0.708,"AUC_upper_QDM":0.615},{"ref_ceh":1641,"nombre":"FRIEIRA","r_QDM":0.323,"hit_rate_QDM":0.474,"BS_total_QDM":0.199,"BSS_lower_QDM":0.123,"BSS_upper_QDM":0.244,"AUC_lower_QDM":0.72,"AUC_upper_QDM":0.821},{"ref_ceh":1808,"nombre":"CONCHAS, LAS","r_QDM":0.345,"hit_rate_QDM":0.474,"BS_total_QDM":0.205,"BSS_lower_QDM":0.099,"BSS_upper_QDM":0.132,"AUC_lower_QDM":0.696,"AUC_upper_QDM":0.66},{"ref_ceh":1807,"nombre":"SALAS, LAS","r_QDM":0.317,"hit_rate_QDM":0.526,"BS_total_QDM":0.195,"BSS_lower_QDM":0.175,"BSS_upper_QDM":0.116,"AUC_lower_QDM":0.792,"AUC_upper_QDM":0.635},{"ref_ceh":1782,"nombre":"CENZA","r_QDM":0.247,"hit_rate_QDM":0.474,"BS_total_QDM":0.205,"BSS_lower_QDM":0.025,"BSS_upper_QDM":0.147,"AUC_lower_QDM":0.661,"AUC_upper_QDM":0.763},{"ref_ceh":1711,"nombre":"CAMPAÑANA","r_QDM":0.249,"hit_rate_QDM":0.538,"BS_total_QDM":0.234,"BSS_lower_QDM":0.02,"BSS_upper_QDM":-0.218,"AUC_lower_QDM":0.725,"AUC_upper_QDM":0.5}]},"ES018":{"cod":"ES018","nombre":"CANTÁBRICO OCCIDENTAL","n_embalses":8,"medianas":{"r_QDM":0.127,"hit_rate_QDM":0.325,"BS_total_QDM":0.229,"BSS_lower_QDM":-0.064,"BSS_upper_QDM":-0.001,"AUC_lower_QDM":0.557,"AUC_upper_QDM":0.564},"valores":{"r_QDM":[0.02,-0.126,0.093,-0.032,0.214,0.251,0.162,0.237],"hit_rate_QDM":[0.556,0.263,0.333,0.263,0.368,0.474,0.316,0.316],"BS_total_QDM":[0.213,0.251,0.238,0.255,0.225,0.199,0.233,0.223],"BSS_lower_QDM":[-0.076,-0.142,-0.005,-0.125,-0.07,0.155,-0.057,-0.043],"BSS_upper_QDM":[0.003,-0.047,-0.146,-0.186,0.009,0.129,-0.004,0.052],"AUC_lower_QDM":[0.424,0.476,0.569,0.488,0.548,0.756,0.583,0.565],"AUC_upper_QDM":[0.681,0.59,0.403,0.34,0.564,0.679,0.506,0.564]},"embalses":[{"ref_ceh":1231,"nombre":"ALSA - MEDIAJO","r_QDM":0.02,"hit_rate_QDM":0.556,"BS_total_QDM":0.213,"BSS_lower_QDM":-0.076,"BSS_upper_QDM":0.003,"AUC_lower_QDM":0.424,"AUC_upper_QDM":0.681},{"ref_ceh":1253,"nombre":"COHILLA, LA","r_QDM":-0.126,"hit_rate_QDM":0.263,"BS_total_QDM":0.251,"BSS_lower_QDM":-0.142,"BSS_upper_QDM":-0.047,"AUC_lower_QDM":0.476,"AUC_upper_QDM":0.59},{"ref_ceh":1346,"nombre":"PROAZA (VALDEMURRIO)","r_QDM":0.093,"hit_rate_QDM":0.333,"BS_total_QDM":0.238,"BSS_lower_QDM":-0.005,"BSS_upper_QDM":-0.146,"AUC_lower_QDM":0.569,"AUC_upper_QDM":0.403},{"ref_ceh":1340,"nombre":"PRIAÑES","r_QDM":-0.032,"hit_rate_QDM":0.263,"BS_total_QDM":0.255,"BSS_lower_QDM":-0.125,"BSS_upper_QDM":-0.186,"AUC_lower_QDM":0.488,"AUC_upper_QDM":0.34},{"ref_ceh":1356,"nombre":"BARCA, LA","r_QDM":0.214,"hit_rate_QDM":0.368,"BS_total_QDM":0.225,"BSS_lower_QDM":-0.07,"BSS_upper_QDM":0.009,"AUC_lower_QDM":0.548,"AUC_upper_QDM":0.564},{"ref_ceh":1406,"nombre":"SALIME","r_QDM":0.251,"hit_rate_QDM":0.474,"BS_total_QDM":0.199,"BSS_lower_QDM":0.155,"BSS_upper_QDM":0.129,"AUC_lower_QDM":0.756,"AUC_upper_QDM":0.679},{"ref_ceh":1408,"nombre":"DOIRAS","r_QDM":0.162,"hit_rate_QDM":0.316,"BS_total_QDM":0.233,"BSS_lower_QDM":-0.057,"BSS_upper_QDM":-0.004,"AUC_lower_QDM":0.583,"AUC_upper_QDM":0.506},{"ref_ceh":1409,"nombre":"ARBON","r_QDM":0.237,"hit_rate_QDM":0.316,"BS_total_QDM":0.223,"BSS_lower_QDM":-0.043,"BSS_upper_QDM":0.052,"AUC_lower_QDM":0.565,"AUC_upper_QDM":0.564}]},"ES020":{"cod":"ES020","nombre":"DUERO","n_embalses":27,"medianas":{"r_QDM":0.346,"hit_rate_QDM":0.526,"BS_total_QDM":0.201,"BSS_lower_QDM":0.139,"BSS_upper_QDM":0.165,"AUC_lower_QDM":0.762,"AUC_upper_QDM":0.737},"valores":{"r_QDM":[0.34,0.303,0.199,0.273,0.212,0.254,0.355,0.397,0.382,0.38,0.351,-0.219,0.043,0.244,0.346,0.308,0.509,0.41,0.433,0.377,0.396,0.376,0.359,0.337,0.274,0.496,0.313],"hit_rate_QDM":[0.526,0.421,0.421,0.316,0.474,0.526,0.579,0.632,0.526,0.474,0.579,0.278,0.368,0.421,0.421,0.526,0.579,0.368,0.421,0.684,0.526,0.632,0.579,0.579,0.579,0.684,0.526],"BS_total_QDM":[0.194,0.216,0.218,0.213,0.233,0.196,0.212,0.195,0.196,0.193,0.189,0.26,0.225,0.22,0.236,0.202,0.19,0.22,0.203,0.182,0.188,0.2,0.201,0.199,0.191,0.18,0.202],"BSS_lower_QDM":[0.155,-0.066,-0.044,0.052,-0.05,0.151,0.16,0.157,0.142,0.22,0.238,-0.09,-0.069,-0.042,-0.065,0.147,0.109,0.083,0.121,0.164,0.164,0.173,0.139,0.139,0.133,0.197,0.115],"BSS_upper_QDM":[0.221,0.075,0.089,0.042,0.03,0.133,0.025,0.173,0.211,0.165,0.152,-0.307,-0.038,0.096,-0.022,0.186,0.302,-0.026,0.228,0.323,0.257,0.211,0.267,0.282,0.139,0.206,0.192],"AUC_lower_QDM":[0.768,0.577,0.595,0.732,0.589,0.81,0.768,0.78,0.762,0.857,0.863,0.424,0.518,0.601,0.565,0.75,0.75,0.714,0.821,0.869,0.869,0.851,0.762,0.762,0.786,0.792,0.774],"AUC_upper_QDM":[0.833,0.635,0.705,0.609,0.603,0.718,0.551,0.731,0.827,0.737,0.795,0.243,0.474,0.692,0.571,0.769,0.853,0.481,0.878,0.949,0.91,0.91,0.904,0.91,0.718,0.782,0.744]},"embalses":[{"ref_ceh":2001,"nombre":"CUERDA DEL POZO","r_QDM":0.34,"hit_rate_QDM":0.526,"BS_total_QDM":0.194,"BSS_lower_QDM":0.155,"BSS_upper_QDM":0.221,"AUC_lower_QDM":0.768,"AUC_upper_QDM":0.833},{"ref_ceh":2036,"nombre":"LINARES DEL ARROYO","r_QDM":0.303,"hit_rate_QDM":0.421,"BS_total_QDM":0.216,"BSS_lower_QDM":-0.066,"BSS_upper_QDM":0.075,"AUC_lower_QDM":0.577,"AUC_upper_QDM":0.635},{"ref_ceh":2037,"nombre":"BURGOMILLODO","r_QDM":0.199,"hit_rate_QDM":0.421,"BS_total_QDM":0.218,"BSS_lower_QDM":-0.044,"BSS_upper_QDM":0.089,"AUC_lower_QDM":0.595,"AUC_upper_QDM":0.705},{"ref_ceh":2040,"nombre":"VENCIAS, LAS","r_QDM":0.273,"hit_rate_QDM":0.316,"BS_total_QDM":0.213,"BSS_lower_QDM":0.052,"BSS_upper_QDM":0.042,"AUC_lower_QDM":0.732,"AUC_upper_QDM":0.609},{"ref_ceh":2013,"nombre":"REQUEJADA, LA","r_QDM":0.212,"hit_rate_QDM":0.474,"BS_total_QDM":0.233,"BSS_lower_QDM":-0.05,"BSS_upper_QDM":0.03,"AUC_lower_QDM":0.589,"AUC_upper_QDM":0.603},{"ref_ceh":2012,"nombre":"CERVERA DE RUESGA","r_QDM":0.254,"hit_rate_QDM":0.526,"BS_total_QDM":0.196,"BSS_lower_QDM":0.151,"BSS_upper_QDM":0.133,"AUC_lower_QDM":0.81,"AUC_upper_QDM":0.718},{"ref_ceh":2016,"nombre":"AGUILAR DE CAMPOO","r_QDM":0.355,"hit_rate_QDM":0.579,"BS_total_QDM":0.212,"BSS_lower_QDM":0.16,"BSS_upper_QDM":0.025,"AUC_lower_QDM":0.768,"AUC_upper_QDM":0.551},{"ref_ceh":2010,"nombre":"UZQUIZA","r_QDM":0.397,"hit_rate_QDM":0.632,"BS_total_QDM":0.195,"BSS_lower_QDM":0.157,"BSS_upper_QDM":0.173,"AUC_lower_QDM":0.78,"AUC_upper_QDM":0.731},{"ref_ceh":2011,"nombre":"ARLANZON","r_QDM":0.382,"hit_rate_QDM":0.526,"BS_total_QDM":0.196,"BSS_lower_QDM":0.142,"BSS_upper_QDM":0.211,"AUC_lower_QDM":0.762,"AUC_upper_QDM":0.827},{"ref_ceh":2014,"nombre":"CAMPORREDONDO","r_QDM":0.38,"hit_rate_QDM":0.474,"BS_total_QDM":0.193,"BSS_lower_QDM":0.22,"BSS_upper_QDM":0.165,"AUC_lower_QDM":0.857,"AUC_upper_QDM":0.737},{"ref_ceh":2015,"nombre":"COMPUERTO","r_QDM":0.351,"hit_rate_QDM":0.579,"BS_total_QDM":0.189,"BSS_lower_QDM":0.238,"BSS_upper_QDM":0.152,"AUC_lower_QDM":0.863,"AUC_upper_QDM":0.795},{"ref_ceh":2042,"nombre":"CASTRO DE LAS COGOTAS","r_QDM":-0.219,"hit_rate_QDM":0.278,"BS_total_QDM":0.26,"BSS_lower_QDM":-0.09,"BSS_upper_QDM":-0.307,"AUC_lower_QDM":0.424,"AUC_upper_QDM":0.243},{"ref_ceh":2043,"nombre":"PONTON ALTO","r_QDM":0.043,"hit_rate_QDM":0.368,"BS_total_QDM":0.225,"BSS_lower_QDM":-0.069,"BSS_upper_QDM":-0.038,"AUC_lower_QDM":0.518,"AUC_upper_QDM":0.474},{"ref_ceh":2032,"nombre":"RIAÑO","r_QDM":0.244,"hit_rate_QDM":0.421,"BS_total_QDM":0.22,"BSS_lower_QDM":-0.042,"BSS_upper_QDM":0.096,"AUC_lower_QDM":0.601,"AUC_upper_QDM":0.692},{"ref_ceh":2030,"nombre":"PORMA / JUAN BENET","r_QDM":0.346,"hit_rate_QDM":0.421,"BS_total_QDM":0.236,"BSS_lower_QDM":-0.065,"BSS_upper_QDM":-0.022,"AUC_lower_QDM":0.565,"AUC_upper_QDM":0.571},{"ref_ceh":2026,"nombre":"BARRIOS DE LUNA","r_QDM":0.308,"hit_rate_QDM":0.526,"BS_total_QDM":0.202,"BSS_lower_QDM":0.147,"BSS_upper_QDM":0.186,"AUC_lower_QDM":0.75,"AUC_upper_QDM":0.769},{"ref_ceh":2027,"nombre":"VILLAMECA","r_QDM":0.509,"hit_rate_QDM":0.579,"BS_total_QDM":0.19,"BSS_lower_QDM":0.109,"BSS_upper_QDM":0.302,"AUC_lower_QDM":0.75,"AUC_upper_QDM":0.853},{"ref_ceh":2028,"nombre":"MONCABRIL (SISTEMA)","r_QDM":0.41,"hit_rate_QDM":0.368,"BS_total_QDM":0.22,"BSS_lower_QDM":0.083,"BSS_upper_QDM":-0.026,"AUC_lower_QDM":0.714,"AUC_upper_QDM":0.481},{"ref_ceh":2031,"nombre":"CERNADILLA","r_QDM":0.433,"hit_rate_QDM":0.421,"BS_total_QDM":0.203,"BSS_lower_QDM":0.121,"BSS_upper_QDM":0.228,"AUC_lower_QDM":0.821,"AUC_upper_QDM":0.878},{"ref_ceh":2033,"nombre":"VALPARAISO","r_QDM":0.377,"hit_rate_QDM":0.684,"BS_total_QDM":0.182,"BSS_lower_QDM":0.164,"BSS_upper_QDM":0.323,"AUC_lower_QDM":0.869,"AUC_upper_QDM":0.949},{"ref_ceh":2034,"nombre":"NUESTRA SEÑORA DEL AGAVANZAL","r_QDM":0.396,"hit_rate_QDM":0.526,"BS_total_QDM":0.188,"BSS_lower_QDM":0.164,"BSS_upper_QDM":0.257,"AUC_lower_QDM":0.869,"AUC_upper_QDM":0.91},{"ref_ceh":2029,"nombre":"RICOBAYO","r_QDM":0.376,"hit_rate_QDM":0.632,"BS_total_QDM":0.2,"BSS_lower_QDM":0.173,"BSS_upper_QDM":0.211,"AUC_lower_QDM":0.851,"AUC_upper_QDM":0.91},{"ref_ceh":2002,"nombre":"VILLALCAMPO","r_QDM":0.359,"hit_rate_QDM":0.579,"BS_total_QDM":0.201,"BSS_lower_QDM":0.139,"BSS_upper_QDM":0.267,"AUC_lower_QDM":0.762,"AUC_upper_QDM":0.904},{"ref_ceh":2003,"nombre":"CASTRO","r_QDM":0.337,"hit_rate_QDM":0.579,"BS_total_QDM":0.199,"BSS_lower_QDM":0.139,"BSS_upper_QDM":0.282,"AUC_lower_QDM":0.762,"AUC_upper_QDM":0.91},{"ref_ceh":2038,"nombre":"SANTA TERESA","r_QDM":0.274,"hit_rate_QDM":0.579,"BS_total_QDM":0.191,"BSS_lower_QDM":0.133,"BSS_upper_QDM":0.139,"AUC_lower_QDM":0.786,"AUC_upper_QDM":0.718},{"ref_ceh":2041,"nombre":"ALMENDRA","r_QDM":0.496,"hit_rate_QDM":0.684,"BS_total_QDM":0.18,"BSS_lower_QDM":0.197,"BSS_upper_QDM":0.206,"AUC_lower_QDM":0.792,"AUC_upper_QDM":0.782},{"ref_ceh":2039,"nombre":"AGUEDA","r_QDM":0.313,"hit_rate_QDM":0.526,"BS_total_QDM":0.202,"BSS_lower_QDM":0.115,"BSS_upper_QDM":0.192,"AUC_lower_QDM":0.774,"AUC_upper_QDM":0.744}]},"ES030":{"cod":"ES030","nombre":"TAJO","n_embalses":42,"medianas":{"r_QDM":0.27,"hit_rate_QDM":0.472,"BS_total_QDM":0.21,"BSS_lower_QDM":0.041,"BSS_upper_QDM":0.119,"AUC_lower_QDM":0.67,"AUC_upper_QDM":0.712},"valores":{"r_QDM":[0.283,0.35,0.367,0.26,0.211,0.259,0.26,0.202,0.222,0.309,0.3,0.274,0.219,0.362,0.267,0.179,0.32,0.168,0.295,0.127,0.063,0.115,0.041,0.125,0.245,0.229,0.215,0.306,0.303,0.273,0.369,0.142,0.315,0.203,0.355,0.389,0.373,0.288,0.321,0.295,0.156,0.429],"hit_rate_QDM":[0.579,0.611,0.474,0.632,0.368,0.526,0.368,0.421,0.368,0.474,0.421,0.263,0.474,0.526,0.368,0.368,0.444,0.421,0.421,0.526,0.471,0.526,0.474,0.368,0.368,0.316,0.368,0.526,0.684,0.368,0.316,0.368,0.632,0.474,0.474,0.474,0.526,0.526,0.588,0.421,0.421,0.632],"BS_total_QDM":[0.192,0.196,0.194,0.198,0.216,0.209,0.209,0.221,0.214,0.206,0.208,0.222,0.218,0.212,0.225,0.218,0.224,0.212,0.212,0.21,0.215,0.202,0.221,0.212,0.211,0.212,0.221,0.205,0.184,0.223,0.208,0.217,0.199,0.195,0.198,0.208,0.186,0.204,0.2,0.203,0.233,0.189],"BSS_lower_QDM":[0.107,0.11,0.071,0.079,0.006,0.001,0.025,-0.078,-0.056,0.084,0.123,-0.025,0.14,0.04,0.003,-0.044,-0.06,0.031,0.042,0.147,-0.011,0.124,0.123,0.053,0.048,-0.028,-0.089,0.016,0.161,0.048,-0.038,0.061,0.067,0.025,0.071,-0.015,0.169,0.009,0.023,0.086,-0.086,0.19],"BSS_upper_QDM":[0.191,0.202,0.138,0.158,0.042,0.106,0.101,0.097,0.098,0.112,0.059,0.121,-0.045,0.149,0.07,0.165,0.118,0.07,0.18,0.05,0.03,0.056,-0.055,0.076,0.161,0.12,0.156,0.147,0.197,0.088,0.176,0.014,0.231,0.197,0.194,0.195,0.241,0.204,0.053,0.116,0.09,0.191],"AUC_lower_QDM":[0.708,0.639,0.72,0.661,0.619,0.625,0.655,0.542,0.548,0.685,0.762,0.607,0.768,0.625,0.613,0.583,0.514,0.643,0.69,0.845,0.568,0.804,0.804,0.738,0.708,0.595,0.518,0.655,0.798,0.685,0.607,0.708,0.673,0.69,0.81,0.72,0.821,0.667,0.682,0.667,0.536,0.815],"AUC_upper_QDM":[0.769,0.91,0.744,0.75,0.615,0.718,0.679,0.679,0.635,0.699,0.699,0.673,0.538,0.756,0.577,0.776,0.778,0.59,0.763,0.564,0.568,0.635,0.513,0.635,0.731,0.705,0.737,0.731,0.801,0.628,0.744,0.571,0.872,0.846,0.782,0.782,0.84,0.763,0.697,0.673,0.622,0.782]},"embalses":[{"ref_ceh":3006,"nombre":"ENTREPEÑAS","r_QDM":0.283,"hit_rate_QDM":0.579,"BS_total_QDM":0.192,"BSS_lower_QDM":0.107,"BSS_upper_QDM":0.191,"AUC_lower_QDM":0.708,"AUC_upper_QDM":0.769},{"ref_ceh":3201,"nombre":"MOLINO DE CHINCHA","r_QDM":0.35,"hit_rate_QDM":0.611,"BS_total_QDM":0.196,"BSS_lower_QDM":0.11,"BSS_upper_QDM":0.202,"AUC_lower_QDM":0.639,"AUC_upper_QDM":0.91},{"ref_ceh":3043,"nombre":"BUENDIA","r_QDM":0.367,"hit_rate_QDM":0.474,"BS_total_QDM":0.194,"BSS_lower_QDM":0.071,"BSS_upper_QDM":0.138,"AUC_lower_QDM":0.72,"AUC_upper_QDM":0.744},{"ref_ceh":3050,"nombre":"VADO, EL","r_QDM":0.26,"hit_rate_QDM":0.632,"BS_total_QDM":0.198,"BSS_lower_QDM":0.079,"BSS_upper_QDM":0.158,"AUC_lower_QDM":0.661,"AUC_upper_QDM":0.75},{"ref_ceh":3154,"nombre":"RIOSEQUILLO","r_QDM":0.211,"hit_rate_QDM":0.368,"BS_total_QDM":0.216,"BSS_lower_QDM":0.006,"BSS_upper_QDM":0.042,"AUC_lower_QDM":0.619,"AUC_upper_QDM":0.615},{"ref_ceh":3196,"nombre":"PINILLA","r_QDM":0.259,"hit_rate_QDM":0.526,"BS_total_QDM":0.209,"BSS_lower_QDM":0.001,"BSS_upper_QDM":0.106,"AUC_lower_QDM":0.625,"AUC_upper_QDM":0.718},{"ref_ceh":3155,"nombre":"PUENTES VIEJAS","r_QDM":0.26,"hit_rate_QDM":0.368,"BS_total_QDM":0.209,"BSS_lower_QDM":0.025,"BSS_upper_QDM":0.101,"AUC_lower_QDM":0.655,"AUC_upper_QDM":0.679},{"ref_ceh":3195,"nombre":"VILLAR, EL","r_QDM":0.202,"hit_rate_QDM":0.421,"BS_total_QDM":0.221,"BSS_lower_QDM":-0.078,"BSS_upper_QDM":0.097,"AUC_lower_QDM":0.542,"AUC_upper_QDM":0.679},{"ref_ceh":3156,"nombre":"ATAZAR, EL","r_QDM":0.222,"hit_rate_QDM":0.368,"BS_total_QDM":0.214,"BSS_lower_QDM":-0.056,"BSS_upper_QDM":0.098,"AUC_lower_QDM":0.548,"AUC_upper_QDM":0.635},{"ref_ceh":3157,"nombre":"VELLON, EL","r_QDM":0.309,"hit_rate_QDM":0.474,"BS_total_QDM":0.206,"BSS_lower_QDM":0.084,"BSS_upper_QDM":0.112,"AUC_lower_QDM":0.685,"AUC_upper_QDM":0.699},{"ref_ceh":3065,"nombre":"PALMACES","r_QDM":0.3,"hit_rate_QDM":0.421,"BS_total_QDM":0.208,"BSS_lower_QDM":0.123,"BSS_upper_QDM":0.059,"AUC_lower_QDM":0.762,"AUC_upper_QDM":0.699},{"ref_ceh":3287,"nombre":"ALCORLO","r_QDM":0.274,"hit_rate_QDM":0.263,"BS_total_QDM":0.222,"BSS_lower_QDM":-0.025,"BSS_upper_QDM":0.121,"AUC_lower_QDM":0.607,"AUC_upper_QDM":0.673},{"ref_ceh":3068,"nombre":"BELEÑA","r_QDM":0.219,"hit_rate_QDM":0.474,"BS_total_QDM":0.218,"BSS_lower_QDM":0.14,"BSS_upper_QDM":-0.045,"AUC_lower_QDM":0.768,"AUC_upper_QDM":0.538},{"ref_ceh":3189,"nombre":"NAVACERRADA","r_QDM":0.362,"hit_rate_QDM":0.526,"BS_total_QDM":0.212,"BSS_lower_QDM":0.04,"BSS_upper_QDM":0.149,"AUC_lower_QDM":0.625,"AUC_upper_QDM":0.756},{"ref_ceh":3069,"nombre":"SANTILLANA","r_QDM":0.267,"hit_rate_QDM":0.368,"BS_total_QDM":0.225,"BSS_lower_QDM":0.003,"BSS_upper_QDM":0.07,"AUC_lower_QDM":0.613,"AUC_upper_QDM":0.577},{"ref_ceh":3263,"nombre":"PARDO, EL","r_QDM":0.179,"hit_rate_QDM":0.368,"BS_total_QDM":0.218,"BSS_lower_QDM":-0.044,"BSS_upper_QDM":0.165,"AUC_lower_QDM":0.583,"AUC_upper_QDM":0.776},{"ref_ceh":3079,"nombre":"TAJERA, LA","r_QDM":0.32,"hit_rate_QDM":0.444,"BS_total_QDM":0.224,"BSS_lower_QDM":-0.06,"BSS_upper_QDM":0.118,"AUC_lower_QDM":0.514,"AUC_upper_QDM":0.778},{"ref_ceh":3151,"nombre":"CASTREJON","r_QDM":0.168,"hit_rate_QDM":0.421,"BS_total_QDM":0.212,"BSS_lower_QDM":0.031,"BSS_upper_QDM":0.07,"AUC_lower_QDM":0.643,"AUC_upper_QDM":0.59},{"ref_ceh":3111,"nombre":"BURGUILLO, EL","r_QDM":0.295,"hit_rate_QDM":0.421,"BS_total_QDM":0.212,"BSS_lower_QDM":0.042,"BSS_upper_QDM":0.18,"AUC_lower_QDM":0.69,"AUC_upper_QDM":0.763},{"ref_ceh":3114,"nombre":"CHARCO DEL CURA (PUENTE NUEVO)","r_QDM":0.127,"hit_rate_QDM":0.526,"BS_total_QDM":0.21,"BSS_lower_QDM":0.147,"BSS_upper_QDM":0.05,"AUC_lower_QDM":0.845,"AUC_upper_QDM":0.564},{"ref_ceh":3227,"nombre":"ACEÑA","r_QDM":0.063,"hit_rate_QDM":0.471,"BS_total_QDM":0.215,"BSS_lower_QDM":-0.011,"BSS_upper_QDM":0.03,"AUC_lower_QDM":0.568,"AUC_upper_QDM":0.568},{"ref_ceh":3112,"nombre":"SAN JUAN","r_QDM":0.115,"hit_rate_QDM":0.526,"BS_total_QDM":0.202,"BSS_lower_QDM":0.124,"BSS_upper_QDM":0.056,"AUC_lower_QDM":0.804,"AUC_upper_QDM":0.635},{"ref_ceh":3113,"nombre":"PICADAS","r_QDM":0.041,"hit_rate_QDM":0.474,"BS_total_QDM":0.221,"BSS_lower_QDM":0.123,"BSS_upper_QDM":-0.055,"AUC_lower_QDM":0.804,"AUC_upper_QDM":0.513},{"ref_ceh":3115,"nombre":"CAZALEGAS","r_QDM":0.125,"hit_rate_QDM":0.368,"BS_total_QDM":0.212,"BSS_lower_QDM":0.053,"BSS_upper_QDM":0.076,"AUC_lower_QDM":0.738,"AUC_upper_QDM":0.635},{"ref_ceh":3203,"nombre":"AZUTAN","r_QDM":0.245,"hit_rate_QDM":0.368,"BS_total_QDM":0.211,"BSS_lower_QDM":0.048,"BSS_upper_QDM":0.161,"AUC_lower_QDM":0.708,"AUC_upper_QDM":0.731},{"ref_ceh":3152,"nombre":"VALDECAÑAS","r_QDM":0.229,"hit_rate_QDM":0.316,"BS_total_QDM":0.212,"BSS_lower_QDM":-0.028,"BSS_upper_QDM":0.12,"AUC_lower_QDM":0.595,"AUC_upper_QDM":0.705},{"ref_ceh":3016,"nombre":"TORREJON-TAJO","r_QDM":0.215,"hit_rate_QDM":0.368,"BS_total_QDM":0.221,"BSS_lower_QDM":-0.089,"BSS_upper_QDM":0.156,"AUC_lower_QDM":0.518,"AUC_upper_QDM":0.737},{"ref_ceh":3199,"nombre":"NAVALCAN","r_QDM":0.306,"hit_rate_QDM":0.526,"BS_total_QDM":0.205,"BSS_lower_QDM":0.016,"BSS_upper_QDM":0.147,"AUC_lower_QDM":0.655,"AUC_upper_QDM":0.731},{"ref_ceh":3127,"nombre":"ROSARITO","r_QDM":0.303,"hit_rate_QDM":0.684,"BS_total_QDM":0.184,"BSS_lower_QDM":0.161,"BSS_upper_QDM":0.197,"AUC_lower_QDM":0.798,"AUC_upper_QDM":0.801},{"ref_ceh":3128,"nombre":"TORREJON-TIETAR","r_QDM":0.273,"hit_rate_QDM":0.368,"BS_total_QDM":0.223,"BSS_lower_QDM":0.048,"BSS_upper_QDM":0.088,"AUC_lower_QDM":0.685,"AUC_upper_QDM":0.628},{"ref_ceh":3264,"nombre":"GUADILOBA","r_QDM":0.369,"hit_rate_QDM":0.316,"BS_total_QDM":0.208,"BSS_lower_QDM":-0.038,"BSS_upper_QDM":0.176,"AUC_lower_QDM":0.607,"AUC_upper_QDM":0.744},{"ref_ceh":3141,"nombre":"GUIJO DE GRANADILLA","r_QDM":0.142,"hit_rate_QDM":0.368,"BS_total_QDM":0.217,"BSS_lower_QDM":0.061,"BSS_upper_QDM":0.014,"AUC_lower_QDM":0.708,"AUC_upper_QDM":0.571},{"ref_ceh":3142,"nombre":"GABRIEL Y GALAN","r_QDM":0.315,"hit_rate_QDM":0.632,"BS_total_QDM":0.199,"BSS_lower_QDM":0.067,"BSS_upper_QDM":0.231,"AUC_lower_QDM":0.673,"AUC_upper_QDM":0.872},{"ref_ceh":3143,"nombre":"VALDEOBISPO","r_QDM":0.203,"hit_rate_QDM":0.474,"BS_total_QDM":0.195,"BSS_lower_QDM":0.025,"BSS_upper_QDM":0.197,"AUC_lower_QDM":0.69,"AUC_upper_QDM":0.846},{"ref_ceh":3145,"nombre":"JERTE-PLASENCIA","r_QDM":0.355,"hit_rate_QDM":0.474,"BS_total_QDM":0.198,"BSS_lower_QDM":0.071,"BSS_upper_QDM":0.194,"AUC_lower_QDM":0.81,"AUC_upper_QDM":0.782},{"ref_ceh":3148,"nombre":"BORBOLLON","r_QDM":0.389,"hit_rate_QDM":0.474,"BS_total_QDM":0.208,"BSS_lower_QDM":-0.015,"BSS_upper_QDM":0.195,"AUC_lower_QDM":0.72,"AUC_upper_QDM":0.782},{"ref_ceh":3160,"nombre":"RIVERA DE GATA","r_QDM":0.373,"hit_rate_QDM":0.526,"BS_total_QDM":0.186,"BSS_lower_QDM":0.169,"BSS_upper_QDM":0.241,"AUC_lower_QDM":0.821,"AUC_upper_QDM":0.84},{"ref_ceh":3019,"nombre":"ALCANTARA","r_QDM":0.288,"hit_rate_QDM":0.526,"BS_total_QDM":0.204,"BSS_lower_QDM":0.009,"BSS_upper_QDM":0.204,"AUC_lower_QDM":0.667,"AUC_upper_QDM":0.763},{"ref_ceh":3116,"nombre":"MORALES","r_QDM":0.321,"hit_rate_QDM":0.588,"BS_total_QDM":0.2,"BSS_lower_QDM":0.023,"BSS_upper_QDM":0.053,"AUC_lower_QDM":0.682,"AUC_upper_QDM":0.697},{"ref_ceh":3190,"nombre":"JAROSA, LA","r_QDM":0.295,"hit_rate_QDM":0.421,"BS_total_QDM":0.203,"BSS_lower_QDM":0.086,"BSS_upper_QDM":0.116,"AUC_lower_QDM":0.667,"AUC_upper_QDM":0.673},{"ref_ceh":3191,"nombre":"NAVALMEDIO","r_QDM":0.156,"hit_rate_QDM":0.421,"BS_total_QDM":0.233,"BSS_lower_QDM":-0.086,"BSS_upper_QDM":0.09,"AUC_lower_QDM":0.536,"AUC_upper_QDM":0.622},{"ref_ceh":3247,"nombre":"NAVAMUÑO","r_QDM":0.429,"hit_rate_QDM":0.632,"BS_total_QDM":0.189,"BSS_lower_QDM":0.19,"BSS_upper_QDM":0.191,"AUC_lower_QDM":0.815,"AUC_upper_QDM":0.782}]},"ES040":{"cod":"ES040","nombre":"GUADIANA","n_embalses":11,"medianas":{"r_QDM":0.229,"hit_rate_QDM":0.375,"BS_total_QDM":0.228,"BSS_lower_QDM":-0.042,"BSS_upper_QDM":0.026,"AUC_lower_QDM":0.578,"AUC_upper_QDM":0.625},"valores":{"r_QDM":[0.369,0.426,-0.011,-0.37,0.205,0.295,0.261,0.229,0.216,0.388,0.163],"hit_rate_QDM":[0.438,0.333,0.438,0.3,0.455,0.375,0.375,0.312,0.333,0.389,0.333],"BS_total_QDM":[0.228,0.221,0.252,0.267,0.208,0.213,0.243,0.213,0.234,0.235,0.223],"BSS_lower_QDM":[0.038,-0.042,-0.255,-0.482,-0.019,-0.039,-0.159,-0.017,-0.167,-0.093,0.032],"BSS_upper_QDM":[-0.056,0.085,-0.111,0.046,0.037,0.051,-0.126,0.025,0.077,0.026,-0.044],"AUC_lower_QDM":[0.725,0.578,0.375,0.354,0.661,0.6,0.492,0.617,0.516,0.5,0.59],"AUC_upper_QDM":[0.536,0.672,0.655,0.714,0.554,0.691,0.455,0.518,0.703,0.625,0.56]},"embalses":[{"ref_ceh":4001,"nombre":"PEÑARROYA","r_QDM":0.369,"hit_rate_QDM":0.438,"BS_total_QDM":0.228,"BSS_lower_QDM":0.038,"BSS_upper_QDM":-0.056,"AUC_lower_QDM":0.725,"AUC_upper_QDM":0.536},{"ref_ceh":4050,"nombre":"PUERTO VALLEHERMOSO","r_QDM":0.426,"hit_rate_QDM":0.333,"BS_total_QDM":0.221,"BSS_lower_QDM":-0.042,"BSS_upper_QDM":0.085,"AUC_lower_QDM":0.578,"AUC_upper_QDM":0.672},{"ref_ceh":4008,"nombre":"VICARIO, EL","r_QDM":-0.011,"hit_rate_QDM":0.438,"BS_total_QDM":0.252,"BSS_lower_QDM":-0.255,"BSS_upper_QDM":-0.111,"AUC_lower_QDM":0.375,"AUC_upper_QDM":0.655},{"ref_ceh":4041,"nombre":"MARISANCHEZ (CABEZUELA, LA)","r_QDM":-0.37,"hit_rate_QDM":0.3,"BS_total_QDM":0.267,"BSS_lower_QDM":-0.482,"BSS_upper_QDM":0.046,"AUC_lower_QDM":0.354,"AUC_upper_QDM":0.714},{"ref_ceh":4007,"nombre":"TORRE DE ABRAHAM","r_QDM":0.205,"hit_rate_QDM":0.455,"BS_total_QDM":0.208,"BSS_lower_QDM":-0.019,"BSS_upper_QDM":0.037,"AUC_lower_QDM":0.661,"AUC_upper_QDM":0.554},{"ref_ceh":4002,"nombre":"CIJARA","r_QDM":0.295,"hit_rate_QDM":0.375,"BS_total_QDM":0.213,"BSS_lower_QDM":-0.039,"BSS_upper_QDM":0.051,"AUC_lower_QDM":0.6,"AUC_upper_QDM":0.691},{"ref_ceh":4003,"nombre":"GARCIA DE SOLA","r_QDM":0.261,"hit_rate_QDM":0.375,"BS_total_QDM":0.243,"BSS_lower_QDM":-0.159,"BSS_upper_QDM":-0.126,"AUC_lower_QDM":0.492,"AUC_upper_QDM":0.455},{"ref_ceh":4017,"nombre":"MOLINOS DE MATACHEL, LOS","r_QDM":0.229,"hit_rate_QDM":0.312,"BS_total_QDM":0.213,"BSS_lower_QDM":-0.017,"BSS_upper_QDM":0.025,"AUC_lower_QDM":0.617,"AUC_upper_QDM":0.518},{"ref_ceh":4011,"nombre":"ALANGE","r_QDM":0.216,"hit_rate_QDM":0.333,"BS_total_QDM":0.234,"BSS_lower_QDM":-0.167,"BSS_upper_QDM":0.077,"AUC_lower_QDM":0.516,"AUC_upper_QDM":0.703},{"ref_ceh":4016,"nombre":"MONTIJO","r_QDM":0.388,"hit_rate_QDM":0.389,"BS_total_QDM":0.235,"BSS_lower_QDM":-0.093,"BSS_upper_QDM":0.026,"AUC_lower_QDM":0.5,"AUC_upper_QDM":0.625},{"ref_ceh":4012,"nombre":"CHANZA","r_QDM":0.163,"hit_rate_QDM":0.333,"BS_total_QDM":0.223,"BSS_lower_QDM":0.032,"BSS_upper_QDM":-0.044,"AUC_lower_QDM":0.59,"AUC_upper_QDM":0.56}]},"ES050":{"cod":"ES050","nombre":"GUADALQUIVIR","n_embalses":54,"medianas":{"r_QDM":0.074,"hit_rate_QDM":0.314,"BS_total_QDM":0.239,"BSS_lower_QDM":-0.154,"BSS_upper_QDM":-0.076,"AUC_lower_QDM":0.446,"AUC_upper_QDM":0.533},"valores":{"r_QDM":[0.022,-0.031,0.096,0.038,0.003,0.085,0.249,0.306,0.011,0.023,0.046,-0.19,-0.095,-0.183,-0.163,0.214,-0.201,0.146,0.277,-0.064,0.303,-0.146,0.059,0.013,0.105,-0.247,0.003,-0.014,0.085,0.214,0.063,0.058,0.135,0.107,0.075,0.047,0.022,0.066,0.076,-0.018,0.086,0.263,0.214,0.333,0.379,0.151,0.248,0.129,0.3,0.073,-0.032,0.162,0.195,0.129],"hit_rate_QDM":[0.158,0.158,0.333,0.316,0.263,0.412,0.364,0.385,0.368,0.316,0.471,0.312,0.133,0.25,0.286,0.364,0.286,0.444,0.25,0.2,0.273,0.062,0.286,0.545,0.421,0.455,0.375,0.188,0.4,0.333,0.333,0.417,0.368,0.316,0.316,0.263,0.211,0.316,0.353,0.286,0.294,0.273,0.278,0.385,0.353,0.368,0.333,0.278,0.294,0.235,0.273,0.235,0.235,0.211],"BS_total_QDM":[0.281,0.255,0.224,0.241,0.248,0.221,0.264,0.236,0.243,0.248,0.216,0.242,0.247,0.272,0.247,0.233,0.238,0.239,0.276,0.23,0.239,0.265,0.234,0.218,0.221,0.215,0.261,0.263,0.214,0.257,0.24,0.272,0.219,0.228,0.236,0.245,0.249,0.231,0.23,0.237,0.242,0.261,0.229,0.273,0.218,0.234,0.222,0.237,0.235,0.222,0.254,0.242,0.234,0.244],"BSS_lower_QDM":[-0.261,-0.209,0.124,-0.177,-0.168,-0.046,-0.203,-0.12,-0.255,-0.18,-0.053,-0.292,-0.253,-0.33,-0.312,-0.386,-0.073,-0.096,-0.251,-0.062,-0.15,-0.487,-0.162,-0.144,-0.159,0.031,-0.221,-0.306,-0.03,-0.034,-0.05,0.142,-0.144,-0.108,-0.22,-0.245,-0.246,-0.186,-0.061,-0.148,-0.129,-0.269,-0.048,-0.311,-0.016,-0.246,-0.064,-0.132,-0.107,-0.028,-0.322,-0.116,-0.091,-0.168],"BSS_upper_QDM":[-0.081,-0.078,-0.111,-0.005,-0.019,0.023,-0.314,-0.062,-0.005,-0.192,-0.047,-0.073,-0.117,-0.103,-0.112,0.038,-0.138,-0.054,-0.314,-0.082,-0.245,-0.089,-0.016,0.004,0.061,-0.186,-0.268,-0.204,-0.005,-0.275,-0.208,-0.43,0.071,0.035,-0.043,-0.111,-0.018,-0.015,-0.102,-0.203,-0.129,-0.229,-0.047,-0.201,-0.009,-0.009,0.017,-0.048,0.022,-0.074,-0.156,-0.121,-0.018,-0.019],"AUC_lower_QDM":[0.369,0.399,0.72,0.44,0.5,0.598,0.5,0.625,0.339,0.452,0.598,0.308,0.25,0.344,0.256,0.268,0.589,0.444,0.344,0.44,0.536,0.15,0.444,0.446,0.423,0.625,0.375,0.317,0.52,0.5,0.5,0.781,0.47,0.53,0.375,0.399,0.351,0.405,0.47,0.467,0.424,0.411,0.486,0.388,0.576,0.381,0.5,0.403,0.455,0.553,0.518,0.477,0.447,0.446],"AUC_upper_QDM":[0.506,0.41,0.46,0.506,0.558,0.667,0.589,0.611,0.558,0.532,0.561,0.491,0.49,0.531,0.511,0.625,0.5,0.514,0.438,0.52,0.571,0.436,0.678,0.643,0.66,0.393,0.455,0.4,0.54,0.547,0.5,0.531,0.679,0.583,0.603,0.494,0.494,0.603,0.455,0.367,0.432,0.607,0.514,0.556,0.614,0.551,0.597,0.535,0.72,0.53,0.393,0.545,0.598,0.545]},"embalses":[{"ref_ceh":5001,"nombre":"TRANCO DE BEAS","r_QDM":0.022,"hit_rate_QDM":0.158,"BS_total_QDM":0.281,"BSS_lower_QDM":-0.261,"BSS_upper_QDM":-0.081,"AUC_lower_QDM":0.369,"AUC_upper_QDM":0.506},{"ref_ceh":5060,"nombre":"SAN CLEMENTE","r_QDM":-0.031,"hit_rate_QDM":0.158,"BS_total_QDM":0.255,"BSS_lower_QDM":-0.209,"BSS_upper_QDM":-0.078,"AUC_lower_QDM":0.399,"AUC_upper_QDM":0.41},{"ref_ceh":5071,"nombre":"PORTILLO, EL","r_QDM":0.096,"hit_rate_QDM":0.333,"BS_total_QDM":0.224,"BSS_lower_QDM":0.124,"BSS_upper_QDM":-0.111,"AUC_lower_QDM":0.72,"AUC_upper_QDM":0.46},{"ref_ceh":5029,"nombre":"BOLERA, LA","r_QDM":0.038,"hit_rate_QDM":0.316,"BS_total_QDM":0.241,"BSS_lower_QDM":-0.177,"BSS_upper_QDM":-0.005,"AUC_lower_QDM":0.44,"AUC_upper_QDM":0.506},{"ref_ceh":5043,"nombre":"NEGRATIN","r_QDM":0.003,"hit_rate_QDM":0.263,"BS_total_QDM":0.248,"BSS_lower_QDM":-0.168,"BSS_upper_QDM":-0.019,"AUC_lower_QDM":0.5,"AUC_upper_QDM":0.558},{"ref_ceh":5068,"nombre":"FRANCISCO ABELLAN-PEÑON DE LOS GITANOS","r_QDM":0.085,"hit_rate_QDM":0.412,"BS_total_QDM":0.221,"BSS_lower_QDM":-0.046,"BSS_upper_QDM":0.023,"AUC_lower_QDM":0.598,"AUC_upper_QDM":0.667},{"ref_ceh":5002,"nombre":"DOÑA ALDONZA","r_QDM":0.249,"hit_rate_QDM":0.364,"BS_total_QDM":0.264,"BSS_lower_QDM":-0.203,"BSS_upper_QDM":-0.314,"AUC_lower_QDM":0.5,"AUC_upper_QDM":0.589},{"ref_ceh":5003,"nombre":"PEDRO MARIN","r_QDM":0.306,"hit_rate_QDM":0.385,"BS_total_QDM":0.236,"BSS_lower_QDM":-0.12,"BSS_upper_QDM":-0.062,"AUC_lower_QDM":0.625,"AUC_upper_QDM":0.611},{"ref_ceh":5018,"nombre":"GUADALMENA","r_QDM":0.011,"hit_rate_QDM":0.368,"BS_total_QDM":0.243,"BSS_lower_QDM":-0.255,"BSS_upper_QDM":-0.005,"AUC_lower_QDM":0.339,"AUC_upper_QDM":0.558},{"ref_ceh":5070,"nombre":"GIRIBAILE","r_QDM":0.023,"hit_rate_QDM":0.316,"BS_total_QDM":0.248,"BSS_lower_QDM":-0.18,"BSS_upper_QDM":-0.192,"AUC_lower_QDM":0.452,"AUC_upper_QDM":0.532},{"ref_ceh":5044,"nombre":"DAÑADOR","r_QDM":0.046,"hit_rate_QDM":0.471,"BS_total_QDM":0.216,"BSS_lower_QDM":-0.053,"BSS_upper_QDM":-0.047,"AUC_lower_QDM":0.598,"AUC_upper_QDM":0.561},{"ref_ceh":5004,"nombre":"GUADALEN","r_QDM":-0.19,"hit_rate_QDM":0.312,"BS_total_QDM":0.242,"BSS_lower_QDM":-0.292,"BSS_upper_QDM":-0.073,"AUC_lower_QDM":0.308,"AUC_upper_QDM":0.491},{"ref_ceh":5052,"nombre":"FERNANDINA, LA","r_QDM":-0.095,"hit_rate_QDM":0.133,"BS_total_QDM":0.247,"BSS_lower_QDM":-0.253,"BSS_upper_QDM":-0.117,"AUC_lower_QDM":0.25,"AUC_upper_QDM":0.49},{"ref_ceh":5039,"nombre":"QUIEBRAJANO","r_QDM":-0.183,"hit_rate_QDM":0.25,"BS_total_QDM":0.272,"BSS_lower_QDM":-0.33,"BSS_upper_QDM":-0.103,"AUC_lower_QDM":0.344,"AUC_upper_QDM":0.531},{"ref_ceh":5005,"nombre":"RUMBLAR","r_QDM":-0.163,"hit_rate_QDM":0.286,"BS_total_QDM":0.247,"BSS_lower_QDM":-0.312,"BSS_upper_QDM":-0.112,"AUC_lower_QDM":0.256,"AUC_upper_QDM":0.511},{"ref_ceh":5059,"nombre":"FRESNEDA, LA (AZUD)","r_QDM":0.214,"hit_rate_QDM":0.364,"BS_total_QDM":0.233,"BSS_lower_QDM":-0.386,"BSS_upper_QDM":0.038,"AUC_lower_QDM":0.268,"AUC_upper_QDM":0.625},{"ref_ceh":5006,"nombre":"MONTORO III","r_QDM":-0.201,"hit_rate_QDM":0.286,"BS_total_QDM":0.238,"BSS_lower_QDM":-0.073,"BSS_upper_QDM":-0.138,"AUC_lower_QDM":0.589,"AUC_upper_QDM":0.5},{"ref_ceh":5007,"nombre":"JANDULA","r_QDM":0.146,"hit_rate_QDM":0.444,"BS_total_QDM":0.239,"BSS_lower_QDM":-0.096,"BSS_upper_QDM":-0.054,"AUC_lower_QDM":0.444,"AUC_upper_QDM":0.514},{"ref_ceh":5032,"nombre":"MARMOLEJO","r_QDM":0.277,"hit_rate_QDM":0.25,"BS_total_QDM":0.276,"BSS_lower_QDM":-0.251,"BSS_upper_QDM":-0.314,"AUC_lower_QDM":0.344,"AUC_upper_QDM":0.438},{"ref_ceh":5049,"nombre":"YEGUAS","r_QDM":-0.064,"hit_rate_QDM":0.2,"BS_total_QDM":0.23,"BSS_lower_QDM":-0.062,"BSS_upper_QDM":-0.082,"AUC_lower_QDM":0.44,"AUC_upper_QDM":0.52},{"ref_ceh":5033,"nombre":"CARPIO, EL","r_QDM":0.303,"hit_rate_QDM":0.273,"BS_total_QDM":0.239,"BSS_lower_QDM":-0.15,"BSS_upper_QDM":-0.245,"AUC_lower_QDM":0.536,"AUC_upper_QDM":0.571},{"ref_ceh":5051,"nombre":"SAN RAFAEL DE NAVALLANA","r_QDM":-0.146,"hit_rate_QDM":0.062,"BS_total_QDM":0.265,"BSS_lower_QDM":-0.487,"BSS_upper_QDM":-0.089,"AUC_lower_QDM":0.15,"AUC_upper_QDM":0.436},{"ref_ceh":5062,"nombre":"GUADALMELLATO","r_QDM":0.059,"hit_rate_QDM":0.286,"BS_total_QDM":0.234,"BSS_lower_QDM":-0.162,"BSS_upper_QDM":-0.016,"AUC_lower_QDM":0.444,"AUC_upper_QDM":0.678},{"ref_ceh":5108,"nombre":"VIBORAS","r_QDM":0.013,"hit_rate_QDM":0.545,"BS_total_QDM":0.218,"BSS_lower_QDM":-0.144,"BSS_upper_QDM":0.004,"AUC_lower_QDM":0.446,"AUC_upper_QDM":0.643},{"ref_ceh":5066,"nombre":"VADOMOJON","r_QDM":0.105,"hit_rate_QDM":0.421,"BS_total_QDM":0.221,"BSS_lower_QDM":-0.159,"BSS_upper_QDM":0.061,"AUC_lower_QDM":0.423,"AUC_upper_QDM":0.66},{"ref_ceh":5036,"nombre":"PUENTE NUEVO","r_QDM":-0.247,"hit_rate_QDM":0.455,"BS_total_QDM":0.215,"BSS_lower_QDM":0.031,"BSS_upper_QDM":-0.186,"AUC_lower_QDM":0.625,"AUC_upper_QDM":0.393},{"ref_ceh":5037,"nombre":"SIERRA BOYERA","r_QDM":0.003,"hit_rate_QDM":0.375,"BS_total_QDM":0.261,"BSS_lower_QDM":-0.221,"BSS_upper_QDM":-0.268,"AUC_lower_QDM":0.375,"AUC_upper_QDM":0.455},{"ref_ceh":5010,"nombre":"BREÑA II, LA","r_QDM":-0.014,"hit_rate_QDM":0.188,"BS_total_QDM":0.263,"BSS_lower_QDM":-0.306,"BSS_upper_QDM":-0.204,"AUC_lower_QDM":0.317,"AUC_upper_QDM":0.4},{"ref_ceh":5012,"nombre":"BEMBEZAR","r_QDM":0.085,"hit_rate_QDM":0.4,"BS_total_QDM":0.214,"BSS_lower_QDM":-0.03,"BSS_upper_QDM":-0.005,"AUC_lower_QDM":0.52,"AUC_upper_QDM":0.54},{"ref_ceh":5015,"nombre":"HORNACHUELOS","r_QDM":0.214,"hit_rate_QDM":0.333,"BS_total_QDM":0.257,"BSS_lower_QDM":-0.034,"BSS_upper_QDM":-0.275,"AUC_lower_QDM":0.5,"AUC_upper_QDM":0.547},{"ref_ceh":5017,"nombre":"RETORTILLO","r_QDM":0.063,"hit_rate_QDM":0.333,"BS_total_QDM":0.24,"BSS_lower_QDM":-0.05,"BSS_upper_QDM":-0.208,"AUC_lower_QDM":0.5,"AUC_upper_QDM":0.5},{"ref_ceh":5041,"nombre":"RETORTILLO (DERIVACION)","r_QDM":0.058,"hit_rate_QDM":0.417,"BS_total_QDM":0.272,"BSS_lower_QDM":0.142,"BSS_upper_QDM":-0.43,"AUC_lower_QDM":0.781,"AUC_upper_QDM":0.531},{"ref_ceh":5048,"nombre":"CANALES","r_QDM":0.135,"hit_rate_QDM":0.368,"BS_total_QDM":0.219,"BSS_lower_QDM":-0.144,"BSS_upper_QDM":0.071,"AUC_lower_QDM":0.47,"AUC_upper_QDM":0.679},{"ref_ceh":5038,"nombre":"QUENTAR","r_QDM":0.107,"hit_rate_QDM":0.316,"BS_total_QDM":0.228,"BSS_lower_QDM":-0.108,"BSS_upper_QDM":0.035,"AUC_lower_QDM":0.53,"AUC_upper_QDM":0.583},{"ref_ceh":5020,"nombre":"CUBILLAS","r_QDM":0.075,"hit_rate_QDM":0.316,"BS_total_QDM":0.236,"BSS_lower_QDM":-0.22,"BSS_upper_QDM":-0.043,"AUC_lower_QDM":0.375,"AUC_upper_QDM":0.603},{"ref_ceh":5050,"nombre":"COLOMERA","r_QDM":0.047,"hit_rate_QDM":0.263,"BS_total_QDM":0.245,"BSS_lower_QDM":-0.245,"BSS_upper_QDM":-0.111,"AUC_lower_QDM":0.399,"AUC_upper_QDM":0.494},{"ref_ceh":5021,"nombre":"BERMEJALES, LOS","r_QDM":0.022,"hit_rate_QDM":0.211,"BS_total_QDM":0.249,"BSS_lower_QDM":-0.246,"BSS_upper_QDM":-0.018,"AUC_lower_QDM":0.351,"AUC_upper_QDM":0.494},{"ref_ceh":5026,"nombre":"IZNAJAR","r_QDM":0.066,"hit_rate_QDM":0.316,"BS_total_QDM":0.231,"BSS_lower_QDM":-0.186,"BSS_upper_QDM":-0.015,"AUC_lower_QDM":0.405,"AUC_upper_QDM":0.603},{"ref_ceh":5055,"nombre":"JOSE TORAN","r_QDM":0.076,"hit_rate_QDM":0.353,"BS_total_QDM":0.23,"BSS_lower_QDM":-0.061,"BSS_upper_QDM":-0.102,"AUC_lower_QDM":0.47,"AUC_upper_QDM":0.455},{"ref_ceh":5061,"nombre":"PUEBLA DE CAZALLA","r_QDM":-0.018,"hit_rate_QDM":0.286,"BS_total_QDM":0.237,"BSS_lower_QDM":-0.148,"BSS_upper_QDM":-0.203,"AUC_lower_QDM":0.467,"AUC_upper_QDM":0.367},{"ref_ceh":5056,"nombre":"HUESNA","r_QDM":0.086,"hit_rate_QDM":0.294,"BS_total_QDM":0.242,"BSS_lower_QDM":-0.129,"BSS_upper_QDM":-0.129,"AUC_lower_QDM":0.424,"AUC_upper_QDM":0.432},{"ref_ceh":5034,"nombre":"CANTILLANA","r_QDM":0.263,"hit_rate_QDM":0.273,"BS_total_QDM":0.261,"BSS_lower_QDM":-0.269,"BSS_upper_QDM":-0.229,"AUC_lower_QDM":0.411,"AUC_upper_QDM":0.607},{"ref_ceh":5011,"nombre":"PINTADO, EL","r_QDM":0.214,"hit_rate_QDM":0.278,"BS_total_QDM":0.229,"BSS_lower_QDM":-0.048,"BSS_upper_QDM":-0.047,"AUC_lower_QDM":0.486,"AUC_upper_QDM":0.514},{"ref_ceh":5035,"nombre":"ALCALA DEL RIO","r_QDM":0.333,"hit_rate_QDM":0.385,"BS_total_QDM":0.273,"BSS_lower_QDM":-0.311,"BSS_upper_QDM":-0.201,"AUC_lower_QDM":0.388,"AUC_upper_QDM":0.556},{"ref_ceh":5016,"nombre":"ARACENA","r_QDM":0.379,"hit_rate_QDM":0.353,"BS_total_QDM":0.218,"BSS_lower_QDM":-0.016,"BSS_upper_QDM":-0.009,"AUC_lower_QDM":0.576,"AUC_upper_QDM":0.614},{"ref_ceh":5013,"nombre":"MINILLA, LA","r_QDM":0.151,"hit_rate_QDM":0.368,"BS_total_QDM":0.234,"BSS_lower_QDM":-0.246,"BSS_upper_QDM":-0.009,"AUC_lower_QDM":0.381,"AUC_upper_QDM":0.551},{"ref_ceh":5054,"nombre":"ZUFRE","r_QDM":0.248,"hit_rate_QDM":0.333,"BS_total_QDM":0.222,"BSS_lower_QDM":-0.064,"BSS_upper_QDM":0.017,"AUC_lower_QDM":0.5,"AUC_upper_QDM":0.597},{"ref_ceh":5014,"nombre":"CALA","r_QDM":0.129,"hit_rate_QDM":0.278,"BS_total_QDM":0.237,"BSS_lower_QDM":-0.132,"BSS_upper_QDM":-0.048,"AUC_lower_QDM":0.403,"AUC_upper_QDM":0.535},{"ref_ceh":5042,"nombre":"GERGAL","r_QDM":0.3,"hit_rate_QDM":0.294,"BS_total_QDM":0.235,"BSS_lower_QDM":-0.107,"BSS_upper_QDM":0.022,"AUC_lower_QDM":0.455,"AUC_upper_QDM":0.72},{"ref_ceh":5058,"nombre":"AGRIO","r_QDM":0.073,"hit_rate_QDM":0.235,"BS_total_QDM":0.222,"BSS_lower_QDM":-0.028,"BSS_upper_QDM":-0.074,"AUC_lower_QDM":0.553,"AUC_upper_QDM":0.53},{"ref_ceh":5022,"nombre":"TORRE DEL AGUILA","r_QDM":-0.032,"hit_rate_QDM":0.273,"BS_total_QDM":0.254,"BSS_lower_QDM":-0.322,"BSS_upper_QDM":-0.156,"AUC_lower_QDM":0.518,"AUC_upper_QDM":0.393},{"ref_ceh":5047,"nombre":"MARTIN GONZALO","r_QDM":0.162,"hit_rate_QDM":0.235,"BS_total_QDM":0.242,"BSS_lower_QDM":-0.116,"BSS_upper_QDM":-0.121,"AUC_lower_QDM":0.477,"AUC_upper_QDM":0.545},{"ref_ceh":5046,"nombre":"GUADANUÑO-CERRO MURIANO","r_QDM":0.195,"hit_rate_QDM":0.235,"BS_total_QDM":0.234,"BSS_lower_QDM":-0.091,"BSS_upper_QDM":-0.018,"AUC_lower_QDM":0.447,"AUC_upper_QDM":0.598},{"ref_ceh":5045,"nombre":"AGUASCEBAS","r_QDM":0.129,"hit_rate_QDM":0.211,"BS_total_QDM":0.244,"BSS_lower_QDM":-0.168,"BSS_upper_QDM":-0.019,"AUC_lower_QDM":0.446,"AUC_upper_QDM":0.545}]},"ES070":{"cod":"ES070","nombre":"SEGURA","n_embalses":6,"medianas":{"r_QDM":0.033,"hit_rate_QDM":0.289,"BS_total_QDM":0.257,"BSS_lower_QDM":-0.173,"BSS_upper_QDM":-0.095,"AUC_lower_QDM":0.497,"AUC_upper_QDM":0.497},"valores":{"r_QDM":[0.034,-0.047,-0.012,0.032,0.036,0.127],"hit_rate_QDM":[0.263,0.263,0.211,0.316,0.421,0.421],"BS_total_QDM":[0.274,0.277,0.265,0.248,0.227,0.227],"BSS_lower_QDM":[-0.247,-0.218,-0.256,-0.124,-0.058,-0.129],"BSS_upper_QDM":[-0.116,-0.135,-0.074,-0.153,0.044,0.092],"AUC_lower_QDM":[0.44,0.476,0.411,0.554,0.607,0.518],"AUC_upper_QDM":[0.365,0.34,0.474,0.519,0.583,0.673]},"embalses":[{"ref_ceh":7001,"nombre":"ANCHURICAS","r_QDM":0.034,"hit_rate_QDM":0.263,"BS_total_QDM":0.274,"BSS_lower_QDM":-0.247,"BSS_upper_QDM":-0.116,"AUC_lower_QDM":0.44,"AUC_upper_QDM":0.365},{"ref_ceh":7004,"nombre":"VIEJA, LA O NOVIA, LA","r_QDM":-0.047,"hit_rate_QDM":0.263,"BS_total_QDM":0.277,"BSS_lower_QDM":-0.218,"BSS_upper_QDM":-0.135,"AUC_lower_QDM":0.476,"AUC_upper_QDM":0.34},{"ref_ceh":7002,"nombre":"FUENSANTA","r_QDM":-0.012,"hit_rate_QDM":0.211,"BS_total_QDM":0.265,"BSS_lower_QDM":-0.256,"BSS_upper_QDM":-0.074,"AUC_lower_QDM":0.411,"AUC_upper_QDM":0.474},{"ref_ceh":7017,"nombre":"TAIBILLA","r_QDM":0.032,"hit_rate_QDM":0.316,"BS_total_QDM":0.248,"BSS_lower_QDM":-0.124,"BSS_upper_QDM":-0.153,"AUC_lower_QDM":0.554,"AUC_upper_QDM":0.519},{"ref_ceh":7003,"nombre":"CENAJO","r_QDM":0.036,"hit_rate_QDM":0.421,"BS_total_QDM":0.227,"BSS_lower_QDM":-0.058,"BSS_upper_QDM":0.044,"AUC_lower_QDM":0.607,"AUC_upper_QDM":0.583},{"ref_ceh":7010,"nombre":"SANTOMERA","r_QDM":0.127,"hit_rate_QDM":0.421,"BS_total_QDM":0.227,"BSS_lower_QDM":-0.129,"BSS_upper_QDM":0.092,"AUC_lower_QDM":0.518,"AUC_upper_QDM":0.673}]},"ES080":{"cod":"ES080","nombre":"JÚCAR","n_embalses":3,"medianas":{"r_QDM":0.272,"hit_rate_QDM":0.316,"BS_total_QDM":0.215,"BSS_lower_QDM":-0.093,"BSS_upper_QDM":0.092,"AUC_lower_QDM":0.589,"AUC_upper_QDM":0.635},"valores":{"r_QDM":[0.365,0.272,0.242],"hit_rate_QDM":[0.316,0.316,0.368],"BS_total_QDM":[0.203,0.22,0.215],"BSS_lower_QDM":[0.058,-0.093,-0.098],"BSS_upper_QDM":[0.192,0.074,0.092],"AUC_lower_QDM":[0.726,0.571,0.589],"AUC_upper_QDM":[0.821,0.628,0.635]},"embalses":[{"ref_ceh":8001,"nombre":"ALARCON","r_QDM":0.365,"hit_rate_QDM":0.316,"BS_total_QDM":0.203,"BSS_lower_QDM":0.058,"BSS_upper_QDM":0.192,"AUC_lower_QDM":0.726,"AUC_upper_QDM":0.821},{"ref_ceh":8009,"nombre":"CONTRERAS","r_QDM":0.272,"hit_rate_QDM":0.316,"BS_total_QDM":0.22,"BSS_lower_QDM":-0.093,"BSS_upper_QDM":0.074,"AUC_lower_QDM":0.571,"AUC_upper_QDM":0.628},{"ref_ceh":8006,"nombre":"ARQUILLO DE SAN BLAS","r_QDM":0.242,"hit_rate_QDM":0.368,"BS_total_QDM":0.215,"BSS_lower_QDM":-0.098,"BSS_upper_QDM":0.092,"AUC_lower_QDM":0.589,"AUC_upper_QDM":0.635}]}};
+
+const METRICA_CONFIG = {
+  r_QDM:         { label: 'r',         titulo: 'Correlación r',                min: -0.3, max: 0.5, ref: 0 },
+  hit_rate_QDM:  { label: 'Hit rate',  titulo: 'Hit rate',                      min: 0,    max: 0.7, ref: 0.333 },
+  BSS_lower_QDM: { label: 'BSS lower', titulo: 'BSS lower (tercil seco)',       min: -0.7, max: 0.3, ref: 0 },
+  BSS_upper_QDM: { label: 'BSS upper', titulo: 'BSS upper (tercil húmedo)',     min: -0.7, max: 0.3, ref: 0 },
+  AUC_lower_QDM: { label: 'AUC lower', titulo: 'AUC ROC lower (tercil seco)',   min: 0.3,  max: 0.9, ref: 0.5 },
+  AUC_upper_QDM: { label: 'AUC upper', titulo: 'AUC ROC upper (tercil húmedo)', min: 0.3,  max: 0.9, ref: 0.5 },
+};
+
+let geojsonCuencas = null;
+let geojsonRios = null;
+let geojsonPaises = null;
+let metricaActual = 'r_QDM';
+let cuencaSeleccionada = null;
+let viewBoxCalc = null;
+let LAT_FACTOR = 1.0;  // Para corregir el achatamiento (mantenemos lat, escalamos lon)
+
+function colorScale(value, min, max) {
+  if (value == null || isNaN(value)) return '#a0a0a0';
+  const t = Math.max(0, Math.min(1, (value - min) / (max - min)));
+  if (t < 0.5) {
+    const u = t * 2;
+    return `rgb(${Math.round(220 + 25*u)},${Math.round(38 + 120*u)},${Math.round(38 - 27*u)})`;
+  } else {
+    const u = (t - 0.5) * 2;
+    return `rgb(${Math.round(245 - 229*u)},${Math.round(158 + 27*u)},${Math.round(11 + 118*u)})`;
+  }
+}
+
+async function cargarDatos() {
+  try {
+    const [respC, respR, respP] = await Promise.all([
+      fetch('cuencas.geojson'),
+      fetch('rios.geojson'),
+      fetch('paises.geojson')
+    ]);
+    geojsonCuencas = await respC.json();
+    geojsonRios = await respR.json();
+    geojsonPaises = await respP.json();
+    calcularViewBox();
+    renderMapa();
+  } catch (e) {
+    document.getElementById('mapa-cuencas').innerHTML = 
+      '<text x="0" y="0" font-size="20" fill="#dc2626">Error cargando geojson — comprueba paises.geojson en docs/</text>';
+    console.error(e);
+  }
+}
+
+// Proyección: mantenemos latitud tal cual, escalamos longitud por cos(lat_medio)
+// Esto evita el achatamiento horizontal de España.
+// Latitud media de España peninsular ≈ 40°, cos(40°) ≈ 0.766
+function projX(lon) {
+  return lon * LAT_FACTOR;
+}
+function projY(lat) {
+  return -lat;  // invertir Y porque SVG es Y-down
+}
+
+function calcularViewBox() {
+  // Lat media para el factor de proyección
+  let sumLat = 0, n = 0;
+  geojsonCuencas.features.forEach(f => {
+    const coords = f.geometry.type === 'MultiPolygon' 
+      ? f.geometry.coordinates.flat(2) : f.geometry.coordinates.flat(1);
+    coords.forEach(c => { sumLat += c[1]; n++; });
+  });
+  const latMedia = sumLat / n;
+  LAT_FACTOR = Math.cos(latMedia * Math.PI / 180);
+  console.log(`Lat media: ${latMedia.toFixed(1)}°, LAT_FACTOR: ${LAT_FACTOR.toFixed(3)}`);
+  
+  // Bbox proyectado, usando cuencas + paises para englobar Portugal/Francia
+  let minX=Infinity, maxX=-Infinity, minY=Infinity, maxY=-Infinity;
+  const updateBbox = (gj) => {
+    gj.features.forEach(f => {
+      const coords = f.geometry.type === 'MultiPolygon' 
+        ? f.geometry.coordinates.flat(2) : f.geometry.coordinates.flat(1);
+      coords.forEach(c => {
+        const x = projX(c[0]);
+        const y = projY(c[1]);
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+      });
+    });
+  };
+  if (geojsonPaises) updateBbox(geojsonPaises);
+  updateBbox(geojsonCuencas);
+  
+  const padX = (maxX-minX)*0.03;
+  const padY = (maxY-minY)*0.03;
+  viewBoxCalc = {
+    x: minX - padX,
+    y: minY - padY,
+    w: maxX - minX + 2*padX,
+    h: maxY - minY + 2*padY,
+  };
+}
+
+function ringToPath(ring) {
+  return ring.map((c, i) => `${i===0?'M':'L'}${projX(c[0])},${projY(c[1])}`).join(' ') + 'Z';
+}
+function lineToPath(coords) {
+  return coords.map((c, i) => `${i===0?'M':'L'}${projX(c[0])},${projY(c[1])}`).join(' ');
+}
+
+function renderMapa() {
+  if (!geojsonCuencas) return;
+  const svg = document.getElementById('mapa-cuencas');
+  const cfg = METRICA_CONFIG[metricaActual];
+  document.getElementById('metrica-titulo').textContent = cfg.titulo;
+  document.getElementById('leyenda-min').textContent = cfg.min.toFixed(2);
+  document.getElementById('leyenda-mid').textContent = ((cfg.min + cfg.max)/2).toFixed(2);
+  document.getElementById('leyenda-max').textContent = cfg.max.toFixed(2);
+  svg.setAttribute('viewBox', `${viewBoxCalc.x} ${viewBoxCalc.y} ${viewBoxCalc.w} ${viewBoxCalc.h}`);
+
+  let html = '';
+  
+  // 1. Países (Portugal, Francia) al fondo
+  if (geojsonPaises) {
+    geojsonPaises.features.forEach(f => {
+      const polys = f.geometry.type === 'MultiPolygon' ? f.geometry.coordinates : [f.geometry.coordinates];
+      polys.forEach(polyArr => {
+        polyArr.forEach(ring => {
+          html += `<path d="${ringToPath(ring)}" class="pais-bg"/>`;
+        });
+      });
+    });
+  }
+  
+  // 2. Cuencas
+  geojsonCuencas.features.forEach(f => {
+    const cod = f.properties.CodDemarc;
+    const nombre = f.properties.Nombre;
+    const datos = DATA_CUENCAS[cod];
+    let color, hasData;
+    if (datos) {
+      color = colorScale(datos.medianas[metricaActual], cfg.min, cfg.max);
+      hasData = true;
+    } else {
+      color = '#a0a0a0';
+      hasData = false;
+    }
+    const polys = f.geometry.type === 'MultiPolygon' ? f.geometry.coordinates : [f.geometry.coordinates];
+    polys.forEach(polyArr => {
+      polyArr.forEach(ring => {
+        const cls = `cuenca-poly${cuencaSeleccionada===cod?' selected':''}${hasData?'':' nodata'}`;
+        const title = hasData 
+          ? `${nombre} — N=${datos.n_embalses}, ${cfg.label}=${datos.medianas[metricaActual]}`
+          : `${nombre} — Sin datos`;
+        html += `<path d="${ringToPath(ring)}" class="${cls}" fill="${color}" data-cod="${cod}" data-hasdata="${hasData}">
+                   <title>${title}</title>
+                 </path>`;
+      });
+    });
+  });
+  
+  // 3. Ríos encima
+  if (geojsonRios) {
+    geojsonRios.features.forEach(f => {
+      const ord = f.properties.ord || 7;
+      const sw = (ord >= 8 ? 1.8 : ord === 7 ? 1.2 : 0.8);
+      const lines = f.geometry.type === 'MultiLineString' ? f.geometry.coordinates : [f.geometry.coordinates];
+      lines.forEach(coords => {
+        html += `<path d="${lineToPath(coords)}" class="rio-line" style="stroke-width:${sw}px"/>`;
+      });
+    });
+  }
+  
+  svg.innerHTML = html;
+  svg.querySelectorAll('.cuenca-poly').forEach(p => {
+    p.addEventListener('click', () => {
+      if (p.dataset.hasdata === 'true') {
+        cuencaSeleccionada = p.dataset.cod;
+        renderMapa();
+        renderDetalle();
+        renderTabla();
+      }
+    });
+  });
+}
+
+function renderDetalle() {
+  const panel = document.getElementById('cuenca-detail');
+  if (!cuencaSeleccionada || !DATA_CUENCAS[cuencaSeleccionada]) {
+    panel.innerHTML = '<div class="cuenca-detail-placeholder">Haz clic en una cuenca del mapa para ver sus métricas detalladas</div>';
+    return;
+  }
+  const d = DATA_CUENCAS[cuencaSeleccionada];
+  const m = d.medianas;
+  const sorted = [...d.embalses].sort((a,b) => (b[metricaActual]||0) - (a[metricaActual]||0));
+  const top = sorted.slice(0, 8);
+  panel.innerHTML = `
+    <div class="cuenca-detail-title">${d.nombre}</div>
+    <div class="cuenca-detail-sub">${d.cod} · ${d.n_embalses} embalses</div>
+    <div class="cuenca-detail-metrics">
+      <div class="cuenca-detail-metric-card"><span class="cuenca-detail-metric-val" style="color:${rColor(m.r_QDM)}">${m.r_QDM.toFixed(2)}</span><span class="cuenca-detail-metric-lbl">r mediana</span></div>
+      <div class="cuenca-detail-metric-card"><span class="cuenca-detail-metric-val" style="color:${hitColor(m.hit_rate_QDM)}">${(m.hit_rate_QDM*100).toFixed(1)}%</span><span class="cuenca-detail-metric-lbl">Hit rate</span></div>
+      <div class="cuenca-detail-metric-card"><span class="cuenca-detail-metric-val" style="color:${bssColor(m.BSS_lower_QDM)}">${fmt2s(m.BSS_lower_QDM)}</span><span class="cuenca-detail-metric-lbl">BSS lower (seco)</span></div>
+      <div class="cuenca-detail-metric-card"><span class="cuenca-detail-metric-val" style="color:${bssColor(m.BSS_upper_QDM)}">${fmt2s(m.BSS_upper_QDM)}</span><span class="cuenca-detail-metric-lbl">BSS upper (húmedo)</span></div>
+      <div class="cuenca-detail-metric-card"><span class="cuenca-detail-metric-val" style="color:${aucColor(m.AUC_lower_QDM)}">${m.AUC_lower_QDM.toFixed(2)}</span><span class="cuenca-detail-metric-lbl">AUC lower (seco)</span></div>
+      <div class="cuenca-detail-metric-card"><span class="cuenca-detail-metric-val" style="color:${aucColor(m.AUC_upper_QDM)}">${m.AUC_upper_QDM.toFixed(2)}</span><span class="cuenca-detail-metric-lbl">AUC upper (húmedo)</span></div>
+    </div>
+    <div class="cuenca-detail-rank">
+      <div class="cuenca-detail-rank-title">Top embalses por ${METRICA_CONFIG[metricaActual].label}</div>
+      <div class="cuenca-detail-list">
+        ${top.map(e => `<div class="cuenca-detail-rank-row"><span class="cuenca-detail-rank-nombre">${e.nombre}</span><span class="cuenca-detail-rank-val" style="color:${rColor(e[metricaActual])}">${(e[metricaActual]).toFixed(2)}</span></div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function rColor(v)   { return v == null ? '#9ca3af' : v > 0.3 ? '#16a34a' : v > 0.15 ? '#ca8a04' : '#dc2626'; }
+function hitColor(v) { return v == null ? '#9ca3af' : v > 0.45 ? '#16a34a' : v > 0.35 ? '#ca8a04' : '#dc2626'; }
+function bssColor(v) { return v == null ? '#9ca3af' : v > 0.05 ? '#16a34a' : v > -0.05 ? '#ca8a04' : '#dc2626'; }
+function aucColor(v) { return v == null ? '#9ca3af' : v > 0.65 ? '#16a34a' : v > 0.55 ? '#ca8a04' : '#dc2626'; }
+function fmt2s(v) { if (v == null) return '—'; return (v >= 0 ? '+' : '') + v.toFixed(2); }
+
+function renderBoxplots() {
+  const svg = document.getElementById('boxplots-cuencas');
+  const W = 1100, H = 380;
+  const metricas = ['r_QDM', 'hit_rate_QDM', 'BSS_lower_QDM', 'BSS_upper_QDM', 'AUC_lower_QDM', 'AUC_upper_QDM'];
+  const cuencasOrden = Object.keys(DATA_CUENCAS).sort((a,b) => 
+    (DATA_CUENCAS[b].medianas.r_QDM || -999) - (DATA_CUENCAS[a].medianas.r_QDM || -999)
+  );
+  const panelW = (W - 60) / metricas.length;
+  const panelH = H - 80;
+  const top = 30, leftMargin = 50;
+  let html = '';
+  metricas.forEach((metrica, mi) => {
+    const cfg = METRICA_CONFIG[metrica];
+    const px = leftMargin + mi * panelW;
+    const py = top;
+    html += `<text x="${px + panelW/2}" y="${py - 12}" text-anchor="middle" class="box-title">${cfg.label}</text>`;
+    const yMin = cfg.min, yMax = cfg.max;
+    const yScale = v => py + panelH - ((v - yMin) / (yMax - yMin)) * panelH;
+    const refY = yScale(cfg.ref);
+    html += `<line x1="${px+10}" y1="${refY}" x2="${px+panelW-10}" y2="${refY}" class="box-ref-line"/>`;
+    if (mi === 0) {
+      const nT = 5;
+      for (let i = 0; i <= nT; i++) {
+        const v = yMin + (yMax - yMin) * i / nT;
+        const y = yScale(v);
+        html += `<line x1="${px-3}" y1="${y}" x2="${px}" y2="${y}" stroke="#9ca3af" stroke-width="0.5"/>`;
+        html += `<text x="${px-6}" y="${y+3}" text-anchor="end" class="box-axis-label">${v.toFixed(2)}</text>`;
+      }
+    }
+    const boxW = (panelW - 20) / cuencasOrden.length * 0.7;
+    cuencasOrden.forEach((cod, ci) => {
+      const cx = px + 10 + (ci + 0.5) * ((panelW - 20) / cuencasOrden.length);
+      const vals = DATA_CUENCAS[cod].valores[metrica].filter(v => !isNaN(v));
+      if (vals.length === 0) return;
+      vals.sort((a,b) => a-b);
+      const q1 = vals[Math.floor(vals.length * 0.25)];
+      const q2 = vals[Math.floor(vals.length * 0.5)];
+      const q3 = vals[Math.floor(vals.length * 0.75)];
+      const iqr = q3 - q1;
+      const whLow = Math.max(vals[0], q1 - 1.5*iqr);
+      const whHigh = Math.min(vals[vals.length-1], q3 + 1.5*iqr);
+      const yQ1 = yScale(q1), yQ2 = yScale(q2), yQ3 = yScale(q3);
+      const yWL = yScale(whLow), yWH = yScale(whHigh);
+      html += `<rect x="${cx - boxW/2}" y="${yQ3}" width="${boxW}" height="${yQ1-yQ3}" class="box-rect"><title>${DATA_CUENCAS[cod].nombre} (N=${vals.length}) Q1=${q1.toFixed(2)} Q2=${q2.toFixed(2)} Q3=${q3.toFixed(2)}</title></rect>`;
+      html += `<line x1="${cx - boxW/2}" y1="${yQ2}" x2="${cx + boxW/2}" y2="${yQ2}" class="box-median"/>`;
+      html += `<line x1="${cx}" y1="${yWL}" x2="${cx}" y2="${yQ1}" class="box-whisker"/>`;
+      html += `<line x1="${cx}" y1="${yWH}" x2="${cx}" y2="${yQ3}" class="box-whisker"/>`;
+      html += `<line x1="${cx - boxW*0.3}" y1="${yWL}" x2="${cx + boxW*0.3}" y2="${yWL}" class="box-whisker"/>`;
+      html += `<line x1="${cx - boxW*0.3}" y1="${yWH}" x2="${cx + boxW*0.3}" y2="${yWH}" class="box-whisker"/>`;
+      vals.forEach(v => {
+        if (v < whLow || v > whHigh) {
+          html += `<circle cx="${cx}" cy="${yScale(v)}" r="2" class="box-outlier"/>`;
+        }
+      });
+    });
+  });
+  const legY = H - 40;
+  cuencasOrden.forEach((cod, ci) => {
+    const c = DATA_CUENCAS[cod];
+    const nombreCorto = c.nombre.length > 12 ? c.nombre.substr(0, 10) + '…' : c.nombre;
+    const x = leftMargin + ci * ((W - leftMargin) / cuencasOrden.length) + 5;
+    html += `<text x="${x}" y="${legY}" class="box-axis-label" style="font-size:9px">${ci+1}. ${nombreCorto}</text>`;
+    html += `<text x="${x}" y="${legY+12}" class="box-axis-label" style="font-size:8px;fill:#6b7280">N=${c.n_embalses}</text>`;
+  });
+  svg.innerHTML = html;
+}
+
+function renderTabla() {
+  const tbody = document.querySelector('#tabla-cuencas tbody');
+  const sorted = Object.values(DATA_CUENCAS).sort((a,b) => b.medianas.r_QDM - a.medianas.r_QDM);
+  tbody.innerHTML = sorted.map(d => `
+    <tr data-cod="${d.cod}" class="${d.cod === cuencaSeleccionada ? 'selected-row' : ''}">
+      <td><strong>${d.nombre}</strong></td>
+      <td>${d.n_embalses}</td>
+      <td class="metrica" style="color:${rColor(d.medianas.r_QDM)}">${d.medianas.r_QDM.toFixed(2)}</td>
+      <td class="metrica" style="color:${hitColor(d.medianas.hit_rate_QDM)}">${(d.medianas.hit_rate_QDM*100).toFixed(1)}%</td>
+      <td class="metrica" style="color:${bssColor(d.medianas.BSS_lower_QDM)}">${fmt2s(d.medianas.BSS_lower_QDM)}</td>
+      <td class="metrica" style="color:${bssColor(d.medianas.BSS_upper_QDM)}">${fmt2s(d.medianas.BSS_upper_QDM)}</td>
+      <td class="metrica" style="color:${aucColor(d.medianas.AUC_lower_QDM)}">${d.medianas.AUC_lower_QDM.toFixed(2)}</td>
+      <td class="metrica" style="color:${aucColor(d.medianas.AUC_upper_QDM)}">${d.medianas.AUC_upper_QDM.toFixed(2)}</td>
+    </tr>`).join('');
+  tbody.querySelectorAll('tr').forEach(r => {
+    r.addEventListener('click', () => {
+      cuencaSeleccionada = r.dataset.cod;
+      renderMapa();
+      renderDetalle();
+      renderTabla();
+    });
+  });
+}
+
+document.getElementById('sel-metrica').addEventListener('change', e => {
+  metricaActual = e.target.value;
+  renderMapa();
+  if (cuencaSeleccionada) renderDetalle();
+});
+
+cargarDatos();
+renderBoxplots();
+renderTabla();
+</script>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/sanfiz\.github\.io\/aemet-tragsatec-2026\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 · Generado por los autores con HTML &amp; CSS</p>
+</div>   
+    <div class="nav-footer-center">
+<p>Marta Domínguez · Martín Senande · Sabela Sanfiz (Tragsatec) · Esteban Rodríguez (AEMET)</p>
+</div>
+    <div class="nav-footer-right">
+<p>Tragsatec · AEMET · Predicción Estacional · 2024–2026</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

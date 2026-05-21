@@ -19,5 +19,14 @@
   },
   "embalses.qmd": {
     "embalses.html": "b26bef71"
+  },
+  "embalses_v2.qmd": {
+    "embalses_v2.html": "b18ad783"
+  },
+  "embalses-cuenca.qmd": {
+    "embalses-cuenca.html": "f6188c25"
+  },
+  "embalses-prediccion.qmd": {
+    "embalses-prediccion.html": "fc56dafc"
   }
 }

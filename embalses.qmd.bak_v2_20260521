@@ -1,0 +1,248 @@
+---
+title: "Embalses"
+toc: false
+---
+
+```{=html}
+<div style="max-width:960px;margin:6rem auto;padding:0 1.5rem;">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+<div id="embalses-app">
+
+<!-- ── HEADER ──────────────────────────────────────────── -->
+<div class="emb-header">
+  <span class="section-label">Predicción estacional · ROCIO_IBEB · ECMWF SEAS5.1 + QDM</span>
+  <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin:0.3rem 0 0.5rem;">Embalses — Resultados del modelo PLS</h2>
+  <p style="font-size:0.88rem;color:#4a5568;margin:0;">
+    Modelo de regresión PLS entrenado con precipitación ROCIO_IBEB (NDJFM, 1997–2015) y validado mediante LOOCV.
+    Aplicación al hindcast ECMWF-SEAS5.1, con calibración por Quantile Delta Mapping (QDM) en la rejilla.
+    <strong>183 embalses</strong> seleccionados en 8 cuencas.
+  </p>
+</div>
+
+<!-- (el resto del HTML del selector + sidebar igual que antes) -->
+<!-- ... -->
+
+</div>
+</div>
+
+<style>
+/* ... estilos antiguos ... */
+
+/* NUEVO: sección de comparativa ORIG vs QDM */
+.emb-medscope-section {
+  background: linear-gradient(to right, #f4f8fd, #fff7ed);
+  border: 1px solid #dde3ed;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+.emb-medscope-title {
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: #003087; margin-bottom: 0.8rem;
+}
+.emb-medscope-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 1fr 50px;
+  gap: 0.5rem; align-items: center;
+  margin-bottom: 0.6rem;
+  font-size: 0.75rem;
+}
+.emb-medscope-label { font-weight: 600; color: #4a5568; }
+.emb-medscope-bar-bg {
+  height: 14px; background: #f0f4f8; border-radius: 99px;
+  position: relative; overflow: hidden;
+}
+.emb-medscope-bar-fill {
+  height: 100%; border-radius: 99px;
+  position: absolute; top: 0;
+}
+.emb-medscope-vals {
+  display: flex; gap: 0.5rem; font-size: 0.7rem; color: #1a2332;
+  justify-content: flex-end;
+}
+.emb-medscope-val-orig { color: #2563eb; font-weight: 600; }
+.emb-medscope-val-qdm  { color: #dc2626; font-weight: 700; }
+.emb-medscope-delta { font-size: 0.65rem; color: #6b7280; margin-left: 0.4rem; }
+</style>
+
+<script>
+let EMBALSES_DATA = [];   // se carga vía fetch
+let HINDCAST_MAP  = {};
+
+async function loadData() {
+  const resp = await fetch('embalses_data_v2.json');
+  EMBALSES_DATA = await resp.json();
+  // Si tienes HINDCAST_MAP en otro JSON, cárgalo igual. Si lo tienes inline, déjalo.
+}
+
+function fmt2(v) { return v != null ? v.toFixed(3) : '—'; }
+function fmt2s(v) {
+  if (v == null) return '—';
+  return (v >= 0 ? '+' : '') + v.toFixed(2);
+}
+function fmtPct(v) { return v != null ? (v*100).toFixed(1)+'%' : '—'; }
+function rColor(r) {
+  if (r >= 0.9) return '#16a34a';
+  if (r >= 0.8) return '#ca8a04';
+  return '#dc2626';
+}
+function rBadge(r) {
+  if (r >= 0.9) return 'badge-high';
+  if (r >= 0.8) return 'badge-med';
+  return 'badge-low';
+}
+
+/* ── NUEVO: barras MEDSCOPE para una métrica ── */
+function medscopeBarRow(label, orig, qdm, refLine, scaleMin, scaleMax) {
+  // orig, qdm: valores; refLine: valor de referencia (0 para BSS, 0.5 para AUC)
+  // scaleMin/Max: rango visual
+  const range = scaleMax - scaleMin;
+  const refPct = ((refLine - scaleMin) / range) * 100;
+  const origPct = orig != null ? Math.max(0, Math.min(100, ((orig - scaleMin) / range) * 100)) : 0;
+  const qdmPct  = qdm  != null ? Math.max(0, Math.min(100, ((qdm  - scaleMin) / range) * 100)) : 0;
+  return `
+    <div class="emb-medscope-row">
+      <span class="emb-medscope-label">${label}</span>
+      <div class="emb-medscope-bar-bg">
+        <div class="emb-medscope-bar-fill" style="width:${origPct}%;background:#93c5fd;opacity:0.7"></div>
+        <div style="position:absolute;top:0;left:${refPct}%;width:1px;height:100%;background:#dc2626;"></div>
+      </div>
+      <div class="emb-medscope-bar-bg">
+        <div class="emb-medscope-bar-fill" style="width:${qdmPct}%;background:#fca5a5;opacity:0.85"></div>
+        <div style="position:absolute;top:0;left:${refPct}%;width:1px;height:100%;background:#dc2626;"></div>
+      </div>
+      <div class="emb-medscope-vals">
+        <span class="emb-medscope-val-orig">${fmt2s(orig)}</span>
+        <span class="emb-medscope-val-qdm">${fmt2s(qdm)}</span>
+      </div>
+    </div>`;
+}
+
+/* ── renderDetail actualizada ── */
+function renderDetail(e) {
+  const panel = document.getElementById('emb-detail');
+  const bsItems = [
+    { name: 'Seco (T1)',   val: e.BS_T1,    color: '#ef4444' },
+    { name: 'Normal (T2)', val: e.BS_T2,    color: '#f59e0b' },
+    { name: 'Húmedo (T3)', val: e.BS_T3,    color: '#3b82f6' },
+    { name: 'Total',       val: e.BS_total, color: '#6366f1' },
+  ];
+  const bsMax = 0.37;
+  const bsRows = bsItems.map(b => `
+    <div class="emb-bs-row">
+      <span class="emb-bs-name">${b.name}</span>
+      <div class="emb-bs-bar-bg">
+        <div class="emb-bs-bar-fill" style="width:${((b.val||0)/bsMax*100).toFixed(1)}%;background:${b.color};"></div>
+      </div>
+      <span class="emb-bs-val">${fmt2(b.val)}</span>
+    </div>`).join('');
+
+  const hitPct = e.hit_rate != null ? (e.hit_rate*100).toFixed(1)+'%' : '—';
+  const rSEAS5 = e.r_ensmean_obs != null ? e.r_ensmean_obs.toFixed(3) : '—';
+  const rSEAS5color = e.r_ensmean_obs > 0.2 ? '#16a34a' : e.r_ensmean_obs > 0 ? '#ca8a04' : '#dc2626';
+  const imgFile = HINDCAST_MAP[String(e.ref_ceh)];
+  const imgHtml = imgFile
+    ? `<span class="emb-hindcast-label">Hindcast ECMWF SEAS5.1 · Serie temporal y probabilidades por tercil</span>
+       <img src="images/hindcast/${imgFile}" class="emb-hindcast-img"
+            alt="Hindcast ${e.nombre}"
+            onclick="openLightbox('images/hindcast/${imgFile}', '${e.nombre}')"
+            onerror="this.style.display='none'">`
+    : '';
+
+  // ── NUEVO: bloque MEDSCOPE ──
+  let medscopeHtml = '';
+  if (e.r_QDM != null) {
+    medscopeHtml = `
+      <div class="emb-medscope-section">
+        <div class="emb-medscope-title">Verificación tipo MEDSCOPE — ORIG vs QDM</div>
+        <div class="emb-medscope-row" style="border-bottom:1px solid #dde3ed;padding-bottom:0.4rem;margin-bottom:0.6rem;">
+          <span class="emb-medscope-label" style="color:#003087;">Métrica</span>
+          <span style="color:#2563eb;font-weight:700;text-align:center;">ORIG</span>
+          <span style="color:#dc2626;font-weight:700;text-align:center;">QDM</span>
+          <span></span>
+        </div>
+        ${medscopeBarRow('r',         e.r_orig,         e.r_QDM,         0,   -0.4, 0.6)}
+        ${medscopeBarRow('BSS lower', e.BSS_lower_orig, e.BSS_lower_QDM, 0,   -1.0, 0.5)}
+        ${medscopeBarRow('BSS upper', e.BSS_upper_orig, e.BSS_upper_QDM, 0,   -1.0, 0.5)}
+        ${medscopeBarRow('AUC lower', e.AUC_lower_orig, e.AUC_lower_QDM, 0.5, 0.0,  1.0)}
+        ${medscopeBarRow('AUC upper', e.AUC_upper_orig, e.AUC_upper_QDM, 0.5, 0.0,  1.0)}
+        <div style="font-size:0.7rem;color:#6b7280;margin-top:0.5rem;text-align:right;">
+          Línea roja: referencia (climatología=0 para BSS, azar=0.5 para AUC)
+        </div>
+      </div>`;
+  }
+
+  panel.innerHTML = `
+    <div class="emb-detail-title">${e.nombre}</div>
+    <div class="emb-detail-sub">${e.demarcacion} · ref_ceh: ${e.ref_ceh} · ${e.n_anhos} años</div>
+    <div class="emb-metrics">
+      <div class="emb-metric-card">
+        <span class="emb-metric-val" style="color:${rColor(e.r_loocv)}">${fmt2(e.r_loocv)}</span>
+        <span class="emb-metric-lbl">r LOOCV</span>
+      </div>
+      <div class="emb-metric-card">
+        <span class="emb-metric-val" style="color:${rColor(e.r_train)}">${fmt2(e.r_train)}</span>
+        <span class="emb-metric-lbl">r Train</span>
+      </div>
+      <div class="emb-metric-card">
+        <span class="emb-metric-val" style="color:${rSEAS5color}">${rSEAS5}</span>
+        <span class="emb-metric-lbl">r SEAS5 ORIG</span>
+      </div>
+      <div class="emb-metric-card">
+        <span class="emb-metric-val" style="color:#003087">${hitPct}</span>
+        <span class="emb-metric-lbl">Hit rate ORIG</span>
+      </div>
+    </div>
+    <div class="emb-bs-chart">
+      <div class="emb-bs-label">Brier Score por tercil ORIG (↓ mejor · 0=perfecto · 0.333=climatología)</div>
+      ${bsRows}
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:0.5rem;">
+      <div class="emb-metric-card">
+        <span class="emb-metric-val" style="font-size:1.1rem;color:#003087">${e.n_components_opt ?? '—'}</span>
+        <span class="emb-metric-lbl">Componentes PLS</span>
+      </div>
+      <div class="emb-metric-card">
+        <span class="emb-metric-val" style="font-size:1.1rem;color:#003087">${fmt2(e.corr_media)}</span>
+        <span class="emb-metric-lbl">Corr media Top-100</span>
+      </div>
+    </div>
+    ${medscopeHtml}
+    ${imgHtml}`;
+}
+
+/* (resto de funciones renderList, renderDistChart, renderTable, setupSearch igual) */
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadData();
+  populateCuencas();
+  renderList();
+  renderDistChart();
+  renderTable();
+  setupSearch();
+  document.getElementById('sel-cuenca').addEventListener('change', renderList);
+  document.getElementById('sel-sort').addEventListener('change', renderList);
+  if (EMBALSES_DATA.length) selectEmbalse(EMBALSES_DATA[0]);
+});
+</script>
+```
+
+## Lo que verás en cada embalse después del cambio
+
+1. **Cabecera y cajas superiores**: igual que antes (r_LOOCV, r_train, r_SEAS5 ORIG, hit_rate ORIG).
+2. **Barras Brier Score por tercil**: igual (sigue siendo del ORIG).
+3. **NUEVO bloque "Verificación tipo MEDSCOPE — ORIG vs QDM"**: 5 filas (r, BSS_lower, BSS_upper, AUC_lower, AUC_upper) con dos barras por fila (ORIG en azul, QDM en rojo), línea vertical roja en la referencia (0 para BSS, 0.5 para AUC), y los dos números a la derecha.
+4. **Imagen hindcast**: igual.
+
+## Cosas que tienes que decidir
+
+**Sobre las imágenes hindcast**: las que tienes en `images/hindcast/` son del script5 original (ORIG). Si quieres que se vean las del QDM, tienes dos opciones:
+- Reemplazar las imágenes existentes con las nuevas `*_QDMP.png` (manteniendo el mapping).
+- Crear una nueva carpeta `images/hindcast_qdm/` y mostrar las dos (una pestaña o lado a lado).
+
+**Sobre el JSON externo**: el script de merge genera `embalses_data_v2.json` para que el `.qmd` lo cargue por `fetch()`. Eso evita meter 183 embalses inline en el HTML. Tendrás que copiar este JSON al directorio de tu proyecto Quarto, al lado del `.qmd`.
+
+Si prefieres mantener todo inline (como tenías), pásame el JSON resultante y te lo formateo. Pero el `fetch` es más limpio y mantenible.
+
+¿Te lo dejo así o prefieres algún ajuste de diseño?

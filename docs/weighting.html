@@ -104,7 +104,17 @@ ul.task-list li input[type="checkbox"] {
     <a href="datos.html" class="nav-link">Datos</a>
     <a href="downscaling.html" class="nav-link">Downscaling</a>
     <a href="weighting.html" class="nav-link">Weighting</a>
-    <a href="embalses.html" class="nav-link">Embalses</a>
+    <!-- ── Embalses: menú desplegable ── -->
+    <div class="nav-dropdown">
+      <a href="embalses-prediccion.html" class="nav-link nav-link-dropdown">
+        Embalses
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="embalses-cuenca.html" class="nav-dropdown-item">Análisis por cuenca</a>
+        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción</a>
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -201,6 +211,60 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: white;
 }
 
+/* ── Dropdown menú ── */
+.nav-dropdown {
+  position: relative;
+}
+.nav-link-dropdown {
+  display: flex !important;
+  align-items: center;
+  gap: 0.3rem;
+}
+.nav-caret {
+  font-size: 0.7rem;
+  transition: transform 0.2s;
+}
+.nav-dropdown:hover .nav-caret {
+  transform: rotate(180deg);
+}
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #003087;
+  min-width: 220px;
+  box-shadow: 0 4px 12px rgba(0,48,135,0.3);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  z-index: 1001;
+}
+.nav-dropdown:hover .nav-dropdown-menu {
+  display: block;
+}
+.nav-dropdown-item {
+  display: block;
+  padding: 0.7rem 1.2rem;
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 100;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+}
+.nav-dropdown-item:hover {
+  background: rgba(255,255,255,0.08);
+  border-left-color: white;
+  color: white;
+}
+.nav-dropdown-item.active {
+  background: rgba(255,255,255,0.05);
+  border-left-color: white;
+  color: white;
+}
+
 /* ── Ajusta el contenido para no quedar tapado ── */
 #quarto-content {
   margin-top: 0 !important;
@@ -218,17 +282,29 @@ body {
   #header-logos img { height: 38px; }
   #site-nav-inner { flex-wrap: wrap; padding: 0 1rem; }
   #site-nav .nav-link { font-size: 0.78rem; padding: 0.6rem 0.7rem; }
+  .nav-dropdown-menu { position: static; box-shadow: none; min-width: auto; }
 }
 </style>
 
 <script>
 /* Resalta el enlace activo según la URL */
 document.addEventListener('DOMContentLoaded', function() {
-  const links = document.querySelectorAll('#site-nav .nav-link');
   const current = window.location.pathname.split('/').pop() || 'index.html';
-  links.forEach(link => {
-    if (link.getAttribute('href') === current) {
+  // Enlaces normales
+  document.querySelectorAll('#site-nav .nav-link').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === current) {
       link.classList.add('active');
+    }
+  });
+  // Items del dropdown
+  document.querySelectorAll('.nav-dropdown-item').forEach(item => {
+    const href = item.getAttribute('href');
+    if (href === current) {
+      item.classList.add('active');
+      // También activar el "Embalses" padre
+      const parent = item.closest('.nav-dropdown').querySelector('.nav-link-dropdown');
+      if (parent) parent.classList.add('active');
     }
   });
 });

@@ -24,3 +24,9 @@ format:
 
 resources:
   - images/
+  - cuencas.geojson
+  - rios.geojson
+  - paises.geojson
+  
+
+
