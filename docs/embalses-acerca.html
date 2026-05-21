@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Acerca de – Predicción Estacional · AEMET–Tragsatec</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./images/logos/favicon.ico" rel="icon">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
+<main class="content column-page" id="quarto-document-content">
+<!-- ── BARRA BLANCA CON LOGOS ─────────────────────────── -->
+<div id="site-header">
+  <div id="header-logos">
+    <a href="https://www.aemet.es/es/portada" target="_blank">
+      <img src="images/logos/aemet.png" alt="AEMET">
+    </a>
+    <div class="header-sep"></div>
+    <a href="https://www.tragsa.es/es/Paginas/default.aspx" target="_blank">
+      <img src="images/logos/tragsatec.jpg" alt="Tragsatec">
+    </a>
+  </div>
+</div>
+
+<!-- ── BARRA AZUL DE NAVEGACIÓN ──────────────────────── -->
+<nav id="site-nav">
+  <div id="site-nav-inner">
+    <a href="index.html" class="nav-link">Inicio</a>
+    <a href="about.html" class="nav-link">El proyecto</a>
+    <a href="datos.html" class="nav-link">Datos</a>
+    <a href="downscaling.html" class="nav-link">Downscaling</a>
+    <a href="weighting.html" class="nav-link">Weighting</a>
+    <!-- ── Embalses: menú desplegable ── -->
+    <div class="nav-dropdown">
+      <a href="embalses-prediccion.html" class="nav-link nav-link-dropdown">
+        Embalses
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="embalses-cuenca.html" class="nav-dropdown-item">Análisis por cuenca</a>
+        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción</a>
+        <a href="embalses-acerca.html" class="nav-dropdown-item">Acerca de</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<style>
+/* ── Oculta el navbar de Quarto si quedase ── */
+.navbar { display: none !important; }
+#quarto-header { display: none !important; }
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+/* ── Barra blanca logos ── */
+#site-header {
+  background: white;
+  border-bottom: 1px solid #dde3ed;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  top: 0 !important;
+}
+
+
+    
+#header-logos {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.6rem 2rem;
+  max-width: 100%;
+}
+
+#header-logos img {
+  height: 52px;
+  object-fit: contain;
+  transition: opacity 0.2s;
+}
+
+#header-logos img:hover { opacity: 0.85; }
+
+.header-sep {
+  width: 1px;
+  height: 44px;
+  background: #dde3ed;
+}
+
+/* ── Barra azul navegación ── */
+
+#site-nav {
+  background: #003087;
+  border-bottom: 3px solid #0072bc;
+  box-shadow: 0 2px 8px rgba(0,48,135,0.2);
+  position: fixed;
+  top: 74px;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  margin: 0;
+}
+
+#site-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  gap: 0;
+  width: 100%;
+}
+
+#site-nav .nav-link {
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  font-size: 0.89rem;
+  font-weight: 100;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  display: block;
+}
+
+#site-nav .nav-link:hover {
+  color: white;
+  border-bottom-color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.07);
+}
+
+/* Resalta la página activa */
+#site-nav .nav-link.active {
+  color: white;
+  border-bottom-color: white;
+}
+
+/* ── Dropdown menú ── */
+.nav-dropdown {
+  position: relative;
+}
+.nav-link-dropdown {
+  display: flex !important;
+  align-items: center;
+  gap: 0.3rem;
+}
+.nav-caret {
+  font-size: 0.7rem;
+  transition: transform 0.2s;
+}
+.nav-dropdown:hover .nav-caret {
+  transform: rotate(180deg);
+}
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #003087;
+  min-width: 220px;
+  box-shadow: 0 4px 12px rgba(0,48,135,0.3);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  z-index: 1001;
+}
+.nav-dropdown:hover .nav-dropdown-menu {
+  display: block;
+}
+.nav-dropdown-item {
+  display: block;
+  padding: 0.7rem 1.2rem;
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 100;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+}
+.nav-dropdown-item:hover {
+  background: rgba(255,255,255,0.08);
+  border-left-color: white;
+  color: white;
+}
+.nav-dropdown-item.active {
+  background: rgba(255,255,255,0.05);
+  border-left-color: white;
+  color: white;
+}
+
+/* ── Ajusta el contenido para no quedar tapado ── */
+#quarto-content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* ── Espacio para header fijo ────────────────────────── */
+body {
+  padding-top: 180px !important;
+}
+
+    
+@media (max-width: 768px) {
+  #header-logos { padding: 0.5rem 1rem; }
+  #header-logos img { height: 38px; }
+  #site-nav-inner { flex-wrap: wrap; padding: 0 1rem; }
+  #site-nav .nav-link { font-size: 0.78rem; padding: 0.6rem 0.7rem; }
+  .nav-dropdown-menu { position: static; box-shadow: none; min-width: auto; }
+}
+</style>
+
+<script>
+/* Resalta el enlace activo según la URL */
+document.addEventListener('DOMContentLoaded', function() {
+  const current = window.location.pathname.split('/').pop() || 'index.html';
+  // Enlaces normales
+  document.querySelectorAll('#site-nav .nav-link').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === current) {
+      link.classList.add('active');
+    }
+  });
+  // Items del dropdown
+  document.querySelectorAll('.nav-dropdown-item').forEach(item => {
+    const href = item.getAttribute('href');
+    if (href === current) {
+      item.classList.add('active');
+      // También activar el "Embalses" padre
+      const parent = item.closest('.nav-dropdown').querySelector('.nav-link-dropdown');
+      if (parent) parent.classList.add('active');
+    }
+  });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.body.style.marginTop = '0';
+  // Quarto añade padding-top inline al body, este lo sobreescribe
+  document.body.setAttribute('style', 
+    document.body.getAttribute('style') + '; padding-top: 0 !important; margin-top: 0 !important;'
+  );
+});
+</script>
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Acerca de</h1>
+<p class="subtitle lead">Metodología del servicio de predicción estacional de aportaciones</p>
+</div>
+
+
+
+<div class="quarto-title-meta column-page">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<style>
+/* ─── Estilo general página Acerca de ─── */
+.acerca-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 4rem;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  color: #1f2937;
+  line-height: 1.65;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+/* Excepciones: elementos que NO deben justificarse */
+.acerca-wrap h2,
+.acerca-wrap h3,
+.acerca-wrap h4,
+.acerca-wrap figcaption,
+.acerca-wrap .formula-caption,
+.acerca-wrap .met-rango,
+.acerca-wrap .sigma-lab,
+.acerca-wrap .callout-title {
+  text-align: left;
+}
+.acerca-wrap h2 {
+  color: #003087;
+  border-bottom: 2px solid #0072bc;
+  padding-bottom: 0.4rem;
+  margin-top: 2.5rem;
+  font-size: 1.55rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.acerca-wrap h3 {
+  color: #0072bc;
+  margin-top: 1.8rem;
+  font-size: 1.18rem;
+  font-weight: 600;
+}
+.acerca-wrap h4 {
+  color: #1f2937;
+  margin-top: 1.3rem;
+  font-size: 1.02rem;
+  font-weight: 600;
+}
+.acerca-wrap p { margin: 0.7rem 0; }
+.acerca-wrap ul { margin: 0.5rem 0 0.9rem 0; padding-left: 1.4rem; }
+.acerca-wrap li { margin: 0.25rem 0; }
+
+.acerca-resumen {
+  background: linear-gradient(135deg, #f0f5fa 0%, #e6eef7 100%);
+  border-left: 4px solid #0072bc;
+  padding: 1.2rem 1.5rem;
+  border-radius: 4px;
+  margin: 1.5rem 0 2.5rem;
+}
+.acerca-resumen p { margin: 0.4rem 0; }
+.acerca-resumen strong { color: #003087; }
+
+.acerca-callout {
+  background: #fff8e1;
+  border-left: 4px solid #f9a825;
+  padding: 0.9rem 1.2rem;
+  border-radius: 4px;
+  margin: 1.2rem 0;
+  font-size: 0.95rem;
+}
+.acerca-callout.info {
+  background: #e8f4fd;
+  border-left-color: #0072bc;
+}
+.acerca-callout.success {
+  background: #e8f5e9;
+  border-left-color: #2e7d32;
+}
+.acerca-callout .callout-title {
+  font-weight: 600;
+  color: #003087;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.tabla-comp {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.tabla-comp th,
+.tabla-comp td {
+  padding: 0.7rem 0.9rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e9f0;
+  vertical-align: top;
+}
+.tabla-comp thead th {
+  background: #003087;
+  color: white;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+  border-bottom: none;
+}
+.tabla-comp tbody tr:nth-child(even) { background: #f7f9fc; }
+.tabla-comp td:first-child {
+  font-weight: 600;
+  color: #003087;
+  width: 28%;
+}
+
+.formula-box {
+  background: #f7f9fc;
+  border: 1px solid #dde3ed;
+  border-radius: 4px;
+  padding: 1rem 1.3rem;
+  margin: 1rem 0;
+  font-size: 1.02rem;
+}
+.formula-caption {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 0.4rem;
+  font-style: italic;
+}
+
+.metricas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1.2rem 0;
+}
+.metrica-card {
+  background: white;
+  border: 1px solid #dde3ed;
+  border-top: 3px solid #0072bc;
+  border-radius: 4px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.metrica-card h4 {
+  margin: 0 0 0.4rem 0 !important;
+  color: #003087;
+  font-size: 1rem;
+}
+.metrica-card .met-desc {
+  font-size: 0.88rem;
+  color: #4b5563;
+  margin: 0.3rem 0;
+}
+.metrica-card .met-rango {
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed #e5e9f0;
+}
+.metrica-card .met-rango strong { color: #003087; }
+
+.flujo-wrap {
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 4px;
+  padding: 1.5rem 1rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+.flujo-wrap svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+
+.sigma-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0.8rem;
+  margin: 1rem 0;
+}
+.sigma-item {
+  background: #f7f9fc;
+  border-left: 3px solid #0072bc;
+  padding: 0.8rem 1rem;
+  border-radius: 3px;
+}
+.sigma-item .sigma-val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #003087;
+}
+.sigma-item .sigma-lab {
+  font-size: 0.85rem;
+  color: #4b5563;
+  margin-top: 0.3rem;
+}
+
+.refs-list {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  background: #f7f9fc;
+  border-radius: 4px;
+  padding: 1rem 1.4rem;
+  list-style-type: none;
+  padding-left: 1.4rem;
+}
+.refs-list li {
+  margin: 0.55rem 0;
+  padding-left: 1rem;
+  text-indent: -1rem;
+}
+.refs-list li::before {
+  content: "▪ ";
+  color: #0072bc;
+  font-weight: bold;
+}
+.refs-list a { color: #0072bc; text-decoration: none; word-break: break-word; }
+.refs-list a:hover { text-decoration: underline; }
+
+.chip {
+  display: inline-block;
+  background: #e8f4fd;
+  color: #003087;
+  padding: 0.15rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin: 0 0.2rem;
+}
+
+.sclimware-card {
+  background: linear-gradient(135deg, #003087 0%, #0072bc 100%);
+  color: white;
+  padding: 1.5rem 1.8rem;
+  border-radius: 6px;
+  margin: 1.5rem 0;
+  box-shadow: 0 3px 10px rgba(0,48,135,0.15);
+}
+.sclimware-card h3 {
+  color: white !important;
+  margin-top: 0 !important;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.sclimware-card p { color: rgba(255,255,255,0.92); }
+.sclimware-card a {
+  display: inline-block;
+  margin-top: 0.8rem;
+  background: white;
+  color: #003087;
+  padding: 0.5rem 1.1rem;
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.15s;
+  font-size: 0.9rem;
+}
+.sclimware-card a:hover { transform: translateY(-1px); }
+
+/* ─── Imágenes ilustrativas ─── */
+.acerca-wrap figure {
+  margin: 1.5rem 0 1.8rem;
+  text-align: center;
+}
+.acerca-wrap figure img,
+.acerca-wrap p img.fig-acerca,
+.acerca-wrap img.fig-acerca {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #dde3ed;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  background: white;
+  padding: 4px;
+}
+.acerca-wrap figure figcaption,
+.acerca-wrap figcaption {
+  font-size: 0.86rem;
+  color: #4b5563;
+  font-style: italic;
+  margin-top: 0.6rem;
+  padding: 0 1rem;
+  line-height: 1.5;
+}
+</style>
+<div class="acerca-wrap">
+<section id="objetivo" class="level2">
+<h2 class="anchored" data-anchor-id="objetivo">1 · Objetivo</h2>
+<p>Las predicciones estacionales tienen un valor añadido reconocido en la gestión hidrológica: anticipar si un invierno será más seco o más húmedo de lo normal permite tomar decisiones de almacenamiento, desembalse y abastecimiento con varios meses de antelación.</p>
+<p>En España la señal predecible a escala estacional en invierno está dominada por la <strong>Oscilación del Atlántico Norte (NAO)</strong> y otros patrones de variabilidad climática de gran escala. Tradicionalmente esta señal ha sido difícil de capturar por los modelos dinámicos, pero en los últimos años (i) los modelos de circulación general han mejorado su pericia en el Atlántico Norte y (ii) se han consolidado técnicas de post-proceso y calibración que permiten extraer información útil de los hindcasts.</p>
+<p>Este servicio se inscribe en ese marco. Su objetivo es <strong>proporcionar, para cada embalse español, una predicción probabilística de la aportación invernal acumulada junto con una estimación rigurosa de su pericia</strong>, replicando y extendiendo la metodología establecida por Jesús Gutiérrez (Tragsatec-AEMET) y adaptándola al sistema SEAS5.1 sobre rejilla ROCIO_IBEB de 5 km.</p>
+<div class="acerca-callout info">
+<p><span class="callout-title">▸ Variable predicha</span> Aportación total invernal <span class="math inline">\(Q\)</span> (hm³) definida como la suma de las aportaciones mensuales <code>entmes</code> de noviembre a marzo (NDJFM) para cada año hidrológico.</p>
+</div>
+</section>
+<section id="datos-de-entrada" class="level2">
+<h2 class="anchored" data-anchor-id="datos-de-entrada">2 · Datos de entrada</h2>
+<section id="aportaciones-observadas" class="level3">
+<h3 class="anchored" data-anchor-id="aportaciones-observadas">2.1 · Aportaciones observadas</h3>
+<ul>
+<li><strong>Base de datos de embalses peninsulares</strong> con series mensuales de aportación <code>entmes</code> en hm³.</li>
+<li><strong>Periodo de entrenamiento</strong>: años hidrológicos 1997–2015 (19 inviernos).</li>
+<li><strong>Filtrado de la red</strong>: del total de embalses disponibles se retienen los <strong>183 con correlación media superior a 0.7</strong> entre la aportación invernal y la precipitación acumulada sobre la demarcación hidrográfica a la que pertenece cada embalse. Este criterio excluye embalses con régimen muy alterado por trasvases, gestión humana intensa o errores de registro.</li>
+<li><strong>Cobertura</strong>: <span class="chip">Miño-Sil</span> <span class="chip">Cantábrico O.</span> <span class="chip">Duero</span> <span class="chip">Tajo</span> <span class="chip">Guadiana</span> <span class="chip">Guadalquivir</span> <span class="chip">Segura</span> <span class="chip">Júcar</span> (8 demarcaciones).</li>
+</ul>
+</section>
+<section id="predictores-observados-entrenamiento" class="level3">
+<h3 class="anchored" data-anchor-id="predictores-observados-entrenamiento">2.2 · Predictores observados (entrenamiento)</h3>
+<p><strong>Precipitación diaria en rejilla ROCIO_IBEB</strong> a 5 km × 5 km sobre la España peninsular (Amblar-Francés et al., 2020), generada por AEMET por interpolación óptima (HIRLAM OI) de los datos diarios de la red de estaciones. Para cada embalse, la precipitación predictora se obtiene <strong>agregando los píxeles ROCIO contenidos en la demarcación hidrográfica completa</strong> a la que pertenece y acumulando sobre el periodo NDJFM. Esta opción —cuenca entera frente a polígono aguas arriba del embalse— es la que adoptó originalmente J. Gutiérrez y la que conserva mejor la señal climática a escala estacional.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/acerca/rocio_ndjfm_media_sigma.png" class="fig-acerca img-fluid figure-img"></p>
+<figcaption>Precipitación invernal acumulada NDJFM en ROCIO_IBEB (1997–2015): media (izquierda) y desviación estándar interanual (derecha). La señal predecible se concentra principalmente en la fachada atlántica.</figcaption>
+</figure>
+</div>
+</section>
+<section id="hindcast-dinámico-aplicación" class="level3">
+<h3 class="anchored" data-anchor-id="hindcast-dinámico-aplicación">2.3 · Hindcast dinámico (aplicación)</h3>
+<p><strong>ECMWF SEAS5.1</strong>: hindcast del sistema operativo de predicción estacional del ECMWF.</p>
+<ul>
+<li><strong>Variable</strong>: precipitación total (<code>tp</code>) acumulada NDJFM.</li>
+<li><strong>Inicialización</strong>: 1 de noviembre.</li>
+<li><strong>Miembros del ensemble</strong>: 25 por año.</li>
+<li><strong>Periodo de hindcast</strong>: 1993–2016 (24 años).</li>
+<li><strong>Rejilla nativa</strong>: aproximadamente 1°. Interpolada bilinealmente a la rejilla ROCIO_IBEB de 5 km para garantizar consistencia con los predictores observados.</li>
+</ul>
+<div class="acerca-callout">
+<p><span class="callout-title">▸ Por qué la misma rejilla</span> Aplicar el modelo PLS entrenado sobre ROCIO requiere que el hindcast esté en esa misma rejilla y con propiedades estadísticas comparables. La interpolación bilineal resuelve la rejilla; el <strong>QDM</strong> (sección 4) resuelve el sesgo y la dispersión.</p>
+</div>
+</section>
+</section>
+<section id="modelo-estadístico-pls-con-loocv" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-estadístico-pls-con-loocv">3 · Modelo estadístico: PLS con LOOCV</h2>
+<section id="por-qué-pls" class="level3">
+<h3 class="anchored" data-anchor-id="por-qué-pls">3.1 · Por qué PLS</h3>
+<p>La regresión por <strong>mínimos cuadrados parciales</strong> (Partial Least Squares, PLS) está específicamente diseñada para situaciones en las que el número de predictores es alto y están fuertemente correlacionados entre sí —el caso típico de los píxeles de precipitación en rejilla—. A diferencia de la regresión lineal múltiple convencional, PLS extrae <strong>componentes latentes</strong> que maximizan la covarianza con la variable respuesta (aportación), evitando los problemas de multicolinealidad y sobreajuste de OLS.</p>
+</section>
+<section id="formulación" class="level3">
+<h3 class="anchored" data-anchor-id="formulación">3.2 · Formulación</h3>
+<p>Sea <span class="math inline">\(\mathbf{X} \in \mathbb{R}^{n \times p}\)</span> la matriz de predictores (años × píxeles de precipitación) e <span class="math inline">\(\mathbf{y} \in \mathbb{R}^{n}\)</span> el vector de aportaciones observadas. PLS descompone:</p>
+<div class="formula-box">
+<p><span class="math display">\[
+\mathbf{X} = \mathbf{T}\mathbf{P}^{\top} + \mathbf{E}, \qquad \mathbf{y} = \mathbf{T}\boldsymbol{\beta} + \mathbf{f}
+\]</span></p>
+<p><span class="formula-caption">donde <span class="math inline">\(\mathbf{T}\)</span> son las puntuaciones (scores), <span class="math inline">\(\mathbf{P}\)</span> las cargas (loadings), y <span class="math inline">\(\boldsymbol{\beta}\)</span> los coeficientes de regresión sobre las componentes latentes. <span class="math inline">\(\mathbf{E}, \mathbf{f}\)</span> son residuales.</span></p>
+</div>
+<p>El número de componentes latentes a retener se selecciona por <strong>validación cruzada Leave-One-Out (LOOCV)</strong> minimizando el error cuadrático medio de predicción, con un máximo razonable (típicamente 1–3 componentes para series de 19 años).</p>
+</section>
+<section id="validación-leave-one-out-cross-validation" class="level3">
+<h3 class="anchored" data-anchor-id="validación-leave-one-out-cross-validation">3.3 · Validación: Leave-One-Out Cross-Validation</h3>
+<p>Para cada año <span class="math inline">\(i \in \{1, \dots, n\}\)</span>:</p>
+<ol type="1">
+<li>Se entrena el modelo PLS con los <span class="math inline">\(n-1\)</span> años restantes.</li>
+<li>Se predice la aportación del año <span class="math inline">\(i\)</span> con ese modelo.</li>
+<li>Se acumula el residual para calcular las métricas de pericia.</li>
+</ol>
+<p>LOOCV produce una serie completa de predicciones “out-of-sample” que se compara con las observaciones para calcular <span class="math inline">\(r_{\text{LOOCV}}\)</span>, base de la pericia honesta del modelo.</p>
+</section>
+<section id="aplicación-al-hindcast" class="level3">
+<h3 class="anchored" data-anchor-id="aplicación-al-hindcast">3.4 · Aplicación al hindcast</h3>
+<p>Una vez fijado el número de componentes por LOOCV, se entrena el modelo final con todos los años de ROCIO y se aplica <strong>miembro a miembro</strong> sobre el hindcast SEAS5.1 calibrado: cada uno de los <span class="math inline">\(25 \times 24 = 600\)</span> campos de precipitación predichos genera una predicción de aportación. La distribución empírica de estas 25 predicciones para cada año constituye el ensemble de aportaciones, del que se derivan probabilidades por tercil.</p>
+<div class="acerca-callout">
+<p><span class="callout-title">▸ Decisión técnica: PLS aplicado miembro a miembro</span> Alternativa descartada: aplicar PLS al ensemble mean. Aplicarlo a la media del ensemble destruye la dispersión y produce predicciones probabilísticas degeneradas. El criterio correcto —seguido aquí— es predecir cada miembro de forma independiente y construir el ensemble en el espacio de la variable predicha.</p>
+</div>
+</section>
+<section id="pericia-del-entrenamiento-loocv-con-rocio" class="level3">
+<h3 class="anchored" data-anchor-id="pericia-del-entrenamiento-loocv-con-rocio">3.5 · Pericia del entrenamiento (LOOCV con ROCIO)</h3>
+<p>Como diagnóstico interno del modelo, conviene separar dos correlaciones distintas que aparecen en el visor:</p>
+<ul>
+<li><span class="math inline">\(r_{\text{LOOCV}}\)</span> — correlación validada del modelo PLS entrenado sobre ROCIO, evaluado out-of-sample. Refleja la <strong>calidad estadística del modelo</strong> y es independiente del hindcast SEAS5.1.</li>
+<li><span class="math inline">\(r_{\text{QDM}}\)</span> — correlación al aplicar el modelo entrenado al hindcast SEAS5.1 calibrado. Refleja la <strong>calidad del sistema completo de predicción</strong> (modelo + predictor dinámico) y es necesariamente menor.</li>
+</ul>
+<p>La mediana de <span class="math inline">\(r_{\text{LOOCV}}\)</span> sobre los 183 embalses es <strong>0.932</strong> (P25 = 0.887, P75 = 0.954), con valores especialmente altos en la fachada atlántica:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/acerca/skill_pls_loocv_183_embalses.png" class="fig-acerca img-fluid figure-img"></p>
+<figcaption>Pericia del entrenamiento PLS por embalse (<span class="math inline">\(r_{\text{LOOCV}}\)</span>). Mediana global = 0.932; las demarcaciones del cuadrante NW concentran los valores más altos.</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="calibración-del-hindcast-quantile-delta-mapping-qdm" class="level2">
+<h2 class="anchored" data-anchor-id="calibración-del-hindcast-quantile-delta-mapping-qdm">4 · Calibración del hindcast: Quantile Delta Mapping (QDM)</h2>
+<section id="el-problema" class="level3">
+<h3 class="anchored" data-anchor-id="el-problema">4.1 · El problema</h3>
+<p>El hindcast SEAS5.1, aun interpolado a la rejilla ROCIO, presenta dos sesgos críticos respecto a la observación:</p>
+<div class="sigma-grid">
+<div class="sigma-item">
+<p><span class="sigma-val">0.19</span></p>
+<p><span class="sigma-lab"><span class="math inline">\(\sigma_{\text{ensmean}} / \sigma_{\text{ROCIO}}\)</span> — el ensemble mean aplasta dramáticamente la dispersión interanual observada.</span></p>
+</div>
+<div class="sigma-item">
+<p><span class="sigma-val">0.68</span></p>
+<p><span class="sigma-lab"><span class="math inline">\(\sigma_{\text{pool}} / \sigma_{\text{ROCIO}}\)</span> — agregando todos los miembros (500 muestras año×miembro) la dispersión es razonable pero aún infraestimada.</span></p>
+</div>
+</div>
+<p>Aplicar PLS directamente sobre un hindcast con la varianza tan comprimida produce predicciones excesivamente cercanas a la climatología y métricas de pericia engañosas. La calibración corrige esto.</p>
+</section>
+<section id="formulación-qdm" class="level3">
+<h3 class="anchored" data-anchor-id="formulación-qdm">4.2 · Formulación QDM</h3>
+<p>Quantile Delta Mapping (Cannon et al., 2015) corrige la distribución del modelo preservando la <strong>señal relativa</strong> del cambio respecto a su propia climatología:</p>
+<div class="formula-box">
+<p><span class="math display">\[
+\hat{x}_{\text{cal}}(t) = F_{\text{obs}}^{-1}\!\Big(F_{\text{mod,clim}}\big(x_{\text{mod}}(t)\big)\Big) \cdot \frac{x_{\text{mod}}(t)}{F_{\text{mod,clim}}^{-1}\!\Big(F_{\text{mod,clim}}\big(x_{\text{mod}}(t)\big)\Big)}
+\]</span></p>
+<p><span class="formula-caption"><span class="math inline">\(F_{\text{obs}}\)</span> y <span class="math inline">\(F_{\text{mod,clim}}\)</span> son las CDF empíricas de observación y modelo en el periodo climatológico de referencia. El factor multiplicativo (delta) preserva la perturbación relativa del modelo respecto a su climatología.</span></p>
+</div>
+<p>A diferencia del Quantile Mapping (QM) clásico, que reemplaza directamente los cuantiles del modelo por los observados y por tanto <strong>borra la señal del modelo</strong>, QDM <strong>preserva la perturbación relativa</strong> y solo corrige la distribución de fondo.</p>
+</section>
+<section id="implementación" class="level3">
+<h3 class="anchored" data-anchor-id="implementación">4.3 · Implementación</h3>
+<ul>
+<li><strong>Librería</strong>: <code>ibicus</code> (calibración bias-correction en rejillas climáticas).</li>
+<li><strong>Aplicación</strong>: vectorizada sobre toda la rejilla peninsular, por píxel.</li>
+<li><strong>Cuantiles</strong>: empíricos sobre el periodo de referencia común a ROCIO y SEAS5.1.</li>
+<li><strong>Régimen</strong>: in-sample (calibración y evaluación sobre el mismo periodo). Aceptable como diagnóstico, ya que el objetivo aquí es comparar metodologías y demostrar la mejora aportada por la calibración —no estimar la pericia operativa final—.</li>
+</ul>
+<div class="acerca-callout success">
+<p><span class="callout-title">▸ Resultado de la calibración</span> El paso de SEAS5.1 sin calibrar (ORIG) a SEAS5.1+QDM produce mejoras consistentes en todas las métricas. En particular, <span class="math inline">\(BSS_{\text{lower}}\)</span> mediano pasa de <strong>−0.25</strong> (ORIG) a <strong>−0.01</strong> (QDM): el sistema deja de ser sistemáticamente peor que la climatología.</p>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/acerca/qdm_efecto_buendia.png" class="fig-acerca img-fluid figure-img"></p>
+<figcaption>Efecto del QDM sobre la predicción de aportaciones en el embalse de Buendía. Arriba: hindcast SEAS5.1 sin calibrar (BS = 0.262, hit = 0.32, r = 0.28). Abajo: hindcast con QDM aplicado a la precipitación (BS = 0.194, hit = 0.47, r = 0.37). El QDM ensancha el ensemble (banda P10-P90) hasta valores realistas y mejora todas las métricas de pericia.</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="métricas-de-pericia" class="level2">
+<h2 class="anchored" data-anchor-id="métricas-de-pericia">5 · Métricas de pericia</h2>
+<p>La predicción es <strong>probabilística por terciles</strong>: para cada año el sistema asigna probabilidades <span class="math inline">\(p_1, p_2, p_3\)</span> a los terciles seco / normal / húmedo (con <span class="math inline">\(\sum p_k = 1\)</span>). Las métricas evalúan tanto la pericia determinista (correlación) como la probabilística.</p>
+<section id="métricas-deterministas" class="level3">
+<h3 class="anchored" data-anchor-id="métricas-deterministas">5.1 · Métricas deterministas</h3>
+<div class="metricas-grid">
+<section id="correlación-de-pearson-r" class="level4 unlisted unnumbered metrica-card">
+<h4 class="unlisted unnumbered anchored" data-anchor-id="correlación-de-pearson-r">Correlación de Pearson · <span class="math inline">\(r\)</span></h4>
+<p><span class="met-desc">Correlación entre aportación observada y predicción determinista (ensemble mean tras PLS).</span></p>
+<p><span class="math display">\[ r = \frac{\sum_i (o_i - \bar{o})(y_i - \bar{y})}{\sqrt{\sum_i (o_i - \bar{o})^2 \sum_i (y_i - \bar{y})^2}} \]</span></p>
+<p><span class="met-rango">Rango: <strong>[−1, 1]</strong> · óptimo: <strong>1</strong></span></p>
+</section>
+<section id="hit-rate-acierto-del-tercil" class="level4 unlisted unnumbered metrica-card">
+<h4 class="unlisted unnumbered anchored" data-anchor-id="hit-rate-acierto-del-tercil">Hit rate · acierto del tercil</h4>
+<p><span class="met-desc">Fracción de años en los que el tercil más probable predicho coincide con el tercil observado.</span></p>
+<p><span class="met-rango">Rango: <strong>[0, 1]</strong> · climatología ciega: <strong>1/3 ≈ 0.33</strong></span></p>
+</section>
+</div>
+</section>
+<section id="métricas-probabilísticas" class="level3">
+<h3 class="anchored" data-anchor-id="métricas-probabilísticas">5.2 · Métricas probabilísticas</h3>
+<div class="metricas-grid">
+<section id="brier-score-bs" class="level4 unlisted unnumbered metrica-card">
+<h4 class="unlisted unnumbered anchored" data-anchor-id="brier-score-bs">Brier Score · BS</h4>
+<p><span class="met-desc">Error cuadrático medio entre probabilidad predicha y ocurrencia binaria (0/1) del evento. Se calcula por tercil (<span class="math inline">\(BS_{T1}\)</span>, <span class="math inline">\(BS_{T2}\)</span>, <span class="math inline">\(BS_{T3}\)</span>) y como suma (<span class="math inline">\(BS_{\text{total}}\)</span>).</span></p>
+<p><span class="math display">\[ BS = \frac{1}{n} \sum_{i=1}^{n} (p_i - o_i)^2 \]</span></p>
+<p><span class="met-rango">Rango: <strong>[0, 1]</strong> · óptimo: <strong>0</strong></span></p>
+</section>
+<section id="brier-skill-score-bss" class="level4 unlisted unnumbered metrica-card">
+<h4 class="unlisted unnumbered anchored" data-anchor-id="brier-skill-score-bss">Brier Skill Score · BSS</h4>
+<p><span class="met-desc">Pericia del Brier Score respecto a la climatología de referencia. Positivo: mejor que climatología. Se reporta su <strong>intervalo de confianza al 95%</strong> (lower / upper) por bootstrap.</span></p>
+<p><span class="math display">\[ BSS = 1 - \frac{BS}{BS_{\text{clim}}} \]</span></p>
+<p>[Rango: **(−∞, 1]** · climatología: <strong>0</strong> · óptimo: <strong>1</strong>]{.met-rango}</p>
+</section>
+<section id="auc-área-bajo-la-curva-roc" class="level4 unlisted unnumbered metrica-card">
+<h4 class="unlisted unnumbered anchored" data-anchor-id="auc-área-bajo-la-curva-roc">AUC · Área bajo la curva ROC</h4>
+<p><span class="met-desc">Capacidad discriminativa del sistema entre años en los que ocurre el evento y años en los que no. Se reporta intervalo de confianza al 95% (lower / upper).</span></p>
+<p><span class="met-rango">Rango: <strong>[0, 1]</strong> · azar: <strong>0.5</strong> · óptimo: <strong>1</strong></span></p>
+</section>
+</div>
+<div class="acerca-callout info">
+<p><span class="callout-title">▸ Por qué reportar intervalos de confianza</span> Con series de 19–24 años las métricas tienen una incertidumbre muestral importante. Los intervalos de confianza por bootstrap permiten distinguir embalses con pericia <em>robusta</em> de embalses cuya pericia aparente puede ser ruido. El visor permite ordenar por <strong>BSS_lower</strong> y <strong>AUC_lower</strong> precisamente con este criterio.</p>
+</div>
+</section>
+</section>
+<section id="pipeline-operativo" class="level2">
+<h2 class="anchored" data-anchor-id="pipeline-operativo">6 · Pipeline operativo</h2>
+<p>El servicio se ejecuta en el HPC AEMET–ECMWF mediante un pipeline consolidado (<code>script6_consolidado_BSS_ROC.py</code>) que integra los seis pasos en una sola pasada vectorizada:</p>
+<div class="flujo-wrap">
+<svg viewbox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama de flujo del pipeline">
+  <defs>
+    <marker id="arrow" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0072bc"></path>
+    </marker>
+    <style>
+      .box        { fill: white; stroke: #0072bc; stroke-width: 2; vector-effect: non-scaling-stroke; }
+      .box-input  { fill: #e8f4fd; stroke: #003087; stroke-width: 2; vector-effect: non-scaling-stroke; }
+      .box-output { fill: #003087; stroke: #003087; stroke-width: 2; vector-effect: non-scaling-stroke; }
+      .box-calib  { fill: #fff8e1; stroke: #f9a825; stroke-width: 2; vector-effect: non-scaling-stroke; }
+      .lbl        { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; fill: #1f2937; font-weight: 500; }
+      .lbl-sub    { font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; fill: #4b5563; }
+      .lbl-out    { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; fill: white; font-weight: 600; }
+      .arrow      { stroke: #0072bc; stroke-width: 2; fill: none; vector-effect: non-scaling-stroke; }
+      .step-num   { font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; fill: #003087; font-weight: 700; }
+    </style>
+  </defs>
+
+  <rect class="box-input" x="20" y="40" width="200" height="70" rx="6"></rect>
+  <text class="step-num" x="30" y="58">ENTRADA 1</text>
+  <text class="lbl" x="30" y="78">ROCIO_IBEB 5 km</text>
+  <text class="lbl-sub" x="30" y="95">Precipitación 1997–2015</text>
+
+  <rect class="box-input" x="20" y="140" width="200" height="70" rx="6"></rect>
+  <text class="step-num" x="30" y="158">ENTRADA 2</text>
+  <text class="lbl" x="30" y="178">SEAS5.1 hindcast</text>
+  <text class="lbl-sub" x="30" y="195">25 miembros · 1993–2016</text>
+
+  <rect class="box-input" x="20" y="240" width="200" height="70" rx="6"></rect>
+  <text class="step-num" x="30" y="258">ENTRADA 3</text>
+  <text class="lbl" x="30" y="278">Aportaciones embalses</text>
+  <text class="lbl-sub" x="30" y="295">entmes NDJFM, 183 series</text>
+
+  <rect class="box-calib" x="320" y="140" width="240" height="70" rx="6"></rect>
+  <text class="step-num" x="330" y="158">PASO 1 · CALIBRACIÓN</text>
+  <text class="lbl" x="330" y="178">QDM en rejilla (ibicus)</text>
+  <text class="lbl-sub" x="330" y="195">SEAS5.1 → SEAS5.1+QDM</text>
+
+  <rect class="box" x="320" y="240" width="240" height="70" rx="6"></rect>
+  <text class="step-num" x="330" y="258">PASO 2 · MODELO</text>
+  <text class="lbl" x="330" y="278">PLS + LOOCV</text>
+  <text class="lbl-sub" x="330" y="295">por embalse, miembro a miembro</text>
+
+  <rect class="box" x="320" y="340" width="240" height="70" rx="6"></rect>
+  <text class="step-num" x="330" y="358">PASO 3 · EVALUACIÓN</text>
+  <text class="lbl" x="330" y="378">r · BS · BSS · AUC · hit rate</text>
+  <text class="lbl-sub" x="330" y="395">bootstrap 95% CI</text>
+
+  <rect class="box-output" x="660" y="240" width="220" height="170" rx="6"></rect>
+  <text class="lbl-out" x="672" y="265">SALIDA</text>
+  <text class="lbl-out" x="672" y="288" style="font-size:11px; font-weight:500;">resumen_metricas_BSS_ROC.csv</text>
+  <text class="lbl-out" x="672" y="312" style="font-size:11px; font-weight:500;">183 embalses · 23 columnas</text>
+  <text class="lbl-out" x="672" y="335" style="font-size:11px; font-weight:500;">ORIG + QDM</text>
+  <text class="lbl-out" x="672" y="365" style="font-size:11px; font-weight:500;">→ Visor Quarto</text>
+  <text class="lbl-out" x="672" y="388" style="font-size:11px; font-weight:500;">→ Análisis por cuenca</text>
+
+  <path class="arrow" d="M 220 75 Q 270 75 270 275 L 320 275" marker-end="url(#arrow)"></path>
+  <path class="arrow" d="M 220 175 L 320 175" marker-end="url(#arrow)"></path>
+  <path class="arrow" d="M 440 210 L 440 240" marker-end="url(#arrow)"></path>
+  <path class="arrow" d="M 220 275 L 320 275" marker-end="url(#arrow)"></path>
+  <path class="arrow" d="M 440 310 L 440 340" marker-end="url(#arrow)"></path>
+  <path class="arrow" d="M 560 375 Q 610 375 610 325 L 660 325" marker-end="url(#arrow)"></path>
+  <path class="arrow" d="M 560 275 L 660 275" marker-end="url(#arrow)"></path>
+
+  <g transform="translate(20, 430)">
+    <rect class="box-input" x="0" y="0" width="14" height="14" rx="2"></rect>
+    <text class="lbl-sub" x="20" y="11">Datos de entrada</text>
+    <rect class="box-calib" x="170" y="0" width="14" height="14" rx="2"></rect>
+    <text class="lbl-sub" x="190" y="11">Calibración</text>
+    <rect class="box" x="300" y="0" width="14" height="14" rx="2"></rect>
+    <text class="lbl-sub" x="320" y="11">Procesamiento</text>
+    <rect class="box-output" x="450" y="0" width="14" height="14" rx="2"></rect>
+    <text class="lbl-sub" x="470" y="11">Salida</text>
+  </g>
+</svg>
+</div>
+</section>
+<section id="resultados-globales-y-limitaciones" class="level2">
+<h2 class="anchored" data-anchor-id="resultados-globales-y-limitaciones">7 · Resultados globales y limitaciones</h2>
+<p>Antes de detallar las limitaciones, conviene mirar el resultado agregado del sistema sobre los 183 embalses:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/acerca/resultados_globales_serie_temporal.png" class="fig-acerca img-fluid figure-img"></p>
+<figcaption>Aportación invernal media de los 183 embalses (1997–2015). Negro: observación. Azul: modelo PLS entrenado sobre ROCIO (r = 0.97), que reproduce muy fielmente la serie histórica. Rojo discontinuo: el mismo modelo PLS aplicado al ensemble mean del hindcast SEAS5.1 (r = 0.30); la banda rosa cubre los percentiles P10–P90 del ensemble. El contraste entre el azul y el rojo sintetiza el reto: el modelo estadístico funciona —es la señal climática del SEAS5.1 la que es limitada—.</figcaption>
+</figure>
+</div>
+<p>Esta gráfica ayuda a interpretar el resto: las limitaciones que se listan a continuación explican por qué la pericia del sistema completo (rojo) es necesariamente menor que la del modelo en entrenamiento (azul).</p>
+<section id="naturaleza-probabilística" class="level3">
+<h3 class="anchored" data-anchor-id="naturaleza-probabilística">7.1 · Naturaleza probabilística</h3>
+<p>Las predicciones son <strong>probabilísticas</strong>, no deterministas. Una predicción de “70% de probabilidad de tercil húmedo” no significa que el invierno vaya a ser húmedo: significa que, en el largo plazo, de cada 10 inviernos con ese pronóstico, en torno a 7 caerán en el tercil húmedo. La decisión de gestión debe ponderar esta probabilidad con el coste/beneficio de cada escenario.</p>
+</section>
+<section id="pericia-heterogénea-entre-demarcaciones" class="level3">
+<h3 class="anchored" data-anchor-id="pericia-heterogénea-entre-demarcaciones">7.2 · Pericia heterogénea entre demarcaciones</h3>
+<p>La pericia no es uniforme. El visor de <strong>Análisis por cuenca</strong> muestra que las demarcaciones del cuadrante NW (Miño-Sil, Duero, Tajo) presentan correlaciones medianas QDM en torno a <span class="math inline">\(r \approx 0.27\)</span>–<span class="math inline">\(0.35\)</span>, mientras que Guadalquivir y Segura quedan por debajo de <span class="math inline">\(r \approx 0.10\)</span>. Esto es consistente con la influencia diferencial de la NAO y la mayor predecibilidad de la fachada atlántica.</p>
+</section>
+<section id="qdm-in-sample" class="level3">
+<h3 class="anchored" data-anchor-id="qdm-in-sample">7.3 · QDM in-sample</h3>
+<p>La calibración QDM se aplica en régimen <strong>in-sample</strong> (mismo periodo para calibrar y evaluar). Esto es aceptable para los objetivos actuales —diagnóstico metodológico y cuantificación de la mejora aportada por la calibración— pero implica que las métricas reportadas son una <strong>cota superior optimista</strong> de la pericia operativa real. Una validación out-of-sample con leave-one-out a nivel de calibración está prevista como extensión.</p>
+</section>
+<section id="periodo-de-entrenamiento-corto" class="level3">
+<h3 class="anchored" data-anchor-id="periodo-de-entrenamiento-corto">7.4 · Periodo de entrenamiento corto</h3>
+<p>19 años de entrenamiento es un periodo limitado para capturar la variabilidad climática estacional, en la que el rango muestral está dominado por unos pocos años extremos. Esto explica la <strong>amplitud de los intervalos de confianza</strong> en BSS y AUC y justifica la práctica de reportar siempre <span class="math inline">\(BSS_{\text{lower}}\)</span> y <span class="math inline">\(AUC_{\text{lower}}\)</span> como criterios robustos.</p>
+</section>
+<section id="régimen-estacionario-asumido" class="level3">
+<h3 class="anchored" data-anchor-id="régimen-estacionario-asumido">7.5 · Régimen estacionario asumido</h3>
+<p>El método asume que la relación estadística entre precipitación invernal y aportación se mantiene estable en el tiempo. Cambios de uso del suelo, regulación hidráulica, demanda agrícola o régimen pluviométrico (cambio climático) pueden alterar esta relación y reducir la pericia operativa respecto a la pericia histórica.</p>
+</section>
+</section>
+<section id="extensión-a-proyecciones-climáticas-cmip6" class="level2">
+<h2 class="anchored" data-anchor-id="extensión-a-proyecciones-climáticas-cmip6">8 · Extensión a proyecciones climáticas (CMIP6)</h2>
+<p>En paralelo a este servicio de predicción estacional, la misma familia metodológica basada en PLS se está aplicando a <strong>proyecciones climáticas</strong> para estimar el impacto del cambio climático sobre las aportaciones futuras a embalses (Gutiérrez-Fernández et al.).</p>
+<div class="acerca-callout info">
+<p><span class="callout-title">▸ Misma metodología, distinto horizonte temporal</span> El servicio descrito en esta página predice <strong>el próximo invierno</strong> (escala estacional, modelo dinámico ECMWF SEAS5.1). La extensión CMIP6 proyecta el <strong>siglo XXI</strong> (escala climática, modelos del CMIP6 bajo escenarios de emisiones). La estructura PLS se mantiene; cambian el observacional de entrenamiento y los datos de aplicación.</p>
+</div>
+<section id="cambios-respecto-al-servicio-estacional" class="level3">
+<h3 class="anchored" data-anchor-id="cambios-respecto-al-servicio-estacional">8.1 · Cambios respecto al servicio estacional</h3>
+<ul>
+<li><strong>Observacional de entrenamiento</strong>: <strong>CERRA-LAND</strong> (reanálisis a 0.05°, 1985–2020), en lugar de ROCIO_IBEB. Las aportaciones modeladas con CERRA presentan correlación &gt; 0.9 con las observadas, lo que valida CERRA como base para calibrar el PLS.</li>
+<li><strong>Datos de aplicación</strong>: <strong>11 modelos del CMIP6</strong> bajo el escenario <strong>SSP5-8.5</strong>, regionalizados a 0.05° con cinco técnicas diferentes:
+<ul>
+<li><strong>RAW</strong> — salida directa del modelo, sin corrección.</li>
+<li><strong>Deep-ESD</strong> — <em>downscaling</em> estadístico con redes neuronales.</li>
+<li><strong>XGB</strong> — <em>gradient boosted trees</em>.</li>
+<li><strong>QDM</strong> — corrección de sesgo por cuantiles (la misma familia que se aplica aquí en el servicio estacional).</li>
+<li><strong>GLM-LN</strong> — regresión lineal generalizada con respuesta log-normal.</li>
+</ul></li>
+</ul>
+</section>
+<section id="principales-resultados" class="level3">
+<h3 class="anchored" data-anchor-id="principales-resultados">8.2 · Principales resultados</h3>
+<p>Las proyecciones no muestran una <strong>tendencia uniforme</strong> de descenso de las aportaciones en clima futuro, sino un <strong>patrón espacial diferenciado</strong>:</p>
+<ul>
+<li><strong>Suroeste peninsular</strong>: descensos de aportaciones de cara a finales de siglo, consistentes en la mayoría de modelos y métodos de regionalización.</li>
+<li><strong>Noroeste peninsular</strong> (zonas próximas a Galicia): tendencia al aumento, especialmente marcada en Deep-ESD.</li>
+<li><strong>Valores extremos</strong> (P5–P95): cambios globalmente moderados, con un <strong>ligero descenso del P95 hacia finales del s. XXI</strong> que apunta a una posible reducción de los episodios más altos de aportación.</li>
+</ul>
+<div class="acerca-callout">
+<p><span class="callout-title">▸ Complementariedad con el servicio estacional</span> Ambos enfoques se apoyan en el mismo modelo PLS de aportación, lo que permite <strong>una lectura comparable</strong> entre el corto plazo (predicción estacional) y el largo plazo (escenarios climáticos). La extensión CMIP6 se documenta en mayor detalle en la presentación científica correspondiente (Gutiérrez-Fernández et al., AME 2026).</p>
+</div>
+</section>
+</section>
+<section id="relación-con-el-visor-s-climware-de-aemet" class="level2">
+<h2 class="anchored" data-anchor-id="relación-con-el-visor-s-climware-de-aemet">9 · Relación con el visor S-ClimWaRe de AEMET</h2>
+<p>AEMET mantiene un servicio climático operativo de predicción estacional para embalses, el visor <strong>S-ClimWaRe</strong>, desarrollado en el marco de los proyectos europeos EUPORIAS y MEDSCOPE y mantenido en colaboración con la Dirección General del Agua. <strong>Comparte parte de los datos base con nuestro servicio (sistema ECMWF SEAS5)</strong> pero responde a un objetivo distinto y emplea un enfoque metodológico propio.</p>
+<table class="tabla-comp caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Aspecto</th>
+<th data-quarto-table-cell-role="th">S-ClimWaRe (AEMET–DGA, operativo)</th>
+<th data-quarto-table-cell-role="th">Servicio AEMET–Tragsatec 2024–2026</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Objetivo</td>
+<td>Servicio climático operativo de apoyo a la gestión de embalses, integrado con diagnóstico hidroclimático y múltiples variables.</td>
+<td>Predicción estacional específica de aportaciones invernales con métricas detalladas de pericia por embalse.</td>
+</tr>
+<tr class="even">
+<td>Datos dinámicos base</td>
+<td>ECMWF SEAS5 (sistema operativo CEPPM/Copernicus).</td>
+<td>ECMWF SEAS5.1 (versión equivalente, mismo origen institucional).</td>
+</tr>
+<tr class="odd">
+<td>Variables ofrecidas</td>
+<td>Temperatura media, precipitación, nieve total y aportaciones a embalses.</td>
+<td>Aportación invernal total Q (NDJFM).</td>
+</tr>
+<tr class="even">
+<td>Post-proceso del ensemble</td>
+<td>Pesado de miembros del ensemble basado en la predicción probabilística óptima de la NAO invernal (modelo empírico AEMET + modelos dinámicos C3S).</td>
+<td>Calibración por Quantile Delta Mapping (QDM) píxel a píxel sobre la rejilla, seguida de PLS por embalse.</td>
+</tr>
+<tr class="odd">
+<td>Predicción de aportaciones</td>
+<td>Método híbrido empírico basado en la NAO invernal (avance de nieve en Eurasia como fuente de predecibilidad).</td>
+<td>PLS sobre precipitación calibrada en rejilla, miembro a miembro del ensemble.</td>
+</tr>
+<tr class="even">
+<td>Pericia reportada</td>
+<td>Pericia por evento (tercil) en periodo retrospectivo de 20+ años.</td>
+<td>r, hit rate, BS por tercil, BSS y AUC con IC 95% por bootstrap.</td>
+</tr>
+<tr class="odd">
+<td>Cobertura</td>
+<td>Todos los embalses del SAIH peninsular, rejilla 5 km × 5 km para variables climáticas.</td>
+<td>183 embalses peninsulares con corr_media &gt; 0.7, 8 demarcaciones.</td>
+</tr>
+</tbody>
+</table>
+<div class="acerca-callout info">
+<p><span class="callout-title">▸ Complementariedad</span> Ambos servicios son complementarios. S-ClimWaRe ofrece una <strong>visión integrada y operativa</strong> con varias variables hidroclimáticas y un canal estable de comunicación con los gestores de embalses. Este servicio aporta un <strong>análisis estadístico detallado y específico</strong> de la pericia por embalse bajo una metodología distinta (PLS+QDM frente a NAO-weighting), útil como segundo enfoque y como referencia metodológica para futuras mejoras.</p>
+</div>
+<div class="sclimware-card">
+<h3 class="anchored">Visor S-ClimWaRe</h3>
+<p>Servicio Climático para la Gestión de Embalses en España. Desarrollado por AEMET y la Dirección General del Agua en el marco de los proyectos europeos EUPORIAS y MEDSCOPE.</p>
+<a href="https://embalses.aemet.es/embalses/sclimwareS5.html" target="_blank" rel="noopener">Acceder al visor S-ClimWaRe →</a>
+</div>
+</section>
+<section id="referencias" class="level2">
+<h2 class="anchored" data-anchor-id="referencias">10 · Referencias</h2>
+<ul class="refs-list">
+<li><strong>Cannon, A. J., Sobie, S. R. &amp; Murdock, T. Q. (2015).</strong> Bias correction of GCM precipitation by quantile mapping: How well do methods preserve changes in quantiles and extremes? <em>Journal of Climate, 28</em>(17), 6938–6959. <a href="https://doi.org/10.1175/JCLI-D-14-00754.1" target="_blank">https://doi.org/10.1175/JCLI-D-14-00754.1</a></li>
+
+<li><strong>Wold, S., Sjöström, M. &amp; Eriksson, L. (2001).</strong> PLS-regression: a basic tool of chemometrics. <em>Chemometrics and Intelligent Laboratory Systems, 58</em>(2), 109–130. <a href="https://doi.org/10.1016/S0169-7439(01)00155-1" target="_blank">https://doi.org/10.1016/S0169-7439(01)00155-1</a></li>
+
+<li><strong>Wilks, D. S. (2019).</strong> <em>Statistical Methods in the Atmospheric Sciences</em> (4th ed.). Elsevier. — referencia estándar para Brier Score, BSS, AUC y verificación de predicciones probabilísticas.</li>
+
+<li><strong>Amblar-Francés, M. P. y colaboradores (2020).</strong> ROCIO_IBEB: rejilla diaria de precipitación, Tmax y Tmin a 5 km sobre la España peninsular generada por interpolación óptima (HIRLAM OI). <em>Advances in Science and Research, 17</em>, 191–196. <a href="https://doi.org/10.5194/asr-17-191-2020" target="_blank">https://doi.org/10.5194/asr-17-191-2020</a></li>
+
+<li><strong>Gutiérrez-Fernández, J., Sanfiz, S. &amp; Rodríguez-Guisado, E. (2026).</strong> Predicción de aportaciones a embalses en España a través de proyecciones regionalizadas de precipitación del CMIP6. Presentación científica, AME 2026 (Tragsatec — AEMET, Área de Modelización Climática).</li>
+
+<li><strong>AEMET (Nota Técnica 21).</strong> Modelo empírico de predicciones probabilísticas de aportaciones invernales basado en el avance de la cobertura de nieve en Eurasia. <a href="http://www.aemet.es/es/conocermas/recursos_en_linea/publicaciones_y_estudios/publicaciones/detalles/NT_21_AEMET" target="_blank">NT-21 AEMET</a></li>
+
+<li><strong>AEMET (Nota Técnica 24).</strong> Generación de la rejilla de precipitación diaria a 5 km × 5 km para la España peninsular (base de ROCIO_IBEB). <a href="http://www.aemet.es/es/conocermas/recursos_en_linea/publicaciones_y_estudios/publicaciones/detalles/NT_24_AEMET" target="_blank">NT-24 AEMET</a></li>
+
+<li><strong>AEMET (Nota Técnica 41).</strong> Proyecciones regionalizadas de precipitación CMIP6 para España: metodologías y validación. <a href="https://www.aemet.es/documentos/es/conocermas/recursos_en_linea/publicaciones_y_estudios/publicaciones/NT_41_AEMET/NT_41_AEMET.pdf" target="_blank">NT-41 AEMET</a></li>
+
+<li><strong>ECMWF (2021).</strong> SEAS5.1: Seasonal Forecast System 5.1 of the European Centre for Medium-Range Weather Forecasts.</li>
+
+<li><strong>CMIP6</strong>: Coupled Model Intercomparison Project Phase 6. World Climate Research Programme.</li>
+
+<li><strong>Copernicus Climate Change Service (C3S).</strong> Climate Data Store. <a href="https://cds.climate.copernicus.eu" target="_blank">https://cds.climate.copernicus.eu</a></li>
+
+<li><strong>ibicus</strong>: Python library for bias adjustment of climate model output. <a href="https://github.com/ecmwf-projects/ibicus" target="_blank">https://github.com/ecmwf-projects/ibicus</a></li>
+
+<li><strong>S-ClimWaRe</strong>: Servicio Climático para la Gestión de Embalses en España (AEMET–DGA, EUPORIAS/MEDSCOPE). <a href="https://embalses.aemet.es/embalses/sclimwareS5.html" target="_blank">https://embalses.aemet.es/embalses/sclimwareS5.html</a></li>
+</ul>
+</section>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/sanfiz\.github\.io\/aemet-tragsatec-2026\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 · Generado por los autores con HTML &amp; CSS</p>
+</div>   
+    <div class="nav-footer-center">
+<p>Marta Domínguez · Martín Senande · Sabela Sanfiz (Tragsatec) · Esteban Rodríguez (AEMET)</p>
+</div>
+    <div class="nav-footer-right">
+<p>Tragsatec · AEMET · Predicción Estacional · 2024–2026</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
