@@ -304,27 +304,27 @@ format:
 
 Las predicciones estacionales tienen un valor añadido reconocido en la gestión hidrológica: anticipar si un invierno será más seco o más húmedo de lo normal permite tomar decisiones de almacenamiento, desembalse y abastecimiento con varios meses de antelación.
 
-En España la señal predecible a escala estacional en invierno está dominada por la **Oscilación del Atlántico Norte (NAO)** y otros patrones de variabilidad climática de gran escala. Tradicionalmente esta señal ha sido difícil de capturar por los modelos dinámicos, pero en los últimos años (i) los modelos de circulación general han mejorado su pericia en el Atlántico Norte y (ii) se han consolidado técnicas de post-proceso y calibración que permiten extraer información útil de los hindcasts.
+En España la señal predecible a escala estacional en invierno está dominada por la **Oscilación del Atlántico Norte (NAO)** y otros patrones de variabilidad climática de gran escala. Tradicionalmente esta señal ha sido difícil de capturar por los modelos dinámicos, pero en los últimos años los modelos de circulación general han mejorado su pericia en el Atlántico Norte y se han consolidado técnicas de post-proceso y calibración que permiten extraer información útil de los hindcasts.
 
-Este servicio se inscribe en ese marco. Su objetivo es **proporcionar, para cada embalse español, una predicción probabilística de la aportación invernal acumulada junto con una estimación rigurosa de su pericia**, replicando y extendiendo la metodología establecida por Jesús Gutiérrez (Tragsatec-AEMET) y adaptándola al sistema SEAS5.1 sobre rejilla ROCIO_IBEB de 5 km.
+Este servicio se inscribe en ese marco. Su objetivo es **proporcionar, para cada embalse español, una predicción probabilística de la aportación invernal NDJFM acumulada junto con una estimación rigurosa de su pericia**, al sistema hindcast ECMWF-SEAS5.1 sobre rejilla ROCIO_IBEB de 5 km.
 
 ::: {.acerca-callout .info}
 [▸ Variable predicha]{.callout-title}
-Aportación total invernal $Q$ (hm³) definida como la suma de las aportaciones mensuales `entmes` de noviembre a marzo (NDJFM) para cada año hidrológico.
+Aportación total invernal $Q$ (hm³) definida como la suma de las aportaciones mensuales de noviembre a marzo (NDJFM) para cada año hidrológico.
 :::
 
 ## 2 · Datos de entrada
 
 ### 2.1 · Aportaciones observadas
 
-- **Base de datos de embalses peninsulares** con series mensuales de aportación `entmes` en hm³.
+- **Base de datos de embalses peninsulares** con series mensuales de aportación en hm³.
 - **Periodo de entrenamiento**: años hidrológicos 1997–2015 (19 inviernos).
 - **Filtrado de la red**: del total de embalses disponibles se retienen los **183 con correlación media superior a 0.7** entre la aportación invernal y la precipitación acumulada sobre la demarcación hidrográfica a la que pertenece cada embalse. Este criterio excluye embalses con régimen muy alterado por trasvases, gestión humana intensa o errores de registro.
 - **Cobertura**: [Miño-Sil]{.chip} [Cantábrico O.]{.chip} [Duero]{.chip} [Tajo]{.chip} [Guadiana]{.chip} [Guadalquivir]{.chip} [Segura]{.chip} [Júcar]{.chip} (8 demarcaciones).
 
 ### 2.2 · Predictores observados (entrenamiento)
 
-**Precipitación diaria en rejilla ROCIO_IBEB** a 5 km × 5 km sobre la España peninsular (Amblar-Francés et al., 2020), generada por AEMET por interpolación óptima (HIRLAM OI) de los datos diarios de la red de estaciones. Para cada embalse, la precipitación predictora se obtiene **agregando los píxeles ROCIO contenidos en la demarcación hidrográfica completa** a la que pertenece y acumulando sobre el periodo NDJFM. Esta opción —cuenca entera frente a polígono aguas arriba del embalse— es la que adoptó originalmente J. Gutiérrez y la que conserva mejor la señal climática a escala estacional.
+**Precipitación diaria en rejilla ROCIO_IBEB** a 5 km × 5 km sobre la España peninsular (Amblar-Francés et al., 2020), generada por AEMET por interpolación óptima (HIRLAM OI) de los datos diarios de la red de estaciones. Para cada embalse, la precipitación predictora se obtiene **agregando los píxeles ROCIO contenidos en la demarcación hidrográfica completa** a la que pertenece y acumulando sobre el periodo NDJFM. 
 
 ![Precipitación invernal acumulada NDJFM en ROCIO_IBEB (1997–2015): media (izquierda) y desviación estándar interanual (derecha). La señal predecible se concentra principalmente en la fachada atlántica.](images/acerca/rocio_ndjfm_media_sigma.png){.fig-acerca}
 
@@ -332,8 +332,8 @@ Aportación total invernal $Q$ (hm³) definida como la suma de las aportaciones 
 
 **ECMWF SEAS5.1**: hindcast del sistema operativo de predicción estacional del ECMWF.
 
-- **Variable**: precipitación total (`tp`) acumulada NDJFM.
-- **Inicialización**: 1 de noviembre.
+- **Variable**: precipitación total acumulada NDJFM.
+- **Inicialización**: 1 de octubre.
 - **Miembros del ensemble**: 25 por año.
 - **Periodo de hindcast**: 1993–2016 (24 años).
 - **Rejilla nativa**: aproximadamente 1°. Interpolada bilinealmente a la rejilla ROCIO_IBEB de 5 km para garantizar consistencia con los predictores observados.
@@ -512,7 +512,7 @@ Con series de 19–24 años las métricas tienen una incertidumbre muestral impo
 
 ## 6 · Pipeline operativo
 
-El servicio se ejecuta en el HPC AEMET–ECMWF mediante un pipeline consolidado (`script6_consolidado_BSS_ROC.py`) que integra los seis pasos en una sola pasada vectorizada:
+El proceso se ejecuta en el HPC ATOS del ECMWF, a través de un conjunto de scripts en python, que se estructuran como se expone a continuación:
 
 ```{=html}
 <div class="flujo-wrap">
@@ -535,17 +535,17 @@ El servicio se ejecuta en el HPC AEMET–ECMWF mediante un pipeline consolidado 
   </defs>
 
   <rect class="box-input" x="20"  y="40"  width="200" height="70" rx="6"/>
-  <text class="step-num" x="30" y="58">ENTRADA 1</text>
+  <text class="step-num" x="30" y="58">INPUT 1</text>
   <text class="lbl"     x="30" y="78">ROCIO_IBEB 5 km</text>
   <text class="lbl-sub" x="30" y="95">Precipitación 1997–2015</text>
 
   <rect class="box-input" x="20"  y="140" width="200" height="70" rx="6"/>
-  <text class="step-num" x="30" y="158">ENTRADA 2</text>
-  <text class="lbl"     x="30" y="178">SEAS5.1 hindcast</text>
+  <text class="step-num" x="30" y="158">INPUT 2</text>
+  <text class="lbl"     x="30" y="178">ECMWF SEAS5.1 hindcast</text>
   <text class="lbl-sub" x="30" y="195">25 miembros · 1993–2016</text>
 
   <rect class="box-input" x="20"  y="240" width="200" height="70" rx="6"/>
-  <text class="step-num" x="30" y="258">ENTRADA 3</text>
+  <text class="step-num" x="30" y="258">INPUT 3</text>
   <text class="lbl"     x="30" y="278">Aportaciones embalses</text>
   <text class="lbl-sub" x="30" y="295">entmes NDJFM, 183 series</text>
 
@@ -604,11 +604,11 @@ Esta gráfica ayuda a interpretar el resto: las limitaciones que se listan a con
 
 ### 7.1 · Naturaleza probabilística
 
-Las predicciones son **probabilísticas**, no deterministas. Una predicción de "70% de probabilidad de tercil húmedo" no significa que el invierno vaya a ser húmedo: significa que, en el largo plazo, de cada 10 inviernos con ese pronóstico, en torno a 7 caerán en el tercil húmedo. La decisión de gestión debe ponderar esta probabilidad con el coste/beneficio de cada escenario.
+Las predicciones son **probabilísticas**, no deterministas. Una predicción de "70% de probabilidad de tercil húmedo" no significa que el invierno vaya a ser húmedo: significa que, en el largo plazo, de cada 10 inviernos con ese pronóstico, en torno a 7 caerán en el tercil húmedo. 
 
 ### 7.2 · Pericia heterogénea entre demarcaciones
 
-La pericia no es uniforme. El visor de **Análisis por cuenca** muestra que las demarcaciones del cuadrante NW (Miño-Sil, Duero, Tajo) presentan correlaciones medianas QDM en torno a $r \approx 0.27$–$0.35$, mientras que Guadalquivir y Segura quedan por debajo de $r \approx 0.10$. Esto es consistente con la influencia diferencial de la NAO y la mayor predecibilidad de la fachada atlántica.
+La pericia no es uniforme. El visor de **PREDICCIÓN CUENCA** muestra que las demarcaciones del cuadrante NW (Miño-Sil, Duero, Tajo) presentan correlaciones medianas QDM en torno a $r \approx 0.27$–$0.35$, mientras que Guadalquivir y Segura quedan por debajo de $r \approx 0.10$. Esto es consistente con la influencia diferencial de la NAO y la mayor predecibilidad de la fachada atlántica.
 
 ### 7.3 · QDM in-sample
 
@@ -624,7 +624,7 @@ El método asume que la relación estadística entre precipitación invernal y a
 
 ## 8 · Extensión a proyecciones climáticas (CMIP6)
 
-En paralelo a este servicio de predicción estacional, la misma familia metodológica basada en PLS se está aplicando a **proyecciones climáticas** para estimar el impacto del cambio climático sobre las aportaciones futuras a embalses (Gutiérrez-Fernández et al.).
+En paralelo a este servicio de predicción estacional, la misma metodología se está aplicando a **proyecciones climáticas** para estimar el impacto del cambio climático sobre las aportaciones futuras a embalses (Gutiérrez-Fernández et al.).
 
 ::: {.acerca-callout .info}
 [▸ Misma metodología, distinto horizonte temporal]{.callout-title}

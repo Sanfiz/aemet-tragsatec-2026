@@ -129,7 +129,17 @@ window.Quarto = {
 <nav id="site-nav">
   <div id="site-nav-inner">
     <a href="index.html" class="nav-link">Inicio</a>
-    <a href="about.html" class="nav-link">El proyecto</a>
+    <!-- ── Conócenos: menú desplegable ── -->
+    <div class="nav-dropdown">
+      <a href="el-proyecto.html" class="nav-link nav-link-dropdown">
+        Conócenos
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="el-proyecto.html" class="nav-dropdown-item">El Proyecto</a>
+        <a href="el-equipo.html" class="nav-dropdown-item">El Equipo</a>
+      </div>
+    </div>
     <a href="datos.html" class="nav-link">Datos</a>
     <a href="downscaling.html" class="nav-link">Downscaling</a>
     <a href="weighting.html" class="nav-link">Weighting</a>
@@ -140,8 +150,8 @@ window.Quarto = {
         <span class="nav-caret">▾</span>
       </a>
       <div class="nav-dropdown-menu">
-        <a href="embalses-cuenca.html" class="nav-dropdown-item">Predicción por cuenca</a>
-        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción por embalse</a>
+        <a href="embalses-cuenca.html" class="nav-dropdown-item">Predicción cuenca</a>
+        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción embalse</a>
         <a href="embalses-acerca.html" class="nav-dropdown-item">Acerca de</a>
       </div>
     </div>
@@ -332,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const href = item.getAttribute('href');
     if (href === current) {
       item.classList.add('active');
-      // También activar el "Embalses" padre
+      // También activar el padre del dropdown
       const parent = item.closest('.nav-dropdown').querySelector('.nav-link-dropdown');
       if (parent) parent.classList.add('active');
     }
@@ -658,10 +668,10 @@ document.addEventListener('DOMContentLoaded', function() {
 <section id="objetivo" class="level2">
 <h2 class="anchored" data-anchor-id="objetivo">1 · Objetivo</h2>
 <p>Las predicciones estacionales tienen un valor añadido reconocido en la gestión hidrológica: anticipar si un invierno será más seco o más húmedo de lo normal permite tomar decisiones de almacenamiento, desembalse y abastecimiento con varios meses de antelación.</p>
-<p>En España la señal predecible a escala estacional en invierno está dominada por la <strong>Oscilación del Atlántico Norte (NAO)</strong> y otros patrones de variabilidad climática de gran escala. Tradicionalmente esta señal ha sido difícil de capturar por los modelos dinámicos, pero en los últimos años (i) los modelos de circulación general han mejorado su pericia en el Atlántico Norte y (ii) se han consolidado técnicas de post-proceso y calibración que permiten extraer información útil de los hindcasts.</p>
-<p>Este servicio se inscribe en ese marco. Su objetivo es <strong>proporcionar, para cada embalse español, una predicción probabilística de la aportación invernal acumulada junto con una estimación rigurosa de su pericia</strong>, replicando y extendiendo la metodología establecida por Jesús Gutiérrez (Tragsatec-AEMET) y adaptándola al sistema SEAS5.1 sobre rejilla ROCIO_IBEB de 5 km.</p>
+<p>En España la señal predecible a escala estacional en invierno está dominada por la <strong>Oscilación del Atlántico Norte (NAO)</strong> y otros patrones de variabilidad climática de gran escala. Tradicionalmente esta señal ha sido difícil de capturar por los modelos dinámicos, pero en los últimos años los modelos de circulación general han mejorado su pericia en el Atlántico Norte y se han consolidado técnicas de post-proceso y calibración que permiten extraer información útil de los hindcasts.</p>
+<p>Este servicio se inscribe en ese marco. Su objetivo es <strong>proporcionar, para cada embalse español, una predicción probabilística de la aportación invernal NDJFM acumulada junto con una estimación rigurosa de su pericia</strong>, al sistema hindcast ECMWF-SEAS5.1 sobre rejilla ROCIO_IBEB de 5 km.</p>
 <div class="acerca-callout info">
-<p><span class="callout-title">▸ Variable predicha</span> Aportación total invernal <span class="math inline">\(Q\)</span> (hm³) definida como la suma de las aportaciones mensuales <code>entmes</code> de noviembre a marzo (NDJFM) para cada año hidrológico.</p>
+<p><span class="callout-title">▸ Variable predicha</span> Aportación total invernal <span class="math inline">\(Q\)</span> (hm³) definida como la suma de las aportaciones mensuales de noviembre a marzo (NDJFM) para cada año hidrológico.</p>
 </div>
 </section>
 <section id="datos-de-entrada" class="level2">
@@ -669,7 +679,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <section id="aportaciones-observadas" class="level3">
 <h3 class="anchored" data-anchor-id="aportaciones-observadas">2.1 · Aportaciones observadas</h3>
 <ul>
-<li><strong>Base de datos de embalses peninsulares</strong> con series mensuales de aportación <code>entmes</code> en hm³.</li>
+<li><strong>Base de datos de embalses peninsulares</strong> con series mensuales de aportación en hm³.</li>
 <li><strong>Periodo de entrenamiento</strong>: años hidrológicos 1997–2015 (19 inviernos).</li>
 <li><strong>Filtrado de la red</strong>: del total de embalses disponibles se retienen los <strong>183 con correlación media superior a 0.7</strong> entre la aportación invernal y la precipitación acumulada sobre la demarcación hidrográfica a la que pertenece cada embalse. Este criterio excluye embalses con régimen muy alterado por trasvases, gestión humana intensa o errores de registro.</li>
 <li><strong>Cobertura</strong>: <span class="chip">Miño-Sil</span> <span class="chip">Cantábrico O.</span> <span class="chip">Duero</span> <span class="chip">Tajo</span> <span class="chip">Guadiana</span> <span class="chip">Guadalquivir</span> <span class="chip">Segura</span> <span class="chip">Júcar</span> (8 demarcaciones).</li>
@@ -677,7 +687,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="predictores-observados-entrenamiento" class="level3">
 <h3 class="anchored" data-anchor-id="predictores-observados-entrenamiento">2.2 · Predictores observados (entrenamiento)</h3>
-<p><strong>Precipitación diaria en rejilla ROCIO_IBEB</strong> a 5 km × 5 km sobre la España peninsular (Amblar-Francés et al., 2020), generada por AEMET por interpolación óptima (HIRLAM OI) de los datos diarios de la red de estaciones. Para cada embalse, la precipitación predictora se obtiene <strong>agregando los píxeles ROCIO contenidos en la demarcación hidrográfica completa</strong> a la que pertenece y acumulando sobre el periodo NDJFM. Esta opción —cuenca entera frente a polígono aguas arriba del embalse— es la que adoptó originalmente J. Gutiérrez y la que conserva mejor la señal climática a escala estacional.</p>
+<p><strong>Precipitación diaria en rejilla ROCIO_IBEB</strong> a 5 km × 5 km sobre la España peninsular (Amblar-Francés et al., 2020), generada por AEMET por interpolación óptima (HIRLAM OI) de los datos diarios de la red de estaciones. Para cada embalse, la precipitación predictora se obtiene <strong>agregando los píxeles ROCIO contenidos en la demarcación hidrográfica completa</strong> a la que pertenece y acumulando sobre el periodo NDJFM.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/acerca/rocio_ndjfm_media_sigma.png" class="fig-acerca img-fluid figure-img"></p>
@@ -689,8 +699,8 @@ document.addEventListener('DOMContentLoaded', function() {
 <h3 class="anchored" data-anchor-id="hindcast-dinámico-aplicación">2.3 · Hindcast dinámico (aplicación)</h3>
 <p><strong>ECMWF SEAS5.1</strong>: hindcast del sistema operativo de predicción estacional del ECMWF.</p>
 <ul>
-<li><strong>Variable</strong>: precipitación total (<code>tp</code>) acumulada NDJFM.</li>
-<li><strong>Inicialización</strong>: 1 de noviembre.</li>
+<li><strong>Variable</strong>: precipitación total acumulada NDJFM.</li>
+<li><strong>Inicialización</strong>: 1 de octubre.</li>
 <li><strong>Miembros del ensemble</strong>: 25 por año.</li>
 <li><strong>Periodo de hindcast</strong>: 1993–2016 (24 años).</li>
 <li><strong>Rejilla nativa</strong>: aproximadamente 1°. Interpolada bilinealmente a la rejilla ROCIO_IBEB de 5 km para garantizar consistencia con los predictores observados.</li>
@@ -844,7 +854,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="pipeline-operativo" class="level2">
 <h2 class="anchored" data-anchor-id="pipeline-operativo">6 · Pipeline operativo</h2>
-<p>El servicio se ejecuta en el HPC AEMET–ECMWF mediante un pipeline consolidado (<code>script6_consolidado_BSS_ROC.py</code>) que integra los seis pasos en una sola pasada vectorizada:</p>
+<p>El proceso se ejecuta en el HPC ATOS del ECMWF, a través de un conjunto de scripts en python, que se estructuran como se expone a continuación:</p>
 <div class="flujo-wrap">
 <svg viewbox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama de flujo del pipeline">
   <defs>
@@ -865,17 +875,17 @@ document.addEventListener('DOMContentLoaded', function() {
   </defs>
 
   <rect class="box-input" x="20" y="40" width="200" height="70" rx="6"></rect>
-  <text class="step-num" x="30" y="58">ENTRADA 1</text>
+  <text class="step-num" x="30" y="58">INPUT 1</text>
   <text class="lbl" x="30" y="78">ROCIO_IBEB 5 km</text>
   <text class="lbl-sub" x="30" y="95">Precipitación 1997–2015</text>
 
   <rect class="box-input" x="20" y="140" width="200" height="70" rx="6"></rect>
-  <text class="step-num" x="30" y="158">ENTRADA 2</text>
-  <text class="lbl" x="30" y="178">SEAS5.1 hindcast</text>
+  <text class="step-num" x="30" y="158">INPUT 2</text>
+  <text class="lbl" x="30" y="178">ECMWF SEAS5.1 hindcast</text>
   <text class="lbl-sub" x="30" y="195">25 miembros · 1993–2016</text>
 
   <rect class="box-input" x="20" y="240" width="200" height="70" rx="6"></rect>
-  <text class="step-num" x="30" y="258">ENTRADA 3</text>
+  <text class="step-num" x="30" y="258">INPUT 3</text>
   <text class="lbl" x="30" y="278">Aportaciones embalses</text>
   <text class="lbl-sub" x="30" y="295">entmes NDJFM, 183 series</text>
 
@@ -935,11 +945,11 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>Esta gráfica ayuda a interpretar el resto: las limitaciones que se listan a continuación explican por qué la pericia del sistema completo (rojo) es necesariamente menor que la del modelo en entrenamiento (azul).</p>
 <section id="naturaleza-probabilística" class="level3">
 <h3 class="anchored" data-anchor-id="naturaleza-probabilística">7.1 · Naturaleza probabilística</h3>
-<p>Las predicciones son <strong>probabilísticas</strong>, no deterministas. Una predicción de “70% de probabilidad de tercil húmedo” no significa que el invierno vaya a ser húmedo: significa que, en el largo plazo, de cada 10 inviernos con ese pronóstico, en torno a 7 caerán en el tercil húmedo. La decisión de gestión debe ponderar esta probabilidad con el coste/beneficio de cada escenario.</p>
+<p>Las predicciones son <strong>probabilísticas</strong>, no deterministas. Una predicción de “70% de probabilidad de tercil húmedo” no significa que el invierno vaya a ser húmedo: significa que, en el largo plazo, de cada 10 inviernos con ese pronóstico, en torno a 7 caerán en el tercil húmedo.</p>
 </section>
 <section id="pericia-heterogénea-entre-demarcaciones" class="level3">
 <h3 class="anchored" data-anchor-id="pericia-heterogénea-entre-demarcaciones">7.2 · Pericia heterogénea entre demarcaciones</h3>
-<p>La pericia no es uniforme. El visor de <strong>Análisis por cuenca</strong> muestra que las demarcaciones del cuadrante NW (Miño-Sil, Duero, Tajo) presentan correlaciones medianas QDM en torno a <span class="math inline">\(r \approx 0.27\)</span>–<span class="math inline">\(0.35\)</span>, mientras que Guadalquivir y Segura quedan por debajo de <span class="math inline">\(r \approx 0.10\)</span>. Esto es consistente con la influencia diferencial de la NAO y la mayor predecibilidad de la fachada atlántica.</p>
+<p>La pericia no es uniforme. El visor de <strong>PREDICCIÓN CUENCA</strong> muestra que las demarcaciones del cuadrante NW (Miño-Sil, Duero, Tajo) presentan correlaciones medianas QDM en torno a <span class="math inline">\(r \approx 0.27\)</span>–<span class="math inline">\(0.35\)</span>, mientras que Guadalquivir y Segura quedan por debajo de <span class="math inline">\(r \approx 0.10\)</span>. Esto es consistente con la influencia diferencial de la NAO y la mayor predecibilidad de la fachada atlántica.</p>
 </section>
 <section id="qdm-in-sample" class="level3">
 <h3 class="anchored" data-anchor-id="qdm-in-sample">7.3 · QDM in-sample</h3>
@@ -956,7 +966,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="extensión-a-proyecciones-climáticas-cmip6" class="level2">
 <h2 class="anchored" data-anchor-id="extensión-a-proyecciones-climáticas-cmip6">8 · Extensión a proyecciones climáticas (CMIP6)</h2>
-<p>En paralelo a este servicio de predicción estacional, la misma familia metodológica basada en PLS se está aplicando a <strong>proyecciones climáticas</strong> para estimar el impacto del cambio climático sobre las aportaciones futuras a embalses (Gutiérrez-Fernández et al.).</p>
+<p>En paralelo a este servicio de predicción estacional, la misma metodología se está aplicando a <strong>proyecciones climáticas</strong> para estimar el impacto del cambio climático sobre las aportaciones futuras a embalses (Gutiérrez-Fernández et al.).</p>
 <div class="acerca-callout info">
 <p><span class="callout-title">▸ Misma metodología, distinto horizonte temporal</span> El servicio descrito en esta página predice <strong>el próximo invierno</strong> (escala estacional, modelo dinámico ECMWF SEAS5.1). La extensión CMIP6 proyecta el <strong>siglo XXI</strong> (escala climática, modelos del CMIP6 bajo escenarios de emisiones). La estructura PLS se mantiene; cambian el observacional de entrenamiento y los datos de aplicación.</p>
 </div>
