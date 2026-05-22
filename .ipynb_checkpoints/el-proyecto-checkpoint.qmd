@@ -232,21 +232,21 @@ format:
     <div class="linea-card">
       <div class="linea-num">1</div>
       <h3>Downscaling estadístico</h3>
-      <p>Regionalización a alta resolución de las predicciones estacionales de los modelos globales sobre España.</p>
+      <p>Regionalización a alta resolución de las predicciones estacionales de los modelos globales sobre España, para usuarios finales que requieren información a escala local.</p>
       <a href="downscaling.html">Ver resultados →</a>
     </div>
 
     <div class="linea-card">
       <div class="linea-num">2</div>
       <h3>Ponderación de conjuntos</h3>
-      <p>Combinación de miembros del ensemble mediante técnicas estadísticas de <em>weighting</em> para extraer la señal climática más fiable.</p>
+      <p>Combinación óptima de los miembros del ensemble mediante técnicas estadísticas de <em>weighting</em> para extraer la señal climática más fiable.</p>
       <a href="weighting.html">Ver resultados →</a>
     </div>
 
     <div class="linea-card">
       <div class="linea-num">3</div>
       <h3>Predicción de aportaciones</h3>
-      <p>Predicción estacional invernal de aportaciones a embalses peninsulares, con modelo PLS por embalse.</p>
+      <p>Aplicación de la metodología a la predicción estacional invernal de aportaciones a embalses peninsulares, con calibración QDM y modelo PLS por embalse.</p>
       <a href="embalses-prediccion.html">Ver resultados →</a>
     </div>
 
@@ -257,15 +257,19 @@ format:
   <div class="grid-2">
     <div class="info-card">
       <h3>📅 Vigencia</h3>
-      <p>El contrato de servicio está en vigor hasta junio de 2026. Los resultados se actualizan de forma periódica con cada nueva predicción estacional.</p>
+      <p>El contrato de servicio está en vigor hasta el verano de 2026. Los resultados se actualizan de forma periódica con cada nueva predicción estacional.</p>
     </div>
     <div class="info-card">
       <h3>🏛️ Marco institucional</h3>
-      <p>AEMET lidera el trabajo desde del Área de Evaluación y Modelización del Clima. Tragsatec actúa como subcontrata.</p>
+      <p>AEMET lidera el trabajo dentro del Área de Evaluación y Modelización del Clima. Tragsatec contribuye al desarrollo de las metodologías estadísticas de post-proceso.</p>
+    </div>
+    <div class="info-card">
+      <h3>🌐 Fuentes de datos</h3>
+      <p>Modelos globales de predicción estacional descargados del Climate Data Store de Copernicus (C3S), reanálisis CERRA-LAND y rejilla observacional ROCIO_IBEB de AEMET.</p>
     </div>
     <div class="info-card">
       <h3>👥 Equipo</h3>
-      <p>Equipo mixto AEMET–Tragsatec. Conoce a las personas detrás de este proyecto: <a href="el-equipo.html" style="color:#0072bc;font-weight:600;">El Equipo</a>.</p>
+      <p>Equipo mixto AEMET–Tragsatec. Conoce a las personas que trabajan en el proyecto en la página <a href="el-equipo.html" style="color:#0072bc;font-weight:600;">El Equipo</a>.</p>
     </div>
   </div>
 
