@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Datos – Predicción Estacional · AEMET–Tragsatec</title>
+<title>El Proyecto – Predicción Estacional · AEMET–Tragsatec</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -78,9 +78,7 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
+    
 <!-- main -->
 <main class="content column-page" id="quarto-document-content">
 <!-- ── BARRA BLANCA CON LOGOS ─────────────────────────── -->
@@ -100,7 +98,17 @@ ul.task-list li input[type="checkbox"] {
 <nav id="site-nav">
   <div id="site-nav-inner">
     <a href="index.html" class="nav-link">Inicio</a>
-    <a href="about.html" class="nav-link">El proyecto</a>
+    <!-- ── Conócenos: menú desplegable ── -->
+    <div class="nav-dropdown">
+      <a href="el-proyecto.html" class="nav-link nav-link-dropdown">
+        Conócenos
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="el-proyecto.html" class="nav-dropdown-item">El Proyecto</a>
+        <a href="el-equipo.html" class="nav-dropdown-item">El Equipo</a>
+      </div>
+    </div>
     <a href="datos.html" class="nav-link">Datos</a>
     <a href="downscaling.html" class="nav-link">Downscaling</a>
     <a href="weighting.html" class="nav-link">Weighting</a>
@@ -111,8 +119,8 @@ ul.task-list li input[type="checkbox"] {
         <span class="nav-caret">▾</span>
       </a>
       <div class="nav-dropdown-menu">
-        <a href="embalses-cuenca.html" class="nav-dropdown-item">Predicción por cuenca</a>
-        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción por embalse</a>
+        <a href="embalses-cuenca.html" class="nav-dropdown-item">Predicción cuenca</a>
+        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción embalse</a>
         <a href="embalses-acerca.html" class="nav-dropdown-item">Acerca de</a>
       </div>
     </div>
@@ -303,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const href = item.getAttribute('href');
     if (href === current) {
       item.classList.add('active');
-      // También activar el "Embalses" padre
+      // También activar el padre del dropdown
       const parent = item.closest('.nav-dropdown').querySelector('.nav-link-dropdown');
       if (parent) parent.classList.add('active');
     }
@@ -323,7 +331,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Datos</h1>
+<h1 class="title">El Proyecto</h1>
+<p class="subtitle lead">Servicio de predicción estacional estadística para España</p>
 </div>
 
 
@@ -340,67 +349,275 @@ document.addEventListener('DOMContentLoaded', function() {
 </header>
 
 
-<div style="max-width:960px;margin:6rem auto;padding:0 1.5rem;">
+<style>
+.proy-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 4rem;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  color: #1f2937;
+  line-height: 1.65;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
 
-  <span class="section-label">Fuentes y descarga</span>
-  <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;" class="anchored">Datos utilizados</h2>
-  <p style="color:#4a5568;margin-bottom:2rem;">Descripción de los conjuntos de datos empleados en las metodologías de downscaling, ponderación de ensemble y verificación estacional.</p>
+.proy-wrap h2,
+.proy-wrap h3,
+.proy-wrap .hero *,
+.proy-wrap figcaption,
+.proy-wrap .tag,
+.proy-wrap .info-card h3,
+.proy-wrap .linea-card h3 {
+  text-align: left;
+}
 
-  <h3 style="color:#003087;margin-top:2rem;" class="anchored">Copernicus Climate Data Store (C3S)</h3>
-  <p style="font-size:0.92rem;line-height:1.7;color:#1a2332;">
-    Los datos de predicción estacional se obtienen del <strong>Copernicus Climate Data Store (C3S)</strong> a través de la API oficial de Copernicus (<code>cdsapi</code>). Los modelos empleados son:
-  </p>
+/* ─── Hero institucional ─── */
+.proy-wrap .hero {
+  background: linear-gradient(135deg, #003087 0%, #0072bc 100%);
+  color: white;
+  padding: 3.5rem 2rem 3rem;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 4px 18px rgba(0,48,135,0.18);
+}
+.proy-wrap .hero .section-label {
+  display: inline-block;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  padding: 0.35rem 1rem;
+  border-radius: 16px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+.proy-wrap .hero h1 {
+  color: white;
+  font-size: 2.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0.6rem 0 1rem;
+  line-height: 1.2;
+}
+.proy-wrap .hero .divider {
+  width: 70px;
+  height: 3px;
+  background: white;
+  margin: 1.2rem auto;
+  border-radius: 2px;
+}
+.proy-wrap .hero .subtitle {
+  color: rgba(255,255,255,0.92);
+  font-size: 1.05rem;
+  margin: 0 0 1rem;
+  font-weight: 400;
+}
+.proy-wrap .hero .tags-row {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1.2rem;
+}
+.proy-wrap .hero .tag {
+  border: 1px solid rgba(255,255,255,0.5);
+  color: white;
+  background: transparent;
+  padding: 0.25rem 0.8rem;
+  border-radius: 14px;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
 
-  <div class="grid-3" style="margin:1.2rem 0 2rem;">
-    <div class="info-card" style="text-align:center;">
-      <h3 class="anchored">ECMWF-SEAS5.1</h3>
-      <p>European Centre for Medium-Range Weather Forecasts · Sistema estacional de referencia</p>
-    </div>
-    <div class="info-card" style="text-align:center;">
-      <h3 class="anchored">DWD</h3>
-      <p>Deutscher Wetterdienst · Servicio Meteorológico Alemán</p>
-    </div>
-    <div class="info-card" style="text-align:center;">
-      <h3 class="anchored">CMCC</h3>
-      <p>Centro Euro-Mediterraneo sui Cambiamenti Climatici · Italia</p>
+/* ─── Secciones generales ─── */
+.proy-wrap h2 {
+  color: #003087;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid #0072bc;
+}
+.proy-wrap p {
+  font-size: 0.96rem;
+  color: #1a2332;
+  margin: 0.7rem 0 1rem;
+}
+
+/* ─── Grid de info-cards (2 columnas) ─── */
+.proy-wrap .grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+  margin: 1.5rem 0 2rem;
+}
+.proy-wrap .info-card {
+  background: white;
+  border: 1px solid #dde3ed;
+  border-top: 3px solid #0072bc;
+  border-radius: 4px;
+  padding: 1.2rem 1.4rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.proy-wrap .info-card h3 {
+  color: #003087;
+  font-size: 1.05rem;
+  margin: 0 0 0.6rem;
+  font-weight: 600;
+}
+.proy-wrap .info-card p {
+  font-size: 0.9rem;
+  color: #4b5563;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ─── Líneas de trabajo (3 columnas con icono) ─── */
+.proy-wrap .lineas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.2rem;
+  margin: 1.5rem 0 2rem;
+}
+.proy-wrap .linea-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%);
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  padding: 1.4rem 1.3rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.proy-wrap .linea-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,48,135,0.1);
+}
+.proy-wrap .linea-card .linea-num {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  background: #003087;
+  color: white;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: center;
+  margin-bottom: 0.7rem;
+}
+.proy-wrap .linea-card h3 {
+  color: #003087;
+  font-size: 1.05rem;
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+.proy-wrap .linea-card p {
+  font-size: 0.88rem;
+  color: #4b5563;
+  margin: 0 0 0.8rem;
+  line-height: 1.55;
+}
+.proy-wrap .linea-card a {
+  font-size: 0.85rem;
+  color: #0072bc;
+  text-decoration: none;
+  font-weight: 600;
+}
+.proy-wrap .linea-card a:hover { text-decoration: underline; }
+
+/* ─── Bloque institucional ─── */
+.proy-wrap .institucional {
+  background: #f7f9fc;
+  border-left: 4px solid #0072bc;
+  padding: 1.3rem 1.6rem;
+  border-radius: 4px;
+  margin: 1.5rem 0;
+}
+.proy-wrap .institucional p { margin: 0.4rem 0; font-size: 0.93rem; }
+.proy-wrap .institucional strong { color: #003087; }
+</style>
+
+<div class="proy-wrap">
+
+  <!-- ═══ HERO ═══ -->
+  <div class="hero">
+    <span class="section-label">Servicio de predicción estacional · 2024–2026</span>
+    <h1>Predicción Estacional Estadística<br>para España</h1>
+    <div class="divider"></div>
+    <p class="subtitle">Contrato de servicio de AEMET a Tragsatec</p>
+    <div class="tags-row">
+      <span class="tag">AEMET</span>
+      <span class="tag">Tragsatec</span>
+      <span class="tag">MITECO</span>
     </div>
   </div>
 
-  <h3 style="color:#003087;margin-top:2rem;" class="anchored">Variables descargadas</h3>
+  <!-- ═══ SOBRE EL PROYECTO ═══ -->
+  <h2 class="anchored">Sobre el proyecto</h2>
+  <p>
+    Este proyecto se enmarca en un contrato de servicio en el que <strong>Tragsatec</strong> actúa como subcontratista de la
+    <strong>Agencia Estatal de Meteorología (AEMET)</strong>, dentro del Área de Evaluación y Modelización del Clima.
+    El objetivo principal es el desarrollo de metodologías estadísticas avanzadas para mejorar la predicción estacional
+    sobre España, combinando datos de modelos globales de predicción estacional descargados de Copernicus con técnicas de
+    regionalización y ponderación de conjuntos.
+  </p>
 
-  <div class="grid-2" style="margin:1rem 0 2rem;">
+  <!-- ═══ LÍNEAS DE TRABAJO ═══ -->
+  <h2 class="anchored">Líneas de trabajo</h2>
+  <div class="lineas-grid">
+
+    <div class="linea-card">
+      <div class="linea-num">1</div>
+      <h3 class="anchored">Downscaling estadístico</h3>
+      <p>Regionalización a alta resolución de las predicciones estacionales de los modelos globales sobre España, para usuarios finales que requieren información a escala local.</p>
+      <a href="downscaling.html">Ver resultados →</a>
+    </div>
+
+    <div class="linea-card">
+      <div class="linea-num">2</div>
+      <h3 class="anchored">Ponderación de conjuntos</h3>
+      <p>Combinación óptima de los miembros del ensemble mediante técnicas estadísticas de <em>weighting</em> para extraer la señal climática más fiable.</p>
+      <a href="weighting.html">Ver resultados →</a>
+    </div>
+
+    <div class="linea-card">
+      <div class="linea-num">3</div>
+      <h3 class="anchored">Predicción de aportaciones</h3>
+      <p>Aplicación de la metodología a la predicción estacional invernal de aportaciones a embalses peninsulares, con calibración QDM y modelo PLS por embalse.</p>
+      <a href="embalses-prediccion.html">Ver resultados →</a>
+    </div>
+
+  </div>
+
+  <!-- ═══ ESTRUCTURA INSTITUCIONAL ═══ -->
+  <h2 class="anchored">Marco institucional</h2>
+  <div class="grid-2">
     <div class="info-card">
-      <h3 class="anchored">Presión al nivel del mar (MSL)</h3>
-      <p>Utilizada para el cálculo de componentes del viento geostrófico superficial (ug, vg) a partir de MSL y T1000. Base de los análogos sinópticos y los modos de variabilidad EOF/PLS.</p>
+      <h3 class="anchored">📅 Vigencia</h3>
+      <p>El contrato de servicio está en vigor hasta el verano de 2026. Los resultados se actualizan de forma periódica con cada nueva predicción estacional.</p>
     </div>
     <div class="info-card">
-      <h3 class="anchored">Altura geopotencial 500 hPa (Z500)</h3>
-      <p>Componentes del viento a 500 hPa (u500, v500). Empleada tanto en el downscaling como en la caracterización de la circulación Euro-Atlántica.</p>
+      <h3 class="anchored">🏛️ Marco institucional</h3>
+      <p>AEMET lidera el trabajo dentro del Área de Evaluación y Modelización del Clima. Tragsatec contribuye al desarrollo de las metodologías estadísticas de post-proceso.</p>
     </div>
     <div class="info-card">
-      <h3 class="anchored">Temperatura a 2 m (T2M)</h3>
-      <p>Variable predictanda en el weighting PLS. También usada en la verificación de las predicciones estacionales de temperatura.</p>
+      <h3 class="anchored">🌐 Fuentes de datos</h3>
+      <p>Modelos globales de predicción estacional descargados del Climate Data Store de Copernicus (C3S), reanálisis CERRA-LAND y rejilla observacional ROCIO_IBEB de AEMET.</p>
     </div>
     <div class="info-card">
-      <h3 class="anchored">Precipitación total (TP)</h3>
-      <p>Variable predictanda principal. Verificada en terciles (seco / normal / húmedo) mediante métricas probabilistas (ROC, RPS, BS).</p>
+      <h3 class="anchored">👥 Equipo</h3>
+      <p>Equipo mixto AEMET–Tragsatec. Conoce a las personas que trabajan en el proyecto en la página <a href="el-equipo.html" style="color:#0072bc;font-weight:600;">El Equipo</a>.</p>
     </div>
   </div>
 
-  <h3 style="color:#003087;margin-top:2rem;" class="anchored">Datos de reanálisis (ERA5)</h3>
-  <p style="font-size:0.92rem;line-height:1.7;color:#1a2332;margin-bottom:1rem;">
-    El reanálisis ERA5 de ECMWF se emplea como referencia observacional para la fase de calibración del downscaling (período 1981–1996) y para la estimación de los modos de variabilidad (EOFs, PLS).
-  </p>
-
-  <div class="grid-2" style="margin:1rem 0 2rem;">
-    <div class="info-card">
-      <h3 class="anchored">Base atmosférica diaria (ERA5)</h3>
-      <p>Componentes del viento geostrófico (ug, vg) de MSL y T1000 · Componentes del viento a 500 hPa (u500, v500)</p>
-    </div>
-    <div class="info-card">
-      <h3 class="anchored">Base de precipitación diaria (ROCÍO_IBEB)</h3>
-      <p>Red observacional española de precipitación diaria. Usada para asociar cada situación sinóptica de referencia con su patrón de precipitación correspondiente.</p>
-    </div>
+  <!-- ═══ NOTA INSTITUCIONAL ═══ -->
+  <div class="institucional">
+    <p><strong>AEMET</strong> · Agencia Estatal de Meteorología. Organismo público adscrito al Ministerio para la Transición Ecológica y el Reto Demográfico (MITECO).</p>
+    <p><strong>Tragsatec</strong> · Tecnologías y Servicios Agrarios, S.A. Empresa pública del Grupo Tragsa, perteneciente al sector público estatal (SEPI).</p>
   </div>
 
 </div>

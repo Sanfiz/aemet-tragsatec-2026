@@ -15,17 +15,7 @@
 <nav id="site-nav">
   <div id="site-nav-inner">
     <a href="index.html" class="nav-link">Inicio</a>
-    <!-- ── Conócenos: menú desplegable ── -->
-    <div class="nav-dropdown">
-      <a href="el-proyecto.html" class="nav-link nav-link-dropdown">
-        Conócenos
-        <span class="nav-caret">▾</span>
-      </a>
-      <div class="nav-dropdown-menu">
-        <a href="el-proyecto.html" class="nav-dropdown-item">El Proyecto</a>
-        <a href="el-equipo.html" class="nav-dropdown-item">El Equipo</a>
-      </div>
-    </div>
+    <a href="about.html" class="nav-link">El proyecto</a>
     <a href="datos.html" class="nav-link">Datos</a>
     <a href="downscaling.html" class="nav-link">Downscaling</a>
     <a href="weighting.html" class="nav-link">Weighting</a>
@@ -36,8 +26,8 @@
         <span class="nav-caret">▾</span>
       </a>
       <div class="nav-dropdown-menu">
-        <a href="embalses-cuenca.html" class="nav-dropdown-item">Predicción cuenca</a>
-        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción embalse</a>
+        <a href="embalses-cuenca.html" class="nav-dropdown-item">Análisis por cuenca</a>
+        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción</a>
         <a href="embalses-acerca.html" class="nav-dropdown-item">Acerca de</a>
       </div>
     </div>
@@ -228,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const href = item.getAttribute('href');
     if (href === current) {
       item.classList.add('active');
-      // También activar el padre del dropdown
+      // También activar el "Embalses" padre
       const parent = item.closest('.nav-dropdown').querySelector('.nav-link-dropdown');
       if (parent) parent.classList.add('active');
     }

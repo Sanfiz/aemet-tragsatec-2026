@@ -35,20 +35,11 @@ toc: false
 
   <div class="grid-3" style="margin-bottom:2rem;">
 
-    <div class="info-card">
-      <h3>📡 Datos</h3>
-      <p>Predicciones estacionales de Copernicus Climate Data Store (C3S): modelos ECMWF-SEAS5.1, DWD y CMCC, descargados mediante la API oficial de Copernicus.</p>
-    </div>
 
-    <div class="info-card">
-      <h3>🗺️ Downscaling</h3>
-      <p>Algoritmo de análogos sinópticos desarrollado en AEMET. Proporciona precipitación diaria en una malla de alta resolución de 5×5 km sobre la Península Ibérica e Islas Baleares (20.945 celdas).</p>
-    </div>
-
-    <div class="info-card">
-      <h3>⚖️ Weighting</h3>
-      <p>Ponderación de miembros del ensemble mediante modos de variabilidad (EOF, PLS). Mejora la consistencia dinámica de las predicciones estacionales, especialmente para el NAO en invierno.</p>
-    </div>
+<h2 style="color:#003087;font-size:1.3rem;font-weight:700;margin-bottom:1rem;">Quienes somos</h2>
+<p style="font-size:0.95rem;line-height:1.75;color:#1a2332;margin-bottom:1.2rem;">
+ Marta Domínguez · Martín Senande · Sabela Sanfiz <em>(Tragsatec)</em> Esteban Rodríguez <em>(AEMET)</em>
+</p>
 
   </div>
 
@@ -67,12 +58,7 @@ toc: false
     </div>
   </div>
 
-  <!-- Autores -->
-  <div class="autores">
-    <strong style="color:#003087;">Equipo</strong> &nbsp;·&nbsp;
-    Marta Domínguez · Martín Senande · Sabela Sanfiz <em>(Tragsatec)</em>
-    &nbsp;·&nbsp; Esteban Rodríguez <em>(AEMET)</em>
-  </div>
+ 
 
 </div>
 ```

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Datos – Predicción Estacional · AEMET–Tragsatec</title>
+<title>El Equipo – Predicción Estacional · AEMET–Tragsatec</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -78,9 +78,7 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
+    
 <!-- main -->
 <main class="content column-page" id="quarto-document-content">
 <!-- ── BARRA BLANCA CON LOGOS ─────────────────────────── -->
@@ -100,7 +98,17 @@ ul.task-list li input[type="checkbox"] {
 <nav id="site-nav">
   <div id="site-nav-inner">
     <a href="index.html" class="nav-link">Inicio</a>
-    <a href="about.html" class="nav-link">El proyecto</a>
+    <!-- ── Conócenos: menú desplegable ── -->
+    <div class="nav-dropdown">
+      <a href="el-proyecto.html" class="nav-link nav-link-dropdown">
+        Conócenos
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="el-proyecto.html" class="nav-dropdown-item">El Proyecto</a>
+        <a href="el-equipo.html" class="nav-dropdown-item">El Equipo</a>
+      </div>
+    </div>
     <a href="datos.html" class="nav-link">Datos</a>
     <a href="downscaling.html" class="nav-link">Downscaling</a>
     <a href="weighting.html" class="nav-link">Weighting</a>
@@ -111,8 +119,8 @@ ul.task-list li input[type="checkbox"] {
         <span class="nav-caret">▾</span>
       </a>
       <div class="nav-dropdown-menu">
-        <a href="embalses-cuenca.html" class="nav-dropdown-item">Predicción por cuenca</a>
-        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción por embalse</a>
+        <a href="embalses-cuenca.html" class="nav-dropdown-item">Predicción cuenca</a>
+        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción embalse</a>
         <a href="embalses-acerca.html" class="nav-dropdown-item">Acerca de</a>
       </div>
     </div>
@@ -303,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const href = item.getAttribute('href');
     if (href === current) {
       item.classList.add('active');
-      // También activar el "Embalses" padre
+      // También activar el padre del dropdown
       const parent = item.closest('.nav-dropdown').querySelector('.nav-link-dropdown');
       if (parent) parent.classList.add('active');
     }
@@ -323,7 +331,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Datos</h1>
+<h1 class="title">El Equipo</h1>
+<p class="subtitle lead">Personas que trabajan en el servicio de predicción estacional</p>
 </div>
 
 
@@ -340,67 +349,231 @@ document.addEventListener('DOMContentLoaded', function() {
 </header>
 
 
-<div style="max-width:960px;margin:6rem auto;padding:0 1.5rem;">
+<style>
+.team-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 4rem;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  color: #1f2937;
+  line-height: 1.6;
+}
 
-  <span class="section-label">Fuentes y descarga</span>
-  <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;" class="anchored">Datos utilizados</h2>
-  <p style="color:#4a5568;margin-bottom:2rem;">Descripción de los conjuntos de datos empleados en las metodologías de downscaling, ponderación de ensemble y verificación estacional.</p>
+/* ─── Encabezado breve ─── */
+.team-wrap .team-intro {
+  text-align: center;
+  max-width: 720px;
+  margin: 1.5rem auto 2.8rem;
+}
+.team-wrap .team-intro h2 {
+  color: #003087;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 0.6rem;
+  letter-spacing: -0.01em;
+}
+.team-wrap .team-intro p {
+  color: #4b5563;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  margin: 0;
+}
+.team-wrap .team-intro .divider {
+  width: 60px;
+  height: 3px;
+  background: #0072bc;
+  margin: 1rem auto 1.2rem;
+  border-radius: 2px;
+}
 
-  <h3 style="color:#003087;margin-top:2rem;" class="anchored">Copernicus Climate Data Store (C3S)</h3>
-  <p style="font-size:0.92rem;line-height:1.7;color:#1a2332;">
-    Los datos de predicción estacional se obtienen del <strong>Copernicus Climate Data Store (C3S)</strong> a través de la API oficial de Copernicus (<code>cdsapi</code>). Los modelos empleados son:
-  </p>
+/* ─── Grid de tarjetas del equipo ─── */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.4rem;
+  margin: 1.5rem 0 3rem;
+}
 
-  <div class="grid-3" style="margin:1.2rem 0 2rem;">
-    <div class="info-card" style="text-align:center;">
-      <h3 class="anchored">ECMWF-SEAS5.1</h3>
-      <p>European Centre for Medium-Range Weather Forecasts · Sistema estacional de referencia</p>
-    </div>
-    <div class="info-card" style="text-align:center;">
-      <h3 class="anchored">DWD</h3>
-      <p>Deutscher Wetterdienst · Servicio Meteorológico Alemán</p>
-    </div>
-    <div class="info-card" style="text-align:center;">
-      <h3 class="anchored">CMCC</h3>
-      <p>Centro Euro-Mediterraneo sui Cambiamenti Climatici · Italia</p>
-    </div>
+.team-card {
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 8px;
+  padding: 1.6rem 1.4rem 1.4rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+}
+.team-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0,48,135,0.12);
+  border-color: #0072bc;
+}
+
+/* Borde superior según institución */
+.team-card.aemet     { border-top: 4px solid #003087; }
+.team-card.tragsatec { border-top: 4px solid #0072bc; }
+
+/* Iniciales en círculo */
+.team-card .avatar {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: white;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+.team-card.aemet .avatar {
+  background: linear-gradient(135deg, #003087 0%, #0046b8 100%);
+}
+.team-card.tragsatec .avatar {
+  background: linear-gradient(135deg, #0072bc 0%, #2196d8 100%);
+}
+
+/* Nombre */
+.team-card .name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.01em;
+}
+
+/* Rol */
+.team-card .role {
+  font-size: 0.88rem;
+  color: #4b5563;
+  font-weight: 500;
+  margin: 0 0 0.7rem;
+  min-height: 2.5em;
+}
+
+/* Institución */
+.team-card .inst {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.7rem;
+  border-radius: 10px;
+  margin-bottom: 0.9rem;
+}
+.team-card.aemet .inst {
+  background: rgba(0,48,135,0.08);
+  color: #003087;
+}
+.team-card.tragsatec .inst {
+  background: rgba(0,114,188,0.1);
+  color: #0072bc;
+}
+
+/* Email */
+.team-card .email {
+  font-size: 0.83rem;
+  color: #0072bc;
+  text-decoration: none;
+  font-family: 'IBM Plex Mono', monospace, sans-serif;
+  word-break: break-all;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+  margin-top: auto;
+}
+.team-card .email:hover {
+  background: rgba(0,114,188,0.08);
+  text-decoration: underline;
+}
+
+/* ─── Pie informativo ─── */
+.team-footer {
+  background: #f7f9fc;
+  border-left: 4px solid #0072bc;
+  padding: 1.2rem 1.4rem;
+  border-radius: 4px;
+  margin: 2rem 0 0;
+  font-size: 0.9rem;
+  color: #4b5563;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+.team-footer strong { color: #003087; }
+.team-footer a { color: #0072bc; text-decoration: none; font-weight: 600; }
+.team-footer a:hover { text-decoration: underline; }
+</style>
+
+<div class="team-wrap">
+
+  <!-- ═══ INTRO ═══ -->
+  <div class="team-intro">
+    <h2 class="anchored">El Equipo</h2>
+    <div class="divider"></div>
+    <p>
+      Personas de <strong style="color:#003087;">AEMET</strong> y <strong style="color:#0072bc;">Tragsatec</strong>
+      que trabajan en el servicio de predicción estacional estadística para España.
+    </p>
   </div>
 
-  <h3 style="color:#003087;margin-top:2rem;" class="anchored">Variables descargadas</h3>
+  <!-- ═══ TARJETAS ═══ -->
+  <div class="team-grid">
 
-  <div class="grid-2" style="margin:1rem 0 2rem;">
-    <div class="info-card">
-      <h3 class="anchored">Presión al nivel del mar (MSL)</h3>
-      <p>Utilizada para el cálculo de componentes del viento geostrófico superficial (ug, vg) a partir de MSL y T1000. Base de los análogos sinópticos y los modos de variabilidad EOF/PLS.</p>
+    <!-- AEMET -->
+    <div class="team-card aemet">
+      <div class="avatar">ER</div>
+      <div class="name">Esteban Rodríguez-Guisado</div>
+      <div class="role">Investigador<br>predicción estacional</div>
+      <div class="inst">AEMET</div>
+      <a class="email" href="mailto:erodriguezg@aemet.es">erodriguezg@aemet.es</a>
     </div>
-    <div class="info-card">
-      <h3 class="anchored">Altura geopotencial 500 hPa (Z500)</h3>
-      <p>Componentes del viento a 500 hPa (u500, v500). Empleada tanto en el downscaling como en la caracterización de la circulación Euro-Atlántica.</p>
+
+    <div class="team-card aemet">
+      <div class="avatar">JG</div>
+      <div class="name">Jesús Gutiérrez-Fernández</div>
+      <div class="role">Investigador<br>modelización climática</div>
+      <div class="inst">AEMET</div>
+      <a class="email" href="mailto:jgutierrezf@aemet.es">jgutierrezf@aemet.es</a>
     </div>
-    <div class="info-card">
-      <h3 class="anchored">Temperatura a 2 m (T2M)</h3>
-      <p>Variable predictanda en el weighting PLS. También usada en la verificación de las predicciones estacionales de temperatura.</p>
+
+    <!-- TRAGSATEC -->
+    <div class="team-card tragsatec">
+      <div class="avatar">MD</div>
+      <div class="name">Marta Domínguez</div>
+      <div class="role">Técnica<br>predicción estacional</div>
+      <div class="inst">Tragsatec</div>
+      <a class="email" href="mailto:mdominguez@tragsa.es">mdominguez@tragsa.es</a>
     </div>
-    <div class="info-card">
-      <h3 class="anchored">Precipitación total (TP)</h3>
-      <p>Variable predictanda principal. Verificada en terciles (seco / normal / húmedo) mediante métricas probabilistas (ROC, RPS, BS).</p>
+
+    <div class="team-card tragsatec">
+      <div class="avatar">MS</div>
+      <div class="name">Martín Senande</div>
+      <div class="role">Técnico<br>predicción estacional</div>
+      <div class="inst">Tragsatec</div>
+      <a class="email" href="mailto:msenande@tragsa.es">msenande@tragsa.es</a>
     </div>
+
+    <div class="team-card tragsatec">
+      <div class="avatar">SS</div>
+      <div class="name">Sabela Sanfiz</div>
+      <div class="role">Técnica<br>predicción estacional</div>
+      <div class="inst">Tragsatec</div>
+      <a class="email" href="mailto:ssanfiz@tragsa.es">ssanfiz@tragsa.es</a>
+    </div>
+
   </div>
 
-  <h3 style="color:#003087;margin-top:2rem;" class="anchored">Datos de reanálisis (ERA5)</h3>
-  <p style="font-size:0.92rem;line-height:1.7;color:#1a2332;margin-bottom:1rem;">
-    El reanálisis ERA5 de ECMWF se emplea como referencia observacional para la fase de calibración del downscaling (período 1981–1996) y para la estimación de los modos de variabilidad (EOFs, PLS).
-  </p>
-
-  <div class="grid-2" style="margin:1rem 0 2rem;">
-    <div class="info-card">
-      <h3 class="anchored">Base atmosférica diaria (ERA5)</h3>
-      <p>Componentes del viento geostrófico (ug, vg) de MSL y T1000 · Componentes del viento a 500 hPa (u500, v500)</p>
-    </div>
-    <div class="info-card">
-      <h3 class="anchored">Base de precipitación diaria (ROCÍO_IBEB)</h3>
-      <p>Red observacional española de precipitación diaria. Usada para asociar cada situación sinóptica de referencia con su patrón de precipitación correspondiente.</p>
-    </div>
+  <!-- ═══ PIE ═══ -->
+  <div class="team-footer">
+    El equipo trabaja en el HPC AEMET–ECMWF dentro del <strong>Área de Evaluación y Modelización del Clima de AEMET</strong>.
+    Más información sobre el marco institucional y los objetivos del contrato en la página <a href="el-proyecto.html">El Proyecto</a>.
   </div>
 
 </div>

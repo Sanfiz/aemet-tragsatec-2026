@@ -98,7 +98,7 @@ ul.task-list li input[type="checkbox"] {
 <nav id="site-nav">
   <div id="site-nav-inner">
     <a href="index.html" class="nav-link">Inicio</a>
-    <a href="about.html" class="nav-link">El proyecto</a>
+    <a href="about.html" class="nav-link">Conócenos</a>
     <a href="datos.html" class="nav-link">Datos</a>
     <a href="downscaling.html" class="nav-link">Downscaling</a>
     <a href="weighting.html" class="nav-link">Weighting</a>
@@ -109,8 +109,8 @@ ul.task-list li input[type="checkbox"] {
         <span class="nav-caret">▾</span>
       </a>
       <div class="nav-dropdown-menu">
-        <a href="embalses-cuenca.html" class="nav-dropdown-item">Análisis por cuenca</a>
-        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción</a>
+        <a href="embalses-cuenca.html" class="nav-dropdown-item">Predicción cuenca</a>
+        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción embalse</a>
         <a href="embalses-acerca.html" class="nav-dropdown-item">Acerca de</a>
       </div>
     </div>
@@ -369,20 +369,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   <div class="grid-3" style="margin-bottom:2rem;">
 
-    <div class="info-card">
-      <h3 class="anchored">📡 Datos</h3>
-      <p>Predicciones estacionales de Copernicus Climate Data Store (C3S): modelos ECMWF-SEAS5.1, DWD y CMCC, descargados mediante la API oficial de Copernicus.</p>
-    </div>
 
-    <div class="info-card">
-      <h3 class="anchored">🗺️ Downscaling</h3>
-      <p>Algoritmo de análogos sinópticos desarrollado en AEMET. Proporciona precipitación diaria en una malla de alta resolución de 5×5 km sobre la Península Ibérica e Islas Baleares (20.945 celdas).</p>
-    </div>
-
-    <div class="info-card">
-      <h3 class="anchored">⚖️ Weighting</h3>
-      <p>Ponderación de miembros del ensemble mediante modos de variabilidad (EOF, PLS). Mejora la consistencia dinámica de las predicciones estacionales, especialmente para el NAO en invierno.</p>
-    </div>
+<h2 style="color:#003087;font-size:1.3rem;font-weight:700;margin-bottom:1rem;" class="anchored">Quienes somos</h2>
+<p style="font-size:0.95rem;line-height:1.75;color:#1a2332;margin-bottom:1.2rem;">
+ Marta Domínguez · Martín Senande · Sabela Sanfiz <em>(Tragsatec)</em> Esteban Rodríguez <em>(AEMET)</em>
+</p>
 
   </div>
 
@@ -401,18 +392,26 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   </div>
 
-  <!-- Autores -->
-  <div class="autores">
-    <strong style="color:#003087;">Equipo</strong> &nbsp;·&nbsp;
-    Marta Domínguez · Martín Senande · Sabela Sanfiz <em>(Tragsatec)</em>
-    &nbsp;·&nbsp; Esteban Rodríguez <em>(AEMET)</em>
-  </div>
+ 
 
 </div>
+<div id="quarto-navigation-envelope" class="hidden">
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-sidebar-title">Predicción Estacional · AEMET–Tragsatec</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-navbar-title">Predicción Estacional · AEMET–Tragsatec</span></p>
+<div class="hidden quarto-markdown-envelope-contents" data-render-id="footer-left">
+<p>© 2026 · Generado por los autores con HTML &amp; CSS</p>
+</div>
+<div class="hidden quarto-markdown-envelope-contents" data-render-id="footer-center">
+<p>Marta Domínguez · Martín Senande · Sabela Sanfiz (Tragsatec) · Esteban Rodríguez (AEMET)</p>
+</div>
+<div class="hidden quarto-markdown-envelope-contents" data-render-id="footer-right">
+<p>Tragsatec · AEMET · Predicción Estacional · 2024–2026</p>
+</div>
+</div>
+<div id="quarto-meta-markdown" class="hidden">
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-metatitle">About – Predicción Estacional · AEMET–Tragsatec</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-twittercardtitle">About – Predicción Estacional · AEMET–Tragsatec</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-ogcardtitle">About – Predicción Estacional · AEMET–Tragsatec</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-metasitename">Predicción Estacional · AEMET–Tragsatec</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-twittercarddesc">Resultados del servicio de predicción estacional</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-ogcardddesc">Resultados del servicio de predicción estacional</span></p>
+</div>
 
-
-
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -837,18 +836,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2026 · Generado por los autores con HTML &amp; CSS</p>
-</div>   
+      <div class="footer-contents">© 2026 · Generado por los autores con HTML &amp; CSS</div>  
+    </div>   
     <div class="nav-footer-center">
-<p>Marta Domínguez · Martín Senande · Sabela Sanfiz (Tragsatec) · Esteban Rodríguez (AEMET)</p>
-</div>
+      <div class="footer-contents">Marta Domínguez · Martín Senande · Sabela Sanfiz (Tragsatec) · Esteban Rodríguez (AEMET)</div>  
+    </div>
     <div class="nav-footer-right">
-<p>Tragsatec · AEMET · Predicción Estacional · 2024–2026</p>
-</div>
+      <div class="footer-contents">Tragsatec · AEMET · Predicción Estacional · 2024–2026</div>  
+    </div>
   </div>
 </footer>
 
 
 
 
-</body></html>
+</div></main></div></body></html>
