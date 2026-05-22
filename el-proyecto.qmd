@@ -202,18 +202,6 @@ format:
 
 <div class="proy-wrap">
 
-  <!-- ═══ HERO ═══ -->
-  <div class="hero">
-    <span class="section-label">Servicio de predicción estacional · 2024–2026</span>
-    <h1>Predicción Estacional Estadística<br>para España</h1>
-    <div class="divider"></div>
-    <p class="subtitle">Contrato de servicio de AEMET a Tragsatec</p>
-    <div class="tags-row">
-      <span class="tag">AEMET</span>
-      <span class="tag">Tragsatec</span>
-      <span class="tag">MITECO</span>
-    </div>
-  </div>
 
   <!-- ═══ SOBRE EL PROYECTO ═══ -->
   <h2>Sobre el proyecto</h2>
