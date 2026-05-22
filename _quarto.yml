@@ -11,8 +11,8 @@ website:
   page-footer:
     background: "#0072bc"
     left: "© 2026 · Generado por los autores con HTML & CSS"
-    center: "Marta Domínguez · Martín Senande · Sabela Sanfiz (Tragsatec) · Esteban Rodríguez (AEMET)"
-    right: "Tragsatec · AEMET · Predicción Estacional · 2024–2026"
+    center: "Tragsatec · AEMET "
+    right: "Encomienda Predicción Estacional · 2024–2026"
 
 format:
   html:
