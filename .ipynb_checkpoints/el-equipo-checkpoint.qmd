@@ -230,7 +230,7 @@ format:
 
   <!-- ═══ PIE ═══ -->
   <div class="team-footer">
-    El equipo trabaja en el <strong>Área de Evaluación y Modelización del Clima de AEMET</strong>.
+    El equipo trabaja en el HPC AEMET–ECMWF dentro del <strong>Área de Evaluación y Modelización del Clima de AEMET</strong>.
     Más información sobre el marco institucional y los objetivos del contrato en la página <a href="el-proyecto.html">El Proyecto</a>.
   </div>
 
