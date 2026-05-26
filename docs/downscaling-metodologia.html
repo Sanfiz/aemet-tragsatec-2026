@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>El Proyecto – Predicción Estacional · AEMET–Tragsatec</title>
+<title>Downscaling · Metodología – Predicción Estacional · AEMET–Tragsatec</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -78,7 +78,9 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
 <!-- main -->
 <main class="content column-page" id="quarto-document-content">
 <!-- ── BARRA BLANCA CON LOGOS ─────────────────────────── -->
@@ -110,8 +112,28 @@ ul.task-list li input[type="checkbox"] {
       </div>
     </div>
     <a href="datos.html" class="nav-link">Datos</a>
-    <a href="downscaling.html" class="nav-link">Downscaling</a>
-    <a href="weighting.html" class="nav-link">Weighting</a>
+    <!-- ── Downscaling: menú desplegable ── -->
+    <div class="nav-dropdown">
+      <a href="downscaling-metodologia.html" class="nav-link nav-link-dropdown">
+        Downscaling
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="downscaling-metodologia.html" class="nav-dropdown-item">Metodología</a>
+        <a href="downscaling-resultados.html" class="nav-dropdown-item">Resultados</a>
+      </div>
+    </div>
+    <!-- ── Weighting: menú desplegable ── -->
+    <div class="nav-dropdown">
+      <a href="weighting-metodologia.html" class="nav-link nav-link-dropdown">
+        Weighting
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="weighting-metodologia.html" class="nav-dropdown-item">Metodología</a>
+        <a href="weighting-resultados.html" class="nav-dropdown-item">Resultados</a>
+      </div>
+    </div>
     <!-- ── Embalses: menú desplegable ── -->
     <div class="nav-dropdown">
       <a href="embalses-prediccion.html" class="nav-link nav-link-dropdown">
@@ -319,12 +341,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-
-
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">El Proyecto</h1>
-<p class="subtitle lead">Servicio de predicción estacional estadística para España</p>
+<h1 class="title">Downscaling · Metodología</h1>
 </div>
 
 
@@ -341,266 +360,128 @@ document.addEventListener('DOMContentLoaded', function() {
 </header>
 
 
-<style>
-.proy-wrap {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 1rem 1.5rem 4rem;
-  font-family: 'IBM Plex Sans', system-ui, sans-serif;
-  color: #1f2937;
-  line-height: 1.65;
-  text-align: justify;
-  text-justify: inter-word;
-  hyphens: auto;
-  -webkit-hyphens: auto;
-}
 
-.proy-wrap h2,
-.proy-wrap h3,
-.proy-wrap .hero *,
-.proy-wrap figcaption,
-.proy-wrap .tag,
-.proy-wrap .info-card h3,
-.proy-wrap .linea-card h3 {
-  text-align: left;
-}
+<div style="max-width:960px;margin:6rem auto;padding:0 1.5rem;">
 
-/* ─── Hero institucional ─── */
-.proy-wrap .hero {
-  background: linear-gradient(135deg, #003087 0%, #0072bc 100%);
-  color: white;
-  padding: 3.5rem 2rem 3rem;
-  border-radius: 8px;
-  text-align: center;
-  margin-bottom: 2.5rem;
-  box-shadow: 0 4px 18px rgba(0,48,135,0.18);
-}
-.proy-wrap .hero .section-label {
-  display: inline-block;
-  background: rgba(255,255,255,0.18);
-  border: 1px solid rgba(255,255,255,0.3);
-  color: white;
-  padding: 0.35rem 1rem;
-  border-radius: 16px;
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 500;
-  margin-bottom: 1rem;
-}
-.proy-wrap .hero h1 {
-  color: white;
-  font-size: 2.1rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin: 0.6rem 0 1rem;
-  line-height: 1.2;
-}
-.proy-wrap .hero .divider {
-  width: 70px;
-  height: 3px;
-  background: white;
-  margin: 1.2rem auto;
-  border-radius: 2px;
-}
-.proy-wrap .hero .subtitle {
-  color: rgba(255,255,255,0.92);
-  font-size: 1.05rem;
-  margin: 0 0 1rem;
-  font-weight: 400;
-}
-.proy-wrap .hero .tags-row {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 1.2rem;
-}
-.proy-wrap .hero .tag {
-  border: 1px solid rgba(255,255,255,0.5);
-  color: white;
-  background: transparent;
-  padding: 0.25rem 0.8rem;
-  border-radius: 14px;
-  font-size: 0.78rem;
-  font-weight: 500;
-}
+<!-- ── CONTADORES (ancho completo) ────────────────────── -->
+<div class="counters-section">
+  <div class="counter-item">
+    <span class="counter-value" data-target="20945" data-suffix="">0</span>
+    <span class="counter-label">celdas de la malla</span>
+  </div>
+  <div class="counter-divider"></div>
+  <div class="counter-item">
+    <span class="counter-value" data-target="8" data-suffix="">0</span>
+    <span class="counter-label">modelos globales</span>
+  </div>
+  <div class="counter-divider"></div>
+  <div class="counter-item">
+    <span class="counter-value" data-target="5" data-suffix=" km">0</span>
+    <span class="counter-label">resolución espacial</span>
+    
+  </div>
+  <div class="counter-divider"></div>
+  <div class="counter-item">
+    <span class="counter-value" data-target="6" data-suffix=" meses">0</span>
+    <span class="counter-label">predicción</span>
+    
+  </div>
+</div>
 
-/* ─── Secciones generales ─── */
-.proy-wrap h2 {
-  color: #003087;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 2.5rem 0 1rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 2px solid #0072bc;
-}
-.proy-wrap p {
-  font-size: 0.96rem;
-  color: #1a2332;
-  margin: 0.7rem 0 1rem;
-}
+<!-- ── CONTENIDO PRINCIPAL ───────────────────────────── -->
+<div style="max-width:960px;margin:2rem auto;padding:0 1.5rem;">
 
-/* ─── Grid de info-cards (2 columnas) ─── */
-.proy-wrap .grid-2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.2rem;
-  margin: 1.5rem 0 2rem;
-}
-.proy-wrap .info-card {
-  background: white;
-  border: 1px solid #dde3ed;
-  border-top: 3px solid #0072bc;
-  border-radius: 4px;
-  padding: 1.2rem 1.4rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-}
-.proy-wrap .info-card h3 {
-  color: #003087;
-  font-size: 1.05rem;
-  margin: 0 0 0.6rem;
-  font-weight: 600;
-}
-.proy-wrap .info-card p {
-  font-size: 0.9rem;
-  color: #4b5563;
-  margin: 0;
-  line-height: 1.6;
-}
-
-/* ─── Líneas de trabajo (3 columnas con icono) ─── */
-.proy-wrap .lineas-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.2rem;
-  margin: 1.5rem 0 2rem;
-}
-.proy-wrap .linea-card {
-  background: linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%);
-  border: 1px solid #dde3ed;
-  border-radius: 6px;
-  padding: 1.4rem 1.3rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  transition: transform 0.15s, box-shadow 0.15s;
-}
-.proy-wrap .linea-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,48,135,0.1);
-}
-.proy-wrap .linea-card .linea-num {
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
-  background: #003087;
-  color: white;
-  border-radius: 50%;
-  font-weight: 600;
-  font-size: 0.95rem;
-  text-align: center;
-  margin-bottom: 0.7rem;
-}
-.proy-wrap .linea-card h3 {
-  color: #003087;
-  font-size: 1.05rem;
-  margin: 0 0 0.5rem;
-  font-weight: 600;
-}
-.proy-wrap .linea-card p {
-  font-size: 0.88rem;
-  color: #4b5563;
-  margin: 0 0 0.8rem;
-  line-height: 1.55;
-}
-.proy-wrap .linea-card a {
-  font-size: 0.85rem;
-  color: #0072bc;
-  text-decoration: none;
-  font-weight: 600;
-}
-.proy-wrap .linea-card a:hover { text-decoration: underline; }
-
-/* ─── Bloque institucional ─── */
-.proy-wrap .institucional {
-  background: #f7f9fc;
-  border-left: 4px solid #0072bc;
-  padding: 1.3rem 1.6rem;
-  border-radius: 4px;
-  margin: 1.5rem 0;
-}
-.proy-wrap .institucional p { margin: 0.4rem 0; font-size: 0.93rem; }
-.proy-wrap .institucional strong { color: #003087; }
-</style>
-
-<div class="proy-wrap">
-
-
-  <!-- ═══ SOBRE EL PROYECTO ═══ -->
-  <h2 class="anchored">Sobre el proyecto</h2>
-  <p>
-    Este proyecto se enmarca en un contrato de servicio en el que <strong>Tragsatec</strong> actúa como subcontratista de la
-    <strong>Agencia Estatal de Meteorología (AEMET)</strong>, dentro del Área de Evaluación y Modelización del Clima.
-    El objetivo principal es el desarrollo de metodologías estadísticas avanzadas para mejorar la predicción estacional
-    sobre España, combinando datos de modelos globales de predicción estacional descargados de Copernicus con técnicas de
-    regionalización y ponderación de conjuntos.
+  <span class="section-label">Metodología</span>
+  <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;" class="anchored">Downscaling estadístico</h2>
+  <p style="color:#4a5568;margin-bottom:1.5rem;">
+    El algoritmo de análogos sinópticos proporciona precipitación diaria en una malla de 5×5 km (20.945 celdas) sobre la Península Ibérica e Islas Baleares, a partir de datos de baja resolución de los modelos de predicción estacional.
   </p>
 
-  <!-- ═══ LÍNEAS DE TRABAJO ═══ -->
-  <h2 class="anchored">Líneas de trabajo</h2>
-  <div class="lineas-grid">
-
-    <div class="linea-card">
-      <div class="linea-num">1</div>
-      <h3 class="anchored">Downscaling estadístico</h3>
-      <p>Regionalización a alta resolución de las predicciones estacionales de los modelos globales sobre España.</p>
-      <a href="downscaling.html">Ver resultados →</a>
-    </div>
-
-    <div class="linea-card">
-      <div class="linea-num">2</div>
-      <h3 class="anchored">Ponderación de conjuntos</h3>
-      <p>Combinación de miembros del ensemble mediante técnicas estadísticas de <em>weighting</em> para extraer la señal climática más fiable.</p>
-      <a href="weighting.html">Ver resultados →</a>
-    </div>
-
-    <div class="linea-card">
-      <div class="linea-num">3</div>
-      <h3 class="anchored">Predicción de aportaciones</h3>
-      <p>Predicción estacional invernal de aportaciones a embalses peninsulares, con modelo PLS por embalse.</p>
-      <a href="embalses-prediccion.html">Ver resultados →</a>
-    </div>
-
-  </div>
-
-  <!-- ═══ ESTRUCTURA INSTITUCIONAL ═══ -->
-  <h2 class="anchored">Marco institucional</h2>
-  <div class="grid-2">
+  <div class="grid-2" style="margin-bottom:2rem;">
     <div class="info-card">
-      <h3 class="anchored">📅 Vigencia</h3>
-      <p>El contrato de servicio está en vigor hasta junio de 2026. Los resultados se actualizan de forma periódica con cada nueva predicción estacional.</p>
+      <h3 class="anchored">Fase 1 · Calibración</h3>
+      <p>Clasificación de tipos de tiempo mediante <em>K-means clustering</em> para identificar la base de datos sinóptica de referencia (1981–1996). La similitud se calcula a partir de distancias euclídeas ponderadas de las componentes del viento geostrófico en superficie y a 500 hPa (ERA5).</p>
     </div>
     <div class="info-card">
-      <h3 class="anchored">🏛️ Marco institucional</h3>
-      <p>AEMET lidera el trabajo desde del Área de Evaluación y Modelización del Clima. Tragsatec actúa como subcontrata.</p>
-    </div>
-    <div class="info-card">
-      <h3 class="anchored">👥 Equipo</h3>
-      <p>Equipo mixto AEMET–Tragsatec. Conoce a las personas detrás de este proyecto: <a href="el-equipo.html" style="color:#0072bc;font-weight:600;">El Equipo</a>.</p>
+      <h3 class="anchored">Fase 2 · Estimación</h3>
+      <p>La precipitación para cada celda se estima como la media ponderada de la precipitación asociada a las situaciones más análogas de la base de referencia, usando la similitud de los campos de viento geostrófico en superficie y a 500 hPa de los modelos C3S.</p>
     </div>
   </div>
 
-  <!-- ═══ NOTA INSTITUCIONAL ═══ -->
-  <div class="institucional">
-    <p><strong>AEMET</strong> · Agencia Estatal de Meteorología. Organismo público adscrito al Ministerio para la Transición Ecológica y el Reto Demográfico (MITECO).</p>
-    <p><strong>Tragsatec</strong> · Tecnologías y Servicios Agrarios, S.A. Empresa pública del Grupo Tragsa, perteneciente al sector público estatal (SEPI).</p>
+  <!-- ── CTA hacia los resultados ──────────────────────── -->
+  <div style="margin-top:2.5rem;padding:1.4rem 1.6rem;background:#e8f4fc;border-left:4px solid #0072bc;border-radius:6px;">
+    <p style="margin:0;color:#1a2332;font-size:0.95rem;">
+      <strong>Ver los resultados</strong> del downscaling por modelo y por tipo de gráfico, además del informe completo de verificación →
+      <a href="downscaling-resultados.html" style="color:#003087;font-weight:600;text-decoration:none;border-bottom:1px solid #0072bc;">
+        Ir a Resultados
+      </a>
+    </p>
   </div>
 
 </div>
 
+<style>
+.counters-section {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr;
+  align-items: center;
+  padding: 2.5rem 4rem;
+  background: #003087;
+}
+.counter-item { text-align: center; padding: 0 1rem; }
+.counter-value {
+  display: block; font-size: 2.8rem; font-weight: 800;
+  color: white; line-height: 1; font-variant-numeric: tabular-nums;
+}
+.counter-label {
+  display: block; font-size: 0.8rem; font-weight: 600;
+  color: rgba(255,255,255,0.8); margin-top: 0.4rem;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.counter-sub {
+  display: block; font-size: 0.68rem;
+  color: rgba(255,255,255,0.45); margin-top: 0.3rem;
+}
+.counter-divider {
+  width: 1px; height: 60px;
+  background: rgba(255,255,255,0.15); justify-self: center;
+}
+@media (max-width: 768px) {
+  .counters-section { grid-template-columns: 1fr 1fr; padding: 2rem; }
+  .counter-divider { display: none; }
+}
+</style>
+
+<script>
+(function() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.querySelectorAll('.counter-value').forEach(el => {
+        if (el.dataset.animated) return;
+        el.dataset.animated = 'true';
+        const target = parseInt(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const duration = target > 1000 ? 2000 : 1000;
+        const start = performance.now();
+        function step(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(target * eased).toLocaleString('es-ES') + suffix;
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+      obs.unobserve(entry.target);
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.counters-section').forEach(el => obs.observe(el));
+})();
+</script>
 
 
-</main> <!-- /main -->
+
+</div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1022,6 +903,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 · Generado por los autores con HTML &amp; CSS</p>
+</div>   
+    <div class="nav-footer-center">
+<p>Tragsatec · AEMET</p>
+</div>
+    <div class="nav-footer-right">
+<p>Encomienda Predicción Estacional · 2024–2026</p>
+</div>
+  </div>
+</footer>
 
 
 

@@ -27,28 +27,8 @@
       </div>
     </div>
     <a href="datos.html" class="nav-link">Datos</a>
-    <!-- ── Downscaling: menú desplegable ── -->
-    <div class="nav-dropdown">
-      <a href="downscaling-metodologia.html" class="nav-link nav-link-dropdown">
-        Downscaling
-        <span class="nav-caret">▾</span>
-      </a>
-      <div class="nav-dropdown-menu">
-        <a href="downscaling-metodologia.html" class="nav-dropdown-item">Metodología</a>
-        <a href="downscaling-resultados.html" class="nav-dropdown-item">Resultados</a>
-      </div>
-    </div>
-    <!-- ── Weighting: menú desplegable ── -->
-    <div class="nav-dropdown">
-      <a href="weighting-metodologia.html" class="nav-link nav-link-dropdown">
-        Weighting
-        <span class="nav-caret">▾</span>
-      </a>
-      <div class="nav-dropdown-menu">
-        <a href="weighting-metodologia.html" class="nav-dropdown-item">Metodología</a>
-        <a href="weighting-resultados.html" class="nav-dropdown-item">Resultados</a>
-      </div>
-    </div>
+    <a href="downscaling.html" class="nav-link">Downscaling</a>
+    <a href="weighting.html" class="nav-link">Weighting</a>
     <!-- ── Embalses: menú desplegable ── -->
     <div class="nav-dropdown">
       <a href="embalses-prediccion.html" class="nav-link nav-link-dropdown">
@@ -219,7 +199,7 @@
 
 /* ── Espacio para header fijo ────────────────────────── */
 body {
-  padding-top: 1px !important;
+  padding-top: 180px !important;
 }
 
     
@@ -253,5 +233,15 @@ document.addEventListener('DOMContentLoaded', function() {
       if (parent) parent.classList.add('active');
     }
   });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.body.style.marginTop = '0';
+  // Quarto añade padding-top inline al body, este lo sobreescribe
+  document.body.setAttribute('style', 
+    document.body.getAttribute('style') + '; padding-top: 0 !important; margin-top: 0 !important;'
+  );
 });
 </script>

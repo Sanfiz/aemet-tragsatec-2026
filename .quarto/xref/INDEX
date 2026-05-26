@@ -43,5 +43,17 @@
   },
   "backups/about.qmd": {
     "about.html": "04253223"
+  },
+  "downscaling-metodologia.qmd": {
+    "downscaling-metodologia.html": "ab3086c9"
+  },
+  "downscaling-resultados.qmd": {
+    "downscaling-resultados.html": "42bd5256"
+  },
+  "weighting-resultados.qmd": {
+    "weighting-resultados.html": "a8c6834c"
+  },
+  "weighting-metodologia.qmd": {
+    "weighting-metodologia.html": "4d249a93"
   }
 }

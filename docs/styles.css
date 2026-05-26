@@ -17,7 +17,7 @@
 
 
 /* ── Hamburguer - desplegable ───────────────────────────────────────── */
-body { padding-top: 0 !important; }
+
 #quarto-content {   padding-top: 0 !important;
   margin-top: 0 !important; }
 
@@ -47,7 +47,10 @@ body, html {
   background-position: center !important;
   background-repeat: no-repeat !important;
   margin: 0 !important;
-  padding: 0 !important;
+  margin: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 /* ── Navbar ──────────────────────────────────────────── */
@@ -75,6 +78,183 @@ body, html {
   color: #ffffff !important;
   border-bottom: 2px solid rgba(255,255,255,0.7);
 }
+
+/* ── INDEX ──────────────────────────────────────────── */
+
+.cover {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 65vh;
+  padding: 0 5rem 0.3rem 3rem; /* ── arriba-derecha-abajo-izquierda ──*/
+  gap: 1.5rem;
+  overflow: visible;
+  background: linear-gradient(135deg, #001a5e 0%, #003087 50%, #005aad 100%);
+  margin-top: 0;
+  width: 100%;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cover-text {
+  flex: 1;
+  position: relative;
+  z-index: 2;
+  animation: fadeInLeft 0.9s ease both;
+}
+
+.cover-eyebrow {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 1rem;
+}
+
+.cover-title {
+  font-size: 3.7rem;
+  font-weight: 800;
+  color: white;
+  line-height: 1;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.cover-line {
+  width: 60px;
+  height: 3px;
+  background: rgba(255,255,255,0.5);
+  margin: 1.2rem 0;
+}
+
+
+.cover-sub {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.cover-logos {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.cover-logos img {
+  height: 42px;
+  object-fit: contain;
+  opacity: 0.85;
+}
+
+.cover-sep {
+  width: 1px;
+  height: 32px;
+  background: rgba(255,255,255,0.3);
+}
+
+.cover-globe {
+  flex: 0 0 420px;
+  height: 420px;
+  position: relative;
+  z-index: 2;
+  animation: fadeInRight 1s ease both;
+}
+
+
+/* ─ Authors strip ─ */
+.authors-strip {
+  background: white;
+  border-bottom: 1px solid #dde3ed;
+  text-align: center;
+  padding: 0.1rem 0.5rem; 
+  font-size: 0.75rem;
+  color: #4a5568;
+  letter-spacing: 0.03em;
+}
+
+
+/* ── Parallax cards ──────────────────────────────────── */
+.parallax-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  padding: 3rem 4rem;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(4px);
+}
+
+
+.px-card {
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 12px;
+  padding: 1.8rem 1.6rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,48,135,0.07);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.px-card:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0 12px 32px rgba(0,48,135,0.14);
+}
+
+.px-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.8rem;
+}
+
+.px-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #003087;
+  margin-bottom: 0.4rem;
+}
+
+.px-card p {
+  font-size: 0.78rem;
+  color: #8892a4;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Animations ── */
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+
+
+/* ── Footer ── */
+.site-footer {
+  background: #0072bc;
+  color: rgba(255,255,255,0.85);
+  font-size: 0.75rem;
+  padding: 1rem 2rem;
+  border-top: 3px solid #005aad;
+}
+
+.site-footer-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
 
 /* ── Contenido principal ─────────────────────────────── */
 #quarto-content {

@@ -112,8 +112,28 @@ ul.task-list li input[type="checkbox"] {
       </div>
     </div>
     <a href="datos.html" class="nav-link">Datos</a>
-    <a href="downscaling.html" class="nav-link">Downscaling</a>
-    <a href="weighting.html" class="nav-link">Weighting</a>
+    <!-- ── Downscaling: menú desplegable ── -->
+    <div class="nav-dropdown">
+      <a href="downscaling-metodologia.html" class="nav-link nav-link-dropdown">
+        Downscaling
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="downscaling-metodologia.html" class="nav-dropdown-item">Metodología</a>
+        <a href="downscaling-resultados.html" class="nav-dropdown-item">Resultados</a>
+      </div>
+    </div>
+    <!-- ── Weighting: menú desplegable ── -->
+    <div class="nav-dropdown">
+      <a href="weighting-metodologia.html" class="nav-link nav-link-dropdown">
+        Weighting
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="weighting-metodologia.html" class="nav-dropdown-item">Metodología</a>
+        <a href="weighting-resultados.html" class="nav-dropdown-item">Resultados</a>
+      </div>
+    </div>
     <!-- ── Embalses: menú desplegable ── -->
     <div class="nav-dropdown">
       <a href="embalses-prediccion.html" class="nav-link nav-link-dropdown">
@@ -284,7 +304,7 @@ ul.task-list li input[type="checkbox"] {
 
 /* ── Espacio para header fijo ────────────────────────── */
 body {
-  padding-top: 180px !important;
+  padding-top: 1px !important;
 }
 
     
@@ -321,16 +341,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  document.body.style.marginTop = '0';
-  // Quarto añade padding-top inline al body, este lo sobreescribe
-  document.body.setAttribute('style', 
-    document.body.getAttribute('style') + '; padding-top: 0 !important; margin-top: 0 !important;'
-  );
-});
-</script>
-
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Datos</h1>
@@ -354,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   <span class="section-label">Fuentes y descarga</span>
   <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;" class="anchored">Datos utilizados</h2>
-  <p style="color:#4a5568;margin-bottom:2rem;">Descripción de los conjuntos de datos empleados en las metodologías de downscaling, ponderación de ensemble y verificación estacional.</p>
+  <p style="color:#4a5568;margin-bottom:2rem;">Listado de los datos empleados en esta web.</p>
 
   <h3 style="color:#003087;margin-top:2rem;" class="anchored">Copernicus Climate Data Store (C3S)</h3>
   <p style="font-size:0.92rem;line-height:1.7;color:#1a2332;">

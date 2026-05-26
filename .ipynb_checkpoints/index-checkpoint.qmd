@@ -1,15 +1,20 @@
 ---
-title: ""
+title: "Tragsatec"
 toc: false
 ---
 
 ```{=html}
+<div style="max-width:960px;margin:6rem auto;padding:0 1.5rem;">
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-<!-- ── HERO ───────────────────────────────────────────── -->
+<!-- ── HERO PRINCIPAL ─────────────────────────────────── -->
 <div class="cover" id="cover">
+
+  <!-- Partículas de fondo -->
   <canvas id="particle-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.25;"></canvas>
 
+  <!-- Columna texto izquierda -->
   <div class="cover-text" id="cover-text">
     <span class="cover-eyebrow">Encargo de servicio · Tragsatec para AEMET</span>
     <h1 class="cover-title">Predicción<br>Estacional</h1>
@@ -18,396 +23,33 @@ toc: false
       Área de Evaluación y Modelización del Clima<br>
       <strong>AEMET · 2024–2026</strong>
     </p>
-    <div class="cover-logos">
-      <a href="https://www.aemet.es/es/portada" target="_blank">
-        <img src="images/logos/aemet.png" alt="AEMET"/>
-      </a>
-      <span class="cover-sep"></span>
-      <a href="https://www.tragsa.es/es/Paginas/default.aspx" target="_blank">
-        <img src="images/logos/tragsatec.jpg" alt="Tragsatec"/>
-      </a>
-    </div>
   </div>
 
+  <!-- Globo Three.js derecha -->
   <div class="cover-globe">
     <div id="earth-canvas" style="width:100%;height:100%;"></div>
   </div>
-</div>
 
-<!-- ── STRIP AUTORES ──────────────────────────────────── -->
-<div class="authors-strip">
-  Marta Domínguez · Martín Senande · Sabela Sanfiz
-  <span style="opacity:0.5;margin:0 0.5rem;"></span>
-  <em>(Tragsatec)</em>
-  <span style="opacity:0.5;margin:0 0.8rem;">·</span>
-  Esteban Rodríguez
-  <span style="opacity:0.5;margin:0 0.5rem;"></span>
-  <em>(AEMET)</em>
-</div>
+</div><!-- fin cover -->
 
-<!-- ── CONTADORES ─────────────────────────────────────── -->
-<div class="counters-section reveal-section">
-  <div class="counter-item">
-    <span class="counter-value" data-target="20945" data-suffix="">0</span>
-    <span class="counter-label">celdas de la malla</span>
-    <span class="counter-sub">5×5 km · Península + Baleares</span>
-  </div>
-  <div class="counter-divider"></div>
-  <div class="counter-item">
-    <span class="counter-value" data-target="3" data-suffix="">0</span>
-    <span class="counter-label">modelos globales</span>
-    <span class="counter-sub">ECMWF-SEAS5.1 · DWD · CMCC</span>
-  </div>
-  <div class="counter-divider"></div>
-  <div class="counter-item">
-    <span class="counter-value" data-target="5" data-suffix=" km">0</span>
-    <span class="counter-label">resolución espacial</span>
-    <span class="counter-sub">20× más fina que los modelos globales</span>
-  </div>
-  <div class="counter-divider"></div>
-  <div class="counter-item">
-    <span class="counter-value" data-target="6" data-suffix=" meses">0</span>
-    <span class="counter-label">horizonte de predicción</span>
-    <span class="counter-sub">Actualización periódica</span>
-  </div>
-</div>
+</div><!-- fin wrapper max-width -->
 
-<!-- ── FLIP CARDS ─────────────────────────────────────── -->
-<div class="flip-section">
-
-  <div class="flip-wrap reveal-section" data-delay="0">
-    <div class="flip-card">
-      <div class="flip-front">
-        <span class="flip-icon">📡</span>
-        <h3>Datos</h3>
-        <p>C3S · ECMWF-SEAS5.1 · DWD · CMCC</p>
-        <span class="flip-hint">hover para más info</span>
-      </div>
-      <div class="flip-back">
-        <h3>Datos</h3>
-        <p>Descarga mediante la API oficial de Copernicus (<code>cdsapi</code>). Variables: MSL, Z500, T2M, TP. Período: hindcast + predicción en tiempo real.</p>
-      </div>
-    </div>
+<!-- ── FOOTER — fuera del wrapper ─────────────────────── -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>© 2026 · Generado por los autores con HTML & CSS</span>
+    <span>Tragsatec · AEMET</span>
+    <span>Encomienda Predicción Estacional · 2024–2026</span>
   </div>
-
-  <div class="flip-wrap reveal-section" data-delay="100">
-    <div class="flip-card">
-      <div class="flip-front">
-        <span class="flip-icon">🗺️</span>
-        <h3>Downscaling</h3>
-        <p>Análogos sinópticos · 5×5 km</p>
-        <span class="flip-hint">hover para más info</span>
-      </div>
-      <div class="flip-back">
-        <h3>Downscaling</h3>
-        <p>Algoritmo de análogos sinópticos de AEMET. Calibración con ERA5 (1981–1996) y base de precipitación ROCÍO_IBEB. 20.945 celdas sobre la Península e Islas Baleares.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="flip-wrap reveal-section" data-delay="200">
-    <div class="flip-card">
-      <div class="flip-front">
-        <span class="flip-icon">⚖️</span>
-        <h3>Weighting</h3>
-        <p>EOF · PLS · ponderación de ensemble</p>
-        <span class="flip-hint">hover para más info</span>
-      </div>
-      <div class="flip-back">
-        <h3>Weighting</h3>
-        <p>Modos de variabilidad Euro-Atlánticos (NAO, EA, EAWR, SCA). Ponderación EOF para invierno, PLS para temperatura en estación cálida (AMJ–ASO).</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="flip-wrap reveal-section" data-delay="300">
-    <div class="flip-card">
-      <div class="flip-front">
-        <span class="flip-icon">🌊</span>
-        <h3>Cuencas</h3>
-        <p>Cuencas hidrográficas españolas</p>
-        <span class="flip-hint">hover para más info</span>
-      </div>
-      <div class="flip-back">
-        <h3>Cuencas</h3>
-        <p>Análisis de predicción estacional desagregado por cuenca hidrográfica. Proyecto en desarrollo — próximamente disponible.</p>
-      </div>
-    </div>
-  </div>
-
-</div>
+</footer>
 
 <style>
-/* ── Cover ───────────────────────────────────────────── */
-.cover {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-height: 65vh;
-  padding: 0 4rem;
-  gap: 2rem;
-  overflow: hidden;
-  background: linear-gradient(135deg, #001a5e 0%, #003087 50%, #005aad 100%);
-}
-
-.cover-text {
-  flex: 1;
-  position: relative;
-  z-index: 2;
-  animation: fadeInLeft 0.9s ease both;
-}
-
-.cover-eyebrow {
-  display: block;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.6);
-  margin-bottom: 1rem;
-}
-
-.cover-title {
-  font-size: 4.5rem;
-  font-weight: 800;
-  color: white;
-  line-height: 1;
-  margin: 0 0 0.5rem;
-  letter-spacing: -0.02em;
-}
-
-.cover-line {
-  width: 60px;
-  height: 3px;
-  background: rgba(255,255,255,0.5);
-  margin: 1.2rem 0;
-}
-
-.cover-sub {
-  font-size: 1.05rem;
-  color: rgba(255,255,255,0.8);
-  line-height: 1.7;
-  margin-bottom: 2rem;
-}
-
-.cover-logos {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.cover-logos img {
-  height: 42px;
-  object-fit: contain;
-  opacity: 0.9;
-  transition: opacity 0.2s;
-}
-
-.cover-logos img:hover { opacity: 1; }
-
-.cover-sep {
-  width: 1px;
-  height: 32px;
-  background: rgba(255,255,255,0.3);
-}
-
-.cover-globe {
-  flex: 0 0 500px;
-  height: 500px;
-  position: relative;
-  z-index: 2;
-  animation: fadeInRight 1s ease both;
-  margin-right: -2rem;
-}
-
-/* ── Authors strip ───────────────────────────────────── */
-.authors-strip {
-  background: white;
-  border-bottom: 1px solid #dde3ed;
-  text-align: center;
-  padding: 0.7rem 1rem;
-  font-size: 0.75rem;
-  color: #4a5568;
-  letter-spacing: 0.03em;
-}
-
-/* ── Counters ────────────────────────────────────────── */
-.counters-section {
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr;
-  align-items: center;
-  padding: 2.5rem 4rem;
-  background: #003087;
-}
-
-.counter-item {
-  text-align: center;
-  padding: 0 1rem;
-}
-
-.counter-value {
-  display: block;
-  font-size: 2.8rem;
-  font-weight: 800;
-  color: white;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-
-.counter-label {
-  display: block;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: rgba(255,255,255,0.8);
-  margin-top: 0.4rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.counter-sub {
-  display: block;
-  font-size: 0.68rem;
-  color: rgba(255,255,255,0.45);
-  margin-top: 0.3rem;
-}
-
-.counter-divider {
-  width: 1px;
-  height: 60px;
-  background: rgba(255,255,255,0.15);
-  justify-self: center;
-}
-
-/* ── Flip cards ──────────────────────────────────────── */
-.flip-section {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  padding: 3rem 4rem;
-  background: #f4f8fd;
-}
-
-.flip-wrap {
-  perspective: 1000px;
-  height: 220px;
-}
-
-.flip-card {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(.4,0,.2,1);
-}
-
-.flip-wrap:hover .flip-card {
-  transform: rotateY(180deg);
-}
-
-.flip-front,
-.flip-back {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  border-radius: 12px;
-  padding: 1.8rem 1.6rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.flip-front {
-  background: white;
-  border: 1px solid #dde3ed;
-  box-shadow: 0 4px 20px rgba(0,48,135,0.07);
-}
-
-.flip-back {
-  background: #003087;
-  transform: rotateY(180deg);
-}
-
-.flip-icon {
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 0.8rem;
-}
-
-.flip-front h3 {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #003087;
-  margin: 0 0 0.4rem;
-}
-
-.flip-front p {
-  font-size: 0.78rem;
-  color: #8892a4;
-  line-height: 1.5;
-  margin: 0;
-}
-
-.flip-hint {
-  font-size: 0.62rem;
-  color: #c0cce0;
-  margin-top: 0.8rem;
-  letter-spacing: 0.06em;
-}
-
-.flip-back h3 {
-  font-size: 1rem;
-  font-weight: 700;
-  color: white;
-  margin: 0 0 0.6rem;
-}
-
-.flip-back p {
-  font-size: 0.78rem;
-  color: rgba(255,255,255,0.8);
-  line-height: 1.6;
-  margin: 0;
-}
-
-.flip-back code {
-  background: rgba(255,255,255,0.15);
-  padding: 1px 5px;
-  border-radius: 3px;
-  font-size: 0.72rem;
-}
-
-/* ── Scroll reveal ───────────────────────────────────── */
-.reveal-section {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.reveal-section.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ── Animations ──────────────────────────────────────── */
-@keyframes fadeInLeft {
-  from { opacity: 0; transform: translateX(-30px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes fadeInRight {
-  from { opacity: 0; transform: translateX(30px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
+/* ── Responsive ──────────────────────────────────────── */
 @media (max-width: 900px) {
-  .cover { flex-direction: column; padding: 3rem 2rem; min-height: auto; }
-  .cover-globe { flex: 0 0 300px; height: 300px; margin-right: 0; }
+  .cover { flex-direction: column; padding: 2rem; }
+  .cover-globe { flex: 0 0 280px; height: 280px; }
   .cover-title { font-size: 3rem; }
-  .counters-section { grid-template-columns: 1fr 1fr; padding: 2rem; }
-  .counter-divider { display: none; }
-  .flip-section { grid-template-columns: 1fr 1fr; padding: 2rem; }
+  .parallax-section { grid-template-columns: 1fr 1fr; padding: 2rem; }
 }
 </style>
 
@@ -449,43 +91,19 @@ toc: false
   draw();
 })();
 
-/* ── Scroll reveal ───────────────────────────────────── */
+/* ── Parallax suave al mover el ratón ── */
 (function() {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const delay = entry.target.dataset.delay || 0;
-        setTimeout(() => entry.target.classList.add('visible'), parseInt(delay));
-      }
+  const cards = document.querySelectorAll('.px-card[data-depth]');
+  document.addEventListener('mousemove', e => {
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    const dx = (e.clientX - cx) / cx;
+    const dy = (e.clientY - cy) / cy;
+    cards.forEach(card => {
+      const d = parseFloat(card.dataset.depth);
+      card.style.transform = `translate(${dx * d * 20}px, ${dy * d * 20}px)`;
     });
-  }, { threshold: 0.15 });
-  document.querySelectorAll('.reveal-section').forEach(el => obs.observe(el));
-})();
-
-/* ── Contadores animados ─────────────────────────────── */
-(function() {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      entry.target.querySelectorAll('.counter-value').forEach(el => {
-        if (el.dataset.animated) return;
-        el.dataset.animated = 'true';
-        const target = parseInt(el.dataset.target);
-        const suffix = el.dataset.suffix || '';
-        const duration = target > 1000 ? 2000 : 1000;
-        const start = performance.now();
-        function step(now) {
-          const p = Math.min((now - start) / duration, 1);
-          const eased = 1 - Math.pow(1 - p, 3);
-          el.textContent = Math.round(target * eased).toLocaleString('es-ES') + suffix;
-          if (p < 1) requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
-      });
-      obs.unobserve(entry.target);
-    });
-  }, { threshold: 0.3 });
-  document.querySelectorAll('.counters-section').forEach(el => obs.observe(el));
+  });
 })();
 
 /* ── Globo Three.js con órbitas reales ── */
@@ -502,7 +120,6 @@ toc: false
     renderer.setSize(w, h);
     renderer.setPixelRatio(window.devicePixelRatio);
     mount.appendChild(renderer.domElement);
-
     const loader = new THREE.TextureLoader();
     const earthSolid = new THREE.Mesh(
       new THREE.SphereGeometry(0.99, 48, 32),
@@ -512,13 +129,11 @@ toc: false
       })
     );
     scene.add(earthSolid);
-
     const earth = new THREE.Mesh(
       new THREE.SphereGeometry(1, 48, 32),
       new THREE.MeshBasicMaterial({ color: 0x4499ff, wireframe: true, transparent: true, opacity: 0.20 })
     );
     scene.add(earth);
-
     const DEG = Math.PI / 180;
     const orbitDefs = [
       { name:'ISS',       a:1.12, inc:51.6, raan:0,   color:0x88ccff, r:0.022, phase:0.0 },
@@ -528,7 +143,6 @@ toc: false
       { name:'GPS-2',     a:1.55, inc:55,   raan:320, color:0xffcc00, r:0.026, phase:3.5 },
       { name:'GEO',       a:1.80, inc:0,    raan:0,   color:0xff6688, r:0.024, phase:0.0 },
     ];
-
     function orbitalToWorld(a, theta, incDeg, raanDeg) {
       const inc = incDeg * DEG, raan = raanDeg * DEG;
       const xO = a * Math.cos(theta), zO = a * Math.sin(theta);
@@ -539,7 +153,6 @@ toc: false
         z: xO * Math.sin(raan) + zI * Math.cos(raan)
       };
     }
-
     function createOrbitLine(def) {
       const pts = [];
       for (let i = 0; i <= 256; i++) {
@@ -552,7 +165,6 @@ toc: false
         new THREE.LineBasicMaterial({ color: def.color, transparent: true, opacity: 0.15 })
       );
     }
-
     const wLEO = 0.012;
     const sats = orbitDefs.map(def => {
       scene.add(createOrbitLine(def));
@@ -568,7 +180,6 @@ toc: false
       scene.add(mesh);
       return { mesh, def, phase: def.phase, w: wLEO * Math.pow(1.12/def.a, 1.5) };
     });
-
     const wEarth = wLEO * Math.pow(1.12/1.80, 1.5);
     let t = 0, dragging = false, lastX = 0, lastY = 0, rx = 0.15, ry = 0;
     renderer.domElement.addEventListener('mousedown', e => { dragging=true; lastX=e.clientX; lastY=e.clientY; });
@@ -578,7 +189,6 @@ toc: false
       ry += (e.clientX-lastX)*0.01; rx += (e.clientY-lastY)*0.01;
       lastX=e.clientX; lastY=e.clientY;
     });
-
     function animate() {
       t += 1;
       if (!dragging) ry += wEarth;
@@ -593,14 +203,12 @@ toc: false
       requestAnimationFrame(animate);
     }
     animate();
-
     window.addEventListener('resize', () => {
       const nw = mount.clientWidth, nh = mount.clientHeight;
       if (!nw || !nh) return;
       camera.aspect = nw/nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh);
     });
   }
-
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initEarth);
   } else { setTimeout(initEarth, 100); }
