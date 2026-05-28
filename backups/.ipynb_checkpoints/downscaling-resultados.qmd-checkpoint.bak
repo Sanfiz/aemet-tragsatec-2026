@@ -1,0 +1,485 @@
+---
+title: "Downscaling · Resultados"
+toc: false
+---
+
+
+```{=html}
+
+<div style="max-width:960px;margin:2rem auto;padding:0 1.5rem;">
+
+  <span class="section-label">Resultados</span>
+  <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;">Verificación del downscaling</h2>
+  <p style="color:#4a5568;margin-bottom:1.5rem;">
+    Resultados del downscaling estadístico de precipitación. Selecciona el modelo y el tipo de gráfico para comparar ·
+    <a href="downscaling-metodologia.html" style="color:#0072bc;font-weight:600;">¿Cómo se calcula? Ver metodología →</a>
+  </p>
+
+  <!-- ============================================================ -->
+  <!-- CABECERA: VARIABLE + INICIALIZACIÓN                          -->
+  <!-- ============================================================ -->
+  <div class="ds-header-card">
+    <div class="ds-header-block">
+      <span class="ds-header-tag">Variable</span>
+      <span class="ds-header-value" id="ds-var-display">Precipitación</span>
+    </div>
+    <div class="ds-header-sep"></div>
+    <div class="ds-header-block">
+      <span class="ds-header-tag">Inicialización</span>
+      <span class="ds-header-value-small" id="ds-init-display">Marzo 2026</span>
+      <span class="ds-header-sub" id="ds-period-display">Periodo válido · AMJ 2026</span>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- VISOR INTERACTIVO                                            -->
+  <!-- ============================================================ -->
+  <div class="ds-viewer">
+
+    <!-- Selectores -->
+    <div class="ds-controls">
+      <div class="ds-control-group">
+        <label class="ds-label">Modelo</label>
+        <div class="ds-button-row" id="ds-models"></div>
+      </div>
+      <div class="ds-control-group">
+        <label class="ds-label">Tipo de gráfico</label>
+        <div class="ds-button-row" id="ds-graphs"></div>
+      </div>
+    </div>
+
+    <!-- Imagen activa -->
+    <div class="ds-image-wrap">
+      <button class="ds-nav ds-nav-prev" id="ds-prev" aria-label="Anterior">‹</button>
+      <div class="ds-image-inner">
+        <img id="ds-image" class="ds-image" alt="" />
+        <div class="ds-caption" id="ds-caption"></div>
+      </div>
+      <button class="ds-nav ds-nav-next" id="ds-next" aria-label="Siguiente">›</button>
+    </div>
+
+    <!-- Acciones -->
+    <div class="ds-actions">
+      <button class="ds-action-btn" id="ds-zoom">⤢ Ampliar</button>
+      <a class="ds-action-btn ds-action-primary" id="ds-download" download>↓ Descargar imagen</a>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- INFORME PDF                                                   -->
+  <!-- ============================================================ -->
+  <h3 style="color:#003087;margin-top:3rem;margin-bottom:0.8rem;">Informe de verificación</h3>
+  <p style="font-size:0.85rem;color:#4a5568;margin-bottom:1rem;">
+    Informe completo de verificación estacional ·
+    <a href="images/downscaling/verificacion_estacional_AMJ_2026.pdf" download style="color:#0072bc;font-weight:600;">
+      ↓ Descargar PDF
+    </a>
+  </p>
+  <div class="pdf-container">
+    <iframe src="images/downscaling/verificacion_estacional_AMJ_2026.pdf"
+            width="100%" height="100%" style="border:none;">
+      Tu navegador no soporta la visualización de PDF.
+      <a href="images/downscaling/verificacion_estacional_AMJ_2026.pdf">Descargar aquí</a>
+    </iframe>
+  </div>
+
+</div>
+
+
+<!-- ============================================================ -->
+<!-- ESTILOS                                                       -->
+<!-- ============================================================ -->
+<style>
+/* ── Cabecera variable + inicialización ─────────────────── */
+.ds-header-card {
+  display: flex;
+  align-items: stretch;
+  background: linear-gradient(135deg, #003087 0%, #0072bc 100%);
+  border-radius: 10px;
+  padding: 1.4rem 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0,48,135,0.15);
+  color: white;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.ds-header-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  min-width: 200px;
+}
+.ds-header-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 0.3rem;
+}
+.ds-header-value {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: white;
+}
+.ds-header-value-small {
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: white;
+}
+.ds-header-sub {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.75);
+  margin-top: 0.2rem;
+  font-weight: 500;
+}
+.ds-header-sep {
+  width: 1px;
+  background: rgba(255,255,255,0.2);
+}
+
+/* ── Visor ─────────────────────────────────────────────── */
+.ds-viewer {
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,48,135,0.06);
+}
+
+.ds-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.ds-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ds-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #003087;
+}
+
+.ds-button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.ds-btn {
+  padding: 0.55rem 1rem;
+  border: 1px solid #dde3ed;
+  background: white;
+  color: #4a5568;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.ds-btn:hover {
+  border-color: #0072bc;
+  color: #003087;
+}
+.ds-btn.active {
+  background: #003087;
+  border-color: #003087;
+  color: white;
+  font-weight: 600;
+}
+
+/* ── Imagen ─────────────────────────────────────────────── */
+.ds-image-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 1rem;
+  position: relative;
+}
+
+.ds-image-inner {
+  flex: 1;
+  text-align: center;
+  min-width: 0;
+}
+
+.ds-image {
+  max-width: 100%;
+  max-height: 520px;
+  height: auto;
+  border-radius: 6px;
+  cursor: zoom-in;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  display: inline-block;
+  transition: opacity 0.25s;
+}
+
+.ds-image.loading { opacity: 0.4; }
+
+.ds-caption {
+  font-size: 0.78rem;
+  color: #4a5568;
+  margin-top: 0.7rem;
+  font-style: italic;
+}
+
+.ds-nav {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid #dde3ed;
+  background: white;
+  color: #003087;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: all 0.15s;
+  line-height: 1;
+}
+.ds-nav:hover {
+  background: #003087;
+  color: white;
+  border-color: #003087;
+}
+
+/* ── Acciones ───────────────────────────────────────────── */
+.ds-actions {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-top: 1.2rem;
+  flex-wrap: wrap;
+}
+.ds-action-btn {
+  padding: 0.55rem 1.2rem;
+  background: white;
+  border: 1px solid #dde3ed;
+  color: #003087;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.15s;
+}
+.ds-action-btn:hover {
+  background: #e8f4fc;
+  border-color: #0072bc;
+}
+.ds-action-primary {
+  background: #003087;
+  color: white;
+  border-color: #003087;
+}
+.ds-action-primary:hover {
+  background: #0072bc;
+  color: white;
+  border-color: #0072bc;
+}
+
+/* ── Lightbox ───────────────────────────────────────────── */
+#ds-lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 9999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  padding: 1rem;
+}
+#ds-lightbox.open { display: flex; }
+#ds-lightbox img {
+  max-width: 85vw;
+  max-height: 80vh;
+  border-radius: 10px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  background: white;
+}
+.ds-lightbox-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .ds-header-card { padding: 1.2rem 1.4rem; }
+  .ds-header-value { font-size: 1.5rem; }
+  .ds-header-value-small { font-size: 1.1rem; }
+  .ds-header-sep { display: none; }
+  .ds-image-wrap { padding: 0.6rem; gap: 0.3rem; }
+  .ds-nav { width: 32px; height: 32px; font-size: 1.1rem; }
+  .ds-image { max-height: 380px; }
+}
+</style>
+
+
+<!-- ============================================================ -->
+<!-- LIGHTBOX                                                      -->
+<!-- ============================================================ -->
+<div id="ds-lightbox">
+  <img id="ds-lightbox-img" alt="" />
+  <div class="ds-lightbox-actions">
+    <a id="ds-lightbox-dl" class="ds-action-btn ds-action-primary" download>↓ Descargar</a>
+    <button class="ds-action-btn" onclick="document.getElementById('ds-lightbox').classList.remove('open');document.body.style.overflow='';">✕ Cerrar</button>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- LÓGICA                                                        -->
+<!-- ============================================================ -->
+<script>
+(function() {
+
+  // ════════════════════════════════════════════════════════════
+  //  CONFIGURACIÓN — editar cada mes
+  // ════════════════════════════════════════════════════════════
+  const VARIABLE       = 'Precipitación';
+  const INICIALIZACION = 'Marzo 2026';
+  const PERIODO_VALIDO = 'AMJ 2026';
+  const FILE_TAG       = 'lead032026_AMJ';  // sufijo de los nombres de archivo
+  // ════════════════════════════════════════════════════════════
+
+  // Modelos disponibles (id = slug del nombre de archivo · label = visible)
+  const MODELS = [
+    { id: 'ecmwf',         label: 'ECMWF-SEAS5.1' },
+    { id: 'dwd',           label: 'DWD' },
+    { id: 'cmcc',          label: 'CMCC' },
+    { id: 'meteo_france',  label: 'Météo-France' },
+  ];
+
+  // Tipos de gráfico (prefix = patrón en el nombre del fichero)
+  const GRAPHS = [
+    { id: 'terciles',      label: 'Probabilidad por terciles', prefix: '3_terciles_',          caption: 'Probabilidad por terciles' },
+    { id: 'corr',          label: 'Correlación de Spearman',   prefix: '4_corr-spearman_',     caption: 'Correlación de Spearman' },
+    { id: 'roc',           label: 'Curvas ROC',                prefix: '5_roc_3_pr_',          caption: 'Curvas ROC · Precipitación' },
+    { id: 'rps',           label: 'Ranked Probability Score',  prefix: '6_rps_pr_',            caption: 'Ranked Probability Score (RPS)' },
+    { id: 'bs',            label: 'Brier Score',               prefix: '7_bs_3_pr_',           caption: 'Brier Score' },
+  ];
+
+  // Estado
+  let currentModel = MODELS[0].id;
+  let currentGraph = GRAPHS[0].id;
+
+  // Pintar cabecera
+  document.getElementById('ds-var-display').textContent    = VARIABLE;
+  document.getElementById('ds-init-display').textContent   = INICIALIZACION;
+  document.getElementById('ds-period-display').textContent = 'Periodo válido · ' + PERIODO_VALIDO;
+
+  // Construir botones
+  function buildButtons(containerId, items, getCurrent, setCurrent) {
+    const c = document.getElementById(containerId);
+    c.innerHTML = '';
+    items.forEach(it => {
+      const b = document.createElement('button');
+      b.className = 'ds-btn' + (getCurrent() === it.id ? ' active' : '');
+      b.textContent = it.label;
+      b.dataset.id = it.id;
+      b.addEventListener('click', () => {
+        setCurrent(it.id);
+        c.querySelectorAll('.ds-btn').forEach(x => x.classList.toggle('active', x.dataset.id === it.id));
+        updateImage();
+      });
+      c.appendChild(b);
+    });
+  }
+
+  function updateImage() {
+    const graph = GRAPHS.find(g => g.id === currentGraph);
+    const model = MODELS.find(m => m.id === currentModel);
+    const path  = `images/downscaling/${graph.prefix}${model.id}_${FILE_TAG}.png`;
+
+    const img = document.getElementById('ds-image');
+    img.classList.add('loading');
+    img.onload  = () => img.classList.remove('loading');
+    img.onerror = () => {
+      img.classList.remove('loading');
+      img.alt = 'Imagen no disponible: ' + path;
+    };
+    img.src = path;
+    img.alt = `${graph.label} · ${model.label} · ${PERIODO_VALIDO}`;
+
+    document.getElementById('ds-caption').textContent =
+      `${graph.caption} · ${model.label} · ${PERIODO_VALIDO}`;
+
+    const dl = document.getElementById('ds-download');
+    dl.href     = path;
+    dl.download = `${graph.id}_${model.id}_${FILE_TAG}.png`;
+  }
+
+  // Navegación con flechas: avanza entre modelos manteniendo el gráfico
+  function shift(delta) {
+    const idx = MODELS.findIndex(m => m.id === currentModel);
+    const next = (idx + delta + MODELS.length) % MODELS.length;
+    currentModel = MODELS[next].id;
+    document.querySelectorAll('#ds-models .ds-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.id === currentModel)
+    );
+    updateImage();
+  }
+
+  // Lightbox
+  function openLightbox() {
+    const img = document.getElementById('ds-image');
+    const lb  = document.getElementById('ds-lightbox');
+    document.getElementById('ds-lightbox-img').src = img.src;
+    document.getElementById('ds-lightbox-dl').href = img.src;
+    document.getElementById('ds-lightbox-dl').download =
+      document.getElementById('ds-download').download;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('ds-lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Inicialización
+  document.addEventListener('DOMContentLoaded', () => {
+    buildButtons('ds-models', MODELS, () => currentModel, id => currentModel = id);
+    buildButtons('ds-graphs', GRAPHS, () => currentGraph, id => currentGraph = id);
+    updateImage();
+
+    document.getElementById('ds-prev').addEventListener('click', () => shift(-1));
+    document.getElementById('ds-next').addEventListener('click', () => shift(+1));
+    document.getElementById('ds-image').addEventListener('click', openLightbox);
+    document.getElementById('ds-zoom').addEventListener('click', openLightbox);
+
+    document.getElementById('ds-lightbox').addEventListener('click', e => {
+      if (e.target.id === 'ds-lightbox') closeLightbox();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft')  shift(-1);
+      if (e.key === 'ArrowRight') shift(+1);
+    });
+  });
+
+})();
+</script>
+```

@@ -370,7 +370,7 @@ document.addEventListener('DOMContentLoaded', function() {
   </p>
 
   <!-- ============================================================ -->
-  <!-- CABECERA: VARIABLE + INICIALIZACIÓN                          -->
+  <!-- CABECERA: VARIABLE + PERIODO PREDICCIÓN                      -->
   <!-- ============================================================ -->
  <div class="ds-header-card">
   <div class="ds-header-block">
@@ -380,8 +380,8 @@ document.addEventListener('DOMContentLoaded', function() {
   <div class="ds-header-sep"></div>
   <div class="ds-header-block">
     <span class="ds-header-tag">Periodo Predicción</span>
-    <span class="ds-header-value" id="ds-init-display">AMJ 2026</span>
-    <span class="ds-header-sub" id="ds-period-display">Inicialización · Marzo 2026</span>
+    <span class="ds-header-value" id="ds-init-display">JJA 2026</span>
+    <span class="ds-header-sub" id="ds-period-display">Inicialización · Mayo 2026</span>
   </div>
 </div>
 
@@ -420,20 +420,24 @@ document.addEventListener('DOMContentLoaded', function() {
   </div>
 
   <!-- ============================================================ -->
-  <!-- INFORME PDF                                                   -->
+  <!-- SECCIÓN COMPARACIÓN                                          -->
   <!-- ============================================================ -->
-  <h3 style="color:#003087;margin-top:3rem;margin-bottom:0.8rem;" class="anchored">Informe de verificación</h3>
-  <p style="font-size:0.85rem;color:#4a5568;margin-bottom:1rem;">
-    Informe completo de verificación estacional ·
-    <a href="images/downscaling/verificacion_estacional_AMJ_2026.pdf" download="" style="color:#0072bc;font-weight:600;">
-      ↓ Descargar PDF
-    </a>
+  <h3 style="color:#003087;margin-top:3rem;margin-bottom:0.5rem;" class="anchored">Comparación entre modelos</h3>
+  <p style="font-size:0.9rem;color:#4a5568;margin-bottom:1.5rem;">
+    
   </p>
-  <div class="pdf-container">
-    <iframe src="images/downscaling/verificacion_estacional_AMJ_2026.pdf" width="100%" height="100%" style="border:none;">
-      Tu navegador no soporta la visualización de PDF.
-      <a href="images/downscaling/verificacion_estacional_AMJ_2026.pdf">Descargar aquí</a>
-    </iframe>
+
+  <div class="ds-gallery">
+
+    <figure class="ds-gallery-item figure">
+      <img src="images/downscaling/9-perModel_DOWN_pr_3m.png" alt="Comparación por modelo · Downscaling" class="ds-gallery-img figure-img" data-caption="Comparación por modelo · Downscaling">
+      <figcaption>
+        <strong>Comparación por modelo</strong>
+        <span>Vista comparativa de cada modelo del downscaling lado a lado.</span>
+        <a href="images/downscaling/9-perModel_DOWN_pr_3m.png" download="" class="ds-gallery-dl">↓ Descargar</a>
+      </figcaption>
+    </figure>
+
   </div>
 
 </div>
@@ -443,7 +447,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- ESTILOS                                                       -->
 <!-- ============================================================ -->
 <style>
-/* ── Cabecera variable + inicialización ─────────────────── */
+/* ── Cabecera variable + periodo ─────────────────────────── */
 .ds-header-card {
   display: flex;
   align-items: stretch;
@@ -475,12 +479,6 @@ document.addEventListener('DOMContentLoaded', function() {
   font-size: 2rem;
   font-weight: 800;
   line-height: 1.1;
-  color: white;
-}
-.ds-header-value-small {
-  font-size: 1.3rem;
-  font-weight: 700;
-  line-height: 1.2;
   color: white;
 }
 .ds-header-sub {
@@ -554,7 +552,7 @@ document.addEventListener('DOMContentLoaded', function() {
   font-weight: 600;
 }
 
-/* ── Imagen ─────────────────────────────────────────────── */
+/* ── Imagen visor ───────────────────────────────────────── */
 .ds-image-wrap {
   display: flex;
   align-items: center;
@@ -651,6 +649,73 @@ document.addEventListener('DOMContentLoaded', function() {
   border-color: #0072bc;
 }
 
+/* ── Galería de comparación ─────────────────────────────── */
+.ds-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.ds-gallery-item {
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 0;
+  box-shadow: 0 2px 8px rgba(0,48,135,0.05);
+  transition: box-shadow 0.2s;
+}
+.ds-gallery-item:hover {
+  box-shadow: 0 4px 16px rgba(0,48,135,0.1);
+}
+.ds-gallery-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  cursor: zoom-in;
+  background: #f8fafc;
+  transition: opacity 0.2s;
+}
+.ds-gallery-img:hover {
+  opacity: 0.93;
+}
+.ds-gallery-item figcaption {
+  padding: 1rem 1.2rem;
+  border-top: 1px solid #f0f4f8;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  position: relative;
+}
+.ds-gallery-item figcaption strong {
+  color: #003087;
+  font-size: 0.95rem;
+}
+.ds-gallery-item figcaption span {
+  font-size: 0.82rem;
+  color: #4a5568;
+}
+.ds-gallery-dl {
+  position: absolute;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.45rem 0.9rem;
+  background: white;
+  border: 1px solid #dde3ed;
+  color: #003087;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.ds-gallery-dl:hover {
+  background: #003087;
+  color: white;
+  border-color: #003087;
+}
+
 /* ── Lightbox ───────────────────────────────────────────── */
 #ds-lightbox {
   display: none;
@@ -682,11 +747,16 @@ document.addEventListener('DOMContentLoaded', function() {
 @media (max-width: 768px) {
   .ds-header-card { padding: 1.2rem 1.4rem; }
   .ds-header-value { font-size: 1.5rem; }
-  .ds-header-value-small { font-size: 1.1rem; }
   .ds-header-sep { display: none; }
   .ds-image-wrap { padding: 0.6rem; gap: 0.3rem; }
   .ds-nav { width: 32px; height: 32px; font-size: 1.1rem; }
   .ds-image { max-height: 380px; }
+  .ds-gallery-dl {
+    position: static;
+    transform: none;
+    align-self: flex-start;
+    margin-top: 0.5rem;
+  }
 }
 </style>
 
@@ -713,9 +783,8 @@ document.addEventListener('DOMContentLoaded', function() {
   //  CONFIGURACIÓN — editar cada mes
   // ════════════════════════════════════════════════════════════
   const VARIABLE       = 'Precipitación';
-  const INICIALIZACION = 'Marzo 2026';
-  const PERIODO_VALIDO = 'AMJ 2026';
-  const FILE_TAG       = 'lead032026_AMJ';  // sufijo de los nombres de archivo
+  const INICIALIZACION = 'Mayo 2026';
+  const PERIODO_VALIDO = 'JJA 2026';
   // ════════════════════════════════════════════════════════════
 
   // Modelos disponibles (id = slug del nombre de archivo · label = visible)
@@ -724,15 +793,19 @@ document.addEventListener('DOMContentLoaded', function() {
     { id: 'dwd',           label: 'DWD' },
     { id: 'cmcc',          label: 'CMCC' },
     { id: 'meteo_france',  label: 'Météo-France' },
+    { id: 'ukmo',          label: 'UKMO' },
+    { id: 'ncep',          label: 'NCEP' },
+    { id: 'eccc',          label: 'ECCC' },
+    { id: 'jma',           label: 'JMA' },
   ];
 
   // Tipos de gráfico (prefix = patrón en el nombre del fichero)
   const GRAPHS = [
-    { id: 'terciles',      label: 'Probabilidad por terciles', prefix: '3_terciles_',          caption: 'Probabilidad por terciles' },
-    { id: 'corr',          label: 'Correlación de Spearman',   prefix: '4_corr-spearman_',     caption: 'Correlación de Spearman' },
-    { id: 'roc',           label: 'Curvas ROC',                prefix: '5_roc_3_pr_',          caption: 'Curvas ROC · Precipitación' },
-    { id: 'rps',           label: 'Ranked Probability Score',  prefix: '6_rps_pr_',            caption: 'Ranked Probability Score (RPS)' },
-    { id: 'bs',            label: 'Brier Score',               prefix: '7_bs_3_pr_',           caption: 'Brier Score' },
+    { id: 'terciles', label: 'Probabilidad por terciles', prefix: '3_terciles_',      caption: 'Probabilidad por terciles' },
+    { id: 'corr',     label: 'Correlación de Spearman',   prefix: '4_corr-spearman_', caption: 'Correlación de Spearman' },
+    { id: 'roc',      label: 'Curvas ROC',                prefix: '5_roc_3_pr_',      caption: 'Curvas ROC · Precipitación' },
+    { id: 'rps',      label: 'Ranked Probability Score',  prefix: '6_rps_pr_',        caption: 'Ranked Probability Score (RPS)' },
+    { id: 'bs',       label: 'Brier Score',               prefix: '7_bs_3_pr_',       caption: 'Brier Score' },
   ];
 
   // Estado
@@ -765,7 +838,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateImage() {
     const graph = GRAPHS.find(g => g.id === currentGraph);
     const model = MODELS.find(m => m.id === currentModel);
-    const path  = `images/downscaling/${graph.prefix}${model.id}_${FILE_TAG}.png`;
+    const path  = `images/downscaling/${graph.prefix}${model.id}.png`;
 
     const img = document.getElementById('ds-image');
     img.classList.add('loading');
@@ -782,7 +855,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const dl = document.getElementById('ds-download');
     dl.href     = path;
-    dl.download = `${graph.id}_${model.id}_${FILE_TAG}.png`;
+    dl.download = `${graph.id}_${model.id}.png`;
   }
 
   // Navegación con flechas: avanza entre modelos manteniendo el gráfico
@@ -796,16 +869,19 @@ document.addEventListener('DOMContentLoaded', function() {
     updateImage();
   }
 
-  // Lightbox
-  function openLightbox() {
-    const img = document.getElementById('ds-image');
-    const lb  = document.getElementById('ds-lightbox');
-    document.getElementById('ds-lightbox-img').src = img.src;
-    document.getElementById('ds-lightbox-dl').href = img.src;
-    document.getElementById('ds-lightbox-dl').download =
-      document.getElementById('ds-download').download;
+  // ── Lightbox ──
+  function openLightboxFor(src, downloadName) {
+    const lb = document.getElementById('ds-lightbox');
+    document.getElementById('ds-lightbox-img').src = src;
+    const dl = document.getElementById('ds-lightbox-dl');
+    dl.href = src;
+    dl.download = downloadName || src.split('/').pop();
     lb.classList.add('open');
     document.body.style.overflow = 'hidden';
+  }
+  function openLightboxFromViewer() {
+    const img = document.getElementById('ds-image');
+    openLightboxFor(img.src, document.getElementById('ds-download').download);
   }
   function closeLightbox() {
     document.getElementById('ds-lightbox').classList.remove('open');
@@ -820,16 +896,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('ds-prev').addEventListener('click', () => shift(-1));
     document.getElementById('ds-next').addEventListener('click', () => shift(+1));
-    document.getElementById('ds-image').addEventListener('click', openLightbox);
-    document.getElementById('ds-zoom').addEventListener('click', openLightbox);
+    document.getElementById('ds-image').addEventListener('click', openLightboxFromViewer);
+    document.getElementById('ds-zoom').addEventListener('click', openLightboxFromViewer);
+
+    // Galería: click en imagen abre lightbox
+    document.querySelectorAll('.ds-gallery-img').forEach(img => {
+      img.addEventListener('click', () => openLightboxFor(img.src, img.src.split('/').pop()));
+    });
 
     document.getElementById('ds-lightbox').addEventListener('click', e => {
       if (e.target.id === 'ds-lightbox') closeLightbox();
     });
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowLeft')  shift(-1);
-      if (e.key === 'ArrowRight') shift(+1);
+      // Las flechas solo cambian de modelo si el lightbox está cerrado
+      if (!document.getElementById('ds-lightbox').classList.contains('open')) {
+        if (e.key === 'ArrowLeft')  shift(-1);
+        if (e.key === 'ArrowRight') shift(+1);
+      }
     });
   });
 

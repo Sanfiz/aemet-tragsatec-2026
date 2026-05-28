@@ -1,0 +1,71 @@
+---
+title: "Datos"
+toc: true
+---
+
+```{=html}
+<div style="max-width:900px;margin:2rem auto;padding:0 1.5rem;">
+
+  <span class="section-label">Fuentes y descarga</span>
+  <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;">Datos utilizados</h2>
+  <p style="color:#4a5568;margin-bottom:2rem;">Descripción de los conjuntos de datos empleados en las metodologías de downscaling, ponderación de ensemble y verificación estacional.</p>
+
+  <h3 style="color:#003087;margin-top:2rem;">Copernicus Climate Data Store (C3S)</h3>
+  <p style="font-size:0.92rem;line-height:1.7;color:#1a2332;">
+    Los datos de predicción estacional se obtienen del <strong>Copernicus Climate Data Store (C3S)</strong> a través de la API oficial de Copernicus (<code>cdsapi</code>). Los modelos empleados son:
+  </p>
+
+  <div class="grid-3" style="margin:1.2rem 0 2rem;">
+    <div class="info-card" style="text-align:center;">
+      <h3>ECMWF-SEAS5.1</h3>
+      <p>European Centre for Medium-Range Weather Forecasts · Sistema estacional de referencia</p>
+    </div>
+    <div class="info-card" style="text-align:center;">
+      <h3>DWD</h3>
+      <p>Deutscher Wetterdienst · Servicio Meteorológico Alemán</p>
+    </div>
+    <div class="info-card" style="text-align:center;">
+      <h3>CMCC</h3>
+      <p>Centro Euro-Mediterraneo sui Cambiamenti Climatici · Italia</p>
+    </div>
+  </div>
+
+  <h3 style="color:#003087;margin-top:2rem;">Variables descargadas</h3>
+
+  <div class="grid-2" style="margin:1rem 0 2rem;">
+    <div class="info-card">
+      <h3>Presión al nivel del mar (MSL)</h3>
+      <p>Utilizada para el cálculo de componentes del viento geostrófico superficial (ug, vg) a partir de MSL y T1000. Base de los análogos sinópticos y los modos de variabilidad EOF/PLS.</p>
+    </div>
+    <div class="info-card">
+      <h3>Altura geopotencial 500 hPa (Z500)</h3>
+      <p>Componentes del viento a 500 hPa (u500, v500). Empleada tanto en el downscaling como en la caracterización de la circulación Euro-Atlántica.</p>
+    </div>
+    <div class="info-card">
+      <h3>Temperatura a 2 m (T2M)</h3>
+      <p>Variable predictanda en el weighting PLS. También usada en la verificación de las predicciones estacionales de temperatura.</p>
+    </div>
+    <div class="info-card">
+      <h3>Precipitación total (TP)</h3>
+      <p>Variable predictanda principal. Verificada en terciles (seco / normal / húmedo) mediante métricas probabilistas (ROC, RPS, BS).</p>
+    </div>
+  </div>
+
+  <h3 style="color:#003087;margin-top:2rem;">Datos de reanálisis (ERA5)</h3>
+  <p style="font-size:0.92rem;line-height:1.7;color:#1a2332;margin-bottom:1rem;">
+    El reanálisis ERA5 de ECMWF se emplea como referencia observacional para la fase de calibración del downscaling (período 1981–1996) y para la estimación de los modos de variabilidad (EOFs, PLS).
+  </p>
+
+  <div class="grid-2" style="margin:1rem 0 2rem;">
+    <div class="info-card">
+      <h3>Base atmosférica diaria (ERA5)</h3>
+      <p>Componentes del viento geostrófico (ug, vg) de MSL y T1000 · Componentes del viento a 500 hPa (u500, v500)</p>
+    </div>
+    <div class="info-card">
+      <h3>Base de precipitación diaria (ROCÍO_IBEB)</h3>
+      <p>Red observacional española de precipitación diaria. Usada para asociar cada situación sinóptica de referencia con su patrón de precipitación correspondiente.</p>
+    </div>
+  </div>
+
+</div>
+```

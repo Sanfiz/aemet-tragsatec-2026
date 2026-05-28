@@ -78,9 +78,7 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
+    
 <!-- main -->
 <main class="content column-page" id="quarto-document-content">
 <!-- ── BARRA BLANCA CON LOGOS ─────────────────────────── -->
@@ -360,21 +358,749 @@ document.addEventListener('DOMContentLoaded', function() {
 </header>
 
 
-<div style="max-width:900px;margin:2rem auto;padding:0 1.5rem;">
+<div style="max-width:1100px;margin:6rem auto;padding:0 1.5rem;">
 
-  <span class="section-label">Resultados</span>
-  <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;" class="anchored">Ponderación de ensemble · Resultados</h2>
-  <p style="color:#4a5568;margin-bottom:2rem;">
-    Resultados de la ponderación EOF y PLS aplicada a los modelos de predicción estacional ·
-    <a href="weighting-metodologia.html" style="color:#0072bc;font-weight:600;">¿Cómo se calcula? Ver metodología →</a>
-  </p>
+  <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;" class="anchored">
+    Resultados de la ponderación de ensemble
+  </h2>
 
-  <p style="font-size:0.9rem;color:#8892a4;font-style:italic;padding:2rem;text-align:center;
-     border:1px dashed #dde3ed;border-radius:8px;">
-    Próximamente — resultados de weighting EOF y PLS para la temporada en curso.
-  </p>
+    <p style="color:#4a5568;margin-bottom:1.5rem;">
+        Comparación entre la <a href="https://cds.climate.copernicus.eu/datasets/seasonal-monthly-single-levels?tab=overview" target="_blank" rel="noopener" style="color:#0072bc;font-weight:600;">predicción en bruto de Copernicus</a> (RAW) y la predicción ponderada (Weighted).<br>
+        <a href="weighting-metodologia.html" style="color:#0072bc;font-weight:600;">¿Cómo se calcula la ponderación? Ir a metodología →</a>
+      </p>
+
+  <p></p>
+
+  <!-- ============================================================ -->
+  <!-- CABECERA: VARIABLE + PERIODO PREDICCIÓN                      -->
+  <!-- ============================================================ -->
+  <div class="wt-header-card">
+    <div class="wt-header-block">
+      <span class="wt-header-tag">Predicción</span>
+      <span class="wt-header-value">Estación invernal</span>
+    </div>
+    <div class="wt-header-sep"></div>
+    <div class="wt-header-block">
+      <span class="wt-header-tag">Periodo Predicción</span>
+      <span class="wt-header-value">DJF 2025-26</span>
+      <span class="wt-header-sub">Inicialización · Noviembre 2025</span>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TABS                                                          -->
+  <!-- ============================================================ -->
+  <div class="wt-tabs" role="tablist">
+    <button class="wt-tab active" data-tab="temp" role="tab">EOF · Temperatura</button>
+    <button class="wt-tab" data-tab="prec" role="tab">EOF · Precipitación</button>
+    <button class="wt-tab" data-tab="pls" role="tab">Comparativa EOF vs PLS</button>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- TAB 1 · EOF TEMPERATURA                                       -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <div class="wt-panel active" data-panel="temp">
+
+    <div class="wt-viewer">
+      <div class="wt-controls">
+        <div class="wt-control-group">
+          <label class="wt-label">Modelo</label>
+          <div class="wt-button-row" id="temp-models"></div>
+        </div>
+        <div class="wt-control-group">
+          <label class="wt-label">Variable</label>
+          <div class="wt-button-row" id="temp-vars"></div>
+        </div>
+      </div>
+
+      <!-- Par RAW + WEI (modo ANOM/CORR) -->
+      <div class="wt-pair" id="temp-pair">
+        <figure class="wt-pair-item figure">
+          <h4 class="anchored">Copernicus RAW</h4>
+          <img id="temp-raw-img" alt="" class="wt-img figure-img">
+        </figure>
+        <figure class="wt-pair-item figure">
+          <h4 class="anchored">Weighted (EOF)</h4>
+          <img id="temp-wei-img" alt="" class="wt-img figure-img">
+        </figure>
+      </div>
+
+      <!-- Imagen única (modo TERCILES) -->
+      <div class="wt-single" id="temp-single" style="display:none;">
+        <h4 id="temp-single-title" class="anchored">Probabilidad por terciles</h4>
+        <img id="temp-single-img" alt="" class="wt-img wt-img-single">
+      </div>
+
+      <p class="wt-caption" id="temp-caption"></p>
+    </div>
+
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- TAB 2 · EOF PRECIPITACIÓN                                     -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <div class="wt-panel" data-panel="prec">
+
+    <div class="wt-viewer">
+      <div class="wt-controls">
+        <div class="wt-control-group">
+          <label class="wt-label">Modelo</label>
+          <div class="wt-button-row" id="prec-models"></div>
+        </div>
+        <div class="wt-control-group">
+          <label class="wt-label">Variable</label>
+          <div class="wt-button-row" id="prec-vars"></div>
+        </div>
+        <div class="wt-control-group">
+          <label class="wt-label">Región</label>
+          <div class="wt-button-row" id="prec-regions"></div>
+        </div>
+      </div>
+
+      <div class="wt-pair" id="prec-pair">
+        <figure class="wt-pair-item figure">
+          <h4 class="anchored">Copernicus RAW</h4>
+          <img id="prec-raw-img" alt="" class="wt-img figure-img">
+        </figure>
+        <figure class="wt-pair-item figure">
+          <h4 class="anchored">Weighted (EOF)</h4>
+          <img id="prec-wei-img" alt="" class="wt-img figure-img">
+        </figure>
+      </div>
+
+      <div class="wt-single" id="prec-single" style="display:none;">
+        <h4 id="prec-single-title" class="anchored">Probabilidad por terciles</h4>
+        <img id="prec-single-img" alt="" class="wt-img wt-img-single">
+      </div>
+
+      <p class="wt-caption" id="prec-caption"></p>
+    </div>
+
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- TAB 3 · COMPARATIVA EOF vs PLS                                -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <div class="wt-panel" data-panel="pls">
+
+    <!-- Bloque scorecards -->
+    <div class="wt-viewer">
+      <h3 class="wt-block-title anchored">Diferencia frente a Copernicus RAW</h3>
+      <p class="wt-block-desc">
+        Scorecards que muestran la diferencia de skill entre la versión ponderada (EOF o PLS) y la
+        predicción cruda de Copernicus. Valores positivos indican mejora.
+      </p>
+
+      <div class="wt-controls">
+        <div class="wt-control-group">
+          <label class="wt-label">Variable</label>
+          <div class="wt-button-row" id="pls-score-vars"></div>
+        </div>
+      </div>
+
+      <div class="wt-pair">
+        <figure class="wt-pair-item figure">
+          <h4 class="anchored">EOF Weighted − RAW Copernicus</h4>
+          <img id="pls-score-left-img" alt="" class="wt-img figure-img">
+        </figure>
+        <figure class="wt-pair-item figure">
+          <h4 class="anchored">PLS Weighted − RAW Copernicus</h4>
+          <img id="pls-score-right-img" alt="" class="wt-img figure-img">
+        </figure>
+      </div>
+    </div>
+
+    <!-- Bloque diferencia de correlación -->
+    <div class="wt-viewer" style="margin-top:1.5rem;">
+      <h3 class="wt-block-title anchored">Diferencia de correlación entre métodos</h3>
+      <p class="wt-block-desc">
+        Diferencia de correlación entre los dos métodos de ponderación (EOF y PLS) por variable y mes
+        de inicialización.
+      </p>
+
+      <div class="wt-controls">
+        <div class="wt-control-group">
+          <label class="wt-label">Variable</label>
+          <div class="wt-button-row" id="pls-2m-vars"></div>
+        </div>
+        <div class="wt-control-group">
+          <label class="wt-label">Mes de inicialización</label>
+          <div class="wt-button-row wt-button-row-compact" id="pls-2m-months"></div>
+        </div>
+      </div>
+
+      <div class="wt-single">
+        <img id="pls-2m-img" alt="" class="wt-img wt-img-single">
+      </div>
+      <p class="wt-caption" id="pls-2m-caption"></p>
+    </div>
+
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!-- NAVEGACIÓN INFERIOR                                          -->
+  <!-- ============================================================ -->
+  <div class="wt-nav">
+    <a href="weighting-metodologia.html" class="wt-nav-prev">← Volver a la metodología</a>
+  </div>
 
 </div>
+
+
+<!-- ============================================================ -->
+<!-- LIGHTBOX                                                      -->
+<!-- ============================================================ -->
+<div id="wt-lightbox">
+  <img id="wt-lightbox-img" alt="">
+  <div class="wt-lightbox-actions">
+    <a id="wt-lightbox-dl" class="wt-action-btn wt-action-primary" download="">↓ Descargar</a>
+    <button class="wt-action-btn" onclick="document.getElementById('wt-lightbox').classList.remove('open');document.body.style.overflow='';">✕ Cerrar</button>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- ESTILOS                                                       -->
+<!-- ============================================================ -->
+<style>
+/* ── Cabecera ─────────────────────────────────────────── */
+.wt-header-card {
+  display: flex;
+  align-items: stretch;
+  background: linear-gradient(135deg, #003087 0%, #0072bc 100%);
+  border-radius: 10px;
+  padding: 1.4rem 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0,48,135,0.15);
+  color: white;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.wt-header-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  min-width: 200px;
+}
+.wt-header-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 0.3rem;
+}
+.wt-header-value {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: white;
+}
+.wt-header-sub {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.75);
+  margin-top: 0.2rem;
+  font-weight: 500;
+}
+.wt-header-sep {
+  width: 1px;
+  background: rgba(255,255,255,0.2);
+}
+
+/* ── Tabs ─────────────────────────────────────────────── */
+.wt-tabs {
+  display: flex;
+  gap: 0.3rem;
+  border-bottom: 2px solid #dde3ed;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.wt-tab {
+  padding: 0.75rem 1.4rem;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  color: #4a5568;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.wt-tab:hover {
+  color: #003087;
+  background: #f4f8fd;
+}
+.wt-tab.active {
+  color: #003087;
+  border-bottom-color: #003087;
+  background: #f4f8fd;
+}
+
+.wt-panel {
+  display: none;
+}
+.wt-panel.active {
+  display: block;
+}
+
+/* ── Visor ─────────────────────────────────────────────── */
+.wt-viewer {
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,48,135,0.06);
+}
+
+.wt-block-title {
+  color: #003087;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 0.4rem 0;
+}
+.wt-block-desc {
+  color: #4a5568;
+  font-size: 0.88rem;
+  margin: 0 0 1.2rem 0;
+  line-height: 1.5;
+}
+
+.wt-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.wt-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.wt-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #003087;
+}
+.wt-button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.wt-button-row-compact .wt-btn {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.78rem;
+}
+.wt-btn {
+  padding: 0.55rem 1rem;
+  border: 1px solid #dde3ed;
+  background: white;
+  color: #4a5568;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.wt-btn:hover {
+  border-color: #0072bc;
+  color: #003087;
+}
+.wt-btn.active {
+  background: #003087;
+  border-color: #003087;
+  color: white;
+  font-weight: 600;
+}
+
+/* ── Pares de imágenes y vista única ───────────────────── */
+.wt-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 1rem;
+}
+.wt-pair-item {
+  margin: 0;
+  text-align: center;
+}
+.wt-pair-item h4,
+.wt-single h4 {
+  color: #003087;
+  font-size: 0.92rem;
+  font-weight: 700;
+  margin: 0 0 0.7rem 0;
+}
+.wt-single {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+}
+.wt-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  cursor: zoom-in;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  background: white;
+  transition: opacity 0.2s;
+  display: inline-block;
+}
+.wt-img-single {
+  max-width: 85%;
+}
+.wt-img.loading {
+  opacity: 0.4;
+}
+.wt-img:hover {
+  opacity: 0.93;
+}
+.wt-caption {
+  font-size: 0.82rem;
+  color: #4a5568;
+  margin-top: 0.9rem;
+  font-style: italic;
+  text-align: center;
+}
+
+/* ── Lightbox ──────────────────────────────────────────── */
+#wt-lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 9999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  padding: 1rem;
+}
+#wt-lightbox.open { display: flex; }
+#wt-lightbox img {
+  max-width: 85vw;
+  max-height: 80vh;
+  border-radius: 10px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  background: white;
+}
+.wt-lightbox-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.wt-action-btn {
+  padding: 0.55rem 1.2rem;
+  background: white;
+  border: 1px solid #dde3ed;
+  color: #003087;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.15s;
+}
+.wt-action-btn:hover {
+  background: #e8f4fc;
+  border-color: #0072bc;
+}
+.wt-action-primary {
+  background: #003087;
+  color: white;
+  border-color: #003087;
+}
+.wt-action-primary:hover {
+  background: #0072bc;
+  color: white;
+  border-color: #0072bc;
+}
+
+/* ── Navegación inferior ───────────────────────────────── */
+.wt-nav {
+  display: flex;
+  justify-content: flex-start;
+  margin: 2rem 0 1rem 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid #e8eef5;
+}
+.wt-nav-prev {
+  padding: 0.55rem 1.3rem;
+  background: white;
+  color: #003087;
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.15s;
+}
+.wt-nav-prev:hover {
+  background: #e8f4fc;
+  border-color: #0072bc;
+}
+
+/* ── Responsive ────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .wt-pair { grid-template-columns: 1fr; }
+  .wt-header-card { padding: 1.2rem 1.4rem; }
+  .wt-header-value { font-size: 1.5rem; }
+  .wt-header-sep { display: none; }
+  .wt-img-single { max-width: 100%; }
+}
+</style>
+
+
+<!-- ============================================================ -->
+<!-- LÓGICA                                                        -->
+<!-- ============================================================ -->
+<script>
+(function() {
+
+  // ════════════════════════════════════════════════════════════
+  //  CONFIGURACIÓN — editar al cambiar de trimestre
+  // ════════════════════════════════════════════════════════════
+  const TRIMESTRE = 'DJF';
+  const LEAD      = 'lead112025';   // sufijo de los nombres en modo terciles
+  const PERIODO   = 'DJF 2025-26';
+  // ════════════════════════════════════════════════════════════
+
+  // ──────────────────────────────────────────────────────────
+  //  TAB SWITCHER
+  // ──────────────────────────────────────────────────────────
+  document.querySelectorAll('.wt-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const id = tab.dataset.tab;
+      document.querySelectorAll('.wt-tab').forEach(t => t.classList.toggle('active', t === tab));
+      document.querySelectorAll('.wt-panel').forEach(p =>
+        p.classList.toggle('active', p.dataset.panel === id)
+      );
+    });
+  });
+
+  // ──────────────────────────────────────────────────────────
+  //  HELPERS
+  // ──────────────────────────────────────────────────────────
+  function makeButtons(containerId, items, getCur, setCur, onChange) {
+    const c = document.getElementById(containerId);
+    c.innerHTML = '';
+    items.forEach(it => {
+      const b = document.createElement('button');
+      b.className = 'wt-btn' + (getCur() === it.id ? ' active' : '');
+      b.textContent = it.label;
+      b.dataset.id = it.id;
+      b.addEventListener('click', () => {
+        setCur(it.id);
+        c.querySelectorAll('.wt-btn').forEach(x => x.classList.toggle('active', x.dataset.id === it.id));
+        onChange();
+      });
+      c.appendChild(b);
+    });
+  }
+
+  function setImg(id, src) {
+    const img = document.getElementById(id);
+    img.classList.add('loading');
+    img.onload  = () => img.classList.remove('loading');
+    img.onerror = () => { img.classList.remove('loading'); img.alt = 'Imagen no disponible: ' + src; };
+    img.src = src;
+  }
+
+  // ──────────────────────────────────────────────────────────
+  //  TAB 1 · TEMPERATURA (EOF)
+  // ──────────────────────────────────────────────────────────
+  const TEMP_BASE = 'images/weighting/temperature';
+  const TEMP_MODELS = [
+    { id: 'ECMWF', label: 'ECMWF' },
+    { id: 'DWD',   label: 'DWD' },
+    { id: 'CMCC',  label: 'CMCC' },
+  ];
+  const TEMP_VARS = [
+    { id: 'ANOM',     label: 'Anomalías' },
+    { id: 'TERCILES', label: 'Terciles' },
+    { id: 'CORR',     label: 'Correlación' },
+  ];
+  let tempModel = TEMP_MODELS[0].id;
+  let tempVar   = TEMP_VARS[0].id;
+
+  function updateTemp() {
+    const pair   = document.getElementById('temp-pair');
+    const single = document.getElementById('temp-single');
+    const cap    = document.getElementById('temp-caption');
+    const model  = TEMP_MODELS.find(m => m.id === tempModel);
+    const v      = TEMP_VARS.find(x => x.id === tempVar);
+
+    if (tempVar === 'TERCILES') {
+      pair.style.display = 'none';
+      single.style.display = 'block';
+      const src = `${TEMP_BASE}/terciles_t2m_${tempModel.toLowerCase()}_${LEAD}_${TRIMESTRE}.png`;
+      setImg('temp-single-img', src);
+      document.getElementById('temp-single-title').textContent =
+        'Probabilidad por terciles · ' + model.label;
+      cap.textContent = `Terciles · ${model.label} · T2M · ${PERIODO}`;
+    } else {
+      pair.style.display   = 'grid';
+      single.style.display = 'none';
+      const raw = `${TEMP_BASE}/RAW_fore_${tempModel}-${TRIMESTRE}_t2m_Iberia_${tempVar}.png`;
+      const wei = `${TEMP_BASE}/WEI_fore_${tempModel}-${TRIMESTRE}_t2m_Iberia_${tempVar}.png`;
+      setImg('temp-raw-img', raw);
+      setImg('temp-wei-img', wei);
+      cap.textContent = `${v.label} · ${model.label} · T2M · Iberia · ${PERIODO}`;
+    }
+  }
+
+  // ──────────────────────────────────────────────────────────
+  //  TAB 2 · PRECIPITACIÓN (EOF)
+  // ──────────────────────────────────────────────────────────
+  const PREC_BASE = 'images/weighting/precipitation';
+  const PREC_MODELS  = TEMP_MODELS;
+  const PREC_VARS    = TEMP_VARS;
+  const PREC_REGIONS = [
+    { id: 'Iberia', label: 'Iberia' },
+    { id: 'MedCOF', label: 'MedCOF' },
+  ];
+  let precModel  = PREC_MODELS[0].id;
+  let precVar    = PREC_VARS[0].id;
+  let precRegion = PREC_REGIONS[0].id;
+
+  function updatePrec() {
+    const pair   = document.getElementById('prec-pair');
+    const single = document.getElementById('prec-single');
+    const cap    = document.getElementById('prec-caption');
+    const model  = PREC_MODELS.find(m => m.id === precModel);
+    const v      = PREC_VARS.find(x => x.id === precVar);
+    const r      = PREC_REGIONS.find(x => x.id === precRegion);
+
+    if (precVar === 'TERCILES') {
+      pair.style.display   = 'none';
+      single.style.display = 'block';
+      const src = `${PREC_BASE}/terciles_tprate_${precModel.toLowerCase()}_${LEAD}_${TRIMESTRE}_${precRegion}.png`;
+      setImg('prec-single-img', src);
+      document.getElementById('prec-single-title').textContent =
+        `Probabilidad por terciles · ${model.label} · ${r.label}`;
+      cap.textContent = `Terciles · ${model.label} · Precipitación · ${r.label} · ${PERIODO}`;
+    } else {
+      pair.style.display   = 'grid';
+      single.style.display = 'none';
+      const raw = `${PREC_BASE}/RAW_fore_${precModel}-${TRIMESTRE}_tprate_${precRegion}_${precVar}.png`;
+      const wei = `${PREC_BASE}/WEI_fore_${precModel}-${TRIMESTRE}_tprate_${precRegion}_${precVar}.png`;
+      setImg('prec-raw-img', raw);
+      setImg('prec-wei-img', wei);
+      cap.textContent = `${v.label} · ${model.label} · Precipitación · ${r.label} · ${PERIODO}`;
+    }
+  }
+
+  // ──────────────────────────────────────────────────────────
+  //  TAB 3 · COMPARATIVA EOF vs PLS
+  // ──────────────────────────────────────────────────────────
+  const PLS_BASE = 'images/weighting/pls';
+
+  // Scorecards
+  const PLS_SCORE_VARS = [
+    { id: 't2m',    label: 'Temperatura' },
+    { id: 'tprate', label: 'Precipitación' },
+  ];
+  let plsScoreVar = PLS_SCORE_VARS[0].id;
+
+  function updatePlsScore() {
+    setImg('pls-score-left-img',  `${PLS_BASE}/EOF_minus_RAW_scorecard_${plsScoreVar}.png`);
+    setImg('pls-score-right-img', `${PLS_BASE}/PLS_minus_RAW_scorecard_${plsScoreVar}.png`);
+  }
+
+  // Diferencia de correlación
+  const PLS_2M_VARS = [
+    { id: 't2m',    label: 'Temperatura' },
+    { id: 'tprate', label: 'Precipitación' },
+    { id: 'msl',    label: 'Presión' },
+  ];
+  const PLS_2M_MONTHS = Array.from({length:12}, (_, i) => {
+    const mm = String(i+1).padStart(2,'0');
+    const labels = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    return { id: mm, label: `${mm} — ${labels[i]}` };
+  });
+  let pls2mVar   = PLS_2M_VARS[0].id;
+  let pls2mMonth = '01';
+
+  function updatePls2m() {
+    const v = PLS_2M_VARS.find(x => x.id === pls2mVar);
+    const src = `${PLS_BASE}/stmonth${pls2mMonth}/2methods_diff_corr_${pls2mVar}_Iberia.png`;
+    setImg('pls-2m-img', src);
+    document.getElementById('pls-2m-caption').textContent =
+      `Diferencia de correlación EOF–PLS · ${v.label} · Inicialización mes ${pls2mMonth}`;
+  }
+
+  // ──────────────────────────────────────────────────────────
+  //  LIGHTBOX
+  // ──────────────────────────────────────────────────────────
+  function openLightbox(src) {
+    const lb = document.getElementById('wt-lightbox');
+    document.getElementById('wt-lightbox-img').src = src;
+    const dl = document.getElementById('wt-lightbox-dl');
+    dl.href = src;
+    dl.download = src.split('/').pop();
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  document.getElementById('wt-lightbox').addEventListener('click', e => {
+    if (e.target.id === 'wt-lightbox') {
+      e.currentTarget.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.getElementById('wt-lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+  document.querySelectorAll('.wt-img').forEach(img => {
+    img.addEventListener('click', () => { if (img.src) openLightbox(img.src); });
+  });
+
+  // ──────────────────────────────────────────────────────────
+  //  INIT
+  // ──────────────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    // Tab 1
+    makeButtons('temp-models', TEMP_MODELS, () => tempModel, id => tempModel = id, updateTemp);
+    makeButtons('temp-vars',   TEMP_VARS,   () => tempVar,   id => tempVar   = id, updateTemp);
+    updateTemp();
+
+    // Tab 2
+    makeButtons('prec-models',  PREC_MODELS,  () => precModel,  id => precModel  = id, updatePrec);
+    makeButtons('prec-vars',    PREC_VARS,    () => precVar,    id => precVar    = id, updatePrec);
+    makeButtons('prec-regions', PREC_REGIONS, () => precRegion, id => precRegion = id, updatePrec);
+    updatePrec();
+
+    // Tab 3 · scorecards
+    makeButtons('pls-score-vars', PLS_SCORE_VARS, () => plsScoreVar, id => plsScoreVar = id, updatePlsScore);
+    updatePlsScore();
+
+    // Tab 3 · 2-methods
+    makeButtons('pls-2m-vars',   PLS_2M_VARS,   () => pls2mVar,   id => pls2mVar   = id, updatePls2m);
+    makeButtons('pls-2m-months', PLS_2M_MONTHS, () => pls2mMonth, id => pls2mMonth = id, updatePls2m);
+    updatePls2m();
+  });
+
+})();
+</script>
 
 
 

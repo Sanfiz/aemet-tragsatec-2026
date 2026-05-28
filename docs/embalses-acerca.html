@@ -141,8 +141,28 @@ window.Quarto = {
       </div>
     </div>
     <a href="datos.html" class="nav-link">Datos</a>
-    <a href="downscaling.html" class="nav-link">Downscaling</a>
-    <a href="weighting.html" class="nav-link">Weighting</a>
+    <!-- ── Downscaling: menú desplegable ── -->
+    <div class="nav-dropdown">
+      <a href="downscaling-metodologia.html" class="nav-link nav-link-dropdown">
+        Downscaling
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="downscaling-metodologia.html" class="nav-dropdown-item">Metodología</a>
+        <a href="downscaling-resultados.html" class="nav-dropdown-item">Resultados</a>
+      </div>
+    </div>
+    <!-- ── Weighting: menú desplegable ── -->
+    <div class="nav-dropdown">
+      <a href="weighting-metodologia.html" class="nav-link nav-link-dropdown">
+        Weighting
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="weighting-metodologia.html" class="nav-dropdown-item">Metodología</a>
+        <a href="weighting-resultados.html" class="nav-dropdown-item">Resultados</a>
+      </div>
+    </div>
     <!-- ── Embalses: menú desplegable ── -->
     <div class="nav-dropdown">
       <a href="embalses-prediccion.html" class="nav-link nav-link-dropdown">
@@ -349,8 +369,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
-
-
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
