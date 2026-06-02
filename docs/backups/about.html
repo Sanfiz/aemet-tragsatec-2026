@@ -417,21 +417,92 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 <div id="quarto-navigation-envelope" class="hidden">
 <p><span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-sidebar-title">Predicción Estacional · AEMET–Tragsatec</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-int-navbar-title">Predicción Estacional · AEMET–Tragsatec</span></p>
-<div class="hidden quarto-markdown-envelope-contents" data-render-id="footer-left">
-<p>© 2026 · Generado por los autores con HTML &amp; CSS</p>
-</div>
-<div class="hidden quarto-markdown-envelope-contents" data-render-id="footer-center">
-<p>Tragsatec · AEMET</p>
-</div>
-<div class="hidden quarto-markdown-envelope-contents" data-render-id="footer-right">
-<p>Encomienda Predicción Estacional · 2024–2026</p>
-</div>
 </div>
 <div id="quarto-meta-markdown" class="hidden">
 <p><span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-metatitle">About – Predicción Estacional · AEMET–Tragsatec</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-twittercardtitle">About – Predicción Estacional · AEMET–Tragsatec</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-ogcardtitle">About – Predicción Estacional · AEMET–Tragsatec</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-metasitename">Predicción Estacional · AEMET–Tragsatec</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-twittercarddesc">Resultados del servicio de predicción estacional</span> <span class="hidden quarto-markdown-envelope-contents" data-render-id="quarto-ogcardddesc">Resultados del servicio de predicción estacional</span></p>
 </div>
 
 </main> <!-- /main -->
+<!-- ── FOOTER PERSONALIZADO (estética AEMET) ─────────────── -->
+<footer id="site-footer">
+
+  <!-- Fila de enlaces -->
+  <div id="footer-links">
+    <a href="https://www.aemet.es/es/nota_legal" target="_blank" rel="noopener" class="footer-link">Nota legal AEMET</a>
+    <span class="footer-sep">|</span>
+    <a href="https://www.aemet.es/es/enlaces" target="_blank" rel="noopener" class="footer-link">Enlaces AEMET</a>
+  </div>
+
+  <!-- Créditos -->
+  <div id="footer-credits">
+    <p class="footer-credit-main">© 2026 · Encomienda de Predicción Estacional</p>
+    <p class="footer-credit-sub">AEMET – Tragsatec · 2024–2026</p>
+  </div>
+
+</footer>
+
+<style>
+/* ── Oculta el footer por defecto de Quarto si quedase ── */
+.nav-footer, #quarto-footer { display: none !important; }
+
+#site-footer {
+  background: #0072bc;
+  color: white;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  padding: 2.2rem 1.5rem 1.8rem;
+  margin-top: 4rem;
+}
+
+/* ── Fila de enlaces ── */
+#footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  padding-bottom: 1.4rem;
+  margin-bottom: 1.4rem;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+}
+#footer-links .footer-link {
+  color: white;
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: opacity 0.15s;
+}
+#footer-links .footer-link:hover {
+  opacity: 0.75;
+  text-decoration: underline;
+}
+#footer-links .footer-sep {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.9rem;
+}
+
+/* ── Créditos ── */
+#footer-credits {
+  text-align: center;
+}
+.footer-credit-main {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: white;
+}
+.footer-credit-sub {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.8);
+}
+
+@media (max-width: 768px) {
+  #site-footer { padding: 1.8rem 1rem 1.5rem; }
+  #footer-links { gap: 0.6rem; }
+  #footer-links .footer-link { font-size: 0.85rem; }
+}
+</style>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -853,19 +924,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
-    <div class="nav-footer-left">
-      <div class="footer-contents">© 2026 · Generado por los autores con HTML &amp; CSS</div>  
-    </div>   
-    <div class="nav-footer-center">
-      <div class="footer-contents">Tragsatec · AEMET </div>  
-    </div>
-    <div class="nav-footer-right">
-      <div class="footer-contents">Encomienda Predicción Estacional · 2024–2026</div>  
-    </div>
-  </div>
-</footer>
 
 
 

@@ -175,12 +175,7 @@ format:
   <!-- ═══ INTRO ═══ -->
   <div class="team-intro">
     <h2>El Equipo</h2>
-    <div class="divider"></div>
-    <p>
-      Personas de <strong style="color:#003087;">AEMET</strong> y <strong style="color:#0072bc;">Tragsatec</strong>
-      que trabajan en el servicio de predicción estacional estadística para España.
-    </p>
-  </div>
+
 
   <!-- ═══ TARJETAS ═══ -->
   <div class="team-grid">
@@ -230,8 +225,10 @@ format:
 
   <!-- ═══ PIE ═══ -->
   <div class="team-footer">
-    El equipo trabaja en el <strong>Área de Evaluación y Modelización del Clima de AEMET</strong>.
-    Más información sobre el marco institucional y los objetivos del contrato en la página <a href="el-proyecto.html">El Proyecto</a>.
+    El equipo forma parte del grupo <a href="https://www.aemet.es/gl/serviciosclimaticos/prediccion_estacional"
+         target="_blank" rel="noopener"
+         style="color:#0072bc;font-weight:600;">Predicción Estacional</a> perteneciente al <strong>Área de Evaluación y Modelización del Clima de AEMET</strong>.
+
   </div>
 
 </div>
