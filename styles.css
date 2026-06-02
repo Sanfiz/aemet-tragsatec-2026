@@ -523,6 +523,17 @@ main.content {
   opacity: 0.9;
 }
 
+/* ── downscaling ───────────────────────────────────────── */
+#ds-lightbox .ds-action-btn {
+  background: white;
+  color: #003087;
+  border-color: white;
+}
+#ds-lightbox .ds-action-btn:hover {
+  background: #003087;
+  color: white;
+  border-color: #003087;
+}
 
 
 

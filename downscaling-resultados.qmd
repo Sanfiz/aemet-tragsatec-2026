@@ -12,8 +12,6 @@ toc: false
   <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;">Verificación Downscaling</h2>
   <p style="color:#4a5568;margin-bottom:1.5rem;">
     Resultados del downscaling estadístico de precipitación. Selecciona el modelo y el tipo de gráfico para comparar:
-
-    <a href="downscaling-metodologia.html" style="color:#0072bc;font-weight:600;">¿Cómo se calcula? Ver metodología →</a>
   </p>
 
   <!-- ============================================================ -->
@@ -83,7 +81,8 @@ toc: false
            data-caption="Comparación por modelo · Downscaling" />
       <figcaption>
         <strong>Comparación por modelo</strong>
-        <span>Vista comparativa de cada modelo del downscaling lado a lado.</span>
+        <span>ROC AUC tercil seco (columna izquierda), probabilidad tercil seco y tercil húmedo (centro), 
+        ROC AUC tercil húmedo (columna derecha).</span>
         <a href="images/downscaling/9-perModel_DOWN_pr_3m.png"
            download class="ds-gallery-dl">↓ Descargar</a>
       </figcaption>
@@ -270,13 +269,13 @@ toc: false
   flex-wrap: wrap;
 }
 .ds-action-btn {
-  padding: 0.55rem 1.2rem;
+  padding: 0.45rem 0.9rem;
   background: white;
   border: 1px solid #dde3ed;
   color: #003087;
   border-radius: 6px;
   font-family: inherit;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
@@ -284,20 +283,23 @@ toc: false
   align-items: center;
   gap: 0.4rem;
   transition: all 0.15s;
+  white-space: nowrap;
 }
 .ds-action-btn:hover {
-  background: #e8f4fc;
-  border-color: #0072bc;
-}
-.ds-action-primary {
   background: #003087;
   color: white;
   border-color: #003087;
 }
+/* La clase primary queda como alias del estilo base */
+.ds-action-primary {
+  background: white;
+  color: #003087;
+  border-color: #dde3ed;
+}
 .ds-action-primary:hover {
-  background: #0072bc;
+  background: #003087;
   color: white;
-  border-color: #0072bc;
+  border-color: #003087;
 }
 
 /* ── Galería de comparación ─────────────────────────────── */
@@ -319,9 +321,12 @@ toc: false
   box-shadow: 0 4px 16px rgba(0,48,135,0.1);
 }
 .ds-gallery-img {
-  width: 100%;
+  max-width: 100%;
+  max-height: 800px;
+  width: auto;
   height: auto;
   display: block;
+  margin: 0 auto;
   cursor: zoom-in;
   background: #f8fafc;
   transition: opacity 0.2s;
@@ -330,13 +335,14 @@ toc: false
   opacity: 0.93;
 }
 .ds-gallery-item figcaption {
-  padding: 1rem 1.2rem;
+  padding: 1rem 9rem 1rem 1.2rem;   
   border-top: 1px solid #f0f4f8;
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
   position: relative;
 }
+
 .ds-gallery-item figcaption strong {
   color: #003087;
   font-size: 0.95rem;

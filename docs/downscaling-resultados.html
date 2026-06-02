@@ -365,8 +365,6 @@ document.addEventListener('DOMContentLoaded', function() {
   <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;" class="anchored">Verificación Downscaling</h2>
   <p style="color:#4a5568;margin-bottom:1.5rem;">
     Resultados del downscaling estadístico de precipitación. Selecciona el modelo y el tipo de gráfico para comparar:
-
-    <a href="downscaling-metodologia.html" style="color:#0072bc;font-weight:600;">¿Cómo se calcula? Ver metodología →</a>
   </p>
 
   <!-- ============================================================ -->
@@ -433,7 +431,8 @@ document.addEventListener('DOMContentLoaded', function() {
       <img src="images/downscaling/9-perModel_DOWN_pr_3m.png" alt="Comparación por modelo · Downscaling" class="ds-gallery-img figure-img" data-caption="Comparación por modelo · Downscaling">
       <figcaption>
         <strong>Comparación por modelo</strong>
-        <span>Vista comparativa de cada modelo del downscaling lado a lado.</span>
+        <span>ROC AUC tercil seco (columna izquierda), probabilidad tercil seco y tercil húmedo (centro), 
+        ROC AUC tercil húmedo (columna derecha).</span>
         <a href="images/downscaling/9-perModel_DOWN_pr_3m.png" download="" class="ds-gallery-dl">↓ Descargar</a>
       </figcaption>
     </figure>
@@ -619,13 +618,13 @@ document.addEventListener('DOMContentLoaded', function() {
   flex-wrap: wrap;
 }
 .ds-action-btn {
-  padding: 0.55rem 1.2rem;
+  padding: 0.45rem 0.9rem;
   background: white;
   border: 1px solid #dde3ed;
   color: #003087;
   border-radius: 6px;
   font-family: inherit;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
@@ -633,20 +632,23 @@ document.addEventListener('DOMContentLoaded', function() {
   align-items: center;
   gap: 0.4rem;
   transition: all 0.15s;
+  white-space: nowrap;
 }
 .ds-action-btn:hover {
-  background: #e8f4fc;
-  border-color: #0072bc;
-}
-.ds-action-primary {
   background: #003087;
   color: white;
   border-color: #003087;
 }
+/* La clase primary queda como alias del estilo base */
+.ds-action-primary {
+  background: white;
+  color: #003087;
+  border-color: #dde3ed;
+}
 .ds-action-primary:hover {
-  background: #0072bc;
+  background: #003087;
   color: white;
-  border-color: #0072bc;
+  border-color: #003087;
 }
 
 /* ── Galería de comparación ─────────────────────────────── */
@@ -668,9 +670,12 @@ document.addEventListener('DOMContentLoaded', function() {
   box-shadow: 0 4px 16px rgba(0,48,135,0.1);
 }
 .ds-gallery-img {
-  width: 100%;
+  max-width: 100%;
+  max-height: 800px;
+  width: auto;
   height: auto;
   display: block;
+  margin: 0 auto;
   cursor: zoom-in;
   background: #f8fafc;
   transition: opacity 0.2s;
@@ -679,13 +684,14 @@ document.addEventListener('DOMContentLoaded', function() {
   opacity: 0.93;
 }
 .ds-gallery-item figcaption {
-  padding: 1rem 1.2rem;
+  padding: 1rem 9rem 1rem 1.2rem;   
   border-top: 1px solid #f0f4f8;
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
   position: relative;
 }
+
 .ds-gallery-item figcaption strong {
   color: #003087;
   font-size: 0.95rem;
@@ -923,22 +929,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 </main> <!-- /main -->
-<!-- ── FOOTER PERSONALIZADO (estética AEMET) ─────────────── -->
+<!-- ── FOOTER  ─────────────── -->
 <footer id="site-footer">
-
-  <!-- Fila de enlaces -->
-  <div id="footer-links">
-    <a href="https://www.aemet.es/es/nota_legal" target="_blank" rel="noopener" class="footer-link">Nota legal AEMET</a>
-    <span class="footer-sep">|</span>
-    <a href="https://www.aemet.es/es/enlaces" target="_blank" rel="noopener" class="footer-link">Enlaces AEMET</a>
+  <div id="footer-inner">
+    <!-- Créditos -->
+    <div id="footer-credits">
+      <p class="footer-credit-main">© 2026 · Encomienda de Predicción Estacional</p>
+      <p class="footer-credit-sub">AEMET – Tragsatec · 2024–2026</p>
+    </div>
   </div>
-
-  <!-- Créditos -->
-  <div id="footer-credits">
-    <p class="footer-credit-main">© 2026 · Encomienda de Predicción Estacional</p>
-    <p class="footer-credit-sub">AEMET – Tragsatec · 2024–2026</p>
-  </div>
-
 </footer>
 
 <style>
@@ -949,37 +948,30 @@ document.addEventListener('DOMContentLoaded', function() {
   background: #0072bc;
   color: white;
   font-family: 'IBM Plex Sans', Arial, sans-serif;
-  padding: 2.2rem 1.5rem 1.8rem;
+  padding: 1.2rem 1.5rem 1rem;
   margin-top: 4rem;
+  box-sizing: border-box;
+
+  /* fuerza al footer a empezar en el borde izquierdo del viewport */
+  position: relative;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin-left: calc(-1 * (100vw - 100%) / 2);
+  margin-right: calc(-1 * (100vw - 100%) / 2);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* ── Fila de enlaces ── */
-#footer-links {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.9rem;
-  padding-bottom: 1.4rem;
-  margin-bottom: 1.4rem;
-  border-bottom: 1px solid rgba(255,255,255,0.25);
+#footer-inner {
+  width: 100%;
+  max-width: 1100px;
 }
-#footer-links .footer-link {
-  color: white;
-  text-decoration: none;
-  font-size: 0.92rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  transition: opacity 0.15s;
-}
-#footer-links .footer-link:hover {
-  opacity: 0.75;
-  text-decoration: underline;
-}
-#footer-links .footer-sep {
-  color: rgba(255,255,255,0.5);
-  font-size: 0.9rem;
-}
+
+/* evita la barra horizontal residual */
+html, body { overflow-x: hidden; }
 
 /* ── Créditos ── */
 #footer-credits {
@@ -999,10 +991,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 @media (max-width: 768px) {
   #site-footer { padding: 1.8rem 1rem 1.5rem; }
-  #footer-links { gap: 0.6rem; }
-  #footer-links .footer-link { font-size: 0.85rem; }
 }
 </style>
+
+<script>
+  // Mueve el footer fuera del contenedor de Quarto, justo antes de cerrar el body
+  document.addEventListener('DOMContentLoaded', function() {
+    const footer = document.getElementById('site-footer');
+    if (footer && footer.parentElement !== document.body) {
+      document.body.appendChild(footer);
+    }
+  });
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

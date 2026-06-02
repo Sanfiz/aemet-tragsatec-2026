@@ -1,9 +1,6 @@
 ---
 title: "Embalses · Análisis por cuenca"
 toc: false
-format:
-  html:
-    page-layout: full
 ---
 
 ```{=html}

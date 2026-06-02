@@ -423,22 +423,15 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 </main> <!-- /main -->
-<!-- ── FOOTER PERSONALIZADO (estética AEMET) ─────────────── -->
+<!-- ── FOOTER  ─────────────── -->
 <footer id="site-footer">
-
-  <!-- Fila de enlaces -->
-  <div id="footer-links">
-    <a href="https://www.aemet.es/es/nota_legal" target="_blank" rel="noopener" class="footer-link">Nota legal AEMET</a>
-    <span class="footer-sep">|</span>
-    <a href="https://www.aemet.es/es/enlaces" target="_blank" rel="noopener" class="footer-link">Enlaces AEMET</a>
+  <div id="footer-inner">
+    <!-- Créditos -->
+    <div id="footer-credits">
+      <p class="footer-credit-main">© 2026 · Encomienda de Predicción Estacional</p>
+      <p class="footer-credit-sub">AEMET – Tragsatec · 2024–2026</p>
+    </div>
   </div>
-
-  <!-- Créditos -->
-  <div id="footer-credits">
-    <p class="footer-credit-main">© 2026 · Encomienda de Predicción Estacional</p>
-    <p class="footer-credit-sub">AEMET – Tragsatec · 2024–2026</p>
-  </div>
-
 </footer>
 
 <style>
@@ -449,37 +442,30 @@ document.addEventListener('DOMContentLoaded', function() {
   background: #0072bc;
   color: white;
   font-family: 'IBM Plex Sans', Arial, sans-serif;
-  padding: 2.2rem 1.5rem 1.8rem;
+  padding: 1.2rem 1.5rem 1rem;
   margin-top: 4rem;
+  box-sizing: border-box;
+
+  /* fuerza al footer a empezar en el borde izquierdo del viewport */
+  position: relative;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin-left: calc(-1 * (100vw - 100%) / 2);
+  margin-right: calc(-1 * (100vw - 100%) / 2);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* ── Fila de enlaces ── */
-#footer-links {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.9rem;
-  padding-bottom: 1.4rem;
-  margin-bottom: 1.4rem;
-  border-bottom: 1px solid rgba(255,255,255,0.25);
+#footer-inner {
+  width: 100%;
+  max-width: 1100px;
 }
-#footer-links .footer-link {
-  color: white;
-  text-decoration: none;
-  font-size: 0.92rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  transition: opacity 0.15s;
-}
-#footer-links .footer-link:hover {
-  opacity: 0.75;
-  text-decoration: underline;
-}
-#footer-links .footer-sep {
-  color: rgba(255,255,255,0.5);
-  font-size: 0.9rem;
-}
+
+/* evita la barra horizontal residual */
+html, body { overflow-x: hidden; }
 
 /* ── Créditos ── */
 #footer-credits {
@@ -499,10 +485,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 @media (max-width: 768px) {
   #site-footer { padding: 1.8rem 1rem 1.5rem; }
-  #footer-links { gap: 0.6rem; }
-  #footer-links .footer-link { font-size: 0.85rem; }
 }
 </style>
+
+<script>
+  // Mueve el footer fuera del contenedor de Quarto, justo antes de cerrar el body
+  document.addEventListener('DOMContentLoaded', function() {
+    const footer = document.getElementById('site-footer');
+    if (footer && footer.parentElement !== document.body) {
+      document.body.appendChild(footer);
+    }
+  });
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

@@ -206,10 +206,12 @@ format:
   <!-- ═══ SOBRE EL PROYECTO ═══ -->
   <h2>Sobre el proyecto</h2>
   <p>
-    Este proyecto se enmarca en un contrato de servicio en el que <strong>Tragsatec</strong> actúa como subcontratista de la
-    <strong>Agencia Estatal de Meteorología (AEMET)</strong>, dentro del Área de Evaluación y Modelización del Clima.
-    El objetivo principal es el desarrollo de metodologías estadísticas avanzadas para mejorar la predicción estacional
-    sobre España, combinando datos de modelos globales de predicción estacional descargados de Copernicus con técnicas de
+    Este proyecto se enmarca en un contrato de servicio en el que Tragsatec actúa como subcontratista de la
+    Agencia Estatal de Meteorología (AEMET), dentro del grupo de Predicción Estacional que pertenece al Área de Evaluación y Modelización del Clima de AEMET.
+
+    <br>
+    El objetivo principal es el desarrollo de metodologías estadísticas para mejorar la predicción estacional
+    sobre España, combinando datos de modelos globales de predicción estacional con diversas técnicas de
     regionalización y ponderación de conjuntos.
   </p>
 
@@ -227,14 +229,14 @@ format:
     <div class="linea-card">
       <div class="linea-num">2</div>
       <h3>Ponderación de conjuntos</h3>
-      <p>Combinación de miembros del ensemble mediante técnicas estadísticas de <em>weighting</em> para extraer la señal climática más fiable.</p>
+      <p>Combinación de miembros de los modelos mediante técnicas estadísticas de <em>weighting</em> para extraer la señal climática más fiable.</p>
       <a href="weighting.html">Ver resultados →</a>
     </div>
 
     <div class="linea-card">
       <div class="linea-num">3</div>
       <h3>Predicción de aportaciones</h3>
-      <p>Predicción estacional invernal de aportaciones a embalses peninsulares, con modelo PLS por embalse.</p>
+      <p>Predicción estacional invernal de aportaciones a embalses.</p>
       <a href="embalses-prediccion.html">Ver resultados →</a>
     </div>
 
