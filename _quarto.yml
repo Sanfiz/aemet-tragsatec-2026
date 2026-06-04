@@ -8,6 +8,11 @@ website:
   site-url: https://sanfiz.github.io/aemet-tragsatec-2026/
   favicon: images/logos/favicon.ico
   navbar: false
+  search:
+    location: navbar
+    type: overlay
+    copy-button: false
+    keyboard-shortcut: ["/"]
 
 format:
   html:

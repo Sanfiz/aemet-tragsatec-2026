@@ -40,18 +40,15 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
+  "panel-placement": "end",
+  "type": "overlay",
   "limit": 50,
   "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
+    "/"
   ],
-  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -91,6 +88,19 @@ ul.task-list li input[type="checkbox"] {
     <a href="https://www.tragsa.es/es/Paginas/default.aspx" target="_blank">
       <img src="images/logos/tragsatec.jpg" alt="Tragsatec">
     </a>
+
+    <!-- ── Buscador (lleva al buscador de Quarto) ── -->
+    <div id="header-search">
+      <button id="header-search-trigger" type="button" aria-label="Buscar en el sitio">
+        <span class="header-search-icon">
+          <svg viewbox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+        <span class="header-search-placeholder">Introduzca texto</span>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -141,7 +151,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="nav-dropdown-menu">
         <a href="embalses-acerca.html" class="nav-dropdown-item">Metodología</a>
         <a href="embalses-cuenca.html" class="nav-dropdown-item">Predicción cuenca</a>
-        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción embalse</a>        
+        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción embalse</a>
       </div>
     </div>
   </div>
@@ -167,8 +177,6 @@ ul.task-list li input[type="checkbox"] {
   top: 0 !important;
 }
 
-
-    
 #header-logos {
   display: flex;
   align-items: center;
@@ -191,8 +199,46 @@ ul.task-list li input[type="checkbox"] {
   background: #dde3ed;
 }
 
-/* ── Barra azul navegación ── */
+/* ── Buscador en la cabecera ── */
+#header-search {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  padding-right: 1.5rem;
+}
+#header-search-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.9rem 0.45rem 0.7rem;
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  min-width: 260px;
+}
+#header-search-trigger:hover {
+  border-color: #0072bc;
+  box-shadow: 0 2px 6px rgba(0,114,188,0.12);
+}
+.header-search-icon {
+  display: inline-flex;
+  color: #0072bc;
+}
+.header-search-placeholder {
+  color: #8892a4;
+  font-size: 0.85rem;
+}
 
+@media (max-width: 768px) {
+  #header-search { padding-right: 0.8rem; }
+  #header-search-trigger { min-width: 0; padding: 0.4rem 0.6rem; }
+  .header-search-placeholder { display: none; }
+}
+
+/* ── Barra azul navegación ── */
 #site-nav {
   background: #003087;
   border-bottom: 3px solid #0072bc;
@@ -305,7 +351,6 @@ body {
   padding-top: 1px !important;
 }
 
-    
 @media (max-width: 768px) {
   #header-logos { padding: 0.5rem 1rem; }
   #header-logos img { height: 38px; }
@@ -316,9 +361,10 @@ body {
 </style>
 
 <script>
-/* Resalta el enlace activo según la URL */
+/* Resalta el enlace activo según la URL y conecta el buscador */
 document.addEventListener('DOMContentLoaded', function() {
   const current = window.location.pathname.split('/').pop() || 'index.html';
+
   // Enlaces normales
   document.querySelectorAll('#site-nav .nav-link').forEach(link => {
     const href = link.getAttribute('href');
@@ -326,6 +372,7 @@ document.addEventListener('DOMContentLoaded', function() {
       link.classList.add('active');
     }
   });
+
   // Items del dropdown
   document.querySelectorAll('.nav-dropdown-item').forEach(item => {
     const href = item.getAttribute('href');
@@ -336,6 +383,19 @@ document.addEventListener('DOMContentLoaded', function() {
       if (parent) parent.classList.add('active');
     }
   });
+
+  /* ── Buscador: dispara el modal de Quarto Search ── */
+  const trigger = document.getElementById('header-search-trigger');
+  if (trigger) {
+    trigger.addEventListener('click', function() {
+      const quartoBtn = document.querySelector('#quarto-search')
+                     || document.querySelector('[aria-label="Search"]')
+                     || document.querySelector('.aa-DetachedSearchButton');
+      if (quartoBtn) {
+        quartoBtn.click();
+      }
+    });
+  }
 });
 </script>
 
@@ -426,11 +486,18 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- ── FOOTER  ─────────────── -->
 <footer id="site-footer">
   <div id="footer-inner">
+
     <!-- Créditos -->
     <div id="footer-credits">
       <p class="footer-credit-main">© 2026 · Encomienda de Predicción Estacional</p>
       <p class="footer-credit-sub">AEMET – Tragsatec · 2024–2026</p>
     </div>
+
+    <!-- Logos institucionales -->
+    <div id="footer-logos">
+      <img src="images/logos/logos-financiacion.png" alt="Financiado por la Unión Europea NextGenerationEU · Gobierno de España · Ministerio para la Transición Ecológica y el Reto Demográfico · AEMET · Plan de Recuperación, Transformación y Resiliencia">
+    </div>
+
   </div>
 </footer>
 
@@ -445,15 +512,12 @@ document.addEventListener('DOMContentLoaded', function() {
   padding: 1.2rem 1.5rem 1rem;
   margin-top: 4rem;
   box-sizing: border-box;
-
-  /* fuerza al footer a empezar en el borde izquierdo del viewport */
   position: relative;
   left: 0;
   right: 0;
   width: 100%;
   margin-left: calc(-1 * (100vw - 100%) / 2);
   margin-right: calc(-1 * (100vw - 100%) / 2);
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -464,7 +528,6 @@ document.addEventListener('DOMContentLoaded', function() {
   max-width: 1100px;
 }
 
-/* evita la barra horizontal residual */
 html, body { overflow-x: hidden; }
 
 /* ── Créditos ── */
@@ -483,13 +546,32 @@ html, body { overflow-x: hidden; }
   color: rgba(255,255,255,0.8);
 }
 
+/* ── Logos institucionales ── */
+#footer-logos {
+  margin-top: 1rem;
+  padding: 0.8rem 1.2rem;
+  background: white;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#footer-logos img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 @media (max-width: 768px) {
   #site-footer { padding: 1.8rem 1rem 1.5rem; }
+  #footer-logos { padding: 0.6rem 1rem; }
 }
 </style>
 
 <script>
-  // Mueve el footer fuera del contenedor de Quarto, justo antes de cerrar el body
   document.addEventListener('DOMContentLoaded', function() {
     const footer = document.getElementById('site-footer');
     if (footer && footer.parentElement !== document.body) {

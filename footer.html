@@ -1,11 +1,19 @@
 <!-- ── FOOTER  ─────────────── -->
 <footer id="site-footer">
   <div id="footer-inner">
+
     <!-- Créditos -->
     <div id="footer-credits">
       <p class="footer-credit-main">© 2026 · Encomienda de Predicción Estacional</p>
       <p class="footer-credit-sub">AEMET – Tragsatec · 2024–2026</p>
     </div>
+
+    <!-- Logos institucionales -->
+    <div id="footer-logos">
+      <img src="images/logos/logos-financiacion.png"
+           alt="Financiado por la Unión Europea NextGenerationEU · Gobierno de España · Ministerio para la Transición Ecológica y el Reto Demográfico · AEMET · Plan de Recuperación, Transformación y Resiliencia"/>
+    </div>
+
   </div>
 </footer>
 
@@ -20,15 +28,12 @@
   padding: 1.2rem 1.5rem 1rem;
   margin-top: 4rem;
   box-sizing: border-box;
-
-  /* fuerza al footer a empezar en el borde izquierdo del viewport */
   position: relative;
   left: 0;
   right: 0;
   width: 100%;
   margin-left: calc(-1 * (100vw - 100%) / 2);
   margin-right: calc(-1 * (100vw - 100%) / 2);
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,7 +44,6 @@
   max-width: 1100px;
 }
 
-/* evita la barra horizontal residual */
 html, body { overflow-x: hidden; }
 
 /* ── Créditos ── */
@@ -58,13 +62,32 @@ html, body { overflow-x: hidden; }
   color: rgba(255,255,255,0.8);
 }
 
+/* ── Logos institucionales ── */
+#footer-logos {
+  margin-top: 1rem;
+  padding: 0.8rem 1.2rem;
+  background: white;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#footer-logos img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 @media (max-width: 768px) {
   #site-footer { padding: 1.8rem 1rem 1.5rem; }
+  #footer-logos { padding: 0.6rem 1rem; }
 }
 </style>
 
 <script>
-  // Mueve el footer fuera del contenedor de Quarto, justo antes de cerrar el body
   document.addEventListener('DOMContentLoaded', function() {
     const footer = document.getElementById('site-footer');
     if (footer && footer.parentElement !== document.body) {

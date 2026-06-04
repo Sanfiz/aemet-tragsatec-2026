@@ -8,6 +8,20 @@
     <a href="https://www.tragsa.es/es/Paginas/default.aspx" target="_blank">
       <img src="images/logos/tragsatec.jpg" alt="Tragsatec"/>
     </a>
+
+    <!-- ── Buscador (lleva al buscador de Quarto) ── -->
+    <div id="header-search">
+      <button id="header-search-trigger" type="button" aria-label="Buscar en el sitio">
+        <span class="header-search-icon">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+               stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+        <span class="header-search-placeholder">Introduzca texto</span>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -58,7 +72,7 @@
       <div class="nav-dropdown-menu">
         <a href="embalses-acerca.html" class="nav-dropdown-item">Metodología</a>
         <a href="embalses-cuenca.html" class="nav-dropdown-item">Predicción cuenca</a>
-        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción embalse</a>        
+        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción embalse</a>
       </div>
     </div>
   </div>
@@ -84,8 +98,6 @@
   top: 0 !important;
 }
 
-
-    
 #header-logos {
   display: flex;
   align-items: center;
@@ -108,8 +120,46 @@
   background: #dde3ed;
 }
 
-/* ── Barra azul navegación ── */
+/* ── Buscador en la cabecera ── */
+#header-search {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  padding-right: 1.5rem;
+}
+#header-search-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.9rem 0.45rem 0.7rem;
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  min-width: 260px;
+}
+#header-search-trigger:hover {
+  border-color: #0072bc;
+  box-shadow: 0 2px 6px rgba(0,114,188,0.12);
+}
+.header-search-icon {
+  display: inline-flex;
+  color: #0072bc;
+}
+.header-search-placeholder {
+  color: #8892a4;
+  font-size: 0.85rem;
+}
 
+@media (max-width: 768px) {
+  #header-search { padding-right: 0.8rem; }
+  #header-search-trigger { min-width: 0; padding: 0.4rem 0.6rem; }
+  .header-search-placeholder { display: none; }
+}
+
+/* ── Barra azul navegación ── */
 #site-nav {
   background: #003087;
   border-bottom: 3px solid #0072bc;
@@ -222,7 +272,6 @@ body {
   padding-top: 1px !important;
 }
 
-    
 @media (max-width: 768px) {
   #header-logos { padding: 0.5rem 1rem; }
   #header-logos img { height: 38px; }
@@ -233,9 +282,10 @@ body {
 </style>
 
 <script>
-/* Resalta el enlace activo según la URL */
+/* Resalta el enlace activo según la URL y conecta el buscador */
 document.addEventListener('DOMContentLoaded', function() {
   const current = window.location.pathname.split('/').pop() || 'index.html';
+
   // Enlaces normales
   document.querySelectorAll('#site-nav .nav-link').forEach(link => {
     const href = link.getAttribute('href');
@@ -243,6 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
       link.classList.add('active');
     }
   });
+
   // Items del dropdown
   document.querySelectorAll('.nav-dropdown-item').forEach(item => {
     const href = item.getAttribute('href');
@@ -253,5 +304,18 @@ document.addEventListener('DOMContentLoaded', function() {
       if (parent) parent.classList.add('active');
     }
   });
+
+  /* ── Buscador: dispara el modal de Quarto Search ── */
+  const trigger = document.getElementById('header-search-trigger');
+  if (trigger) {
+    trigger.addEventListener('click', function() {
+      const quartoBtn = document.querySelector('#quarto-search')
+                     || document.querySelector('[aria-label="Search"]')
+                     || document.querySelector('.aa-DetachedSearchButton');
+      if (quartoBtn) {
+        quartoBtn.click();
+      }
+    });
+  }
 });
 </script>
