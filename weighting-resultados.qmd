@@ -130,8 +130,47 @@ toc: false
   <!-- ════════════════════════════════════════════════════════════ -->
   <div class="wt-panel" data-panel="pls">
 
+    <!-- ═══════════════════════════════════════════════════════════
+         SCATTER D3 · WEIGHTED vs RAW
+    ═══════════════════════════════════════════════════════════ -->
+    <div class="wt-viewer wt-scatter-viewer">
+      <h3 class="wt-block-title">¿Cuándo mejora el weighting?</h3>
+      <p class="wt-block-desc">
+        Cada punto es un modelo. El eje X muestra la correlación de la predicción en bruto
+        (RAW), el eje Y la correlación de la predicción ponderada. Los puntos
+        <strong>por encima de la diagonal</strong> son los casos en los que el weighting
+        mejora el skill. Cambia entre EOF y PLS para ver cómo se comporta cada método.
+      </p>
+
+      <div class="wt-controls">
+        <div class="wt-control-group">
+          <label class="wt-label">Método de ponderación</label>
+          <div class="wt-button-row" id="scatter-methods"></div>
+        </div>
+        <div class="wt-control-group">
+          <label class="wt-label">Variable</label>
+          <div class="wt-button-row" id="scatter-vars"></div>
+        </div>
+      </div>
+
+      <div id="d3-scatter"></div>
+
+      <div class="wt-scatter-legend">
+        <div class="wt-scatter-legend-item">
+          <span class="dot dot-t2m"></span> Temperatura (T2M)
+        </div>
+        <div class="wt-scatter-legend-item">
+          <span class="dot dot-pr"></span> Precipitación
+        </div>
+        <div class="wt-scatter-legend-item">
+          <span class="diag-line"></span> Línea de "sin mejora" (y = x)
+        </div>
+      </div>
+
+    </div>
+
     <!-- Bloque scorecards -->
-    <div class="wt-viewer">
+    <div class="wt-viewer" style="margin-top:1.5rem;">
       <h3 class="wt-block-title">Diferencia frente a Copernicus RAW</h3>
       <p class="wt-block-desc">
         Scorecards que muestran la diferencia de skill entre la versión ponderada (EOF o PLS) y la
@@ -421,6 +460,132 @@ toc: false
   text-align: center;
 }
 
+/* ── Scatter D3 ────────────────────────────────────────── */
+.wt-scatter-viewer { padding-bottom: 1rem; }
+#d3-scatter {
+  width: 100%;
+  position: relative;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+#d3-scatter svg { display: block; margin: 0 auto; }
+.scatter-dot {
+  cursor: pointer;
+  transition: r 0.15s, stroke-width 0.15s;
+}
+.scatter-dot:hover {
+  stroke: #003087;
+  stroke-width: 2;
+}
+.scatter-axis path,
+.scatter-axis line {
+  stroke: #cad6e8;
+}
+.scatter-axis text {
+  fill: #4a5568;
+  font-size: 11px;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+}
+.scatter-axis-title {
+  font-size: 12px;
+  font-weight: 700;
+  fill: #003087;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.scatter-diagonal {
+  stroke: #8892a4;
+  stroke-width: 1.5;
+  stroke-dasharray: 6 4;
+  fill: none;
+}
+.scatter-zone-label {
+  fill: #8892a4;
+  font-size: 10px;
+  font-style: italic;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+}
+.scatter-label {
+  pointer-events: none;
+  font-size: 10px;
+  font-weight: 600;
+  fill: #1a2332;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+}
+.scatter-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: #003087;
+  color: white;
+  padding: 0.6rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 100;
+  white-space: nowrap;
+}
+.scatter-tooltip.show { opacity: 1; }
+.scatter-tooltip strong {
+  display: block;
+  font-size: 0.92rem;
+  margin-bottom: 0.2rem;
+}
+.scatter-tooltip span {
+  display: block;
+  font-size: 0.72rem;
+  opacity: 0.9;
+}
+.scatter-tooltip .delta {
+  margin-top: 0.3rem;
+  padding-top: 0.3rem;
+  border-top: 1px solid rgba(255,255,255,0.25);
+  font-weight: 600;
+}
+.scatter-tooltip .delta.positive { color: #b8e6a8; }
+.scatter-tooltip .delta.negative { color: #f5b7b1; }
+
+.wt-scatter-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.4rem;
+  margin-top: 1rem;
+  font-size: 0.82rem;
+  color: #4a5568;
+}
+.wt-scatter-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.wt-scatter-legend-item .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.wt-scatter-legend-item .dot-t2m { background: #003087; }
+.wt-scatter-legend-item .dot-pr  { background: #0072bc; }
+.wt-scatter-legend-item .diag-line {
+  width: 18px;
+  height: 2px;
+  background: linear-gradient(to right, #8892a4 60%, transparent 60%, transparent 100%);
+  background-size: 6px 2px;
+  background-repeat: repeat-x;
+}
+.wt-scatter-note {
+  font-size: 0.75rem;
+  color: #8892a4;
+  text-align: center;
+  margin: 0.9rem 0 0 0;
+  font-style: italic;
+}
+
 /* ── Lightbox ──────────────────────────────────────────── */
 #wt-lightbox {
   display: none;
@@ -509,8 +674,15 @@ toc: false
   .wt-header-value { font-size: 1.5rem; }
   .wt-header-sep { display: none; }
   .wt-img-single { max-width: 100%; }
+  .wt-scatter-legend { gap: 0.8rem; font-size: 0.75rem; }
 }
 </style>
+
+
+<!-- ============================================================ -->
+<!-- D3.js                                                         -->
+<!-- ============================================================ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 
 
 <!-- ============================================================ -->
@@ -537,6 +709,8 @@ toc: false
       document.querySelectorAll('.wt-panel').forEach(p =>
         p.classList.toggle('active', p.dataset.panel === id)
       );
+      // Redibuja el scatter cuando se entra al tab PLS (porque al inicio está oculto)
+      if (id === 'pls') setTimeout(renderScatter, 50);
     });
   });
 
@@ -566,6 +740,180 @@ toc: false
     img.onload  = () => img.classList.remove('loading');
     img.onerror = () => { img.classList.remove('loading'); img.alt = 'Imagen no disponible: ' + src; };
     img.src = src;
+  }
+
+  // ══════════════════════════════════════════════════════════
+  //  SCATTER D3 · WEIGHTED vs RAW
+  // ══════════════════════════════════════════════════════════
+  //
+  //  Datos: correlación de Spearman (RAW vs Weighted)
+  //  Cuando tengas los valores reales, sustituye este array
+  //  manteniendo la misma estructura.
+  //
+  const SCATTER_DATA = [
+    // Modelo · Variable (t2m / pr) · RAW · EOF Weighted · PLS Weighted
+    { model: 'ECMWF',        var: 't2m', raw: 0.34, eof: 0.41, pls: 0.45 },
+    { model: 'DWD',          var: 't2m', raw: 0.22, eof: 0.28, pls: 0.31 },
+    { model: 'CMCC',         var: 't2m', raw: 0.18, eof: 0.24, pls: 0.27 },
+    { model: 'Météo-France', var: 't2m', raw: 0.26, eof: 0.32, pls: 0.38 },
+    { model: 'UKMO',         var: 't2m', raw: 0.30, eof: 0.36, pls: 0.40 },
+    { model: 'NCEP',         var: 't2m', raw: 0.15, eof: 0.20, pls: 0.22 },
+    { model: 'ECCC',         var: 't2m', raw: 0.20, eof: 0.25, pls: 0.28 },
+    { model: 'JMA',          var: 't2m', raw: 0.24, eof: 0.29, pls: 0.32 },
+
+    { model: 'ECMWF',        var: 'pr',  raw: 0.18, eof: 0.22, pls: 0.20 },
+    { model: 'DWD',          var: 'pr',  raw: 0.10, eof: 0.13, pls: 0.11 },
+    { model: 'CMCC',         var: 'pr',  raw: 0.08, eof: 0.11, pls: 0.09 },
+    { model: 'Météo-France', var: 'pr',  raw: 0.14, eof: 0.17, pls: 0.15 },
+    { model: 'UKMO',         var: 'pr',  raw: 0.16, eof: 0.19, pls: 0.18 },
+    { model: 'NCEP',         var: 'pr',  raw: 0.06, eof: 0.07, pls: 0.06 },
+    { model: 'ECCC',         var: 'pr',  raw: 0.12, eof: 0.14, pls: 0.13 },
+    { model: 'JMA',          var: 'pr',  raw: 0.11, eof: 0.13, pls: 0.12 },
+  ];
+
+  const SCATTER_METHODS = [
+    { id: 'eof', label: 'Ponderación EOF' },
+    { id: 'pls', label: 'Ponderación PLS' },
+  ];
+  const SCATTER_VARS = [
+    { id: 'all', label: 'Todas' },
+    { id: 't2m', label: 'Temperatura' },
+    { id: 'pr',  label: 'Precipitación' },
+  ];
+
+  let scatterMethod = 'eof';
+  let scatterVar    = 'all';
+
+  function renderScatter() {
+    const host = document.getElementById('d3-scatter');
+    if (!host || typeof d3 === 'undefined') return;
+
+    // Limpia y crea tooltip
+    host.innerHTML = '';
+    const tooltip = d3.select(host)
+      .append('div')
+      .attr('class', 'scatter-tooltip');
+
+    // Dimensiones
+    const margin = { top: 30, right: 30, bottom: 60, left: 70 };
+    const W = Math.min(host.clientWidth, 760);
+    const H = 460;
+    const w = W - margin.left - margin.right;
+    const h = H - margin.top - margin.bottom;
+
+    const svg = d3.select(host).append('svg')
+      .attr('width', W).attr('height', H);
+
+    const g = svg.append('g')
+      .attr('transform', `translate(${margin.left},${margin.top})`);
+
+    // Escalas (rango fijo 0–0.5 para que sea comparable entre métodos)
+    const x = d3.scaleLinear().domain([0, 0.5]).range([0, w]);
+    const y = d3.scaleLinear().domain([0, 0.5]).range([h, 0]);
+
+    // Fondo de zonas (mejora / empeora)
+    g.append('polygon')
+      .attr('points', `0,${h} ${w},0 0,0`)
+      .attr('fill', '#e8f4fc')
+      .attr('opacity', 0.5);
+    g.append('polygon')
+      .attr('points', `0,${h} ${w},0 ${w},${h}`)
+      .attr('fill', '#fdf4e8')
+      .attr('opacity', 0.5);
+
+    // Ejes
+    g.append('g')
+      .attr('class', 'scatter-axis')
+      .attr('transform', `translate(0,${h})`)
+      .call(d3.axisBottom(x).ticks(6).tickFormat(d3.format('.2f')));
+    g.append('g')
+      .attr('class', 'scatter-axis')
+      .call(d3.axisLeft(y).ticks(6).tickFormat(d3.format('.2f')));
+
+    // Títulos ejes
+    svg.append('text')
+      .attr('class', 'scatter-axis-title')
+      .attr('text-anchor', 'middle')
+      .attr('x', margin.left + w/2)
+      .attr('y', H - 18)
+      .text('Correlación · Predicción RAW');
+    svg.append('text')
+      .attr('class', 'scatter-axis-title')
+      .attr('text-anchor', 'middle')
+      .attr('transform', `rotate(-90)`)
+      .attr('x', -(margin.top + h/2))
+      .attr('y', 20)
+      .text('Correlación · Predicción Weighted');
+
+    // Diagonal y = x
+    g.append('line')
+      .attr('class', 'scatter-diagonal')
+      .attr('x1', x(0)).attr('y1', y(0))
+      .attr('x2', x(0.5)).attr('y2', y(0.5));
+
+    // Etiquetas de zonas
+    g.append('text')
+      .attr('class', 'scatter-zone-label')
+      .attr('x', 12).attr('y', 18)
+      .text('↑ Weighting mejora');
+    g.append('text')
+      .attr('class', 'scatter-zone-label')
+      .attr('text-anchor', 'end')
+      .attr('x', w - 12).attr('y', h - 12)
+      .text('Weighting empeora ↓');
+
+    // Filtrar datos
+    const data = SCATTER_DATA.filter(d =>
+      scatterVar === 'all' || d.var === scatterVar
+    );
+
+    // Pintar puntos
+    g.selectAll('.scatter-dot')
+      .data(data)
+      .join('circle')
+        .attr('class', 'scatter-dot')
+        .attr('cx', d => x(d.raw))
+        .attr('cy', d => y(d[scatterMethod]))
+        .attr('r', 7)
+        .attr('fill', d => d.var === 't2m' ? '#003087' : '#0072bc')
+        .attr('fill-opacity', 0.78)
+        .attr('stroke', 'white')
+        .attr('stroke-width', 1.5)
+        .on('mousemove', function(event, d) {
+          const [mx, my] = d3.pointer(event, host);
+          const delta = d[scatterMethod] - d.raw;
+          const sign  = delta >= 0 ? '+' : '';
+          const cls   = delta >= 0 ? 'positive' : 'negative';
+          const vlbl  = d.var === 't2m' ? 'Temperatura' : 'Precipitación';
+          const mlbl  = scatterMethod === 'eof' ? 'EOF' : 'PLS';
+
+          tooltip.html(`
+            <strong>${d.model}</strong>
+            <span>${vlbl}</span>
+            <span>RAW: ${d.raw.toFixed(2)} → Weighted: ${d[scatterMethod].toFixed(2)}</span>
+            <span class="delta ${cls}">Δ ${sign}${delta.toFixed(2)} con ${mlbl}</span>
+          `)
+            .style('left', (mx + 14) + 'px')
+            .style('top',  (my + 14) + 'px')
+            .classed('show', true);
+
+          d3.select(this).attr('r', 10);
+        })
+        .on('mouseleave', function() {
+          tooltip.classed('show', false);
+          d3.select(this).attr('r', 7);
+        });
+
+    // Etiquetas con nombre de modelo (solo si hay pocos)
+    if (data.length <= 10) {
+      g.selectAll('.scatter-label')
+        .data(data)
+        .join('text')
+          .attr('class', 'scatter-label')
+          .attr('x', d => x(d.raw) + 11)
+          .attr('y', d => y(d[scatterMethod]) + 4)
+          .text(d => d.model);
+    }
   }
 
   // ──────────────────────────────────────────────────────────
@@ -742,6 +1090,18 @@ toc: false
     makeButtons('pls-2m-vars',   PLS_2M_VARS,   () => pls2mVar,   id => pls2mVar   = id, updatePls2m);
     makeButtons('pls-2m-months', PLS_2M_MONTHS, () => pls2mMonth, id => pls2mMonth = id, updatePls2m);
     updatePls2m();
+
+    // Tab 3 · scatter
+    makeButtons('scatter-methods', SCATTER_METHODS, () => scatterMethod, id => scatterMethod = id, renderScatter);
+    makeButtons('scatter-vars',    SCATTER_VARS,    () => scatterVar,    id => scatterVar    = id, renderScatter);
+    renderScatter();
+  });
+
+  // Redibujar al cambiar tamaño de ventana
+  let resizeT;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeT);
+    resizeT = setTimeout(renderScatter, 200);
   });
 
 })();

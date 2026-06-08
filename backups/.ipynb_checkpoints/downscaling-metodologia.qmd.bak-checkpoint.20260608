@@ -1,0 +1,125 @@
+---
+title: "Downscaling · Metodología"
+toc: true
+---
+
+
+```{=html}
+
+<!-- ── CONTADORES (ancho completo) ────────────────────── -->
+<div class="counters-section">
+  <div class="counter-item">
+    <span class="counter-value" data-target="20945" data-suffix="">0</span>
+    <span class="counter-label">celdas de la malla</span>
+    <span class="counter-sub">5×5 km · Península + Baleares</span>
+  </div>
+  <div class="counter-divider"></div>
+  <div class="counter-item">
+    <span class="counter-value" data-target="8" data-suffix="">0</span>
+    <span class="counter-label">modelos globales</span>
+  </div>
+  <div class="counter-divider"></div>
+  <div class="counter-item">
+    <span class="counter-value" data-target="5" data-suffix=" km">0</span>
+    <span class="counter-label">resolución espacial</span>
+    <span class="counter-sub">20× más fina que los modelos globales</span>
+  </div>
+  <div class="counter-divider"></div>
+  <div class="counter-item">
+    <span class="counter-value" data-target="6" data-suffix=" meses">0</span>
+    <span class="counter-label">predicción</span>
+    <span class="counter-sub">Actualización periódica C3S</span>
+  </div>
+</div>
+
+<!-- ── CONTENIDO PRINCIPAL ───────────────────────────── -->
+<div style="max-width:960px;margin:2rem auto;padding:0 1.5rem;">
+
+  <span class="section-label">Metodología</span>
+  <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;">Downscaling estadístico</h2>
+  <p style="color:#4a5568;margin-bottom:1.5rem;">
+    El algoritmo de análogos sinópticos proporciona precipitación diaria en una malla de 5×5 km (20.945 celdas) sobre la Península Ibérica e Islas Baleares, a partir de datos de baja resolución de los modelos de predicción estacional.
+  </p>
+
+  <div class="grid-2" style="margin-bottom:2rem;">
+    <div class="info-card">
+      <h3>Fase 1 · Calibración</h3>
+      <p>Clasificación de tipos de tiempo mediante <em>K-means clustering</em> para identificar la base de datos sinóptica de referencia (1981–1996). La similitud se calcula a partir de distancias euclídeas ponderadas de las componentes del viento geostrófico en superficie y a 500 hPa (ERA5).</p>
+    </div>
+    <div class="info-card">
+      <h3>Fase 2 · Estimación</h3>
+      <p>La precipitación para cada celda se estima como la media ponderada de la precipitación asociada a las situaciones más análogas de la base de referencia, usando la similitud de los campos de viento geostrófico en superficie y a 500 hPa de los modelos C3S.</p>
+    </div>
+  </div>
+
+  <!-- ── CTA hacia los resultados ──────────────────────── -->
+  <div style="margin-top:2.5rem;padding:1.4rem 1.6rem;background:#e8f4fc;border-left:4px solid #0072bc;border-radius:6px;">
+    <p style="margin:0;color:#1a2332;font-size:0.95rem;">
+      <strong>Ver los resultados</strong> del downscaling por modelo y por tipo de gráfico, además del informe completo de verificación →
+      <a href="downscaling-resultados.html" style="color:#003087;font-weight:600;text-decoration:none;border-bottom:1px solid #0072bc;">
+        Ir a Resultados
+      </a>
+    </p>
+  </div>
+
+</div>
+
+<style>
+.counters-section {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr;
+  align-items: center;
+  padding: 2.5rem 4rem;
+  background: #003087;
+}
+.counter-item { text-align: center; padding: 0 1rem; }
+.counter-value {
+  display: block; font-size: 2.8rem; font-weight: 800;
+  color: white; line-height: 1; font-variant-numeric: tabular-nums;
+}
+.counter-label {
+  display: block; font-size: 0.8rem; font-weight: 600;
+  color: rgba(255,255,255,0.8); margin-top: 0.4rem;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.counter-sub {
+  display: block; font-size: 0.68rem;
+  color: rgba(255,255,255,0.45); margin-top: 0.3rem;
+}
+.counter-divider {
+  width: 1px; height: 60px;
+  background: rgba(255,255,255,0.15); justify-self: center;
+}
+@media (max-width: 768px) {
+  .counters-section { grid-template-columns: 1fr 1fr; padding: 2rem; }
+  .counter-divider { display: none; }
+}
+</style>
+
+<script>
+(function() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.querySelectorAll('.counter-value').forEach(el => {
+        if (el.dataset.animated) return;
+        el.dataset.animated = 'true';
+        const target = parseInt(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const duration = target > 1000 ? 2000 : 1000;
+        const start = performance.now();
+        function step(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(target * eased).toLocaleString('es-ES') + suffix;
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+      obs.unobserve(entry.target);
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.counters-section').forEach(el => obs.observe(el));
+})();
+</script>
+```

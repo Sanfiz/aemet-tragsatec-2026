@@ -157,9 +157,9 @@ window.Quarto = {
         Downscaling
         <span class="nav-caret">▾</span>
       </a>
-      <div class="nav-dropdown-menu">
-        <a href="downscaling-metodologia.html" class="nav-dropdown-item">Metodología</a>
-        <a href="downscaling-resultados.html" class="nav-dropdown-item">Resultados</a>
+      <div class="nav-dropdown-menu">        
+        <a href="downscaling-resultados.html" class="nav-dropdown-item">Predicción Estacional Trimestral</a>
+        <a href="downscaling-metodologia.html" class="nav-dropdown-item">Acerca de</a>
       </div>
     </div>
     <!-- ── Weighting: menú desplegable ── -->
@@ -179,10 +179,10 @@ window.Quarto = {
         Embalses
         <span class="nav-caret">▾</span>
       </a>
-      <div class="nav-dropdown-menu">
-        <a href="embalses-acerca.html" class="nav-dropdown-item">Metodología</a>
+      <div class="nav-dropdown-menu">        
         <a href="embalses-cuenca.html" class="nav-dropdown-item">Predicción cuenca</a>
         <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción embalse</a>
+        <a href="embalses-acerca.html" class="nav-dropdown-item">Acerca de</a>
       </div>
     </div>
   </div>
@@ -451,7 +451,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 <style>
-/* ─── Estilo general página Acerca de ─── */
 .acerca-wrap {
   max-width: 1000px;
   margin: 0 auto;
@@ -465,15 +464,9 @@ document.addEventListener('DOMContentLoaded', function() {
   -webkit-hyphens: auto;
 }
 
-/* Excepciones: elementos que NO deben justificarse */
-.acerca-wrap h2,
-.acerca-wrap h3,
-.acerca-wrap h4,
-.acerca-wrap figcaption,
-.acerca-wrap .formula-caption,
-.acerca-wrap .met-rango,
-.acerca-wrap .sigma-lab,
-.acerca-wrap .callout-title {
+.acerca-wrap h2, .acerca-wrap h3, .acerca-wrap h4,
+.acerca-wrap figcaption, .acerca-wrap .formula-caption,
+.acerca-wrap .met-rango, .acerca-wrap .callout-title {
   text-align: left;
 }
 .acerca-wrap h2 {
@@ -483,7 +476,6 @@ document.addEventListener('DOMContentLoaded', function() {
   margin-top: 2.5rem;
   font-size: 1.55rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
 }
 .acerca-wrap h3 {
   color: #0072bc;
@@ -501,16 +493,6 @@ document.addEventListener('DOMContentLoaded', function() {
 .acerca-wrap ul { margin: 0.5rem 0 0.9rem 0; padding-left: 1.4rem; }
 .acerca-wrap li { margin: 0.25rem 0; }
 
-.acerca-resumen {
-  background: linear-gradient(135deg, #f0f5fa 0%, #e6eef7 100%);
-  border-left: 4px solid #0072bc;
-  padding: 1.2rem 1.5rem;
-  border-radius: 4px;
-  margin: 1.5rem 0 2.5rem;
-}
-.acerca-resumen p { margin: 0.4rem 0; }
-.acerca-resumen strong { color: #003087; }
-
 .acerca-callout {
   background: #fff8e1;
   border-left: 4px solid #f9a825;
@@ -519,14 +501,8 @@ document.addEventListener('DOMContentLoaded', function() {
   margin: 1.2rem 0;
   font-size: 0.95rem;
 }
-.acerca-callout.info {
-  background: #e8f4fd;
-  border-left-color: #0072bc;
-}
-.acerca-callout.success {
-  background: #e8f5e9;
-  border-left-color: #2e7d32;
-}
+.acerca-callout.info { background: #e8f4fd; border-left-color: #0072bc; }
+.acerca-callout.success { background: #e8f5e9; border-left-color: #2e7d32; }
 .acerca-callout .callout-title {
   font-weight: 600;
   color: #003087;
@@ -541,8 +517,7 @@ document.addEventListener('DOMContentLoaded', function() {
   font-size: 0.92rem;
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
-.tabla-comp th,
-.tabla-comp td {
+.tabla-comp th, .tabla-comp td {
   padding: 0.7rem 0.9rem;
   text-align: left;
   border-bottom: 1px solid #e5e9f0;
@@ -555,14 +530,9 @@ document.addEventListener('DOMContentLoaded', function() {
   letter-spacing: 0.02em;
   text-transform: uppercase;
   font-size: 0.82rem;
-  border-bottom: none;
 }
 .tabla-comp tbody tr:nth-child(even) { background: #f7f9fc; }
-.tabla-comp td:first-child {
-  font-weight: 600;
-  color: #003087;
-  width: 28%;
-}
+.tabla-comp td:first-child { font-weight: 600; color: #003087; width: 28%; }
 
 .formula-box {
   background: #f7f9fc;
@@ -598,11 +568,7 @@ document.addEventListener('DOMContentLoaded', function() {
   color: #003087;
   font-size: 1rem;
 }
-.metrica-card .met-desc {
-  font-size: 0.88rem;
-  color: #4b5563;
-  margin: 0.3rem 0;
-}
+.metrica-card .met-desc { font-size: 0.88rem; color: #4b5563; margin: 0.3rem 0; }
 .metrica-card .met-rango {
   font-size: 0.82rem;
   color: #6b7280;
@@ -611,6 +577,29 @@ document.addEventListener('DOMContentLoaded', function() {
   border-top: 1px dashed #e5e9f0;
 }
 .metrica-card .met-rango strong { color: #003087; }
+
+.modelos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin: 1.2rem 0;
+}
+.modelo-card {
+  background: white;
+  border: 1px solid #dde3ed;
+  border-top: 4px solid #0072bc;
+  border-radius: 4px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.modelo-card.dwd { border-top-color: #f9a825; }
+.modelo-card h4 {
+  margin: 0 0 0.4rem 0 !important;
+  color: #003087;
+  font-size: 1.05rem;
+}
+.modelo-card.dwd h4 { color: #b87100; }
+.modelo-card ul { padding-left: 1.2rem; font-size: 0.92rem; }
 
 .flujo-wrap {
   background: white;
@@ -621,30 +610,6 @@ document.addEventListener('DOMContentLoaded', function() {
   overflow-x: auto;
 }
 .flujo-wrap svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
-
-.sigma-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 0.8rem;
-  margin: 1rem 0;
-}
-.sigma-item {
-  background: #f7f9fc;
-  border-left: 3px solid #0072bc;
-  padding: 0.8rem 1rem;
-  border-radius: 3px;
-}
-.sigma-item .sigma-val {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #003087;
-}
-.sigma-item .sigma-lab {
-  font-size: 0.85rem;
-  color: #4b5563;
-  margin-top: 0.3rem;
-}
 
 .refs-list {
   font-size: 0.9rem;
@@ -660,11 +625,7 @@ document.addEventListener('DOMContentLoaded', function() {
   padding-left: 1rem;
   text-indent: -1rem;
 }
-.refs-list li::before {
-  content: "▪ ";
-  color: #0072bc;
-  font-weight: bold;
-}
+.refs-list li::before { content: "▪ "; color: #0072bc; font-weight: bold; }
 .refs-list a { color: #0072bc; text-decoration: none; word-break: break-word; }
 .refs-list a:hover { text-decoration: underline; }
 
@@ -685,7 +646,6 @@ document.addEventListener('DOMContentLoaded', function() {
   padding: 1.5rem 1.8rem;
   border-radius: 6px;
   margin: 1.5rem 0;
-  box-shadow: 0 3px 10px rgba(0,48,135,0.15);
 }
 .sclimware-card h3 {
   color: white !important;
@@ -703,19 +663,11 @@ document.addEventListener('DOMContentLoaded', function() {
   border-radius: 4px;
   font-weight: 600;
   text-decoration: none;
-  transition: transform 0.15s;
   font-size: 0.9rem;
 }
-.sclimware-card a:hover { transform: translateY(-1px); }
 
-/* ─── Imágenes ilustrativas ─── */
-.acerca-wrap figure {
-  margin: 1.5rem 0 1.8rem;
-  text-align: center;
-}
-.acerca-wrap figure img,
-.acerca-wrap p img.fig-acerca,
-.acerca-wrap img.fig-acerca {
+.acerca-wrap figure { margin: 1.5rem 0 1.8rem; text-align: center; }
+.acerca-wrap figure img, .acerca-wrap img.fig-acerca {
   max-width: 100%;
   height: auto;
   border: 1px solid #dde3ed;
@@ -724,7 +676,6 @@ document.addEventListener('DOMContentLoaded', function() {
   background: white;
   padding: 4px;
 }
-.acerca-wrap figure figcaption,
 .acerca-wrap figcaption {
   font-size: 0.86rem;
   color: #4b5563;
@@ -739,7 +690,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <h2 class="anchored" data-anchor-id="objetivo">1 · Objetivo</h2>
 <p>Las predicciones estacionales tienen un valor añadido reconocido en la gestión hidrológica: anticipar si un invierno será más seco o más húmedo de lo normal permite tomar decisiones de almacenamiento, desembalse y abastecimiento con varios meses de antelación.</p>
 <p>En España la señal predecible a escala estacional en invierno está dominada por la <strong>Oscilación del Atlántico Norte (NAO)</strong> y otros patrones de variabilidad climática de gran escala. Tradicionalmente esta señal ha sido difícil de capturar por los modelos dinámicos, pero en los últimos años los modelos de circulación general han mejorado su pericia en el Atlántico Norte y se han consolidado técnicas de post-proceso y calibración que permiten extraer información útil de los hindcasts.</p>
-<p>Este servicio se inscribe en ese marco. Su objetivo es <strong>proporcionar, para cada embalse español, una predicción probabilística de la aportación invernal NDJFM acumulada junto con una estimación rigurosa de su pericia</strong>, al sistema hindcast ECMWF-SEAS5.1 sobre rejilla ROCIO_IBEB de 5 km.</p>
+<p>Este servicio se inscribe en ese marco. Su objetivo es <strong>proporcionar, para cada embalse español, una predicción probabilística de la aportación invernal NDJFM acumulada junto con una estimación rigurosa de su pericia</strong>, empleando dos sistemas operativos de predicción estacional ampliamente reconocidos: <strong>ECMWF SEAS5.1</strong> y <strong>DWD GCFS2.1</strong>, ambos regionalizados a la rejilla ROCIO_IBEB de 5 km y calibrados mediante Quantile Mapping (QM) sobre la precipitación.</p>
 <div class="acerca-callout info">
 <p><span class="callout-title">▸ Variable predicha</span> Aportación total invernal <span class="math inline">\(Q\)</span> (hm³) definida como la suma de las aportaciones mensuales de noviembre a marzo (NDJFM) para cada año hidrológico.</p>
 </div>
@@ -765,18 +716,36 @@ document.addEventListener('DOMContentLoaded', function() {
 </figure>
 </div>
 </section>
-<section id="hindcast-dinámico-aplicación" class="level3">
-<h3 class="anchored" data-anchor-id="hindcast-dinámico-aplicación">2.3 · Hindcast dinámico (aplicación)</h3>
-<p><strong>ECMWF SEAS5.1</strong>: hindcast del sistema operativo de predicción estacional del ECMWF.</p>
+<section id="hindcasts-dinámicos-aplicación" class="level3">
+<h3 class="anchored" data-anchor-id="hindcasts-dinámicos-aplicación">2.3 · Hindcasts dinámicos (aplicación)</h3>
+<p>El servicio emplea <strong>dos sistemas operativos de predicción estacional</strong>, ambos disponibles en el portal Copernicus Climate Change Service (C3S):</p>
+<div class="modelos-grid">
+<section id="ecmwf-seas5.1" class="level4 unlisted unnumbered modelo-card">
+<h4 class="unlisted unnumbered anchored" data-anchor-id="ecmwf-seas5.1">ECMWF SEAS5.1</h4>
 <ul>
-<li><strong>Variable</strong>: precipitación total acumulada NDJFM.</li>
-<li><strong>Inicialización</strong>: 1 de octubre.</li>
-<li><strong>Miembros del ensemble</strong>: 25 por año.</li>
-<li><strong>Periodo de hindcast</strong>: 1993–2016 (24 años).</li>
-<li><strong>Rejilla nativa</strong>: aproximadamente 1°. Interpolada bilinealmente a la rejilla ROCIO_IBEB de 5 km para garantizar consistencia con los predictores observados.</li>
+<li><strong>Centro emisor</strong>: ECMWF (Reino Unido)</li>
+<li><strong>Variable</strong>: precipitación acumulada NDJFM</li>
+<li><strong>Inicialización</strong>: 1 de octubre · <strong>Lead time</strong>: 1 mes</li>
+<li><strong>Miembros del ensemble</strong>: 25 por año</li>
+<li><strong>Periodo de hindcast</strong>: 1997–2016</li>
+<li><strong>Rejilla nativa</strong>: ~1°, interpolada bilinealmente a ROCIO_IBEB (5 km)</li>
 </ul>
+</section>
+<section id="dwd-gcfs2.1" class="level4 unlisted unnumbered modelo-card dwd">
+<h4 class="unlisted unnumbered anchored" data-anchor-id="dwd-gcfs2.1">DWD GCFS2.1</h4>
+<ul>
+<li><strong>Centro emisor</strong>: DWD (Deutscher Wetterdienst, Alemania)</li>
+<li><strong>Variable</strong>: precipitación acumulada NDJFM</li>
+<li><strong>Inicialización</strong>: 1 de octubre · <strong>Lead time</strong>: 1 mes</li>
+<li><strong>Miembros del ensemble</strong>: 30 por año</li>
+<li><strong>Periodo de hindcast</strong>: 1997–2016</li>
+<li><strong>Rejilla nativa</strong>: ~1°, interpolada bilinealmente a ROCIO_IBEB (5 km)</li>
+</ul>
+</section>
+</div>
+<p>Ambos modelos comparten exactamente la <strong>misma metodología de aplicación</strong>: regionalización a ROCIO_IBEB, calibración Quantile Mapping en la precipitación, y aplicación del mismo modelo PLS entrenado sobre ROCIO. Esto permite una <strong>comparación honesta</strong> entre los dos sistemas y, eventualmente, la combinación de ambos en un multi-modelo.</p>
 <div class="acerca-callout">
-<p><span class="callout-title">▸ Por qué la misma rejilla</span> Aplicar el modelo PLS entrenado sobre ROCIO requiere que el hindcast esté en esa misma rejilla y con propiedades estadísticas comparables. La interpolación bilineal resuelve la rejilla; el <strong>QDM</strong> (sección 4) resuelve el sesgo y la dispersión.</p>
+<p><span class="callout-title">▸ Por qué la misma rejilla</span> Aplicar el modelo PLS entrenado sobre ROCIO requiere que el hindcast esté en esa misma rejilla y con propiedades estadísticas comparables. La interpolación bilineal resuelve la rejilla; el <strong>QM</strong> (sección 4) resuelve el sesgo y la dispersión.</p>
 </div>
 </section>
 </section>
@@ -809,17 +778,17 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <section id="aplicación-al-hindcast" class="level3">
 <h3 class="anchored" data-anchor-id="aplicación-al-hindcast">3.4 · Aplicación al hindcast</h3>
-<p>Una vez fijado el número de componentes por LOOCV, se entrena el modelo final con todos los años de ROCIO y se aplica <strong>miembro a miembro</strong> sobre el hindcast SEAS5.1 calibrado: cada uno de los <span class="math inline">\(25 \times 24 = 600\)</span> campos de precipitación predichos genera una predicción de aportación. La distribución empírica de estas 25 predicciones para cada año constituye el ensemble de aportaciones, del que se derivan probabilidades por tercil.</p>
+<p>Una vez fijado el número de componentes por LOOCV, se entrena el modelo final con todos los años de ROCIO y se aplica <strong>miembro a miembro</strong> sobre el hindcast (ECMWF o DWD) <strong>previamente calibrado por QM</strong> (sección 4). Cada uno de los miembros del ensemble genera una predicción independiente de aportación, y la distribución empírica de esas predicciones para cada año constituye el ensemble de aportaciones, del que se derivan probabilidades por tercil.</p>
 <div class="acerca-callout">
 <p><span class="callout-title">▸ Decisión técnica: PLS aplicado miembro a miembro</span> Alternativa descartada: aplicar PLS al ensemble mean. Aplicarlo a la media del ensemble destruye la dispersión y produce predicciones probabilísticas degeneradas. El criterio correcto —seguido aquí— es predecir cada miembro de forma independiente y construir el ensemble en el espacio de la variable predicha.</p>
 </div>
 </section>
 <section id="pericia-del-entrenamiento-loocv-con-rocio" class="level3">
 <h3 class="anchored" data-anchor-id="pericia-del-entrenamiento-loocv-con-rocio">3.5 · Pericia del entrenamiento (LOOCV con ROCIO)</h3>
-<p>Como diagnóstico interno del modelo, conviene separar dos correlaciones distintas que aparecen en el visor:</p>
+<p>Como diagnóstico interno del modelo, conviene separar dos correlaciones distintas:</p>
 <ul>
-<li><span class="math inline">\(r_{\text{LOOCV}}\)</span> — correlación validada del modelo PLS entrenado sobre ROCIO, evaluado out-of-sample. Refleja la <strong>calidad estadística del modelo</strong> y es independiente del hindcast SEAS5.1.</li>
-<li><span class="math inline">\(r_{\text{QDM}}\)</span> — correlación al aplicar el modelo entrenado al hindcast SEAS5.1 calibrado. Refleja la <strong>calidad del sistema completo de predicción</strong> (modelo + predictor dinámico) y es necesariamente menor.</li>
+<li><span class="math inline">\(r_{\text{LOOCV}}\)</span> — correlación validada del modelo PLS entrenado sobre ROCIO, evaluado out-of-sample. Refleja la <strong>calidad estadística del modelo</strong> y es independiente del hindcast.</li>
+<li><span class="math inline">\(r_{\text{hindcast}}\)</span> — correlación al aplicar el modelo entrenado al hindcast calibrado (ECMWF o DWD). Refleja la <strong>calidad del sistema completo de predicción</strong> y es necesariamente menor.</li>
 </ul>
 <p>La mediana de <span class="math inline">\(r_{\text{LOOCV}}\)</span> sobre los 183 embalses es <strong>0.932</strong> (P25 = 0.887, P75 = 0.954), con valores especialmente altos en la fachada atlántica:</p>
 <div class="quarto-figure quarto-figure-center">
@@ -830,50 +799,54 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 </section>
 </section>
-<section id="calibración-del-hindcast-quantile-delta-mapping-qdm" class="level2">
-<h2 class="anchored" data-anchor-id="calibración-del-hindcast-quantile-delta-mapping-qdm">4 · Calibración del hindcast: Quantile Delta Mapping (QDM)</h2>
+<section id="calibración-del-hindcast-quantile-mapping-qm" class="level2">
+<h2 class="anchored" data-anchor-id="calibración-del-hindcast-quantile-mapping-qm">4 · Calibración del hindcast: Quantile Mapping (QM)</h2>
 <section id="el-problema" class="level3">
 <h3 class="anchored" data-anchor-id="el-problema">4.1 · El problema</h3>
-<p>El hindcast SEAS5.1, aun interpolado a la rejilla ROCIO, presenta dos sesgos críticos respecto a la observación:</p>
-<div class="sigma-grid">
-<div class="sigma-item">
-<p><span class="sigma-val">0.19</span></p>
-<p><span class="sigma-lab"><span class="math inline">\(\sigma_{\text{ensmean}} / \sigma_{\text{ROCIO}}\)</span> — el ensemble mean aplasta dramáticamente la dispersión interanual observada.</span></p>
-</div>
-<div class="sigma-item">
-<p><span class="sigma-val">0.68</span></p>
-<p><span class="sigma-lab"><span class="math inline">\(\sigma_{\text{pool}} / \sigma_{\text{ROCIO}}\)</span> — agregando todos los miembros (500 muestras año×miembro) la dispersión es razonable pero aún infraestimada.</span></p>
-</div>
+<p>Los hindcasts SEAS5.1 y GCFS2.1, aun interpolados a la rejilla ROCIO, presentan sesgos importantes respecto a la observación: tanto en la <strong>distribución absoluta de la precipitación</strong> como, sobre todo, en la <strong>dispersión interanual del ensemble mean</strong>. Diagnóstico sobre 183 embalses peninsulares:</p>
+<div class="metricas-grid">
+<section id="ratio-σ_ensmean-σ_rocio" class="level4 unlisted unnumbered metrica-card">
+<h4 class="unlisted unnumbered anchored" data-anchor-id="ratio-σ_ensmean-σ_rocio">Ratio σ_ensmean / σ_ROCIO</h4>
+<p>ECMWF: <strong>0.19</strong> · DWD: <strong>0.18</strong></p>
+<p><span class="met-desc">El ensemble mean aplasta dramáticamente la dispersión interanual observada en ambos modelos.</span></p>
+</section>
+<section id="ratio-σ_pool-σ_rocio" class="level4 unlisted unnumbered metrica-card">
+<h4 class="unlisted unnumbered anchored" data-anchor-id="ratio-σ_pool-σ_rocio">Ratio σ_pool / σ_ROCIO</h4>
+<p>ECMWF: <strong>0.68</strong> · DWD: <strong>0.74</strong></p>
+<p><span class="met-desc">Pool completo (año × miembros): la dispersión es razonable pero aún infraestimada en ambos.</span></p>
+</section>
 </div>
 <p>Aplicar PLS directamente sobre un hindcast con la varianza tan comprimida produce predicciones excesivamente cercanas a la climatología y métricas de pericia engañosas. La calibración corrige esto.</p>
 </section>
-<section id="formulación-qdm" class="level3">
-<h3 class="anchored" data-anchor-id="formulación-qdm">4.2 · Formulación QDM</h3>
-<p>Quantile Delta Mapping (Cannon et al., 2015) corrige la distribución del modelo preservando la <strong>señal relativa</strong> del cambio respecto a su propia climatología:</p>
+<section id="formulación-qm" class="level3">
+<h3 class="anchored" data-anchor-id="formulación-qm">4.2 · Formulación QM</h3>
+<p>Quantile Mapping (Panofsky &amp; Brier, 1958; Wood et al., 2004) corrige la distribución del modelo sustituyendo sus cuantiles por los cuantiles correspondientes de la observación en el periodo de referencia:</p>
 <div class="formula-box">
 <p><span class="math display">\[
-\hat{x}_{\text{cal}}(t) = F_{\text{obs}}^{-1}\!\Big(F_{\text{mod,clim}}\big(x_{\text{mod}}(t)\big)\Big) \cdot \frac{x_{\text{mod}}(t)}{F_{\text{mod,clim}}^{-1}\!\Big(F_{\text{mod,clim}}\big(x_{\text{mod}}(t)\big)\Big)}
+\hat{x}_{\text{cal}}(t) = F_{\text{obs}}^{-1}\!\Big(F_{\text{mod,clim}}\big(x_{\text{mod}}(t)\big)\Big)
 \]</span></p>
-<p><span class="formula-caption"><span class="math inline">\(F_{\text{obs}}\)</span> y <span class="math inline">\(F_{\text{mod,clim}}\)</span> son las CDF empíricas de observación y modelo en el periodo climatológico de referencia. El factor multiplicativo (delta) preserva la perturbación relativa del modelo respecto a su climatología.</span></p>
+<p><span class="formula-caption">donde <span class="math inline">\(F_{\text{obs}}\)</span> y <span class="math inline">\(F_{\text{mod,clim}}\)</span> son las CDF empíricas de observación y modelo en el periodo climatológico de referencia.</span></p>
 </div>
-<p>A diferencia del Quantile Mapping (QM) clásico, que reemplaza directamente los cuantiles del modelo por los observados y por tanto <strong>borra la señal del modelo</strong>, QDM <strong>preserva la perturbación relativa</strong> y solo corrige la distribución de fondo.</p>
+<p>Para cada valor <span class="math inline">\(x_{\text{mod}}(t)\)</span> del modelo, QM busca su percentil en la CDF del modelo y le asigna el valor de la observación que corresponde a ese mismo percentil. El método es <strong>no paramétrico</strong> (no asume distribución específica) y <strong>conservador</strong> (no extrapola más allá del rango observado).</p>
 </section>
 <section id="implementación" class="level3">
 <h3 class="anchored" data-anchor-id="implementación">4.3 · Implementación</h3>
 <ul>
-<li><strong>Librería</strong>: <code>ibicus</code> (calibración bias-correction en rejillas climáticas).</li>
-<li><strong>Aplicación</strong>: vectorizada sobre toda la rejilla peninsular, por píxel.</li>
-<li><strong>Cuantiles</strong>: empíricos sobre el periodo de referencia común a ROCIO y SEAS5.1.</li>
-<li><strong>Régimen</strong>: in-sample (calibración y evaluación sobre el mismo periodo). Aceptable como diagnóstico, ya que el objetivo aquí es comparar metodologías y demostrar la mejora aportada por la calibración —no estimar la pericia operativa final—.</li>
+<li><strong>Aplicación</strong>: punto a punto y miembro a miembro sobre los Top-100 gridpoints más correlacionados con la aportación de cada embalse.</li>
+<li><strong>CDF de referencia</strong>: empírica, construida con los 19 años comunes (1997–2015) de ROCIO y hindcast.</li>
+<li><strong>Régimen</strong>: in-sample (calibración y evaluación sobre el mismo periodo). Aceptable como diagnóstico para comparar metodologías y cuantificar la mejora aportada por la calibración —no como estimación operativa final—.</li>
 </ul>
 <div class="acerca-callout success">
-<p><span class="callout-title">▸ Resultado de la calibración</span> El paso de SEAS5.1 sin calibrar (ORIG) a SEAS5.1+QDM produce mejoras consistentes en todas las métricas. En particular, <span class="math inline">\(BSS_{\text{lower}}\)</span> mediano pasa de <strong>−0.25</strong> (ORIG) a <strong>−0.01</strong> (QDM): el sistema deja de ser sistemáticamente peor que la climatología.</p>
+<p><span class="callout-title">▸ Resultado de la calibración</span> El paso de hindcast sin calibrar (ORIG) a hindcast + QM produce mejoras consistentes en todas las métricas. Para ECMWF, el <strong>BS total</strong> mediano pasa de 0.251 (ORIG) a <strong>0.219 (QM)</strong>, y el <strong>hit_rate</strong> mediano pasa de 0.333 (azar climatológico) a <strong>0.421</strong>. Para DWD las mejoras son comparables.</p>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/acerca/qdm_efecto_buendia.png" class="fig-acerca img-fluid figure-img"></p>
-<figcaption>Efecto del QDM sobre la predicción de aportaciones en el embalse de Buendía. Arriba: hindcast SEAS5.1 sin calibrar (BS = 0.262, hit = 0.32, r = 0.28). Abajo: hindcast con QDM aplicado a la precipitación (BS = 0.194, hit = 0.47, r = 0.37). El QDM ensancha el ensemble (banda P10-P90) hasta valores realistas y mejora todas las métricas de pericia.</figcaption>
+<p><img src="images/acerca/qm_efecto_buendia.png" class="fig-acerca img-fluid figure-img"></p>
+<figcaption>Efecto del QM sobre la predicción de aportaciones en el embalse de Buendía. Arriba: hindcast ECMWF SEAS5.1 sin calibrar. Abajo: el mismo hindcast con QM aplicado a la precipitación. El QM ensancha el ensemble y aproxima la dispersión a la observada, mejorando todas las métricas de pericia.</figcaption>
 </figure>
+</div>
+<div class="acerca-callout info">
+<p><span class="callout-title">▸ Sobre QDM como alternativa explorada</span> Durante el desarrollo se exploró también la calibración por <strong>Quantile Delta Mapping (QDM)</strong> (Cannon et al., 2015), que preserva la perturbación relativa del modelo respecto a su climatología. En régimen in-sample, QM y QDM producen resultados prácticamente idénticos. Se optó finalmente por QM por su simplicidad metodológica y la mayor robustez de su comportamiento ante muestras pequeñas.</p>
 </div>
 </section>
 </section>
@@ -918,13 +891,13 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 </div>
 <div class="acerca-callout info">
-<p><span class="callout-title">▸ Por qué reportar intervalos de confianza</span> Con series de 19–24 años las métricas tienen una incertidumbre muestral importante. Los intervalos de confianza por bootstrap permiten distinguir embalses con pericia <em>robusta</em> de embalses cuya pericia aparente puede ser ruido. El visor permite ordenar por <strong>BSS_lower</strong> y <strong>AUC_lower</strong> precisamente con este criterio.</p>
+<p><span class="callout-title">▸ Por qué reportar intervalos de confianza</span> Con series de 19–20 años las métricas tienen una incertidumbre muestral importante. Los intervalos de confianza por bootstrap permiten distinguir embalses con pericia <em>robusta</em> de embalses cuya pericia aparente puede ser ruido. El visor permite ordenar por <strong>BSS_lower</strong> y <strong>AUC_lower</strong> precisamente con este criterio.</p>
 </div>
 </section>
 </section>
 <section id="pipeline-operativo" class="level2">
 <h2 class="anchored" data-anchor-id="pipeline-operativo">6 · Pipeline operativo</h2>
-<p>El proceso se ejecuta en el HPC ATOS del ECMWF, a través de un conjunto de scripts en python, que se estructuran como se expone a continuación:</p>
+<p>El proceso se ejecuta en el HPC ATOS del ECMWF, a través de un conjunto de scripts en python que se estructuran como se expone a continuación:</p>
 <div class="flujo-wrap">
 <svg viewbox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama de flujo del pipeline">
   <defs>
@@ -932,74 +905,70 @@ document.addEventListener('DOMContentLoaded', function() {
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#0072bc"></path>
     </marker>
     <style>
-      .box        { fill: white; stroke: #0072bc; stroke-width: 2; vector-effect: non-scaling-stroke; }
-      .box-input  { fill: #e8f4fd; stroke: #003087; stroke-width: 2; vector-effect: non-scaling-stroke; }
-      .box-output { fill: #003087; stroke: #003087; stroke-width: 2; vector-effect: non-scaling-stroke; }
-      .box-calib  { fill: #fff8e1; stroke: #f9a825; stroke-width: 2; vector-effect: non-scaling-stroke; }
+      .box        { fill: white; stroke: #0072bc; stroke-width: 2; }
+      .box-input  { fill: #e8f4fd; stroke: #003087; stroke-width: 2; }
+      .box-input-dwd { fill: #fff4e0; stroke: #b87100; stroke-width: 2; }
+      .box-output { fill: #003087; stroke: #003087; stroke-width: 2; }
+      .box-calib  { fill: #fff8e1; stroke: #f9a825; stroke-width: 2; }
       .lbl        { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; fill: #1f2937; font-weight: 500; }
       .lbl-sub    { font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; fill: #4b5563; }
       .lbl-out    { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; fill: white; font-weight: 600; }
-      .arrow      { stroke: #0072bc; stroke-width: 2; fill: none; vector-effect: non-scaling-stroke; }
+      .arrow      { stroke: #0072bc; stroke-width: 2; fill: none; }
       .step-num   { font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; fill: #003087; font-weight: 700; }
     </style>
   </defs>
 
-  <rect class="box-input" x="20" y="40" width="200" height="70" rx="6"></rect>
-  <text class="step-num" x="30" y="58">INPUT 1</text>
-  <text class="lbl" x="30" y="78">ROCIO_IBEB 5 km</text>
-  <text class="lbl-sub" x="30" y="95">Precipitación 1997–2015</text>
+  <rect class="box-input" x="20" y="20" width="200" height="62" rx="6"></rect>
+  <text class="step-num" x="30" y="38">INPUT 1</text>
+  <text class="lbl" x="30" y="56">ROCIO_IBEB 5 km</text>
+  <text class="lbl-sub" x="30" y="72">Precipitación 1997–2015</text>
 
-  <rect class="box-input" x="20" y="140" width="200" height="70" rx="6"></rect>
-  <text class="step-num" x="30" y="158">INPUT 2</text>
-  <text class="lbl" x="30" y="178">ECMWF SEAS5.1 hindcast</text>
-  <text class="lbl-sub" x="30" y="195">25 miembros · 1993–2016</text>
+  <rect class="box-input" x="20" y="100" width="200" height="62" rx="6"></rect>
+  <text class="step-num" x="30" y="118">INPUT 2A</text>
+  <text class="lbl" x="30" y="136">ECMWF SEAS5.1</text>
+  <text class="lbl-sub" x="30" y="152">25 miembros · 1997-2016</text>
 
-  <rect class="box-input" x="20" y="240" width="200" height="70" rx="6"></rect>
-  <text class="step-num" x="30" y="258">INPUT 3</text>
-  <text class="lbl" x="30" y="278">Aportaciones embalses</text>
-  <text class="lbl-sub" x="30" y="295">entmes NDJFM, 183 series</text>
+  <rect class="box-input-dwd" x="20" y="180" width="200" height="62" rx="6"></rect>
+  <text class="step-num" x="30" y="198" style="fill:#b87100">INPUT 2B</text>
+  <text class="lbl" x="30" y="216">DWD GCFS2.1</text>
+  <text class="lbl-sub" x="30" y="232">30 miembros · 1997-2016</text>
 
-  <rect class="box-calib" x="320" y="140" width="240" height="70" rx="6"></rect>
-  <text class="step-num" x="330" y="158">PASO 1 · CALIBRACIÓN</text>
-  <text class="lbl" x="330" y="178">QDM en rejilla (ibicus)</text>
-  <text class="lbl-sub" x="330" y="195">SEAS5.1 → SEAS5.1+QDM</text>
+  <rect class="box-input" x="20" y="260" width="200" height="62" rx="6"></rect>
+  <text class="step-num" x="30" y="278">INPUT 3</text>
+  <text class="lbl" x="30" y="296">Aportaciones embalses</text>
+  <text class="lbl-sub" x="30" y="312">entmes NDJFM, 183 series</text>
 
-  <rect class="box" x="320" y="240" width="240" height="70" rx="6"></rect>
-  <text class="step-num" x="330" y="258">PASO 2 · MODELO</text>
-  <text class="lbl" x="330" y="278">PLS + LOOCV</text>
-  <text class="lbl-sub" x="330" y="295">por embalse, miembro a miembro</text>
+  <rect class="box-calib" x="320" y="100" width="240" height="62" rx="6"></rect>
+  <text class="step-num" x="330" y="118">PASO 1 · CALIBRACIÓN</text>
+  <text class="lbl" x="330" y="136">QM en P (gridpoint × miembro)</text>
+  <text class="lbl-sub" x="330" y="152">SEAS5/GCFS → SEAS5+QM / GCFS+QM</text>
 
-  <rect class="box" x="320" y="340" width="240" height="70" rx="6"></rect>
-  <text class="step-num" x="330" y="358">PASO 3 · EVALUACIÓN</text>
-  <text class="lbl" x="330" y="378">r · BS · BSS · AUC · hit rate</text>
-  <text class="lbl-sub" x="330" y="395">bootstrap 95% CI</text>
+  <rect class="box" x="320" y="200" width="240" height="62" rx="6"></rect>
+  <text class="step-num" x="330" y="218">PASO 2 · MODELO</text>
+  <text class="lbl" x="330" y="236">PLS + LOOCV</text>
+  <text class="lbl-sub" x="330" y="252">por embalse, miembro a miembro</text>
 
-  <rect class="box-output" x="660" y="240" width="220" height="170" rx="6"></rect>
-  <text class="lbl-out" x="672" y="265">SALIDA</text>
-  <text class="lbl-out" x="672" y="288" style="font-size:11px; font-weight:500;">resumen_metricas_BSS_ROC.csv</text>
-  <text class="lbl-out" x="672" y="312" style="font-size:11px; font-weight:500;">183 embalses · 23 columnas</text>
-  <text class="lbl-out" x="672" y="335" style="font-size:11px; font-weight:500;">ORIG + QDM</text>
-  <text class="lbl-out" x="672" y="365" style="font-size:11px; font-weight:500;">→ Visor Quarto</text>
-  <text class="lbl-out" x="672" y="388" style="font-size:11px; font-weight:500;">→ Análisis por cuenca</text>
+  <rect class="box" x="320" y="300" width="240" height="62" rx="6"></rect>
+  <text class="step-num" x="330" y="318">PASO 3 · EVALUACIÓN</text>
+  <text class="lbl" x="330" y="336">r · BS · BSS · AUC · hit rate</text>
+  <text class="lbl-sub" x="330" y="352">bootstrap 95% CI</text>
 
-  <path class="arrow" d="M 220 75 Q 270 75 270 275 L 320 275" marker-end="url(#arrow)"></path>
-  <path class="arrow" d="M 220 175 L 320 175" marker-end="url(#arrow)"></path>
-  <path class="arrow" d="M 440 210 L 440 240" marker-end="url(#arrow)"></path>
-  <path class="arrow" d="M 220 275 L 320 275" marker-end="url(#arrow)"></path>
-  <path class="arrow" d="M 440 310 L 440 340" marker-end="url(#arrow)"></path>
-  <path class="arrow" d="M 560 375 Q 610 375 610 325 L 660 325" marker-end="url(#arrow)"></path>
-  <path class="arrow" d="M 560 275 L 660 275" marker-end="url(#arrow)"></path>
+  <rect class="box-output" x="660" y="200" width="220" height="170" rx="6"></rect>
+  <text class="lbl-out" x="672" y="225">SALIDA</text>
+  <text class="lbl-out" x="672" y="248" style="font-size:11px; font-weight:500;">resumen_metricas_BSS_ROC.csv</text>
+  <text class="lbl-out" x="672" y="272" style="font-size:11px; font-weight:500;">183 embalses · columnas paralelas</text>
+  <text class="lbl-out" x="672" y="295" style="font-size:11px; font-weight:500;">ECMWF + DWD</text>
+  <text class="lbl-out" x="672" y="325" style="font-size:11px; font-weight:500;">→ Visor Quarto</text>
+  <text class="lbl-out" x="672" y="348" style="font-size:11px; font-weight:500;">→ Análisis por cuenca</text>
 
-  <g transform="translate(20, 430)">
-    <rect class="box-input" x="0" y="0" width="14" height="14" rx="2"></rect>
-    <text class="lbl-sub" x="20" y="11">Datos de entrada</text>
-    <rect class="box-calib" x="170" y="0" width="14" height="14" rx="2"></rect>
-    <text class="lbl-sub" x="190" y="11">Calibración</text>
-    <rect class="box" x="300" y="0" width="14" height="14" rx="2"></rect>
-    <text class="lbl-sub" x="320" y="11">Procesamiento</text>
-    <rect class="box-output" x="450" y="0" width="14" height="14" rx="2"></rect>
-    <text class="lbl-sub" x="470" y="11">Salida</text>
-  </g>
+  <path class="arrow" d="M 220 50 Q 270 50 270 235 L 320 235" marker-end="url(#arrow)"></path>
+  <path class="arrow" d="M 220 131 L 320 131" marker-end="url(#arrow)"></path>
+  <path class="arrow" d="M 220 211 L 320 131" marker-end="url(#arrow)"></path>
+  <path class="arrow" d="M 440 162 L 440 200" marker-end="url(#arrow)"></path>
+  <path class="arrow" d="M 220 291 L 320 291" marker-end="url(#arrow)"></path>
+  <path class="arrow" d="M 440 262 L 440 300" marker-end="url(#arrow)"></path>
+  <path class="arrow" d="M 560 235 L 660 285" marker-end="url(#arrow)"></path>
+  <path class="arrow" d="M 560 335 L 660 285" marker-end="url(#arrow)"></path>
 </svg>
 </div>
 </section>
@@ -1009,39 +978,69 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/acerca/resultados_globales_serie_temporal.png" class="fig-acerca img-fluid figure-img"></p>
-<figcaption>Aportación invernal media de los 183 embalses (1997–2015). Negro: observación. Azul: modelo PLS entrenado sobre ROCIO (r = 0.97), que reproduce muy fielmente la serie histórica. Rojo discontinuo: el mismo modelo PLS aplicado al ensemble mean del hindcast SEAS5.1 (r = 0.30); la banda rosa cubre los percentiles P10–P90 del ensemble. El contraste entre el azul y el rojo sintetiza el reto: el modelo estadístico funciona —es la señal climática del SEAS5.1 la que es limitada—.</figcaption>
+<figcaption>Aportación invernal media de los 183 embalses (1997–2015). Negro: observación. Azul: modelo PLS entrenado sobre ROCIO. Rojo y naranja: el mismo modelo PLS aplicado al ensemble mean de ECMWF SEAS5.1 y DWD GCFS2.1 tras calibración QM. Las bandas cubren los percentiles P10–P90 de cada ensemble. El contraste entre el azul y los dos modelos sintetiza el reto: el modelo estadístico funciona bien sobre ROCIO; la pericia del sistema completo está limitada por la señal climática disponible en los hindcasts dinámicos.</figcaption>
 </figure>
 </div>
-<p>Esta gráfica ayuda a interpretar el resto: las limitaciones que se listan a continuación explican por qué la pericia del sistema completo (rojo) es necesariamente menor que la del modelo en entrenamiento (azul).</p>
+<p>Esta gráfica ayuda a interpretar el resto: las limitaciones que se listan a continuación explican por qué la pericia del sistema completo es necesariamente menor que la del modelo en entrenamiento.</p>
 <section id="naturaleza-probabilística" class="level3">
 <h3 class="anchored" data-anchor-id="naturaleza-probabilística">7.1 · Naturaleza probabilística</h3>
 <p>Las predicciones son <strong>probabilísticas</strong>, no deterministas. Una predicción de “70% de probabilidad de tercil húmedo” no significa que el invierno vaya a ser húmedo: significa que, en el largo plazo, de cada 10 inviernos con ese pronóstico, en torno a 7 caerán en el tercil húmedo.</p>
 </section>
 <section id="pericia-heterogénea-entre-demarcaciones" class="level3">
 <h3 class="anchored" data-anchor-id="pericia-heterogénea-entre-demarcaciones">7.2 · Pericia heterogénea entre demarcaciones</h3>
-<p>La pericia no es uniforme. El visor de <strong>PREDICCIÓN CUENCA</strong> muestra que las demarcaciones del cuadrante NW (Miño-Sil, Duero, Tajo) presentan correlaciones medianas QDM en torno a <span class="math inline">\(r \approx 0.27\)</span>–<span class="math inline">\(0.35\)</span>, mientras que Guadalquivir y Segura quedan por debajo de <span class="math inline">\(r \approx 0.10\)</span>. Esto es consistente con la influencia diferencial de la NAO y la mayor predecibilidad de la fachada atlántica.</p>
-</section>
-<section id="qdm-in-sample" class="level3">
-<h3 class="anchored" data-anchor-id="qdm-in-sample">7.3 · QDM in-sample</h3>
-<p>La calibración QDM se aplica en régimen <strong>in-sample</strong> (mismo periodo para calibrar y evaluar). Esto es aceptable para los objetivos actuales —diagnóstico metodológico y cuantificación de la mejora aportada por la calibración— pero implica que las métricas reportadas son una <strong>cota superior optimista</strong> de la pericia operativa real. Una validación out-of-sample con leave-one-out a nivel de calibración está prevista como extensión.</p>
+<p>La pericia no es uniforme. El visor de <strong>PREDICCIÓN CUENCA</strong> muestra que las demarcaciones del cuadrante NW (Miño-Sil, Duero, Tajo) presentan correlaciones medianas tras QM en torno a <span class="math inline">\(r \approx 0.25\)</span>–<span class="math inline">\(0.35\)</span>, mientras que Guadalquivir y Segura quedan por debajo de <span class="math inline">\(r \approx 0.10\)</span>. Esto es consistente con la influencia diferencial de la NAO y la mayor predecibilidad de la fachada atlántica.</p>
 </section>
 <section id="periodo-de-entrenamiento-corto" class="level3">
-<h3 class="anchored" data-anchor-id="periodo-de-entrenamiento-corto">7.4 · Periodo de entrenamiento corto</h3>
+<h3 class="anchored" data-anchor-id="periodo-de-entrenamiento-corto">7.3 · Periodo de entrenamiento corto</h3>
 <p>19 años de entrenamiento es un periodo limitado para capturar la variabilidad climática estacional, en la que el rango muestral está dominado por unos pocos años extremos. Esto explica la <strong>amplitud de los intervalos de confianza</strong> en BSS y AUC y justifica la práctica de reportar siempre <span class="math inline">\(BSS_{\text{lower}}\)</span> y <span class="math inline">\(AUC_{\text{lower}}\)</span> como criterios robustos.</p>
 </section>
 <section id="régimen-estacionario-asumido" class="level3">
-<h3 class="anchored" data-anchor-id="régimen-estacionario-asumido">7.5 · Régimen estacionario asumido</h3>
+<h3 class="anchored" data-anchor-id="régimen-estacionario-asumido">7.4 · Régimen estacionario asumido</h3>
 <p>El método asume que la relación estadística entre precipitación invernal y aportación se mantiene estable en el tiempo. Cambios de uso del suelo, regulación hidráulica, demanda agrícola o régimen pluviométrico (cambio climático) pueden alterar esta relación y reducir la pericia operativa respecto a la pericia histórica.</p>
 </section>
 </section>
+<section id="comparación-entre-los-dos-modelos" class="level2">
+<h2 class="anchored" data-anchor-id="comparación-entre-los-dos-modelos">8 · Comparación entre los dos modelos</h2>
+<p>A nivel agregado sobre los 183 embalses, ECMWF y DWD presentan resultados similares tras calibración QM, con pequeñas diferencias:</p>
+<table class="tabla-comp caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Métrica (mediana)</th>
+<th data-quarto-table-cell-role="th">ECMWF SEAS5.1 + QM</th>
+<th data-quarto-table-cell-role="th">DWD GCFS2.1 + QM</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>r(ensmean, obs)</td>
+<td>0.233</td>
+<td>0.192</td>
+</tr>
+<tr class="even">
+<td>hit_rate</td>
+<td>0.421</td>
+<td>0.400</td>
+</tr>
+<tr class="odd">
+<td>BS total</td>
+<td>0.219</td>
+<td>0.222</td>
+</tr>
+</tbody>
+</table>
+<p>A nivel sistémico <strong>ECMWF SEAS5.1 muestra una pericia ligeramente superior</strong> a DWD GCFS2.1 en la mediana global, especialmente en la correlación del ensemble mean. Sin embargo, <strong>a nivel de embalses individuales los dos modelos no siempre coinciden</strong>: hay embalses en los que DWD predice mejor que ECMWF y viceversa. El visor permite consultar la pericia de ambos modelos para cada embalse independientemente.</p>
+<div class="acerca-callout info">
+<p><span class="callout-title">▸ Hacia un multi-modelo</span> La variabilidad embalse-a-embalse entre ECMWF y DWD sugiere que una combinación ponderada de los dos sistemas podría aportar pericia adicional sobre cualquiera de ellos por separado. La construcción de un multi-modelo está prevista como extensión del servicio.</p>
+</div>
+</section>
 <section id="extensión-a-proyecciones-climáticas-cmip6" class="level2">
-<h2 class="anchored" data-anchor-id="extensión-a-proyecciones-climáticas-cmip6">8 · Extensión a proyecciones climáticas (CMIP6)</h2>
+<h2 class="anchored" data-anchor-id="extensión-a-proyecciones-climáticas-cmip6">9 · Extensión a proyecciones climáticas (CMIP6)</h2>
 <p>En paralelo a este servicio de predicción estacional, la misma metodología se está aplicando a <strong>proyecciones climáticas</strong> para estimar el impacto del cambio climático sobre las aportaciones futuras a embalses (Gutiérrez-Fernández et al.).</p>
 <div class="acerca-callout info">
-<p><span class="callout-title">▸ Misma metodología, distinto horizonte temporal</span> El servicio descrito en esta página predice <strong>el próximo invierno</strong> (escala estacional, modelo dinámico ECMWF SEAS5.1). La extensión CMIP6 proyecta el <strong>siglo XXI</strong> (escala climática, modelos del CMIP6 bajo escenarios de emisiones). La estructura PLS se mantiene; cambian el observacional de entrenamiento y los datos de aplicación.</p>
+<p><span class="callout-title">▸ Misma metodología, distinto horizonte temporal</span> El servicio descrito en esta página predice <strong>el próximo invierno</strong> (escala estacional, modelos dinámicos ECMWF SEAS5.1 y DWD GCFS2.1). La extensión CMIP6 proyecta el <strong>siglo XXI</strong> (escala climática, modelos del CMIP6 bajo escenarios de emisiones). La estructura PLS se mantiene; cambian el observacional de entrenamiento y los datos de aplicación.</p>
 </div>
 <section id="cambios-respecto-al-servicio-estacional" class="level3">
-<h3 class="anchored" data-anchor-id="cambios-respecto-al-servicio-estacional">8.1 · Cambios respecto al servicio estacional</h3>
+<h3 class="anchored" data-anchor-id="cambios-respecto-al-servicio-estacional">9.1 · Cambios respecto al servicio estacional</h3>
 <ul>
 <li><strong>Observacional de entrenamiento</strong>: <strong>CERRA-LAND</strong> (reanálisis a 0.05°, 1985–2020), en lugar de ROCIO_IBEB. Las aportaciones modeladas con CERRA presentan correlación &gt; 0.9 con las observadas, lo que valida CERRA como base para calibrar el PLS.</li>
 <li><strong>Datos de aplicación</strong>: <strong>11 modelos del CMIP6</strong> bajo el escenario <strong>SSP5-8.5</strong>, regionalizados a 0.05° con cinco técnicas diferentes:
@@ -1049,13 +1048,13 @@ document.addEventListener('DOMContentLoaded', function() {
 <li><strong>RAW</strong> — salida directa del modelo, sin corrección.</li>
 <li><strong>Deep-ESD</strong> — <em>downscaling</em> estadístico con redes neuronales.</li>
 <li><strong>XGB</strong> — <em>gradient boosted trees</em>.</li>
-<li><strong>QDM</strong> — corrección de sesgo por cuantiles (la misma familia que se aplica aquí en el servicio estacional).</li>
+<li><strong>QDM</strong> — corrección de sesgo por cuantiles preservando perturbación relativa.</li>
 <li><strong>GLM-LN</strong> — regresión lineal generalizada con respuesta log-normal.</li>
 </ul></li>
 </ul>
 </section>
 <section id="principales-resultados" class="level3">
-<h3 class="anchored" data-anchor-id="principales-resultados">8.2 · Principales resultados</h3>
+<h3 class="anchored" data-anchor-id="principales-resultados">9.2 · Principales resultados</h3>
 <p>Las proyecciones no muestran una <strong>tendencia uniforme</strong> de descenso de las aportaciones en clima futuro, sino un <strong>patrón espacial diferenciado</strong>:</p>
 <ul>
 <li><strong>Suroeste peninsular</strong>: descensos de aportaciones de cara a finales de siglo, consistentes en la mayoría de modelos y métodos de regionalización.</li>
@@ -1068,7 +1067,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 </section>
 <section id="relación-con-el-visor-s-climware-de-aemet" class="level2">
-<h2 class="anchored" data-anchor-id="relación-con-el-visor-s-climware-de-aemet">9 · Relación con el visor S-ClimWaRe de AEMET</h2>
+<h2 class="anchored" data-anchor-id="relación-con-el-visor-s-climware-de-aemet">10 · Relación con el visor S-ClimWaRe de AEMET</h2>
 <p>AEMET mantiene un servicio climático operativo de predicción estacional para embalses, el visor <strong>S-ClimWaRe</strong>, desarrollado en el marco de los proyectos europeos EUPORIAS y MEDSCOPE y mantenido en colaboración con la Dirección General del Agua. <strong>Comparte parte de los datos base con nuestro servicio (sistema ECMWF SEAS5)</strong> pero responde a un objetivo distinto y emplea un enfoque metodológico propio.</p>
 <table class="tabla-comp caption-top table" data-quarto-postprocess="true">
 <thead>
@@ -1087,7 +1086,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <tr class="even">
 <td>Datos dinámicos base</td>
 <td>ECMWF SEAS5 (sistema operativo CEPPM/Copernicus).</td>
-<td>ECMWF SEAS5.1 (versión equivalente, mismo origen institucional).</td>
+<td>ECMWF SEAS5.1 + DWD GCFS2.1 (dos sistemas operativos C3S).</td>
 </tr>
 <tr class="odd">
 <td>Variables ofrecidas</td>
@@ -1097,7 +1096,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <tr class="even">
 <td>Post-proceso del ensemble</td>
 <td>Pesado de miembros del ensemble basado en la predicción probabilística óptima de la NAO invernal (modelo empírico AEMET + modelos dinámicos C3S).</td>
-<td>Calibración por Quantile Delta Mapping (QDM) píxel a píxel sobre la rejilla, seguida de PLS por embalse.</td>
+<td>Calibración por Quantile Mapping (QM) píxel a píxel sobre la rejilla, seguida de PLS por embalse.</td>
 </tr>
 <tr class="odd">
 <td>Predicción de aportaciones</td>
@@ -1107,7 +1106,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <tr class="even">
 <td>Pericia reportada</td>
 <td>Pericia por evento (tercil) en periodo retrospectivo de 20+ años.</td>
-<td>r, hit rate, BS por tercil, BSS y AUC con IC 95% por bootstrap.</td>
+<td>r, hit rate, BS por tercil, BSS y AUC con IC 95% por bootstrap, para cada modelo.</td>
 </tr>
 <tr class="odd">
 <td>Cobertura</td>
@@ -1117,7 +1116,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </tbody>
 </table>
 <div class="acerca-callout info">
-<p><span class="callout-title">▸ Complementariedad</span> Ambos servicios son complementarios. S-ClimWaRe ofrece una <strong>visión integrada y operativa</strong> con varias variables hidroclimáticas y un canal estable de comunicación con los gestores de embalses. Este servicio aporta un <strong>análisis estadístico detallado y específico</strong> de la pericia por embalse bajo una metodología distinta (PLS+QDM frente a NAO-weighting), útil como segundo enfoque y como referencia metodológica para futuras mejoras.</p>
+<p><span class="callout-title">▸ Complementariedad</span> Ambos servicios son complementarios. S-ClimWaRe ofrece una <strong>visión integrada y operativa</strong> con varias variables hidroclimáticas y un canal estable de comunicación con los gestores de embalses. Este servicio aporta un <strong>análisis estadístico detallado y específico</strong> de la pericia por embalse bajo una metodología distinta (PLS+QM con dos modelos), útil como segundo enfoque y como referencia metodológica para futuras mejoras.</p>
 </div>
 <div class="sclimware-card">
 <h3 class="anchored">Visor S-ClimWaRe</h3>
@@ -1126,8 +1125,12 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 </section>
 <section id="referencias" class="level2">
-<h2 class="anchored" data-anchor-id="referencias">10 · Referencias</h2>
+<h2 class="anchored" data-anchor-id="referencias">11 · Referencias</h2>
 <ul class="refs-list">
+<li><strong>Panofsky, H. A. &amp; Brier, G. W. (1958).</strong> Some Applications of Statistics to Meteorology. The Pennsylvania State University. — referencia original del Quantile Mapping.</li>
+
+<li><strong>Wood, A. W., Leung, L. R., Sridhar, V. &amp; Lettenmaier, D. P. (2004).</strong> Hydrologic implications of dynamical and statistical approaches to downscaling climate model outputs. <em>Climatic Change, 62</em>, 189–216.</li>
+
 <li><strong>Cannon, A. J., Sobie, S. R. &amp; Murdock, T. Q. (2015).</strong> Bias correction of GCM precipitation by quantile mapping: How well do methods preserve changes in quantiles and extremes? <em>Journal of Climate, 28</em>(17), 6938–6959. <a href="https://doi.org/10.1175/JCLI-D-14-00754.1" target="_blank">https://doi.org/10.1175/JCLI-D-14-00754.1</a></li>
 
 <li><strong>Wold, S., Sjöström, M. &amp; Eriksson, L. (2001).</strong> PLS-regression: a basic tool of chemometrics. <em>Chemometrics and Intelligent Laboratory Systems, 58</em>(2), 109–130. <a href="https://doi.org/10.1016/S0169-7439(01)00155-1" target="_blank">https://doi.org/10.1016/S0169-7439(01)00155-1</a></li>
@@ -1146,11 +1149,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <li><strong>ECMWF (2021).</strong> SEAS5.1: Seasonal Forecast System 5.1 of the European Centre for Medium-Range Weather Forecasts.</li>
 
+<li><strong>DWD (2020).</strong> GCFS2.1: German Climate Forecast System version 2.1, Deutscher Wetterdienst.</li>
+
 <li><strong>CMIP6</strong>: Coupled Model Intercomparison Project Phase 6. World Climate Research Programme.</li>
 
 <li><strong>Copernicus Climate Change Service (C3S).</strong> Climate Data Store. <a href="https://cds.climate.copernicus.eu" target="_blank">https://cds.climate.copernicus.eu</a></li>
-
-<li><strong>ibicus</strong>: Python library for bias adjustment of climate model output. <a href="https://github.com/ecmwf-projects/ibicus" target="_blank">https://github.com/ecmwf-projects/ibicus</a></li>
 
 <li><strong>S-ClimWaRe</strong>: Servicio Climático para la Gestión de Embalses en España (AEMET–DGA, EUPORIAS/MEDSCOPE). <a href="https://embalses.aemet.es/embalses/sclimwareS5.html" target="_blank">https://embalses.aemet.es/embalses/sclimwareS5.html</a></li>
 </ul>

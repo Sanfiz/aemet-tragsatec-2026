@@ -144,25 +144,26 @@ toc: false
     </div>
 
     <h4 class="datos-subtitle">Variables descargadas</h4>
-    <div class="grid-2" style="margin:1rem 0 1.5rem;">
-      <div class="info-tile">
-        <h3>Presión al nivel del mar (MSL)</h3>
+    <ul class="datos-vars">
+      <li>
+        <h5>Presión al nivel del mar</h5>
         <p>Utilizada para el cálculo de componentes del viento geostrófico superficial (ug, vg) a partir
         de MSL y T1000. Base de los análogos sinópticos y los modos de variabilidad EOF/PLS.</p>
-      </div>
-      <div class="info-tile">
-        <h3>Altura geopotencial 500 hPa (Z500)</h3>
-        <p>Componentes del viento a 500 hPa (u500, v500). Empleada tanto en la
+      </li>
+      <li>
+        <h5>Altura geopotencial 500 hPa</h5>
+        <p>Componentes del viento a 500 hPa (u500, v500). Empleada en la
         caracterización de la circulación Euro-Atlántica.</p>
-      </div>
-      <div class="info-tile">
-        <h3>Temperatura a 2 m (T2M)</h3>
-        <p>Variable predictanda usada en dowsncaling y weighting.</p>
-      </div>
-      <div class="info-tile">
-        <h3>Precipitación total (TP)</h3>
+      </li>
+      <li>
+        <h5>Temperatura a 2 m</h5>
+        <p>Variable predictanda usada en downscaling y weighting.</p>
+      </li>
+      <li>
+        <h5>Precipitación total</h5>
         <p>Variable predictanda principal. Usada en todas las metodologías.</p>
-      </div>
+      </li>
+    </ul>
     </div>
 
   </section>
@@ -183,26 +184,29 @@ toc: false
     </p>
 
     <h4 class="datos-subtitle">Variables descargadas</h4>
-    <div class="grid-2" style="margin:1rem 0 1.5rem;">
-      <div class="info-tile">
-        <h3>Presión al nivel del mar (MSL)</h3>
+
+
+    <ul class="datos-vars">
+      <li>
+        <h5>Presión al nivel del mar</h5>
         <p>Junto con T1000, base para el cálculo del viento geostrófico superficial usado en los análogos
         del downscaling y en los modos EOF/PLS de circulación Euro-Atlántica.</p>
-      </div>
-      <div class="info-tile">
-        <h3>Altura geopotencial 500 hPa (Z500)</h3>
+      </li>
+      <li>
+        <h5>Altura geopotencial 500 hPa</h5>
         <p>Componentes del viento a 500 hPa (u500, v500). Caracteriza la circulación de niveles medios y
         complementa la información de superficie en la clasificación sinóptica.</p>
-      </div>
-      <div class="info-tile">
-        <h3>Temperatura a 2 m (T2M)</h3>
+      </li>
+      <li>
+        <h5>Temperatura a 2 m</h5>
         <p>Observación de referencia para validar y calibrar las predicciones estacionales.</p>
-      </div>
-      <div class="info-tile">
-        <h3>Precipitación total (TP)</h3>
+      </li>
+      <li>
+        <h5>Precipitación total</h5>
         <p>Observación de referencia para validar y calibrar las predicciones estacionales.</p>
-      </div>
-    </div>
+      </li>
+    </ul>
+    
 
   </section>
 
@@ -457,6 +461,40 @@ toc: false
   font-weight: 700;
   margin: 1.5rem 0 0.6rem 0;
   letter-spacing: 0.02em;
+}
+
+.datos-vars {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+.datos-vars li {
+  position: relative;
+  padding: 0.4rem 0 0.4rem 1.3rem;
+  margin-bottom: 0.6rem;
+}
+.datos-vars li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.85rem;
+  width: 8px;
+  height: 8px;
+  background: #0072bc;
+  border-radius: 50%;
+}
+.datos-vars h5 {
+  color: #003087;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+  letter-spacing: 0.01em;
+}
+.datos-vars p {
+  font-size: 0.88rem;
+  color: #1a2332;
+  line-height: 1.55;
+  margin: 0;
 }
 
 /* ── Responsive ─────────────────────────────────────────── */

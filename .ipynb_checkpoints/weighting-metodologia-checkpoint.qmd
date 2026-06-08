@@ -1,0 +1,856 @@
+---
+title: "Weighting · Metodología"
+toc: false
+---
+
+```{=html}
+<div style="max-width:960px;margin:6rem auto;padding:0 1.5rem;">
+
+  <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;text-align:center;">
+    Metodología de ponderación EOF + PLS
+  </h2>
+  <p style="color:#4a5568;margin-bottom:2rem;text-align:center;">
+    Esquema del proceso, modos de variabilidad y cálculo de pesos del ensemble.
+  </p>
+
+  <!-- ============================================================ -->
+  <!-- DIAGRAMA DE FLUJO (SVG)                                      -->
+  <!-- ============================================================ -->
+  <div class="wt-diagram-wrap">
+    <svg viewBox="0 0 980 460" xmlns="http://www.w3.org/2000/svg"
+         preserveAspectRatio="xMidYMid meet" class="wt-diagram">
+
+      <defs>
+        <marker id="wt-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#0A304A"/>
+        </marker>
+      </defs>
+
+      <!-- FILA SUPERIOR · construcción de los modos -->
+      <g class="wt-row-label">
+        <text x="20" y="60" font-size="13" font-weight="700" fill="#0A304A"
+              letter-spacing="1.5" text-transform="uppercase">CONSTRUCCIÓN DE MODOS</text>
+      </g>
+
+      <!-- Caja 1: ERA5 MSLP -->
+      <g class="wt-box">
+        <rect x="60"  y="90" width="220" height="80" rx="8"
+              fill="#E6F1FA" stroke="#0A5EB8" stroke-width="2"/>
+        <text x="170" y="120" text-anchor="middle" font-size="14" font-weight="700" fill="#0A304A">ERA5 MSLP</text>
+        <text x="170" y="142" text-anchor="middle" font-size="12" fill="#0A304A">Climatología</text>
+        <text x="170" y="158" text-anchor="middle" font-size="12" fill="#0A304A">1940–2021</text>
+      </g>
+
+      <!-- Flecha 1→2 -->
+      <line x1="280" y1="130" x2="370" y2="130" stroke="#0A304A" stroke-width="2" marker-end="url(#wt-arrow)"/>
+
+      <!-- Caja 2: Anomalías -->
+      <g class="wt-box">
+        <rect x="370" y="90" width="220" height="80" rx="8"
+              fill="#E6F1FA" stroke="#0A5EB8" stroke-width="2"/>
+        <text x="480" y="120" text-anchor="middle" font-size="14" font-weight="700" fill="#0A304A">Anomalías de MSLP</text>
+        <text x="480" y="142" text-anchor="middle" font-size="12" fill="#0A304A">Agregadas en periodos</text>
+        <text x="480" y="158" text-anchor="middle" font-size="12" fill="#0A304A">trimestrales</text>
+      </g>
+
+      <!-- Flecha 2→3 -->
+      <line x1="590" y1="130" x2="680" y2="130" stroke="#0A304A" stroke-width="2" marker-end="url(#wt-arrow)"/>
+
+      <!-- Caja 3: EOF/PLS -->
+      <g class="wt-box">
+        <rect x="680" y="90" width="240" height="80" rx="8"
+              fill="#E6F1FA" stroke="#0A5EB8" stroke-width="2"/>
+        <text x="800" y="118" text-anchor="middle" font-size="14" font-weight="700" fill="#0A304A">Descomposición EOF/PLS</text>
+        <text x="800" y="138" text-anchor="middle" font-size="12" fill="#0A304A">Se retienen 4 EOFs/PLS y PCs</text>
+        <text x="800" y="156" text-anchor="middle" font-size="12" fill="#0A304A">Modos de variabilidad</text>
+      </g>
+
+      <!-- Flecha vertical 3→6 -->
+      <line x1="800" y1="170" x2="800" y2="290" stroke="#0A304A" stroke-width="2" marker-end="url(#wt-arrow)"/>
+
+      <!-- FILA INFERIOR · aplicación al ensemble -->
+      <g class="wt-row-label">
+        <text x="20" y="270" font-size="13" font-weight="700" fill="#0A304A"
+              letter-spacing="1.5" text-transform="uppercase">APLICACIÓN AL ENSEMBLE</text>
+      </g>
+
+      <!-- Caja 4: Ensemble -->
+      <g class="wt-box">
+        <rect x="60"  y="290" width="220" height="80" rx="8"
+              fill="#E6F1FA" stroke="#0A5EB8" stroke-width="2"/>
+        <text x="170" y="318" text-anchor="middle" font-size="14" font-weight="700" fill="#0A304A">Ensemble</text>
+        <text x="170" y="338" text-anchor="middle" font-size="12" fill="#0A304A">Hindcast / Predicción</text>
+        <text x="170" y="356" text-anchor="middle" font-size="12" fill="#0A304A">Anomalías de MSLP</text>
+      </g>
+
+      <!-- Flecha 4→5 -->
+      <line x1="280" y1="330" x2="370" y2="330" stroke="#0A304A" stroke-width="2" marker-end="url(#wt-arrow)"/>
+
+      <!-- Caja 5: Proyección -->
+      <g class="wt-box">
+        <rect x="370" y="290" width="220" height="80" rx="8"
+              fill="#E6F1FA" stroke="#0A5EB8" stroke-width="2"/>
+        <text x="480" y="318" text-anchor="middle" font-size="14" font-weight="700" fill="#0A304A">Proyección en EOF/PLS</text>
+        <text x="480" y="340" text-anchor="middle" font-size="12" fill="#0A304A">ERA5 → PCs por miembro</text>
+      </g>
+
+      <!-- Flecha 5→6 -->
+      <line x1="590" y1="330" x2="680" y2="330" stroke="#0A304A" stroke-width="2" marker-end="url(#wt-arrow)"/>
+
+      <!-- Caja 6: Pesos -->
+      <g class="wt-box">
+        <rect x="680" y="290" width="240" height="80" rx="8"
+              fill="#E6F1FA" stroke="#0A5EB8" stroke-width="2"/>
+        <text x="800" y="318" text-anchor="middle" font-size="14" font-weight="700" fill="#0A304A">Cálculo de pesos</text>
+        <text x="800" y="340" text-anchor="middle" font-size="12" fill="#0A304A">wᵢ(h) según distancia</text>
+        <text x="800" y="356" text-anchor="middle" font-size="12" fill="#0A304A">en el espacio de PCs</text>
+      </g>
+
+      <!-- Texto explicativo final -->
+      <text x="490" y="420" text-anchor="middle" font-size="13" fill="#0A304A" font-style="italic">
+        Los modos EOF/PLS se derivan de ERA5; el ensemble se proyecta sobre esos modos
+      </text>
+      <text x="490" y="440" text-anchor="middle" font-size="13" fill="#0A304A" font-style="italic">
+        y se pondera según la similitud con las PCs de la predicción objetivo.
+      </text>
+    </svg>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!-- SECCIÓN 1 · MODOS DE VARIABILIDAD                            -->
+  <!-- ============================================================ -->
+  <h3 style="color:#003087;margin-top:3rem;font-size:1.2rem;font-weight:700;">
+    1 · Modos de variabilidad: EOF o PLS
+  </h3>
+
+  <p style="color:#1a2332;line-height:1.55;margin-bottom:0.9rem;">
+    Los patrones de circulación a gran escala del sector Euro-Atlántico modulan fuertemente la
+    predictibilidad estacional sobre la Península Ibérica. Estos modos de variabilidad presentan a menudo
+    una mayor capacidad predictiva que las propias variables objetivo (T2M, precipitación), lo que los convierte
+    en una componente esencial de las estrategias de postproceso.
+  </p>
+
+  <p style="color:#1a2332;line-height:1.55;margin-bottom:0.6rem;">
+    Se utilizan dos enfoques distintos para extraer estos modos:
+  </p>
+
+  <ul style="color:#1a2332;line-height:1.6;margin-bottom:1.5rem;padding-left:1.4rem;">
+    <li style="margin-bottom:0.8rem;">
+      <strong>Modos basados en EOF:</strong> calculados a partir de anomalías de MSLP de ERA5 sobre el sector
+      Atlántico-Norte–Europa (90°W–60°E, 20°–85°N). Las cuatro primeras EOFs capturan los principales patrones
+      de teleconexión euro-atlánticos — <strong>NAO, EA, EAWR y SCA</strong> — que influyen sobre la temperatura
+      y precipitación en Iberia.
+    </li>
+    <li>
+      <strong>Modos basados en PLS:</strong> teleconexiones dirigidas obtenidas mediante regresión <em>Partial
+      Least Squares</em> (PLS). Las anomalías de MSLP actúan como predictores, mientras que las anomalías de
+      temperatura (T2M) o precipitación (PR) sobre Iberia se utilizan como predictandos. Estos modos optimizan
+      los patrones de circulación más relevantes para cada variable de superficie, mejorando el skill en
+      temperatura durante la estación cálida (AMJ–ASO).
+    </li>
+  </ul>
+
+  <!-- Figura: EOFs -->
+  <figure class="wt-figure">
+    <img src="images/weighting/ERA5_EOFs_DJF.png" alt="EOFs invernales de ERA5"/>
+    <figcaption>
+      Ejemplo: EOFs principales de las anomalías de MSLP de ERA5 en invierno (DJF), utilizados como
+      modos de variabilidad para la ponderación del ensemble.
+    </figcaption>
+  </figure>
+
+  <!-- Referencia preprint -->
+  <div class="wt-ref-card">
+    <span class="wt-ref-tag">Referencia metodológica</span>
+    <p>
+      La metodología PLS y su aplicación a la ponderación estacional de ensemble se describen en detalle en
+      <a href="https://egusphere.copernicus.org/preprints/2025/egusphere-2025-3664/" target="_blank"
+         rel="noopener">
+        <em>«Targeted Teleconnections and their Application to the Postprocessing of Climate Predictions»</em>
+      </a>
+      de Clementine Dalelane (2025).
+    </p>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- BRAIN DE TELECONEXIONES · D3                                  -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <section class="brain-section">
+
+    <div class="brain-head">
+      <span class="brain-eyebrow">Explorador interactivo</span>
+      <h3 class="brain-title">Los cuatro modos de teleconexión euro-atlánticos</h3>
+      <p class="brain-desc">
+        Cada modo de variabilidad tiene un patrón espacial característico, con centros de alta
+        y baja presión que reorganizan el flujo atmosférico sobre el Atlántico Norte y Europa.
+        Selecciona un modo para ver su firma y su impacto típico sobre la Península Ibérica.
+      </p>
+    </div>
+
+    <!-- Botones de modos -->
+    <div class="brain-tabs" id="brain-tabs"></div>
+
+    <!-- Mapa D3 -->
+    <div id="brain-map"></div>
+
+    <!-- Tarjeta de descripción -->
+    <div class="brain-info" id="brain-info"></div>
+
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!-- SECCIÓN 2 · PONDERACIÓN DE MIEMBROS                          -->
+  <!-- ============================================================ -->
+  <h3 style="color:#003087;margin-top:2.5rem;font-size:1.2rem;font-weight:700;">
+    2 · Ponderación de miembros del ensemble
+  </h3>
+
+  <p style="color:#1a2332;line-height:1.55;margin-bottom:0.9rem;">
+    La ponderación del ensemble asigna mayor peso a aquellos miembros cuya fase de circulación
+    (proyección sobre los modos EOF o PLS) es más cercana a la observada o predicha. Este marco generaliza
+    el submuestreo (ponderación 0/1) y mejora la consistencia dinámica, especialmente para los patrones
+    invernales relacionados con la NAO.
+  </p>
+
+  <p style="color:#1a2332;line-height:1.55;margin-bottom:0.6rem;">
+    La mejora alcanzable mediante la ponderación depende de dos factores:
+  </p>
+
+  <ul style="color:#1a2332;line-height:1.6;margin-bottom:1.2rem;padding-left:1.4rem;">
+    <li style="margin-bottom:0.5rem;">
+      Cuánta varianza de la variable objetivo (T2M, PR) está explicada por los modos.
+    </li>
+    <li>
+      Con qué precisión pueden predecirse los propios modos.
+    </li>
+  </ul>
+
+  <p style="color:#1a2332;line-height:1.55;margin-bottom:2.5rem;">
+    La ponderación basada en EOF mejora las predicciones de T2M y PR en invierno y comienzos de primavera,
+    mientras que los modos basados en PLS aportan valor añadido para las predicciones de temperatura en la
+    estación cálida. La precipitación se beneficia menos en verano debido a su carácter convectivo y de
+    escala local.
+  </p>
+
+
+  <!-- ============================================================ -->
+  <!-- NAVEGACIÓN INFERIOR                                          -->
+  <!-- ============================================================ -->
+  <div class="wt-nav">
+    <a href="weighting-resultados.html" class="wt-nav-next">
+      Ver resultados →
+    </a>
+  </div>
+
+</div>
+
+
+<!-- ============================================================ -->
+<!-- ESTILOS                                                       -->
+<!-- ============================================================ -->
+<style>
+/* ── Diagrama SVG ──────────────────────────────────────── */
+.wt-diagram-wrap {
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 10px;
+  padding: 1.5rem 1rem;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 2px 12px rgba(0,48,135,0.06);
+  overflow-x: auto;
+}
+.wt-diagram {
+  width: 100%;
+  height: auto;
+  min-width: 720px;
+  display: block;
+}
+
+/* ── Figura ────────────────────────────────────────────── */
+.wt-figure {
+  margin: 1.5rem 0 2rem 0;
+  text-align: center;
+}
+.wt-figure img {
+  max-width: 85%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  display: inline-block;
+}
+.wt-figure figcaption {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #4a5568;
+  margin-top: 0.8rem;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.4;
+}
+
+/* ── Tarjeta de referencia ─────────────────────────────── */
+.wt-ref-card {
+  background: #f4f8fd;
+  border-left: 4px solid #003087;
+  border-radius: 6px;
+  padding: 1rem 1.3rem;
+  margin: 2rem 0;
+}
+.wt-ref-tag {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #003087;
+  margin-bottom: 0.4rem;
+}
+.wt-ref-card p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #1a2332;
+}
+.wt-ref-card a {
+  color: #0072bc;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0,114,188,0.3);
+}
+.wt-ref-card a:hover {
+  border-bottom-color: #0072bc;
+}
+
+/* ── Brain teleconexiones ──────────────────────────────── */
+.brain-section {
+  margin: 3rem 0;
+  padding: 2rem;
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,48,135,0.06);
+}
+.brain-head {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.brain-eyebrow {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #0072bc;
+  background: #e8f4fc;
+  padding: 3px 12px;
+  border-radius: 99px;
+  margin-bottom: 0.6rem;
+}
+.brain-title {
+  color: #003087;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+.brain-desc {
+  color: #4a5568;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.brain-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 1.5rem 0;
+}
+.brain-tab {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid #dde3ed;
+  background: white;
+  color: #4a5568;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.02em;
+}
+.brain-tab:hover {
+  border-color: #0072bc;
+  color: #003087;
+}
+.brain-tab.active {
+  background: #003087;
+  border-color: #003087;
+  color: white;
+}
+.brain-tab small {
+  display: block;
+  font-size: 0.65rem;
+  opacity: 0.75;
+  font-weight: 500;
+  margin-top: 0.1rem;
+}
+
+#brain-map {
+  width: 100%;
+  background: #eaf3fb;
+  border-radius: 8px;
+  padding: 0.5rem;
+  position: relative;
+  min-height: 360px;
+}
+#brain-map svg { display: block; margin: 0 auto; }
+
+.bmap-land {
+  fill: #d3dce8;
+  stroke: #fff;
+  stroke-width: 0.4;
+}
+.bmap-graticule {
+  fill: none;
+  stroke: #cad6e8;
+  stroke-width: 0.4;
+  stroke-dasharray: 2 2;
+}
+.bmap-sector {
+  fill: none;
+  stroke: #003087;
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  opacity: 0.6;
+}
+.bmap-iberia-marker {
+  fill: #ffcc00;
+  stroke: #003087;
+  stroke-width: 1.5;
+}
+.bmap-iberia-label {
+  fill: #003087;
+  font-weight: 700;
+  font-size: 10px;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  pointer-events: none;
+}
+
+.bmap-center {
+  transition: opacity 0.3s, r 0.3s;
+}
+.bmap-center-pos { fill: #c0392b; }
+.bmap-center-neg { fill: #1f618d; }
+.bmap-center-stroke {
+  fill: none;
+  stroke: white;
+  stroke-width: 2.5;
+}
+.bmap-center-label {
+  fill: white;
+  font-size: 11px;
+  font-weight: 800;
+  pointer-events: none;
+  text-anchor: middle;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+}
+.bmap-flow {
+  fill: none;
+  stroke: #4a5568;
+  stroke-width: 2;
+  opacity: 0.7;
+  stroke-linecap: round;
+  transition: opacity 0.3s;
+}
+
+/* Tarjeta info modo seleccionado */
+.brain-info {
+  margin-top: 1.2rem;
+  padding: 1.2rem 1.4rem;
+  background: #f4f8fd;
+  border-left: 4px solid #003087;
+  border-radius: 6px;
+}
+.brain-info-title {
+  color: #003087;
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+}
+.brain-info-title small {
+  display: inline-block;
+  margin-left: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #0072bc;
+  background: white;
+  padding: 2px 9px;
+  border-radius: 99px;
+  vertical-align: middle;
+  letter-spacing: 0.04em;
+}
+.brain-info-desc {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #1a2332;
+  margin: 0 0 0.8rem 0;
+}
+.brain-info-impacts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+.brain-impact {
+  background: white;
+  padding: 0.7rem 0.9rem;
+  border-radius: 6px;
+  border: 1px solid #dde3ed;
+}
+.brain-impact-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8892a4;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+.brain-impact-value {
+  font-size: 0.88rem;
+  color: #1a2332;
+  line-height: 1.45;
+}
+
+/* ── Navegación inferior ───────────────────────────────── */
+.wt-nav {
+  display: flex;
+  justify-content: flex-end;
+  margin: 2.5rem 0 1rem 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e8eef5;
+}
+.wt-nav-next {
+  padding: 0.6rem 1.4rem;
+  background: #003087;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  transition: background 0.15s;
+}
+.wt-nav-next:hover {
+  background: #0072bc;
+  color: white;
+}
+
+/* ── Responsive ────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .wt-figure img { max-width: 100%; }
+  .brain-info-impacts { grid-template-columns: 1fr; }
+  .brain-section { padding: 1.2rem; }
+}
+</style>
+
+
+<!-- ============================================================ -->
+<!-- D3 + lógica del brain de teleconexiones                       -->
+<!-- ============================================================ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+
+<script>
+(function() {
+
+  // ════════════════════════════════════════════════════════════
+  //  Definición de los 4 modos
+  //  · centers: [lon, lat, signo (+/-), etiqueta]
+  //  · flow:    arcos de viento dominante [lon1,lat1,lon2,lat2]
+  // ════════════════════════════════════════════════════════════
+  const MODES = [
+    {
+      id: 'nao',
+      name: 'NAO',
+      full: 'North Atlantic Oscillation',
+      desc: 'El modo más importante de variabilidad invernal sobre el Atlántico Norte. ' +
+            'Su fase positiva refuerza el dipolo entre la baja de Islandia y el anticiclón de las Azores, ' +
+            'intensificando los vientos del oeste sobre Europa.',
+      tempImpact: 'Inviernos más cálidos sobre el norte de Europa; ligeramente más fríos sobre el sur de la Península.',
+      precImpact: 'Iberia más seca de lo normal, especialmente en el cuadrante suroeste.',
+      centers: [
+        { lon: -28, lat: 38, sign: '+', label: 'H' },   // Azores high
+        { lon: -22, lat: 64, sign: '-', label: 'L' },   // Iceland low
+      ],
+      flow: [
+        { from: [-50, 50], to: [-10, 52], curve: 0.15 },
+        { from: [-10, 52], to: [25, 55],  curve: 0.15 },
+      ],
+    },
+    {
+      id: 'ea',
+      name: 'EA',
+      full: 'East Atlantic',
+      desc: 'Segundo modo más prominente. Estructura monopolar centrada al suroeste de Irlanda, ' +
+            'desplazada hacia el sur respecto a la NAO. Modula la posición e intensidad del jet del Atlántico Norte.',
+      tempImpact: 'En fase positiva: aire más cálido y húmedo sobre Iberia.',
+      precImpact: 'Mayor precipitación sobre el oeste y suroeste peninsular, especialmente en otoño-invierno.',
+      centers: [
+        { lon: -27, lat: 53, sign: '-', label: 'L' },
+      ],
+      flow: [
+        { from: [-45, 38], to: [-10, 42], curve: -0.10 },
+        { from: [-10, 42], to: [10,  45], curve: -0.10 },
+      ],
+    },
+    {
+      id: 'eawr',
+      name: 'EAWR',
+      full: 'East Atlantic / Western Russia',
+      desc: 'Patrón cuadripolar que se extiende desde el Atlántico hasta Rusia occidental. ' +
+            'Indicador clásico de bloqueo atmosférico sobre Europa, alterando el flujo zonal habitual.',
+      tempImpact: 'Anomalías marcadas según la fase: inviernos fríos en Iberia cuando el bloqueo se sitúa al norte.',
+      precImpact: 'Menor precipitación en el sur peninsular; circulaciones perturbadas con eventos extremos.',
+      centers: [
+        { lon: -30, lat: 55, sign: '+', label: 'H' },
+        { lon: 22,  lat: 50, sign: '-', label: 'L' },
+        { lon: 50,  lat: 55, sign: '+', label: 'H' },
+      ],
+      flow: [
+        { from: [-20, 55], to: [10, 45], curve: 0.20 },
+        { from: [10,  45], to: [40, 55], curve: -0.20 },
+      ],
+    },
+    {
+      id: 'sca',
+      name: 'SCA',
+      full: 'Scandinavian',
+      desc: 'Patrón con centro principal sobre Escandinavia. Genera bloqueos nórdicos que desvían ' +
+            'el flujo zonal hacia el sur, llevando masas de aire continentales sobre Europa Occidental.',
+      tempImpact: 'En fase positiva (bloqueo nórdico): irrupciones frías sobre Europa Occidental, incluida Iberia.',
+      precImpact: 'Menor precipitación de origen atlántico; aumento de la frecuencia de borrascas mediterráneas.',
+      centers: [
+        { lon: 20, lat: 65, sign: '+', label: 'H' },
+        { lon: -25, lat: 45, sign: '-', label: 'L' },
+        { lon: 35,  lat: 45, sign: '-', label: 'L' },
+      ],
+      flow: [
+        { from: [0, 70], to: [10, 50],  curve: -0.15 },
+        { from: [10, 50], to: [15, 35], curve: -0.15 },
+      ],
+    },
+  ];
+
+  // ─── Estado ──────────────────────────────────────────────
+  let currentMode = MODES[0].id;
+
+  // ─── Construir botones ───────────────────────────────────
+  function buildTabs() {
+    const c = document.getElementById('brain-tabs');
+    c.innerHTML = '';
+    MODES.forEach(m => {
+      const b = document.createElement('button');
+      b.className = 'brain-tab' + (m.id === currentMode ? ' active' : '');
+      b.innerHTML = `${m.name}<small>${m.full}</small>`;
+      b.addEventListener('click', () => {
+        currentMode = m.id;
+        document.querySelectorAll('.brain-tab').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        renderMap();
+        renderInfo();
+      });
+      c.appendChild(b);
+    });
+  }
+
+  // ─── Render del mapa ─────────────────────────────────────
+  let worldData = null;
+
+  function renderMap() {
+    const host = document.getElementById('brain-map');
+    if (!host || typeof d3 === 'undefined') return;
+    host.innerHTML = '';
+
+    const W = Math.min(host.clientWidth, 820);
+    const H = 380;
+
+    const svg = d3.select(host).append('svg')
+      .attr('width',  W).attr('height', H)
+      .attr('viewBox', `0 0 ${W} ${H}`);
+
+    // Proyección Mercator recortada al sector Euro-Atlántico (90W–60E, 20N–85N)
+    const projection = d3.geoMercator()
+      .center([-15, 55])
+      .scale(W * 0.55)
+      .translate([W / 2, H / 2 + 30])
+      .clipExtent([[0, 0], [W, H]]);
+
+    const path = d3.geoPath(projection);
+
+    // Graticule (líneas de coordenadas)
+    const graticule = d3.geoGraticule().step([20, 10]);
+    svg.append('path')
+      .datum(graticule())
+      .attr('class', 'bmap-graticule')
+      .attr('d', path);
+
+    // Tierra (si hay datos cargados)
+    if (worldData) {
+      const land = topojson.feature(worldData, worldData.objects.land);
+      svg.append('path')
+        .datum(land)
+        .attr('class', 'bmap-land')
+        .attr('d', path);
+    }
+
+    // Sector Euro-Atlántico (rectángulo del dominio)
+    const sectorBox = {
+      type: 'Polygon',
+      coordinates: [[
+        [-90, 20], [60, 20], [60, 85], [-90, 85], [-90, 20]
+      ]],
+    };
+    svg.append('path')
+      .datum(sectorBox)
+      .attr('class', 'bmap-sector')
+      .attr('d', path);
+
+    // Marcador Iberia
+    const iberia = projection([-4, 40]);
+    if (iberia) {
+      svg.append('circle')
+        .attr('class', 'bmap-iberia-marker')
+        .attr('cx', iberia[0])
+        .attr('cy', iberia[1])
+        .attr('r', 4);
+      svg.append('text')
+        .attr('class', 'bmap-iberia-label')
+        .attr('x', iberia[0] + 8)
+        .attr('y', iberia[1] + 4)
+        .text('Iberia');
+    }
+
+    // ── Centros de acción del modo seleccionado ──
+    const mode = MODES.find(m => m.id === currentMode);
+
+    // Flow (arcos curvos)
+    svg.append('defs').append('marker')
+      .attr('id', 'brain-flow-arrow')
+      .attr('viewBox', '0 0 10 10')
+      .attr('refX', 9).attr('refY', 5)
+      .attr('markerWidth', 6).attr('markerHeight', 6)
+      .attr('orient', 'auto-start-reverse')
+      .append('path')
+        .attr('d', 'M0,0 L10,5 L0,10 z')
+        .attr('fill', '#4a5568');
+
+    mode.flow.forEach(arc => {
+      const p1 = projection(arc.from);
+      const p2 = projection(arc.to);
+      if (!p1 || !p2) return;
+
+      const dx = p2[0] - p1[0];
+      const dy = p2[1] - p1[1];
+      const dr = Math.sqrt(dx*dx + dy*dy);
+      const sweep = arc.curve >= 0 ? 1 : 0;
+      const sweepR = Math.abs(arc.curve) > 0 ? dr / (Math.abs(arc.curve) * 2) : dr * 5;
+
+      svg.append('path')
+        .attr('class', 'bmap-flow')
+        .attr('d', `M${p1[0]},${p1[1]} A${sweepR},${sweepR} 0 0,${sweep} ${p2[0]},${p2[1]}`)
+        .attr('marker-end', 'url(#brain-flow-arrow)')
+        .attr('opacity', 0)
+        .transition().duration(500).delay(200)
+        .attr('opacity', 0.7);
+    });
+
+    // Centros
+    mode.centers.forEach((c, i) => {
+      const p = projection([c.lon, c.lat]);
+      if (!p) return;
+
+      const g = svg.append('g').attr('opacity', 0);
+
+      g.append('circle')
+        .attr('cx', p[0])
+        .attr('cy', p[1])
+        .attr('r', 0)
+        .attr('class', 'bmap-center ' + (c.sign === '+' ? 'bmap-center-pos' : 'bmap-center-neg'))
+        .transition().duration(400).delay(i * 80)
+        .attr('r', 24);
+
+      g.append('circle')
+        .attr('cx', p[0])
+        .attr('cy', p[1])
+        .attr('r', 24)
+        .attr('class', 'bmap-center-stroke');
+
+      g.append('text')
+        .attr('class', 'bmap-center-label')
+        .attr('x', p[0])
+        .attr('y', p[1] + 4)
+        .text(c.label);
+
+      g.transition().duration(300).delay(i * 80).attr('opacity', 1);
+    });
+  }
+
+  // ─── Render de la tarjeta de información ─────────────────
+  function renderInfo() {
+    const mode = MODES.find(m => m.id === currentMode);
+    document.getElementById('brain-info').innerHTML = `
+      <h4 class="brain-info-title">${mode.name} <small>${mode.full}</small></h4>
+      <p class="brain-info-desc">${mode.desc}</p>
+      <div class="brain-info-impacts">
+        <div class="brain-impact">
+          <span class="brain-impact-label">Impacto en temperatura sobre Iberia</span>
+          <span class="brain-impact-value">${mode.tempImpact}</span>
+        </div>
+        <div class="brain-impact">
+          <span class="brain-impact-label">Impacto en precipitación sobre Iberia</span>
+          <span class="brain-impact-value">${mode.precImpact}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  // ─── Init ────────────────────────────────────────────────
+  function tryInit() {
+    if (typeof d3 === 'undefined' || typeof topojson === 'undefined') {
+      setTimeout(tryInit, 200);
+      return;
+    }
+
+    buildTabs();
+    renderInfo();
+
+    // Cargar continentes (TopoJSON ligero, ~100KB)
+    d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json')
+      .then(world => {
+        worldData = world;
+        renderMap();
+      })
+      .catch(() => {
+        // Si falla la descarga, renderizamos el mapa sin continentes
+        renderMap();
+      });
+  }
+
+  document.addEventListener('DOMContentLoaded', tryInit);
+
+  // Redibujar al cambiar tamaño
+  let resizeT;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeT);
+    resizeT = setTimeout(renderMap, 200);
+  });
+
+})();
+</script>
+```
