@@ -1,0 +1,378 @@
+<!-- ── BARRA BRANCA CON LOGOS ─────────────────────────── -->
+<div id="site-header">
+  <div id="header-logos">
+    <a href="https://www.aemet.es/gl/portada" target="_blank">
+      <img src="images/logos/aemet.png" alt="AEMET"/>
+    </a>
+    <div class="header-sep"></div>
+    <a href="https://www.tragsa.es/es/Paginas/default.aspx" target="_blank">
+      <img src="images/logos/tragsatec.jpg" alt="Tragsatec"/>
+    </a>
+
+    <!-- ── Selector de idioma ── -->
+    <div id="header-lang" data-current="gl">
+      <button id="header-lang-trigger" type="button" aria-label="Cambiar idioma">
+        <span class="header-lang-icon">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+        </span>
+        <span class="header-lang-current">GL</span>
+        <span class="header-lang-caret">▾</span>
+      </button>
+      <div class="header-lang-menu" id="header-lang-menu">
+        <a href="#" class="header-lang-option"        data-lang="es" data-path="">Español</a>
+        <a href="#" class="header-lang-option"        data-lang="en" data-path="en/">English</a>
+        <a href="#" class="header-lang-option active" data-lang="gl" data-path="gl/">Galego</a>
+      </div>
+    </div>
+
+    <!-- ── Buscador ── -->
+    <div id="header-search">
+      <button id="header-search-trigger" type="button" aria-label="Buscar no sitio">
+        <span class="header-search-icon">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+               stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+        <span class="header-search-placeholder">Introduza texto</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── BARRA AZUL DE NAVEGACIÓN ──────────────────────── -->
+<nav id="site-nav">
+  <div id="site-nav-inner">
+    <a href="index.html" class="nav-link">Inicio</a>
+    <div class="nav-dropdown">
+      <a href="el-proyecto.html" class="nav-link nav-link-dropdown">
+        Coñécenos
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="el-proyecto.html" class="nav-dropdown-item">O Proxecto</a>
+        <a href="el-equipo.html" class="nav-dropdown-item">O Equipo</a>
+      </div>
+    </div>
+    <a href="datos.html" class="nav-link">Datos</a>
+    <div class="nav-dropdown">
+      <a href="downscaling-metodologia.html" class="nav-link nav-link-dropdown">
+        Downscaling
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="downscaling-metodologia.html" class="nav-dropdown-item">Metodoloxía</a>
+        <a href="downscaling-resultados.html" class="nav-dropdown-item">Resultados</a>
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <a href="weighting-metodologia.html" class="nav-link nav-link-dropdown">
+        Weighting
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="weighting-metodologia.html" class="nav-dropdown-item">Metodoloxía</a>
+        <a href="weighting-resultados.html" class="nav-dropdown-item">Resultados</a>
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <a href="embalses-prediccion.html" class="nav-link nav-link-dropdown">
+        Encoros
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="embalses-acerca.html" class="nav-dropdown-item">Metodoloxía</a>
+        <a href="embalses-cuenca.html" class="nav-dropdown-item">Predición Cunca</a>
+        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predición Encoro</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<style>
+.navbar { display: none !important; }
+#quarto-header { display: none !important; }
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+#site-header {
+  background: white;
+  border-bottom: 1px solid #dde3ed;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+#header-logos {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.6rem 2rem;
+  max-width: 100%;
+}
+
+#header-logos img {
+  height: 52px;
+  object-fit: contain;
+  transition: opacity 0.2s;
+}
+#header-logos img:hover { opacity: 0.85; }
+
+.header-sep {
+  width: 1px;
+  height: 44px;
+  background: #dde3ed;
+}
+
+#header-lang {
+  margin-left: auto;
+  position: relative;
+}
+#header-lang-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.8rem;
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  color: #003087;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+#header-lang-trigger:hover {
+  border-color: #0072bc;
+  box-shadow: 0 2px 6px rgba(0,114,188,0.12);
+}
+.header-lang-icon { color: #0072bc; display: inline-flex; }
+.header-lang-caret { font-size: 0.7rem; opacity: 0.7; }
+.header-lang-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0,48,135,0.15);
+  min-width: 130px;
+  z-index: 1010;
+}
+.header-lang-menu.open { display: block; }
+.header-lang-option {
+  display: block;
+  padding: 0.5rem 0.9rem;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  font-size: 0.82rem;
+  color: #4a5568;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all 0.12s;
+}
+.header-lang-option:hover {
+  background: #f4f8fd;
+  color: #003087;
+  border-left-color: #0072bc;
+}
+.header-lang-option.active {
+  background: #f4f8fd;
+  color: #003087;
+  font-weight: 700;
+  border-left-color: #003087;
+}
+
+#header-search {
+  display: flex;
+  align-items: center;
+  padding-right: 40rem;    
+}
+#header-search-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.9rem 0.45rem 0.7rem;
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  min-width: 220px;
+}
+#header-search-trigger:hover {
+  border-color: #0072bc;
+  box-shadow: 0 2px 6px rgba(0,114,188,0.12);
+}
+.header-search-icon { display: inline-flex; color: #0072bc; }
+.header-search-placeholder { color: #8892a4; font-size: 0.85rem; }
+
+#site-nav {
+  background: #003087;
+  border-bottom: 3px solid #0072bc;
+  box-shadow: 0 2px 8px rgba(0,48,135,0.2);
+  position: fixed;
+  top: 74px;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+#site-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+#site-nav .nav-link {
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  font-size: 0.89rem;
+  font-weight: 100;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  display: block;
+}
+#site-nav .nav-link:hover {
+  color: white;
+  border-bottom-color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.07);
+}
+#site-nav .nav-link.active {
+  color: white;
+  border-bottom-color: white;
+}
+
+.nav-dropdown { position: relative; }
+.nav-link-dropdown { display: flex !important; align-items: center; gap: 0.3rem; }
+.nav-caret { font-size: 0.7rem; transition: transform 0.2s; }
+.nav-dropdown:hover .nav-caret { transform: rotate(180deg); }
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #003087;
+  min-width: 220px;
+  box-shadow: 0 4px 12px rgba(0,48,135,0.3);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  z-index: 1001;
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: block; }
+.nav-dropdown-item {
+  display: block;
+  padding: 0.7rem 1.2rem;
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 100;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+}
+.nav-dropdown-item:hover {
+  background: rgba(255,255,255,0.08);
+  border-left-color: white;
+  color: white;
+}
+.nav-dropdown-item.active {
+  background: rgba(255,255,255,0.05);
+  border-left-color: white;
+  color: white;
+}
+
+#quarto-content { margin-top: 0 !important; padding-top: 0 !important; }
+body { padding-top: 1px !important; }
+
+@media (max-width: 768px) {
+  #header-logos { padding: 0.5rem 1rem; gap: 0.8rem; }
+  #header-logos img { height: 38px; }
+  #header-search-trigger { min-width: 0; padding: 0.4rem 0.6rem; }
+  .header-search-placeholder { display: none; }
+  #site-nav-inner { flex-wrap: wrap; padding: 0 1rem; }
+  #site-nav .nav-link { font-size: 0.78rem; padding: 0.6rem 0.7rem; }
+  .nav-dropdown-menu { position: static; box-shadow: none; min-width: auto; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const current = window.location.pathname.split('/').pop() || 'index.html';
+
+  document.querySelectorAll('#site-nav .nav-link').forEach(link => {
+    if (link.getAttribute('href') === current) link.classList.add('active');
+  });
+  document.querySelectorAll('.nav-dropdown-item').forEach(item => {
+    if (item.getAttribute('href') === current) {
+      item.classList.add('active');
+      const parent = item.closest('.nav-dropdown').querySelector('.nav-link-dropdown');
+      if (parent) parent.classList.add('active');
+    }
+  });
+
+  const trigger = document.getElementById('header-search-trigger');
+  if (trigger) {
+    trigger.addEventListener('click', function() {
+      const quartoBtn = document.querySelector('#quarto-search')
+                     || document.querySelector('[aria-label="Search"]')
+                     || document.querySelector('.aa-DetachedSearchButton');
+      if (quartoBtn) quartoBtn.click();
+    });
+  }
+
+  const langTrigger = document.getElementById('header-lang-trigger');
+  const langMenu    = document.getElementById('header-lang-menu');
+
+  if (langTrigger && langMenu) {
+    langTrigger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      langMenu.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+      if (!langMenu.contains(e.target)) langMenu.classList.remove('open');
+    });
+
+    document.querySelectorAll('.header-lang-option').forEach(opt => {
+      opt.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetLang = this.dataset.lang;
+        const langPath   = this.dataset.path;
+        const currentLang = document.getElementById('header-lang').dataset.current;
+        if (targetLang === currentLang) {
+          langMenu.classList.remove('open');
+          return;
+        }
+
+        const pathParts = window.location.pathname.split('/').filter(Boolean);
+        let pageName = pathParts[pathParts.length - 1] || 'index.html';
+        if (!pageName.endsWith('.html')) pageName = 'index.html';
+
+        let newUrl;
+        if (currentLang === 'es') {
+          newUrl = langPath + pageName;
+        } else {
+          newUrl = '../' + langPath + pageName;
+        }
+        window.location.href = newUrl;
+      });
+    });
+  }
+});
+</script>

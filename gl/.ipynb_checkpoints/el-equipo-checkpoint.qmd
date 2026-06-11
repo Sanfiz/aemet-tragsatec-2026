@@ -1,0 +1,235 @@
+---
+title: "El Equipo"
+subtitle: "Personas que trabajan en el servicio de predicción estacional"
+format:
+  html:
+    toc: false
+    page-layout: full
+---
+
+```{=html}
+<style>
+.team-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 4rem;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  color: #1f2937;
+  line-height: 1.6;
+}
+
+/* ─── Encabezado breve ─── */
+.team-wrap .team-intro {
+  text-align: center;
+  max-width: 720px;
+  margin: 1.5rem auto 2.8rem;
+}
+.team-wrap .team-intro h2 {
+  color: #003087;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 0.6rem;
+  letter-spacing: -0.01em;
+}
+.team-wrap .team-intro p {
+  color: #4b5563;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  margin: 0;
+}
+.team-wrap .team-intro .divider {
+  width: 60px;
+  height: 3px;
+  background: #0072bc;
+  margin: 1rem auto 1.2rem;
+  border-radius: 2px;
+}
+
+/* ─── Grid de tarjetas del equipo ─── */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.4rem;
+  margin: 1.5rem 0 3rem;
+}
+
+.team-card {
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 8px;
+  padding: 1.6rem 1.4rem 1.4rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+}
+.team-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0,48,135,0.12);
+  border-color: #0072bc;
+}
+
+/* Borde superior según institución */
+.team-card.aemet     { border-top: 4px solid #003087; }
+.team-card.tragsatec { border-top: 4px solid #0072bc; }
+
+/* Iniciales en círculo */
+.team-card .avatar {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: white;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+.team-card.aemet .avatar {
+  background: linear-gradient(135deg, #003087 0%, #0046b8 100%);
+}
+.team-card.tragsatec .avatar {
+  background: linear-gradient(135deg, #0072bc 0%, #2196d8 100%);
+}
+
+/* Nombre */
+.team-card .name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.01em;
+}
+
+/* Rol */
+.team-card .role {
+  font-size: 0.88rem;
+  color: #4b5563;
+  font-weight: 500;
+  margin: 0 0 0.7rem;
+  min-height: 2.5em;
+}
+
+/* Institución */
+.team-card .inst {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.7rem;
+  border-radius: 10px;
+  margin-bottom: 0.9rem;
+}
+.team-card.aemet .inst {
+  background: rgba(0,48,135,0.08);
+  color: #003087;
+}
+.team-card.tragsatec .inst {
+  background: rgba(0,114,188,0.1);
+  color: #0072bc;
+}
+
+/* Email */
+.team-card .email {
+  font-size: 0.83rem;
+  color: #0072bc;
+  text-decoration: none;
+  font-family: 'IBM Plex Mono', monospace, sans-serif;
+  word-break: break-all;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+  margin-top: auto;
+}
+.team-card .email:hover {
+  background: rgba(0,114,188,0.08);
+  text-decoration: underline;
+}
+
+/* ─── Pie informativo ─── */
+.team-footer {
+  background: #f7f9fc;
+  border-left: 4px solid #0072bc;
+  padding: 1.2rem 1.4rem;
+  border-radius: 4px;
+  margin: 2rem 0 0;
+  font-size: 0.9rem;
+  color: #4b5563;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+.team-footer strong { color: #003087; }
+.team-footer a { color: #0072bc; text-decoration: none; font-weight: 600; }
+.team-footer a:hover { text-decoration: underline; }
+</style>
+
+<div class="team-wrap">
+
+  <!-- ═══ INTRO ═══ -->
+  <div class="team-intro">
+    <h2>El Equipo</h2>
+
+
+  <!-- ═══ TARJETAS ═══ -->
+  <div class="team-grid">
+
+    <!-- AEMET -->
+    <div class="team-card aemet">
+      <div class="avatar">ER</div>
+      <div class="name">Esteban Rodríguez-Guisado</div>
+      <div class="role">Coordinador AEMET</div>
+      <div class="inst">AEMET</div>
+      <a class="email" href="mailto:erodriguezg@aemet.es">erodriguezg@aemet.es</a>
+    </div>
+
+    <!-- TRAGSATEC -->
+    <div class="team-card tragsatec">
+      <div class="avatar">MD</div>
+      <div class="name">Marta Domínguez</div>
+      <div class="role">Investigadora<br>predicción estacional</div>
+      <div class="inst">Tragsatec</div>
+      <a class="email" href="mailto:digitalizacion_09@aemet.es">digitalizacion_09@aemet.es</a>
+    </div>
+
+    <div class="team-card tragsatec">
+      <div class="avatar">MS</div>
+      <div class="name">Martín Senande</div>
+      <div class="role">Investigador<br>predicción estacional</div>
+      <div class="inst">Tragsatec</div>
+    </div>
+
+    <div class="team-card tragsatec">
+      <div class="avatar">SS</div>
+      <div class="name">Sabela Sanfiz</div>
+      <div class="role">Investigadora<br>predicción estacional</div>
+      <div class="inst">Tragsatec</div>
+      <a class="email" href="mailto:digitalizacion_16@aemet.es">digitalizacion_16@aemet.es</a>
+    </div>
+
+    <div class="team-card tragsatec">
+      <div class="avatar">JG</div>
+      <div class="name">Jesús Gutiérrez-Fernández</div>
+      <div class="role">Investigador<br>modelización climática</div>
+      <div class="inst">Tragsatec</div>
+      <a class="email" href="mailto:digitalizacion_17@aemet.es">digitalizacion_17@aemet.es</a>
+    </div>
+
+  </div>
+
+  <!-- ═══ PIE ═══ -->
+  <div class="team-footer">
+    El equipo forma parte del grupo <a href="https://www.aemet.es/gl/serviciosclimaticos/prediccion_estacional"
+         target="_blank" rel="noopener"
+         style="color:#0072bc;font-weight:600;">Predicción Estacional</a> perteneciente al <strong>Área de Evaluación y Modelización del Clima de AEMET</strong>.
+
+  </div>
+
+</div>
+```

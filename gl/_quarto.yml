@@ -1,0 +1,30 @@
+project:
+  type: website
+  output-dir: ../docs/gl
+
+website:
+  title: "Predición Estacional · AEMET–Tragsatec"
+  description: "Resultados do servizo de predición estacional"
+  site-url: https://sanfiz.github.io/pred-estacional/gl/
+  favicon: images/logos/favicon.ico
+  navbar: false
+  search:
+    location: navbar
+    type: overlay
+    copy-button: false
+    keyboard-shortcut: ["/"]
+
+format:
+  html:
+    theme: flatly
+    css: styles.css
+    toc: false
+    page-layout: full
+    include-before-body: header_gl.html
+    include-after-body: footer_gl.html
+
+resources:
+  - images/
+  - cuencas.geojson
+  - rios.geojson
+  - paises.geojson

@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Datos – Predicción Estacional · AEMET–Tragsatec</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../images/logos/favicon.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "/"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content column-page" id="quarto-document-content">
+<!-- ── BARRA BLANCA CON LOGOS ─────────────────────────── -->
+<div id="site-header">
+  <div id="header-logos">
+    <a href="https://www.aemet.es/es/portada" target="_blank">
+      <img src="images/logos/aemet.png" alt="AEMET">
+    </a>
+    <div class="header-sep"></div>
+    <a href="https://www.tragsa.es/es/Paginas/default.aspx" target="_blank">
+      <img src="images/logos/tragsatec.jpg" alt="Tragsatec">
+    </a>
+
+    <!-- ── Selector de idioma ── -->
+    <div id="header-lang" data-current="es">
+      <button id="header-lang-trigger" type="button" aria-label="Cambiar idioma">
+        <span class="header-lang-icon">
+          <svg viewbox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+        </span>
+        <span class="header-lang-current">ES</span>
+        <span class="header-lang-caret">▾</span>
+      </button>
+      <div class="header-lang-menu" id="header-lang-menu">
+        <a href="#" class="header-lang-option active" data-lang="es" data-path="">Español</a>
+        <a href="#" class="header-lang-option" data-lang="en" data-path="en/">English</a>
+        <a href="#" class="header-lang-option" data-lang="gl" data-path="gl/">Galego</a>
+      </div>
+    </div>
+
+    <!-- ── Buscador (lleva al buscador de Quarto) ── -->
+    <div id="header-search">
+      <button id="header-search-trigger" type="button" aria-label="Buscar en el sitio">
+        <span class="header-search-icon">
+          <svg viewbox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+        <span class="header-search-placeholder">Introduzca texto</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── BARRA AZUL DE NAVEGACIÓN ──────────────────────── -->
+<nav id="site-nav">
+  <div id="site-nav-inner">
+    <a href="index.html" class="nav-link">Inicio</a>
+    <div class="nav-dropdown">
+      <a href="el-proyecto.html" class="nav-link nav-link-dropdown">
+        Conócenos
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="el-proyecto.html" class="nav-dropdown-item">El Proyecto</a>
+        <a href="el-equipo.html" class="nav-dropdown-item">El Equipo</a>
+      </div>
+    </div>
+    <a href="datos.html" class="nav-link">Datos</a>
+    <div class="nav-dropdown">
+      <a href="downscaling-metodologia.html" class="nav-link nav-link-dropdown">
+        Downscaling
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="downscaling-resultados.html" class="nav-dropdown-item">Predicción Trimestral</a>
+        <a href="downscaling-metodologia.html" class="nav-dropdown-item">Acerca de</a>        
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <a href="weighting-metodologia.html" class="nav-link nav-link-dropdown">
+        Weighting
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="weighting-metodologia.html" class="nav-dropdown-item">Metodología</a>
+        <a href="weighting-resultados.html" class="nav-dropdown-item">Resultados</a>
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <a href="embalses-prediccion.html" class="nav-link nav-link-dropdown">
+        Embalses
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="embalses-acerca.html" class="nav-dropdown-item">Metodología</a>
+        <a href="embalses-cuenca.html" class="nav-dropdown-item">Predicción cuenca</a>
+        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción embalse</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<style>
+.navbar { display: none !important; }
+#quarto-header { display: none !important; }
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+#site-header {
+  background: white;
+  border-bottom: 1px solid #dde3ed;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+#header-logos {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.6rem 2rem;
+  max-width: 100%;
+}
+
+#header-logos img {
+  height: 52px;
+  object-fit: contain;
+  transition: opacity 0.2s;
+}
+
+#header-logos img:hover { opacity: 0.85; }
+
+.header-sep {
+  width: 1px;
+  height: 44px;
+  background: #dde3ed;
+}
+
+/* ── Selector de idioma ── */
+#header-lang {
+  margin-left: auto;
+  margin-right: 0.6rem;
+  position: relative;
+}
+#header-lang-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.8rem;
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  color: #003087;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+#header-lang-trigger:hover {
+  border-color: #0072bc;
+  box-shadow: 0 2px 6px rgba(0,114,188,0.12);
+}
+.header-lang-icon { color: #0072bc; display: inline-flex; }
+.header-lang-caret { font-size: 0.7rem; opacity: 0.7; }
+.header-lang-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0,48,135,0.15);
+  min-width: 130px;
+  z-index: 1010;
+}
+.header-lang-menu.open { display: block; }
+.header-lang-option {
+  display: block;
+  padding: 0.5rem 0.9rem;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  font-size: 0.82rem;
+  color: #4a5568;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all 0.12s;
+}
+.header-lang-option:hover {
+  background: #f4f8fd;
+  color: #003087;
+  border-left-color: #0072bc;
+}
+.header-lang-option.active {
+  background: #f4f8fd;
+  color: #003087;
+  font-weight: 700;
+  border-left-color: #003087;
+}
+
+/* ── Buscador ── */
+#header-search {
+  display: flex;
+  align-items: center;
+  padding-right: 40rem;
+}
+#header-search-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.9rem 0.45rem 0.7rem;
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  min-width: 220px;
+}
+#header-search-trigger:hover {
+  border-color: #0072bc;
+  box-shadow: 0 2px 6px rgba(0,114,188,0.12);
+}
+.header-search-icon { display: inline-flex; color: #0072bc; }
+.header-search-placeholder { color: #8892a4; font-size: 0.85rem; }
+
+#site-nav {
+  background: #003087;
+  border-bottom: 3px solid #0072bc;
+  box-shadow: 0 2px 8px rgba(0,48,135,0.2);
+  position: fixed;
+  top: 74px;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+#site-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+#site-nav .nav-link {
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  font-size: 0.89rem;
+  font-weight: 100;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  display: block;
+}
+
+#site-nav .nav-link:hover {
+  color: white;
+  border-bottom-color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.07);
+}
+
+#site-nav .nav-link.active {
+  color: white;
+  border-bottom-color: white;
+}
+
+.nav-dropdown { position: relative; }
+.nav-link-dropdown { display: flex !important; align-items: center; gap: 0.3rem; }
+.nav-caret { font-size: 0.7rem; transition: transform 0.2s; }
+.nav-dropdown:hover .nav-caret { transform: rotate(180deg); }
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #003087;
+  min-width: 220px;
+  box-shadow: 0 4px 12px rgba(0,48,135,0.3);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  z-index: 1001;
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: block; }
+.nav-dropdown-item {
+  display: block;
+  padding: 0.7rem 1.2rem;
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 100;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+}
+.nav-dropdown-item:hover {
+  background: rgba(255,255,255,0.08);
+  border-left-color: white;
+  color: white;
+}
+.nav-dropdown-item.active {
+  background: rgba(255,255,255,0.05);
+  border-left-color: white;
+  color: white;
+}
+
+#quarto-content { margin-top: 0 !important; padding-top: 0 !important; }
+body { padding-top: 1px !important; }
+
+@media (max-width: 768px) {
+  #header-logos { padding: 0.5rem 1rem; gap: 0.8rem; }
+  #header-logos img { height: 38px; }
+  #header-search-trigger { min-width: 0; padding: 0.4rem 0.6rem; }
+  .header-search-placeholder { display: none; }
+  #site-nav-inner { flex-wrap: wrap; padding: 0 1rem; }
+  #site-nav .nav-link { font-size: 0.78rem; padding: 0.6rem 0.7rem; }
+  .nav-dropdown-menu { position: static; box-shadow: none; min-width: auto; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const current = window.location.pathname.split('/').pop() || 'index.html';
+
+  document.querySelectorAll('#site-nav .nav-link').forEach(link => {
+    if (link.getAttribute('href') === current) link.classList.add('active');
+  });
+  document.querySelectorAll('.nav-dropdown-item').forEach(item => {
+    if (item.getAttribute('href') === current) {
+      item.classList.add('active');
+      const parent = item.closest('.nav-dropdown').querySelector('.nav-link-dropdown');
+      if (parent) parent.classList.add('active');
+    }
+  });
+
+  /* ── Buscador: dispara el modal de Quarto Search ── */
+  const trigger = document.getElementById('header-search-trigger');
+  if (trigger) {
+    trigger.addEventListener('click', function() {
+      const quartoBtn = document.querySelector('#quarto-search')
+                     || document.querySelector('[aria-label="Search"]')
+                     || document.querySelector('.aa-DetachedSearchButton');
+      if (quartoBtn) quartoBtn.click();
+    });
+  }
+
+  /* ── Selector de idioma ── */
+  const langTrigger = document.getElementById('header-lang-trigger');
+  const langMenu    = document.getElementById('header-lang-menu');
+
+  if (langTrigger && langMenu) {
+    langTrigger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      langMenu.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+      if (!langMenu.contains(e.target)) langMenu.classList.remove('open');
+    });
+
+    /* Cambiar de idioma manteniendo página actual cuando sea posible */
+    document.querySelectorAll('.header-lang-option').forEach(opt => {
+      opt.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetLang = this.dataset.lang;
+        const langPath   = this.dataset.path; // '', 'en/' o 'gl/'
+        const currentLang = document.getElementById('header-lang').dataset.current;
+        if (targetLang === currentLang) {
+          langMenu.classList.remove('open');
+          return;
+        }
+
+        // Obtener el nombre de la página actual (sin la carpeta de idioma)
+        const pathParts = window.location.pathname.split('/').filter(Boolean);
+        let pageName = pathParts[pathParts.length - 1] || 'index.html';
+        if (!pageName.endsWith('.html')) pageName = 'index.html';
+
+        // Construir nueva URL relativa
+        // Si estamos en raíz (currentLang='es'), subimos por 0 niveles; en en/ o gl/ subimos por 1
+        let newUrl;
+        if (currentLang === 'es') {
+          newUrl = langPath + pageName;
+        } else {
+          // estamos en /en/ o /gl/ → subimos un nivel
+          newUrl = '../' + langPath + pageName;
+        }
+        window.location.href = newUrl;
+      });
+    });
+  }
+});
+</script>
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Datos</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div style="max-width:1100px;margin:6rem auto;padding:0 1.5rem;">
+
+  <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.8rem;" class="anchored">Datos utilizados</h2>
+  <p style="color:#4a5568;line-height:1.6;margin-bottom:2rem;">
+    Se han utilizado tres fuentes de datos en el proyecto:
+    modelos globales de predicción estacional de <em>Copernicus Climate Service (C3S)</em>, el reanálisis
+    atmosférico ERA5 de ECMWF como referencia observacional, y la base
+    de precipitación diaria observada ROCIO_IBEB de AEMET.
+  </p>
+
+  <!-- ============================================================ -->
+  <!-- 3 CARDS DE ATERRIZAJE — ENLACES EXTERNOS                      -->
+  <!-- ============================================================ -->
+  <div class="datos-cards">
+
+    <a class="datos-card" href="https://cds.climate.copernicus.eu/datasets/seasonal-monthly-single-levels?tab=overview" target="_blank" rel="noopener">
+      <div class="datos-card-head">
+        <h3 class="anchored">Modelos Estacional Copernicus</h3>
+        <span class="datos-card-ext">Abrir en Copernicus CDS ↗</span>
+      </div>
+      <div class="datos-card-img datos-card-img-copernicus">
+        <img src="images/datos/CCS-logo.png" alt="Copernicus Climate Change Service">
+      </div>
+    </a>
+
+    <a class="datos-card" href="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=overview" target="_blank" rel="noopener">
+      <div class="datos-card-head">
+        <h3 class="anchored">ERA5</h3>
+        <span class="datos-card-ext">Abrir en Copernicus CDS ↗</span>
+      </div>
+      <div class="datos-card-img datos-card-img-era5">
+        <img src="images/datos/ERA5-logo.png" alt="ERA5 Reanalysis">
+      </div>
+    </a>
+
+    <a class="datos-card" href="https://www.aemet.es/gl/serviciosclimaticos/cambio_climat/datos_diarios?w=1" target="_blank" rel="noopener">
+      <div class="datos-card-head">
+        <h3 class="anchored">ROCIO_IBEB</h3>
+        <span class="datos-card-ext">Abrir en AEMET ↗</span>
+      </div>
+      <div class="datos-card-img datos-card-img-rocio">
+        <img src="images/datos/ROCIO.png" alt="Nota Técnica ROCIOT">
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- SECCIÓN COPERNICUS                                            -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <section id="copernicus" class="datos-section">
+
+    <h3 class="datos-section-title anchored">Modelos Estacional Copernicus</h3>
+    <p style="font-size:0.95rem;line-height:1.7;color:#1a2332;margin-bottom:1.2rem;">
+      Los datos de predicción estacional se obtienen del <a href="https://cds.climate.copernicus.eu/" target="_blank" rel="noopener" style="color:#0072bc;font-weight:600;">Copernicus Climate Data Store</a>
+      a través de la
+      <a href="https://confluence.ecmwf.int/display/COPSRV/CDS+web+API+%28cdsapi%29+training" target="_blank" rel="noopener" style="color:#0072bc;font-weight:600;">API oficial de Copernicus</a>.
+      Los modelos empleados son:
+    </p>
+
+    <!-- ── Modelos: 8 tarjetas en grid 4×2 (clickables → web oficial) ── -->
+    <div class="datos-models-grid">
+
+      <a class="model-card" href="https://charts.ecmwf.int/products/seasonal_system5_standard_rain?area=GLOB&amp;base_time=202605010000&amp;stats=tsum&amp;valid_time=202606010000" target="_blank" rel="noopener">
+        <h4 class="anchored">ECMWF-SEAS5.1</h4>
+        <p>European Centre for Medium-Range Weather Forecasts</p>
+        <span class="model-ext">Ver en ECMWF ↗</span>
+      </a>
+
+      <a class="model-card" href="https://kunden.dwd.de/climatepredictions-basic/app.htm?category=subseasonal&amp;language=en&amp;display=map" target="_blank" rel="noopener">
+        <h4 class="anchored">DWD-GCFS2.2</h4>
+        <p>Deutscher Wetterdienst · Servicio Meteorológico Alemán</p>
+        <span class="model-ext">Ver en DWD ↗</span>
+      </a>
+
+      <a class="model-card" href="https://sps.cmcc.it/" target="_blank" rel="noopener">
+        <h4 class="anchored">CMCC-SPSv4</h4>
+        <p>Centro Euro-Mediterraneo sui Cambiamenti Climatici · Italia</p>
+        <span class="model-ext">Ver en CMCC ↗</span>
+      </a>
+
+      <a class="model-card" href="https://seasonal.meteo.fr/" target="_blank" rel="noopener">
+        <h4 class="anchored">METEOFrance-S9</h4>
+        <p>Servicio Meteorológico Francés</p>
+        <span class="model-ext">Ver en Météo-France ↗</span>
+      </a>
+
+      <a class="model-card" href="https://climate-scenarios.canada.ca/?page=seasonal-forecasts" target="_blank" rel="noopener">
+        <h4 class="anchored">ECCC-GNEMO5</h4>
+        <p>Environment and Climate Change Canada</p>
+        <span class="model-ext">Ver en ECCC ↗</span>
+      </a>
+
+      <a class="model-card" href="https://www.cpc.ncep.noaa.gov/products/CFSv2/CFSv2seasonal.shtml" target="_blank" rel="noopener">
+        <h4 class="anchored">NCEP-CFSv2</h4>
+        <p>National Centers for Environmental Prediction · NOAA, EE.UU.</p>
+        <span class="model-ext">Ver en NCEP/NOAA ↗</span>
+      </a>
+
+      <a class="model-card" href="https://www.metoffice.gov.uk/research/climate/seasonal-to-decadal/gpc-outlooks" target="_blank" rel="noopener">
+        <h4 class="anchored">UKMO-GLOSEA610</h4>
+        <p>UK Met Office · Servicio Meteorológico Británico</p>
+        <span class="model-ext">Ver en UKMO ↗</span>
+      </a>
+
+      <a class="model-card" href="https://www.jma.go.jp/bosai/map.html#5/34.5/137/&amp;elem=temperature&amp;pattern=P1M&amp;term=0&amp;contents=season&amp;lang=en" target="_blank" rel="noopener">
+        <h4 class="anchored">JMA-CPS4</h4>
+        <p>Servicio Meteorológico Japonés</p>
+        <span class="model-ext">Ver en JMA ↗</span>
+      </a>
+
+    </div>
+
+    <h4 class="datos-subtitle anchored">Variables descargadas</h4>
+    <ul class="datos-vars">
+      <li>
+        <h5 class="anchored">Presión al nivel del mar</h5>
+        <p>Utilizada para el cálculo de componentes del viento geostrófico superficial (ug, vg) a partir
+        de MSL y T1000. Base de los análogos sinópticos y los modos de variabilidad EOF/PLS.</p>
+      </li>
+      <li>
+        <h5 class="anchored">Altura geopotencial 500 hPa</h5>
+        <p>Componentes del viento a 500 hPa (u500, v500). Empleada en la
+        caracterización de la circulación Euro-Atlántica.</p>
+      </li>
+      <li>
+        <h5 class="anchored">Temperatura a 2 m</h5>
+        <p>Variable predictanda usada en downscaling y weighting.</p>
+      </li>
+      <li>
+        <h5 class="anchored">Precipitación total</h5>
+        <p>Variable predictanda principal. Usada en todas las metodologías.</p>
+      </li>
+    </ul>
+    </section></div>
+
+  
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- SECCIÓN ERA5                                                  -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <section id="era5" class="datos-section">
+
+    <h3 class="datos-section-title anchored">Reanálisis ERA5</h3>
+    <p style="font-size:0.95rem;line-height:1.7;color:#1a2332;margin-bottom:1.2rem;">
+      El reanálisis
+      <a href="https://confluence.ecmwf.int/display/CKB/The+family+of+ERA5+datasets" target="_blank" rel="noopener" style="color:#0072bc;font-weight:600;">ERA5 de ECMWF</a> se emplea como referencia observacional
+      para la fase de calibración del downscaling y para la estimación de los modos de
+      variabilidad atmosférica. ERA5 cubre el periodo desde 1940 hasta la actualidad con resolución horaria y mensual.
+    </p>
+
+    <h4 class="datos-subtitle anchored">Variables descargadas</h4>
+
+
+    <ul class="datos-vars">
+      <li>
+        <h5 class="anchored">Presión al nivel del mar</h5>
+        <p>Junto con T1000, base para el cálculo del viento geostrófico superficial usado en los análogos
+        del downscaling y en los modos EOF/PLS de circulación Euro-Atlántica.</p>
+      </li>
+      <li>
+        <h5 class="anchored">Altura geopotencial 500 hPa</h5>
+        <p>Componentes del viento a 500 hPa (u500, v500). Caracteriza la circulación de niveles medios y
+        complementa la información de superficie en la clasificación sinóptica.</p>
+      </li>
+      <li>
+        <h5 class="anchored">Temperatura a 2 m</h5>
+        <p>Observación de referencia para validar y calibrar las predicciones estacionales.</p>
+      </li>
+      <li>
+        <h5 class="anchored">Precipitación total</h5>
+        <p>Observación de referencia para validar y calibrar las predicciones estacionales.</p>
+      </li>
+    </ul>
+    
+
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- SECCIÓN ROCIO_IBEB                                            -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <section id="rocio-ibeb" class="datos-section">
+
+    <h3 class="datos-section-title anchored">ROCIO_IBEB · Precipitación diaria observada</h3>
+    <p style="font-size:0.95rem;line-height:1.7;color:#1a2332;margin-bottom:1rem;">
+      <a href="https://www.aemet.es/gl/serviciosclimaticos/cambio_climat/datos_diarios?w=1" target="_blank" rel="noopener" style="color:#0072bc;font-weight:600;">ROCIO_IBEB</a> es la red observacional de precipitación diaria,
+      desarrollada por AEMET. Constituye la base observacional sobre la que se asocia cada situación
+      sinóptica de referencia con su patrón de precipitación correspondiente en el algoritmo de
+      análogos del downscaling.
+    </p>
+    <p style="font-size:0.95rem;line-height:1.7;color:#1a2332;margin-bottom:1.2rem;">
+      Los datos se proyectan sobre la malla de 5×5 km que cubre la Península
+      Ibérica e Islas Baleares (20.945 celdas), permitiendo así la verificación celda a celda
+      de las predicciones del downscaling estadístico.
+    </p>
+
+  </section> 
+
+</main></div>
+
+
+<!-- ============================================================ -->
+<!-- ESTILOS                                                       -->
+<!-- ============================================================ -->
+<style>
+/* ── 3 cards estilo AEMET (clickables) ───────────────────── */
+.datos-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+  margin-bottom: 3rem;
+}
+
+.datos-card {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 0;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 2px 10px rgba(0,48,135,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.datos-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0,48,135,0.2);
+  text-decoration: none;
+  color: inherit;
+}
+
+.datos-card-head {
+  background: #003087;
+  color: white;
+  padding: 1.1rem 1.3rem;
+  min-height: 115px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.datos-card-head h3 {
+  color: white;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 0.3rem 0;
+  line-height: 1.25;
+}
+.datos-card-head p {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.82rem;
+  margin: 0;
+  line-height: 1.4;
+}
+.datos-card-ext {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #b8d4f0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.datos-card:hover .datos-card-ext {
+  color: white;
+}
+
+.datos-card-img {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Copernicus: fondo blanco para que encaje con el logo */
+.datos-card-img-copernicus {
+  background: white;
+  padding: 1.2rem;
+}
+.datos-card-img-copernicus img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* ERA5: imagen tipo collage, cubre todo */
+.datos-card-img-era5 {
+  background: linear-gradient(135deg, #f8fafc 0%, #e8eef5 100%);
+}
+.datos-card-img-era5 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ROCIO: foto de la nota técnica */
+.datos-card-img-rocio {
+  background: #e8f4fc;
+}
+.datos-card-img-rocio img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 0.5rem;
+}
+
+/* ── Grid de modelos (clickables → web oficial) ─────────── */
+.datos-models-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 1.2rem 0 2rem;
+}
+
+.model-card {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 10px;
+  padding: 1.2rem 1.1rem;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 2px 8px rgba(0,48,135,0.05);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  position: relative;
+}
+.model-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0,48,135,0.15);
+  border-color: #0072bc;
+  text-decoration: none;
+  color: inherit;
+}
+.model-card .model-system {
+  display: inline-block;
+  align-self: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0072bc;
+  background: #e8f4fc;
+  border-radius: 99px;
+  padding: 3px 10px;
+  margin-bottom: 0.5rem;
+}
+.model-card h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #003087;
+  margin: 0 0 0.4rem 0;
+  letter-spacing: 0.02em;
+}
+.model-card p {
+  font-size: 0.8rem;
+  color: #4a5568;
+  line-height: 1.4;
+  margin: 0 0 0.8rem 0;
+  flex-grow: 1;
+}
+.model-card .model-ext {
+  display: block;
+  margin-top: auto;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #8892a4;
+  transition: color 0.15s;
+}
+.model-card:hover .model-ext {
+  color: #003087;
+}
+
+/* ── Info tiles (NO INTERACTIVAS) ─────────────────────────── */
+.info-tile {
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 10px;
+  padding: 1.2rem 1.3rem;
+  /* sin transition, sin hover */
+}
+.info-tile h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #003087;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+}
+.info-tile p {
+  font-size: 0.85rem;
+  color: #4a5568;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Secciones expandidas ───────────────────────────────── */
+.datos-section {
+  padding-top: 1.5rem;
+  margin-top: 2rem;
+  border-top: 2px solid #e8eef5;
+  scroll-margin-top: 130px;
+}
+.datos-section:first-of-type {
+  border-top: none;
+  margin-top: 0;
+}
+
+.datos-section-title {
+  color: #003087;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.9rem 0;
+  padding-bottom: 0.6rem;
+  border-bottom: 3px solid #0072bc;
+  display: inline-block;
+}
+
+.datos-subtitle {
+  color: #003087;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.6rem 0;
+  letter-spacing: 0.02em;
+}
+
+.datos-vars {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+.datos-vars li {
+  position: relative;
+  padding: 0.4rem 0 0.4rem 1.3rem;
+  margin-bottom: 0.6rem;
+}
+.datos-vars li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.85rem;
+  width: 8px;
+  height: 8px;
+  background: #0072bc;
+  border-radius: 50%;
+}
+.datos-vars h5 {
+  color: #003087;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+  letter-spacing: 0.01em;
+}
+.datos-vars p {
+  font-size: 0.88rem;
+  color: #1a2332;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .datos-cards { grid-template-columns: 1fr; }
+  .datos-models-grid { grid-template-columns: repeat(2, 1fr); }
+  .datos-card-img { height: 180px; }
+}
+@media (max-width: 540px) {
+  .datos-models-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+
+
+ <!-- /main -->
+<!-- ── FOOTER  ─────────────── -->
+<footer id="site-footer">
+  <div id="footer-inner">
+
+    <!-- Créditos -->
+    <div id="footer-credits">
+      <p class="footer-credit-main">© 2026 · Encomienda de Predicción Estacional</p>
+      <p class="footer-credit-sub">AEMET – Tragsatec · 2024–2026</p>
+    </div>
+
+    <!-- Logos institucionales -->
+    <div id="footer-logos">
+      <img src="images/logos/logos-financiacion.png" alt="Financiado por la Unión Europea NextGenerationEU · Gobierno de España · Ministerio para la Transición Ecológica y el Reto Demográfico · AEMET · Plan de Recuperación, Transformación y Resiliencia">
+    </div>
+
+  </div>
+</footer>
+
+<style>
+.nav-footer, #quarto-footer { display: none !important; }
+
+#site-footer {
+  background: #0072bc;
+  color: white;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  padding: 1.2rem 1.5rem 1rem;
+  margin-top: 4rem;
+  box-sizing: border-box;
+  position: relative;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin-left: calc(-1 * (100vw - 100%) / 2);
+  margin-right: calc(-1 * (100vw - 100%) / 2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#footer-inner {
+  width: 100%;
+  max-width: 1100px;
+}
+
+html, body { overflow-x: hidden; }
+
+#footer-credits { text-align: center; }
+.footer-credit-main {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: white;
+}
+.footer-credit-sub {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.8);
+}
+
+#footer-logos {
+  margin-top: 1rem;
+  padding: 0.8rem 1.2rem;
+  background: white;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#footer-logos img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  #site-footer { padding: 1.8rem 1rem 1.5rem; }
+  #footer-logos { padding: 0.6rem 1rem; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const footer = document.getElementById('site-footer');
+  if (footer && footer.parentElement !== document.body) {
+    document.body.appendChild(footer);
+  }
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/sanfiz\.github\.io\/aemet-tragsatec-2026\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+ <!-- /content -->
+
+
+
+
+</body></html>

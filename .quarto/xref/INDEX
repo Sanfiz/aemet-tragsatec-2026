@@ -55,5 +55,104 @@
   },
   "weighting-metodologia.qmd": {
     "weighting-metodologia.html": "4d249a93"
+  },
+  "gal/weighting-resultados.qmd": {
+    "weighting-resultados.html": "79dd16e8"
+  },
+  "gal/downscaling-metodologia.qmd": {
+    "downscaling-metodologia.html": "d5f61804"
+  },
+  "gal/el-equipo.qmd": {
+    "el-equipo.html": "fef28b21"
+  },
+  "gal/embalses-cuenca.qmd": {
+    "embalses-cuenca.html": "7cc072aa"
+  },
+  "gal/embalses-prediccion.qmd": {
+    "embalses-prediccion.html": "ab453d66"
+  },
+  "gal/datos.qmd": {
+    "datos.html": "547c3074"
+  },
+  "gal/downscaling-resultados.qmd": {
+    "downscaling-resultados.html": "651ae476"
+  },
+  "gal/el-proyecto.qmd": {
+    "el-proyecto.html": "02fe3a41"
+  },
+  "gal/weighting-metodologia.qmd": {
+    "weighting-metodologia.html": "2b74f671"
+  },
+  "gal/embalses-acerca.qmd": {
+    "embalses-acerca.html": "cd0f98be"
+  },
+  "gal/index.qmd": {
+    "index.html": "df25f85e"
+  },
+  "en/embalses-cuenca.qmd": {
+    "embalses-cuenca.html": "8de8a910"
+  },
+  "en/el-proyecto.qmd": {
+    "el-proyecto.html": "d82712cb"
+  },
+  "en/el-equipo.qmd": {
+    "el-equipo.html": "c8097b61"
+  },
+  "en/downscaling-metodologia.qmd": {
+    "downscaling-metodologia.html": "4a80fcdc"
+  },
+  "en/index.qmd": {
+    "index.html": "d6a3ee8c"
+  },
+  "en/weighting-resultados.qmd": {
+    "weighting-resultados.html": "fc963543"
+  },
+  "en/downscaling-resultados.qmd": {
+    "downscaling-resultados.html": "a3118b48"
+  },
+  "en/embalses-prediccion.qmd": {
+    "embalses-prediccion.html": "14b7728a"
+  },
+  "en/embalses-acerca.qmd": {
+    "embalses-acerca.html": "50138744"
+  },
+  "en/weighting-metodologia.qmd": {
+    "weighting-metodologia.html": "0fc80b81"
+  },
+  "en/datos.qmd": {
+    "datos.html": "a22fa8ee"
+  },
+  "gl/weighting-resultados.qmd": {
+    "weighting-resultados.html": "070f27f5"
+  },
+  "gl/downscaling-metodologia.qmd": {
+    "downscaling-metodologia.html": "6c2fc1a5"
+  },
+  "gl/el-equipo.qmd": {
+    "el-equipo.html": "4a0e870c"
+  },
+  "gl/embalses-cuenca.qmd": {
+    "embalses-cuenca.html": "bc1f0ae8"
+  },
+  "gl/embalses-prediccion.qmd": {
+    "embalses-prediccion.html": "c3b3f332"
+  },
+  "gl/datos.qmd": {
+    "datos.html": "a8d32d68"
+  },
+  "gl/downscaling-resultados.qmd": {
+    "downscaling-resultados.html": "e9c6f802"
+  },
+  "gl/el-proyecto.qmd": {
+    "el-proyecto.html": "a4a4f604"
+  },
+  "gl/weighting-metodologia.qmd": {
+    "weighting-metodologia.html": "91d4607d"
+  },
+  "gl/embalses-acerca.qmd": {
+    "embalses-acerca.html": "ff037f7c"
+  },
+  "gl/index.qmd": {
+    "index.html": "b0ee32d5"
   }
 }

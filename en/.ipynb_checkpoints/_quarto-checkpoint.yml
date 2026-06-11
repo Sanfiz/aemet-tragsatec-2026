@@ -1,0 +1,30 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Predicción Estacional · AEMET–Tragsatec"
+  description: "Resultados del servicio de predicción estacional"
+  site-url: https://sanfiz.github.io/aemet-tragsatec-2026/
+  favicon: images/logos/favicon.ico
+  navbar: false
+  search:
+    location: navbar
+    type: overlay
+    copy-button: false
+    keyboard-shortcut: ["/"]
+
+format:
+  html:
+    theme: flatly
+    css: styles.css
+    toc: false
+    page-layout: full
+    include-before-body: header.html
+    include-after-body: footer.html
+
+resources:
+  - images/
+  - cuencas.geojson
+  - rios.geojson
+  - paises.geojson

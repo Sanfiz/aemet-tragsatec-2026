@@ -1,8 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/embalses-cuenca.html</loc>
-    <lastmod>2026-06-05T11:02:49.375Z</lastmod>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/en/datos.html</loc>
+    <lastmod>2026-06-09T11:42:41.497Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/en/embalses-acerca.html</loc>
+    <lastmod>2026-06-09T11:42:41.504Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/en/downscaling-resultados.html</loc>
+    <lastmod>2026-06-09T11:42:41.500Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/en/index.html</loc>
+    <lastmod>2026-06-09T11:42:41.552Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/en/el-equipo.html</loc>
+    <lastmod>2026-06-11T08:43:39.397Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/en/embalses-cuenca.html</loc>
+    <lastmod>2026-06-09T11:42:41.505Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/index.html</loc>
+    <lastmod>2026-06-04T08:49:35.929Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/gl/embalses-acerca.html</loc>
+    <lastmod>2026-06-09T11:46:19.148Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/gl/el-proyecto.html</loc>
+    <lastmod>2026-06-09T11:46:19.147Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/gl/datos.html</loc>
+    <lastmod>2026-06-09T11:46:19.142Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/gl/embalses-cuenca.html</loc>
+    <lastmod>2026-06-09T11:46:19.150Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/gl/downscaling-metodologia.html</loc>
+    <lastmod>2026-06-09T11:46:19.143Z</lastmod>
   </url>
   <url>
     <loc>https://sanfiz.github.io/aemet-tragsatec-2026/weighting-metodologia.html</loc>
@@ -26,11 +70,11 @@
   </url>
   <url>
     <loc>https://sanfiz.github.io/aemet-tragsatec-2026/downscaling-metodologia.html</loc>
-    <lastmod>2026-06-08T10:07:48.528Z</lastmod>
+    <lastmod>2026-06-08T15:30:17.801Z</lastmod>
   </url>
   <url>
     <loc>https://sanfiz.github.io/aemet-tragsatec-2026/datos.html</loc>
-    <lastmod>2026-06-08T11:23:51.764Z</lastmod>
+    <lastmod>2026-06-08T11:41:45.397Z</lastmod>
   </url>
   <url>
     <loc>https://sanfiz.github.io/aemet-tragsatec-2026/downscaling-resultados.html</loc>
@@ -42,14 +86,58 @@
   </url>
   <url>
     <loc>https://sanfiz.github.io/aemet-tragsatec-2026/el-equipo.html</loc>
-    <lastmod>2026-06-02T08:29:37.880Z</lastmod>
+    <lastmod>2026-06-11T08:43:27.237Z</lastmod>
   </url>
   <url>
     <loc>https://sanfiz.github.io/aemet-tragsatec-2026/backups/about.html</loc>
     <lastmod>2026-05-22T09:45:13.229Z</lastmod>
   </url>
   <url>
-    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/index.html</loc>
-    <lastmod>2026-06-04T08:49:35.929Z</lastmod>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/gl/weighting-resultados.html</loc>
+    <lastmod>2026-06-09T11:46:19.166Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/gl/el-equipo.html</loc>
+    <lastmod>2026-06-11T08:43:13.412Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/gl/embalses-prediccion.html</loc>
+    <lastmod>2026-06-09T11:46:19.155Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/gl/downscaling-resultados.html</loc>
+    <lastmod>2026-06-09T11:46:19.144Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/gl/weighting-metodologia.html</loc>
+    <lastmod>2026-06-09T11:46:19.165Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/gl/index.html</loc>
+    <lastmod>2026-06-09T11:46:19.159Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/embalses-cuenca.html</loc>
+    <lastmod>2026-06-05T11:02:49.375Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/en/el-proyecto.html</loc>
+    <lastmod>2026-06-09T11:42:41.502Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/en/downscaling-metodologia.html</loc>
+    <lastmod>2026-06-09T11:42:41.499Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/en/weighting-resultados.html</loc>
+    <lastmod>2026-06-09T11:42:41.570Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/en/embalses-prediccion.html</loc>
+    <lastmod>2026-06-09T11:42:41.507Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sanfiz.github.io/aemet-tragsatec-2026/en/weighting-metodologia.html</loc>
+    <lastmod>2026-06-09T11:42:41.553Z</lastmod>
   </url>
 </urlset>

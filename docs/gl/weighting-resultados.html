@@ -1,0 +1,2112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Weighting · Resultados – Predicción Estacional · AEMET–Tragsatec</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../images/logos/favicon.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "/"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content column-page" id="quarto-document-content">
+<!-- ── BARRA BLANCA CON LOGOS ─────────────────────────── -->
+<div id="site-header">
+  <div id="header-logos">
+    <a href="https://www.aemet.es/es/portada" target="_blank">
+      <img src="images/logos/aemet.png" alt="AEMET">
+    </a>
+    <div class="header-sep"></div>
+    <a href="https://www.tragsa.es/es/Paginas/default.aspx" target="_blank">
+      <img src="images/logos/tragsatec.jpg" alt="Tragsatec">
+    </a>
+
+    <!-- ── Selector de idioma ── -->
+    <div id="header-lang" data-current="es">
+      <button id="header-lang-trigger" type="button" aria-label="Cambiar idioma">
+        <span class="header-lang-icon">
+          <svg viewbox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+        </span>
+        <span class="header-lang-current">ES</span>
+        <span class="header-lang-caret">▾</span>
+      </button>
+      <div class="header-lang-menu" id="header-lang-menu">
+        <a href="#" class="header-lang-option active" data-lang="es" data-path="">Español</a>
+        <a href="#" class="header-lang-option" data-lang="en" data-path="en/">English</a>
+        <a href="#" class="header-lang-option" data-lang="gl" data-path="gl/">Galego</a>
+      </div>
+    </div>
+
+    <!-- ── Buscador (lleva al buscador de Quarto) ── -->
+    <div id="header-search">
+      <button id="header-search-trigger" type="button" aria-label="Buscar en el sitio">
+        <span class="header-search-icon">
+          <svg viewbox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+        <span class="header-search-placeholder">Introduzca texto</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── BARRA AZUL DE NAVEGACIÓN ──────────────────────── -->
+<nav id="site-nav">
+  <div id="site-nav-inner">
+    <a href="index.html" class="nav-link">Inicio</a>
+    <div class="nav-dropdown">
+      <a href="el-proyecto.html" class="nav-link nav-link-dropdown">
+        Conócenos
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="el-proyecto.html" class="nav-dropdown-item">El Proyecto</a>
+        <a href="el-equipo.html" class="nav-dropdown-item">El Equipo</a>
+      </div>
+    </div>
+    <a href="datos.html" class="nav-link">Datos</a>
+    <div class="nav-dropdown">
+      <a href="downscaling-metodologia.html" class="nav-link nav-link-dropdown">
+        Downscaling
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="downscaling-resultados.html" class="nav-dropdown-item">Predicción Trimestral</a>
+        <a href="downscaling-metodologia.html" class="nav-dropdown-item">Acerca de</a>        
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <a href="weighting-metodologia.html" class="nav-link nav-link-dropdown">
+        Weighting
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="weighting-metodologia.html" class="nav-dropdown-item">Metodología</a>
+        <a href="weighting-resultados.html" class="nav-dropdown-item">Resultados</a>
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <a href="embalses-prediccion.html" class="nav-link nav-link-dropdown">
+        Embalses
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="embalses-acerca.html" class="nav-dropdown-item">Metodología</a>
+        <a href="embalses-cuenca.html" class="nav-dropdown-item">Predicción cuenca</a>
+        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción embalse</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<style>
+.navbar { display: none !important; }
+#quarto-header { display: none !important; }
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+#site-header {
+  background: white;
+  border-bottom: 1px solid #dde3ed;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+#header-logos {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.6rem 2rem;
+  max-width: 100%;
+}
+
+#header-logos img {
+  height: 52px;
+  object-fit: contain;
+  transition: opacity 0.2s;
+}
+
+#header-logos img:hover { opacity: 0.85; }
+
+.header-sep {
+  width: 1px;
+  height: 44px;
+  background: #dde3ed;
+}
+
+/* ── Selector de idioma ── */
+#header-lang {
+  margin-left: auto;
+  margin-right: 0.6rem;
+  position: relative;
+}
+#header-lang-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.8rem;
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  color: #003087;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+#header-lang-trigger:hover {
+  border-color: #0072bc;
+  box-shadow: 0 2px 6px rgba(0,114,188,0.12);
+}
+.header-lang-icon { color: #0072bc; display: inline-flex; }
+.header-lang-caret { font-size: 0.7rem; opacity: 0.7; }
+.header-lang-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0,48,135,0.15);
+  min-width: 130px;
+  z-index: 1010;
+}
+.header-lang-menu.open { display: block; }
+.header-lang-option {
+  display: block;
+  padding: 0.5rem 0.9rem;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  font-size: 0.82rem;
+  color: #4a5568;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all 0.12s;
+}
+.header-lang-option:hover {
+  background: #f4f8fd;
+  color: #003087;
+  border-left-color: #0072bc;
+}
+.header-lang-option.active {
+  background: #f4f8fd;
+  color: #003087;
+  font-weight: 700;
+  border-left-color: #003087;
+}
+
+/* ── Buscador ── */
+#header-search {
+  display: flex;
+  align-items: center;
+  padding-right: 40rem;
+}
+#header-search-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.9rem 0.45rem 0.7rem;
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  min-width: 220px;
+}
+#header-search-trigger:hover {
+  border-color: #0072bc;
+  box-shadow: 0 2px 6px rgba(0,114,188,0.12);
+}
+.header-search-icon { display: inline-flex; color: #0072bc; }
+.header-search-placeholder { color: #8892a4; font-size: 0.85rem; }
+
+#site-nav {
+  background: #003087;
+  border-bottom: 3px solid #0072bc;
+  box-shadow: 0 2px 8px rgba(0,48,135,0.2);
+  position: fixed;
+  top: 74px;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+#site-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+#site-nav .nav-link {
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  font-size: 0.89rem;
+  font-weight: 100;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  display: block;
+}
+
+#site-nav .nav-link:hover {
+  color: white;
+  border-bottom-color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.07);
+}
+
+#site-nav .nav-link.active {
+  color: white;
+  border-bottom-color: white;
+}
+
+.nav-dropdown { position: relative; }
+.nav-link-dropdown { display: flex !important; align-items: center; gap: 0.3rem; }
+.nav-caret { font-size: 0.7rem; transition: transform 0.2s; }
+.nav-dropdown:hover .nav-caret { transform: rotate(180deg); }
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #003087;
+  min-width: 220px;
+  box-shadow: 0 4px 12px rgba(0,48,135,0.3);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  z-index: 1001;
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: block; }
+.nav-dropdown-item {
+  display: block;
+  padding: 0.7rem 1.2rem;
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 100;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+}
+.nav-dropdown-item:hover {
+  background: rgba(255,255,255,0.08);
+  border-left-color: white;
+  color: white;
+}
+.nav-dropdown-item.active {
+  background: rgba(255,255,255,0.05);
+  border-left-color: white;
+  color: white;
+}
+
+#quarto-content { margin-top: 0 !important; padding-top: 0 !important; }
+body { padding-top: 1px !important; }
+
+@media (max-width: 768px) {
+  #header-logos { padding: 0.5rem 1rem; gap: 0.8rem; }
+  #header-logos img { height: 38px; }
+  #header-search-trigger { min-width: 0; padding: 0.4rem 0.6rem; }
+  .header-search-placeholder { display: none; }
+  #site-nav-inner { flex-wrap: wrap; padding: 0 1rem; }
+  #site-nav .nav-link { font-size: 0.78rem; padding: 0.6rem 0.7rem; }
+  .nav-dropdown-menu { position: static; box-shadow: none; min-width: auto; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const current = window.location.pathname.split('/').pop() || 'index.html';
+
+  document.querySelectorAll('#site-nav .nav-link').forEach(link => {
+    if (link.getAttribute('href') === current) link.classList.add('active');
+  });
+  document.querySelectorAll('.nav-dropdown-item').forEach(item => {
+    if (item.getAttribute('href') === current) {
+      item.classList.add('active');
+      const parent = item.closest('.nav-dropdown').querySelector('.nav-link-dropdown');
+      if (parent) parent.classList.add('active');
+    }
+  });
+
+  /* ── Buscador: dispara el modal de Quarto Search ── */
+  const trigger = document.getElementById('header-search-trigger');
+  if (trigger) {
+    trigger.addEventListener('click', function() {
+      const quartoBtn = document.querySelector('#quarto-search')
+                     || document.querySelector('[aria-label="Search"]')
+                     || document.querySelector('.aa-DetachedSearchButton');
+      if (quartoBtn) quartoBtn.click();
+    });
+  }
+
+  /* ── Selector de idioma ── */
+  const langTrigger = document.getElementById('header-lang-trigger');
+  const langMenu    = document.getElementById('header-lang-menu');
+
+  if (langTrigger && langMenu) {
+    langTrigger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      langMenu.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+      if (!langMenu.contains(e.target)) langMenu.classList.remove('open');
+    });
+
+    /* Cambiar de idioma manteniendo página actual cuando sea posible */
+    document.querySelectorAll('.header-lang-option').forEach(opt => {
+      opt.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetLang = this.dataset.lang;
+        const langPath   = this.dataset.path; // '', 'en/' o 'gl/'
+        const currentLang = document.getElementById('header-lang').dataset.current;
+        if (targetLang === currentLang) {
+          langMenu.classList.remove('open');
+          return;
+        }
+
+        // Obtener el nombre de la página actual (sin la carpeta de idioma)
+        const pathParts = window.location.pathname.split('/').filter(Boolean);
+        let pageName = pathParts[pathParts.length - 1] || 'index.html';
+        if (!pageName.endsWith('.html')) pageName = 'index.html';
+
+        // Construir nueva URL relativa
+        // Si estamos en raíz (currentLang='es'), subimos por 0 niveles; en en/ o gl/ subimos por 1
+        let newUrl;
+        if (currentLang === 'es') {
+          newUrl = langPath + pageName;
+        } else {
+          // estamos en /en/ o /gl/ → subimos un nivel
+          newUrl = '../' + langPath + pageName;
+        }
+        window.location.href = newUrl;
+      });
+    });
+  }
+});
+</script>
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Weighting · Resultados</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div style="max-width:1100px;margin:6rem auto;padding:0 1.5rem;">
+
+  <h2 style="color:#003087;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;" class="anchored">
+    Resultados de la ponderación de ensemble
+  </h2>
+
+    <p style="color:#4a5568;margin-bottom:1.5rem;">
+        Comparación entre la <a href="https://cds.climate.copernicus.eu/datasets/seasonal-monthly-single-levels?tab=overview" target="_blank" rel="noopener" style="color:#0072bc;font-weight:600;">predicción en bruto de Copernicus</a> (RAW) y la predicción ponderada (Weighted).<br>
+      </p>
+
+  <p></p>
+
+  <!-- ============================================================ -->
+  <!-- CABECERA: VARIABLE + PERIODO PREDICCIÓN                      -->
+  <!-- ============================================================ -->
+  <div class="wt-header-card">
+    <div class="wt-header-block">
+      <span class="wt-header-tag">Predicción</span>
+      <span class="wt-header-value">Estación invernal</span>
+    </div>
+    <div class="wt-header-sep"></div>
+    <div class="wt-header-block">
+      <span class="wt-header-tag">Periodo Predicción</span>
+      <span class="wt-header-value">DJF 2025-26</span>
+      <span class="wt-header-sub">Inicialización · Octubre 2025</span>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TABS                                                          -->
+  <!-- ============================================================ -->
+  <div class="wt-tabs" role="tablist">
+    <button class="wt-tab active" data-tab="temp" role="tab">EOF · Temperatura</button>
+    <button class="wt-tab" data-tab="prec" role="tab">EOF · Precipitación</button>
+    <button class="wt-tab" data-tab="pls" role="tab">Comparativa EOF vs PLS</button>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- TAB 1 · EOF TEMPERATURA                                       -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <div class="wt-panel active" data-panel="temp">
+
+    <div class="wt-viewer">
+      <div class="wt-controls">
+        <div class="wt-control-group">
+          <label class="wt-label">Modelo</label>
+          <div class="wt-button-row" id="temp-models"></div>
+        </div>
+        <div class="wt-control-group">
+          <label class="wt-label">Variable</label>
+          <div class="wt-button-row" id="temp-vars"></div>
+        </div>
+      </div>
+
+      <!-- Par RAW + WEI (modo ANOM/CORR) -->
+      <div class="wt-pair" id="temp-pair">
+        <figure class="wt-pair-item figure">
+          <h4 class="anchored">Copernicus RAW</h4>
+          <img id="temp-raw-img" alt="" class="wt-img figure-img">
+        </figure>
+        <figure class="wt-pair-item figure">
+          <h4 class="anchored">Weighted (EOF)</h4>
+          <img id="temp-wei-img" alt="" class="wt-img figure-img">
+        </figure>
+      </div>
+
+      <!-- Imagen única (modo TERCILES) -->
+      <div class="wt-single" id="temp-single" style="display:none;">
+        <h4 id="temp-single-title" class="anchored">Probabilidad por terciles</h4>
+        <img id="temp-single-img" alt="" class="wt-img wt-img-single">
+      </div>
+
+      <p class="wt-caption" id="temp-caption"></p>
+    </div>
+
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- TAB 2 · EOF PRECIPITACIÓN                                     -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <div class="wt-panel" data-panel="prec">
+
+    <div class="wt-viewer">
+      <div class="wt-controls">
+        <div class="wt-control-group">
+          <label class="wt-label">Modelo</label>
+          <div class="wt-button-row" id="prec-models"></div>
+        </div>
+        <div class="wt-control-group">
+          <label class="wt-label">Variable</label>
+          <div class="wt-button-row" id="prec-vars"></div>
+        </div>
+        <div class="wt-control-group">
+          <label class="wt-label">Región</label>
+          <div class="wt-button-row" id="prec-regions"></div>
+        </div>
+      </div>
+
+      <div class="wt-pair" id="prec-pair">
+        <figure class="wt-pair-item figure">
+          <h4 class="anchored">Copernicus RAW</h4>
+          <img id="prec-raw-img" alt="" class="wt-img figure-img">
+        </figure>
+        <figure class="wt-pair-item figure">
+          <h4 class="anchored">Weighted (EOF)</h4>
+          <img id="prec-wei-img" alt="" class="wt-img figure-img">
+        </figure>
+      </div>
+
+      <div class="wt-single" id="prec-single" style="display:none;">
+        <h4 id="prec-single-title" class="anchored">Probabilidad por terciles</h4>
+        <img id="prec-single-img" alt="" class="wt-img wt-img-single">
+      </div>
+
+      <p class="wt-caption" id="prec-caption"></p>
+    </div>
+
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- TAB 3 · COMPARATIVA EOF vs PLS                                -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <div class="wt-panel" data-panel="pls">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SCATTER D3 · WEIGHTED vs RAW
+    ═══════════════════════════════════════════════════════════ -->
+    <div class="wt-viewer wt-scatter-viewer">
+      <h3 class="wt-block-title anchored">¿Cuándo mejora el weighting?</h3>
+      <p class="wt-block-desc">
+        Cada punto es un modelo. El eje X muestra la correlación de la predicción en bruto
+        (RAW), el eje Y la correlación de la predicción ponderada. Los puntos
+        <strong>por encima de la diagonal</strong> son los casos en los que el weighting
+        mejora el skill. Cambia entre EOF y PLS para ver cómo se comporta cada método.
+      </p>
+
+      <div class="wt-controls">
+        <div class="wt-control-group">
+          <label class="wt-label">Método de ponderación</label>
+          <div class="wt-button-row" id="scatter-methods"></div>
+        </div>
+        <div class="wt-control-group">
+          <label class="wt-label">Variable</label>
+          <div class="wt-button-row" id="scatter-vars"></div>
+        </div>
+      </div>
+
+      <div id="d3-scatter"></div>
+
+      <div class="wt-scatter-legend">
+        <div class="wt-scatter-legend-item">
+          <span class="dot dot-t2m"></span> Temperatura (T2M)
+        </div>
+        <div class="wt-scatter-legend-item">
+          <span class="dot dot-pr"></span> Precipitación
+        </div>
+        <div class="wt-scatter-legend-item">
+          <span class="diag-line"></span> Línea de "sin mejora" (y = x)
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bloque scorecards -->
+    <div class="wt-viewer" style="margin-top:1.5rem;">
+      <h3 class="wt-block-title anchored">Diferencia frente a Copernicus RAW</h3>
+      <p class="wt-block-desc">
+        Scorecards que muestran la diferencia de skill entre la versión ponderada (EOF o PLS) y la
+        predicción cruda de Copernicus. Valores positivos indican mejora.
+      </p>
+
+      <div class="wt-controls">
+        <div class="wt-control-group">
+          <label class="wt-label">Variable</label>
+          <div class="wt-button-row" id="pls-score-vars"></div>
+        </div>
+      </div>
+
+      <div class="wt-pair">
+        <figure class="wt-pair-item figure">
+          <h4 class="anchored">EOF Weighted − RAW Copernicus</h4>
+          <img id="pls-score-left-img" alt="" class="wt-img figure-img">
+        </figure>
+        <figure class="wt-pair-item figure">
+          <h4 class="anchored">PLS Weighted − RAW Copernicus</h4>
+          <img id="pls-score-right-img" alt="" class="wt-img figure-img">
+        </figure>
+      </div>
+    </div>
+
+    <!-- Bloque diferencia de correlación -->
+    <div class="wt-viewer" style="margin-top:1.5rem;">
+      <h3 class="wt-block-title anchored">Diferencia de correlación entre métodos</h3>
+      <p class="wt-block-desc">
+        Diferencia de correlación entre los dos métodos de ponderación (EOF y PLS) por variable y mes
+        de inicialización.
+      </p>
+
+      <div class="wt-controls">
+        <div class="wt-control-group">
+          <label class="wt-label">Variable</label>
+          <div class="wt-button-row" id="pls-2m-vars"></div>
+        </div>
+        <div class="wt-control-group">
+          <label class="wt-label">Mes de inicialización</label>
+          <div class="wt-button-row wt-button-row-compact" id="pls-2m-months"></div>
+        </div>
+      </div>
+
+      <div class="wt-single">
+        <img id="pls-2m-img" alt="" class="wt-img wt-img-single">
+      </div>
+      <p class="wt-caption" id="pls-2m-caption"></p>
+    </div>
+
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!-- NAVEGACIÓN INFERIOR                                          -->
+  <!-- ============================================================ -->
+  <div class="wt-nav">
+    <a href="weighting-metodologia.html" class="wt-nav-prev">← Volver a la metodología</a>
+  </div>
+
+</div>
+
+
+<!-- ============================================================ -->
+<!-- LIGHTBOX                                                      -->
+<!-- ============================================================ -->
+<div id="wt-lightbox">
+  <img id="wt-lightbox-img" alt="">
+  <div class="wt-lightbox-actions">
+    <a id="wt-lightbox-dl" class="wt-action-btn wt-action-primary" download="">↓ Descargar</a>
+    <button class="wt-action-btn" onclick="document.getElementById('wt-lightbox').classList.remove('open');document.body.style.overflow='';">✕ Cerrar</button>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- ESTILOS                                                       -->
+<!-- ============================================================ -->
+<style>
+/* ── Cabecera ─────────────────────────────────────────── */
+.wt-header-card {
+  display: flex;
+  align-items: stretch;
+  background: linear-gradient(135deg, #003087 0%, #0072bc 100%);
+  border-radius: 10px;
+  padding: 1.4rem 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0,48,135,0.15);
+  color: white;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.wt-header-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  min-width: 200px;
+}
+.wt-header-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 0.3rem;
+}
+.wt-header-value {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: white;
+}
+.wt-header-sub {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.75);
+  margin-top: 0.2rem;
+  font-weight: 500;
+}
+.wt-header-sep {
+  width: 1px;
+  background: rgba(255,255,255,0.2);
+}
+
+/* ── Tabs ─────────────────────────────────────────────── */
+.wt-tabs {
+  display: flex;
+  gap: 0.3rem;
+  border-bottom: 2px solid #dde3ed;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.wt-tab {
+  padding: 0.75rem 1.4rem;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  color: #4a5568;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.wt-tab:hover {
+  color: #003087;
+  background: #f4f8fd;
+}
+.wt-tab.active {
+  color: #003087;
+  border-bottom-color: #003087;
+  background: #f4f8fd;
+}
+
+.wt-panel {
+  display: none;
+}
+.wt-panel.active {
+  display: block;
+}
+
+/* ── Visor ─────────────────────────────────────────────── */
+.wt-viewer {
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,48,135,0.06);
+}
+
+.wt-block-title {
+  color: #003087;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 0.4rem 0;
+}
+.wt-block-desc {
+  color: #4a5568;
+  font-size: 0.88rem;
+  margin: 0 0 1.2rem 0;
+  line-height: 1.5;
+}
+
+.wt-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.wt-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.wt-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #003087;
+}
+.wt-button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.wt-button-row-compact .wt-btn {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.78rem;
+}
+.wt-btn {
+  padding: 0.55rem 1rem;
+  border: 1px solid #dde3ed;
+  background: white;
+  color: #4a5568;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.wt-btn:hover {
+  border-color: #0072bc;
+  color: #003087;
+}
+.wt-btn.active {
+  background: #003087;
+  border-color: #003087;
+  color: white;
+  font-weight: 600;
+}
+
+/* ── Pares de imágenes y vista única ───────────────────── */
+.wt-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 1rem;
+}
+.wt-pair-item {
+  margin: 0;
+  text-align: center;
+}
+.wt-pair-item h4,
+.wt-single h4 {
+  color: #003087;
+  font-size: 0.92rem;
+  font-weight: 700;
+  margin: 0 0 0.7rem 0;
+}
+.wt-single {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+}
+.wt-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  cursor: zoom-in;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  background: white;
+  transition: opacity 0.2s;
+  display: inline-block;
+}
+.wt-img-single {
+  max-width: 85%;
+}
+.wt-img.loading {
+  opacity: 0.4;
+}
+.wt-img:hover {
+  opacity: 0.93;
+}
+.wt-caption {
+  font-size: 0.82rem;
+  color: #4a5568;
+  margin-top: 0.9rem;
+  font-style: italic;
+  text-align: center;
+}
+
+/* ── Scatter D3 ────────────────────────────────────────── */
+.wt-scatter-viewer { padding-bottom: 1rem; }
+#d3-scatter {
+  width: 100%;
+  position: relative;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+#d3-scatter svg { display: block; margin: 0 auto; }
+.scatter-dot {
+  cursor: pointer;
+  transition: r 0.15s, stroke-width 0.15s;
+}
+.scatter-dot:hover {
+  stroke: #003087;
+  stroke-width: 2;
+}
+.scatter-axis path,
+.scatter-axis line {
+  stroke: #cad6e8;
+}
+.scatter-axis text {
+  fill: #4a5568;
+  font-size: 11px;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+}
+.scatter-axis-title {
+  font-size: 12px;
+  font-weight: 700;
+  fill: #003087;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.scatter-diagonal {
+  stroke: #8892a4;
+  stroke-width: 1.5;
+  stroke-dasharray: 6 4;
+  fill: none;
+}
+.scatter-zone-label {
+  fill: #8892a4;
+  font-size: 10px;
+  font-style: italic;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+}
+.scatter-label {
+  pointer-events: none;
+  font-size: 10px;
+  font-weight: 600;
+  fill: #1a2332;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+}
+.scatter-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: #003087;
+  color: white;
+  padding: 0.6rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 100;
+  white-space: nowrap;
+}
+.scatter-tooltip.show { opacity: 1; }
+.scatter-tooltip strong {
+  display: block;
+  font-size: 0.92rem;
+  margin-bottom: 0.2rem;
+}
+.scatter-tooltip span {
+  display: block;
+  font-size: 0.72rem;
+  opacity: 0.9;
+}
+.scatter-tooltip .delta {
+  margin-top: 0.3rem;
+  padding-top: 0.3rem;
+  border-top: 1px solid rgba(255,255,255,0.25);
+  font-weight: 600;
+}
+.scatter-tooltip .delta.positive { color: #b8e6a8; }
+.scatter-tooltip .delta.negative { color: #f5b7b1; }
+
+.wt-scatter-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.4rem;
+  margin-top: 1rem;
+  font-size: 0.82rem;
+  color: #4a5568;
+}
+.wt-scatter-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.wt-scatter-legend-item .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.wt-scatter-legend-item .dot-t2m { background: #003087; }
+.wt-scatter-legend-item .dot-pr  { background: #0072bc; }
+.wt-scatter-legend-item .diag-line {
+  width: 18px;
+  height: 2px;
+  background: linear-gradient(to right, #8892a4 60%, transparent 60%, transparent 100%);
+  background-size: 6px 2px;
+  background-repeat: repeat-x;
+}
+.wt-scatter-note {
+  font-size: 0.75rem;
+  color: #8892a4;
+  text-align: center;
+  margin: 0.9rem 0 0 0;
+  font-style: italic;
+}
+
+/* ── Lightbox ──────────────────────────────────────────── */
+#wt-lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 9999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  padding: 1rem;
+}
+#wt-lightbox.open { display: flex; }
+#wt-lightbox img {
+  max-width: 85vw;
+  max-height: 80vh;
+  border-radius: 10px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  background: white;
+}
+.wt-lightbox-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.wt-action-btn {
+  padding: 0.55rem 1.2rem;
+  background: white;
+  border: 1px solid #dde3ed;
+  color: #003087;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.15s;
+}
+.wt-action-btn:hover {
+  background: #e8f4fc;
+  border-color: #0072bc;
+}
+.wt-action-primary {
+  background: #003087;
+  color: white;
+  border-color: #003087;
+}
+.wt-action-primary:hover {
+  background: #0072bc;
+  color: white;
+  border-color: #0072bc;
+}
+
+/* ── Navegación inferior ───────────────────────────────── */
+.wt-nav {
+  display: flex;
+  justify-content: flex-start;
+  margin: 2rem 0 1rem 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid #e8eef5;
+}
+.wt-nav-prev {
+  padding: 0.55rem 1.3rem;
+  background: white;
+  color: #003087;
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.15s;
+}
+.wt-nav-prev:hover {
+  background: #e8f4fc;
+  border-color: #0072bc;
+}
+
+/* ── Responsive ────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .wt-pair { grid-template-columns: 1fr; }
+  .wt-header-card { padding: 1.2rem 1.4rem; }
+  .wt-header-value { font-size: 1.5rem; }
+  .wt-header-sep { display: none; }
+  .wt-img-single { max-width: 100%; }
+  .wt-scatter-legend { gap: 0.8rem; font-size: 0.75rem; }
+}
+</style>
+
+
+<!-- ============================================================ -->
+<!-- D3.js                                                         -->
+<!-- ============================================================ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+
+<!-- ============================================================ -->
+<!-- LÓGICA                                                        -->
+<!-- ============================================================ -->
+<script>
+(function() {
+
+  // ════════════════════════════════════════════════════════════
+  //  CONFIGURACIÓN — editar al cambiar de trimestre
+  // ════════════════════════════════════════════════════════════
+  const TRIMESTRE = 'DJF';
+  const LEAD      = 'lead112025';   // sufijo de los nombres en modo terciles
+  const PERIODO   = 'DJF 2025-26';
+  // ════════════════════════════════════════════════════════════
+
+  // ──────────────────────────────────────────────────────────
+  //  TAB SWITCHER
+  // ──────────────────────────────────────────────────────────
+  document.querySelectorAll('.wt-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const id = tab.dataset.tab;
+      document.querySelectorAll('.wt-tab').forEach(t => t.classList.toggle('active', t === tab));
+      document.querySelectorAll('.wt-panel').forEach(p =>
+        p.classList.toggle('active', p.dataset.panel === id)
+      );
+      // Redibuja el scatter cuando se entra al tab PLS (porque al inicio está oculto)
+      if (id === 'pls') setTimeout(renderScatter, 50);
+    });
+  });
+
+  // ──────────────────────────────────────────────────────────
+  //  HELPERS
+  // ──────────────────────────────────────────────────────────
+  function makeButtons(containerId, items, getCur, setCur, onChange) {
+    const c = document.getElementById(containerId);
+    c.innerHTML = '';
+    items.forEach(it => {
+      const b = document.createElement('button');
+      b.className = 'wt-btn' + (getCur() === it.id ? ' active' : '');
+      b.textContent = it.label;
+      b.dataset.id = it.id;
+      b.addEventListener('click', () => {
+        setCur(it.id);
+        c.querySelectorAll('.wt-btn').forEach(x => x.classList.toggle('active', x.dataset.id === it.id));
+        onChange();
+      });
+      c.appendChild(b);
+    });
+  }
+
+  function setImg(id, src) {
+    const img = document.getElementById(id);
+    img.classList.add('loading');
+    img.onload  = () => img.classList.remove('loading');
+    img.onerror = () => { img.classList.remove('loading'); img.alt = 'Imagen no disponible: ' + src; };
+    img.src = src;
+  }
+
+  // ══════════════════════════════════════════════════════════
+  //  SCATTER D3 · WEIGHTED vs RAW
+  // ══════════════════════════════════════════════════════════
+  //
+  //  Datos: correlación de Spearman (RAW vs Weighted)
+  //  Cuando tengas los valores reales, sustituye este array
+  //  manteniendo la misma estructura.
+  //
+  const SCATTER_DATA = [
+    // Modelo · Variable (t2m / pr) · RAW · EOF Weighted · PLS Weighted
+    { model: 'ECMWF',        var: 't2m', raw: 0.34, eof: 0.41, pls: 0.45 },
+    { model: 'DWD',          var: 't2m', raw: 0.22, eof: 0.28, pls: 0.31 },
+    { model: 'CMCC',         var: 't2m', raw: 0.18, eof: 0.24, pls: 0.27 },
+    { model: 'Météo-France', var: 't2m', raw: 0.26, eof: 0.32, pls: 0.38 },
+    { model: 'UKMO',         var: 't2m', raw: 0.30, eof: 0.36, pls: 0.40 },
+    { model: 'NCEP',         var: 't2m', raw: 0.15, eof: 0.20, pls: 0.22 },
+    { model: 'ECCC',         var: 't2m', raw: 0.20, eof: 0.25, pls: 0.28 },
+    { model: 'JMA',          var: 't2m', raw: 0.24, eof: 0.29, pls: 0.32 },
+
+    { model: 'ECMWF',        var: 'pr',  raw: 0.18, eof: 0.22, pls: 0.20 },
+    { model: 'DWD',          var: 'pr',  raw: 0.10, eof: 0.13, pls: 0.11 },
+    { model: 'CMCC',         var: 'pr',  raw: 0.08, eof: 0.11, pls: 0.09 },
+    { model: 'Météo-France', var: 'pr',  raw: 0.14, eof: 0.17, pls: 0.15 },
+    { model: 'UKMO',         var: 'pr',  raw: 0.16, eof: 0.19, pls: 0.18 },
+    { model: 'NCEP',         var: 'pr',  raw: 0.06, eof: 0.07, pls: 0.06 },
+    { model: 'ECCC',         var: 'pr',  raw: 0.12, eof: 0.14, pls: 0.13 },
+    { model: 'JMA',          var: 'pr',  raw: 0.11, eof: 0.13, pls: 0.12 },
+  ];
+
+  const SCATTER_METHODS = [
+    { id: 'eof', label: 'Ponderación EOF' },
+    { id: 'pls', label: 'Ponderación PLS' },
+  ];
+  const SCATTER_VARS = [
+    { id: 'all', label: 'Todas' },
+    { id: 't2m', label: 'Temperatura' },
+    { id: 'pr',  label: 'Precipitación' },
+  ];
+
+  let scatterMethod = 'eof';
+  let scatterVar    = 'all';
+
+  function renderScatter() {
+    const host = document.getElementById('d3-scatter');
+    if (!host || typeof d3 === 'undefined') return;
+
+    // Limpia y crea tooltip
+    host.innerHTML = '';
+    const tooltip = d3.select(host)
+      .append('div')
+      .attr('class', 'scatter-tooltip');
+
+    // Dimensiones
+    const margin = { top: 30, right: 30, bottom: 60, left: 70 };
+    const W = Math.min(host.clientWidth, 760);
+    const H = 460;
+    const w = W - margin.left - margin.right;
+    const h = H - margin.top - margin.bottom;
+
+    const svg = d3.select(host).append('svg')
+      .attr('width', W).attr('height', H);
+
+    const g = svg.append('g')
+      .attr('transform', `translate(${margin.left},${margin.top})`);
+
+    // Escalas (rango fijo 0–0.5 para que sea comparable entre métodos)
+    const x = d3.scaleLinear().domain([0, 0.5]).range([0, w]);
+    const y = d3.scaleLinear().domain([0, 0.5]).range([h, 0]);
+
+    // Fondo de zonas (mejora / empeora)
+    g.append('polygon')
+      .attr('points', `0,${h} ${w},0 0,0`)
+      .attr('fill', '#e8f4fc')
+      .attr('opacity', 0.5);
+    g.append('polygon')
+      .attr('points', `0,${h} ${w},0 ${w},${h}`)
+      .attr('fill', '#fdf4e8')
+      .attr('opacity', 0.5);
+
+    // Ejes
+    g.append('g')
+      .attr('class', 'scatter-axis')
+      .attr('transform', `translate(0,${h})`)
+      .call(d3.axisBottom(x).ticks(6).tickFormat(d3.format('.2f')));
+    g.append('g')
+      .attr('class', 'scatter-axis')
+      .call(d3.axisLeft(y).ticks(6).tickFormat(d3.format('.2f')));
+
+    // Títulos ejes
+    svg.append('text')
+      .attr('class', 'scatter-axis-title')
+      .attr('text-anchor', 'middle')
+      .attr('x', margin.left + w/2)
+      .attr('y', H - 18)
+      .text('Correlación · Predicción RAW');
+    svg.append('text')
+      .attr('class', 'scatter-axis-title')
+      .attr('text-anchor', 'middle')
+      .attr('transform', `rotate(-90)`)
+      .attr('x', -(margin.top + h/2))
+      .attr('y', 20)
+      .text('Correlación · Predicción Weighted');
+
+    // Diagonal y = x
+    g.append('line')
+      .attr('class', 'scatter-diagonal')
+      .attr('x1', x(0)).attr('y1', y(0))
+      .attr('x2', x(0.5)).attr('y2', y(0.5));
+
+    // Etiquetas de zonas
+    g.append('text')
+      .attr('class', 'scatter-zone-label')
+      .attr('x', 12).attr('y', 18)
+      .text('↑ Weighting mejora');
+    g.append('text')
+      .attr('class', 'scatter-zone-label')
+      .attr('text-anchor', 'end')
+      .attr('x', w - 12).attr('y', h - 12)
+      .text('Weighting empeora ↓');
+
+    // Filtrar datos
+    const data = SCATTER_DATA.filter(d =>
+      scatterVar === 'all' || d.var === scatterVar
+    );
+
+    // Pintar puntos
+    g.selectAll('.scatter-dot')
+      .data(data)
+      .join('circle')
+        .attr('class', 'scatter-dot')
+        .attr('cx', d => x(d.raw))
+        .attr('cy', d => y(d[scatterMethod]))
+        .attr('r', 7)
+        .attr('fill', d => d.var === 't2m' ? '#003087' : '#0072bc')
+        .attr('fill-opacity', 0.78)
+        .attr('stroke', 'white')
+        .attr('stroke-width', 1.5)
+        .on('mousemove', function(event, d) {
+          const [mx, my] = d3.pointer(event, host);
+          const delta = d[scatterMethod] - d.raw;
+          const sign  = delta >= 0 ? '+' : '';
+          const cls   = delta >= 0 ? 'positive' : 'negative';
+          const vlbl  = d.var === 't2m' ? 'Temperatura' : 'Precipitación';
+          const mlbl  = scatterMethod === 'eof' ? 'EOF' : 'PLS';
+
+          tooltip.html(`
+            <strong>${d.model}</strong>
+            <span>${vlbl}</span>
+            <span>RAW: ${d.raw.toFixed(2)} → Weighted: ${d[scatterMethod].toFixed(2)}</span>
+            <span class="delta ${cls}">Δ ${sign}${delta.toFixed(2)} con ${mlbl}</span>
+          `)
+            .style('left', (mx + 14) + 'px')
+            .style('top',  (my + 14) + 'px')
+            .classed('show', true);
+
+          d3.select(this).attr('r', 10);
+        })
+        .on('mouseleave', function() {
+          tooltip.classed('show', false);
+          d3.select(this).attr('r', 7);
+        });
+
+    // Etiquetas con nombre de modelo (solo si hay pocos)
+    if (data.length <= 10) {
+      g.selectAll('.scatter-label')
+        .data(data)
+        .join('text')
+          .attr('class', 'scatter-label')
+          .attr('x', d => x(d.raw) + 11)
+          .attr('y', d => y(d[scatterMethod]) + 4)
+          .text(d => d.model);
+    }
+  }
+
+  // ──────────────────────────────────────────────────────────
+  //  TAB 1 · TEMPERATURA (EOF)
+  // ──────────────────────────────────────────────────────────
+  const TEMP_BASE = 'images/weighting/temperature';
+  const TEMP_MODELS = [
+    { id: 'ECMWF', label: 'ECMWF' },
+    { id: 'DWD',   label: 'DWD' },
+    { id: 'CMCC',  label: 'CMCC' },
+  ];
+  const TEMP_VARS = [
+    { id: 'ANOM',     label: 'Anomalías' },
+    { id: 'TERCILES', label: 'Terciles' },
+    { id: 'CORR',     label: 'Correlación' },
+  ];
+  let tempModel = TEMP_MODELS[0].id;
+  let tempVar   = TEMP_VARS[0].id;
+
+  function updateTemp() {
+    const pair   = document.getElementById('temp-pair');
+    const single = document.getElementById('temp-single');
+    const cap    = document.getElementById('temp-caption');
+    const model  = TEMP_MODELS.find(m => m.id === tempModel);
+    const v      = TEMP_VARS.find(x => x.id === tempVar);
+
+    if (tempVar === 'TERCILES') {
+      pair.style.display = 'none';
+      single.style.display = 'block';
+      const src = `${TEMP_BASE}/terciles_t2m_${tempModel.toLowerCase()}_${LEAD}_${TRIMESTRE}.png`;
+      setImg('temp-single-img', src);
+      document.getElementById('temp-single-title').textContent =
+        'Probabilidad por terciles · ' + model.label;
+      cap.textContent = `Terciles · ${model.label} · T2M · ${PERIODO}`;
+    } else {
+      pair.style.display   = 'grid';
+      single.style.display = 'none';
+      const raw = `${TEMP_BASE}/RAW_fore_${tempModel}-${TRIMESTRE}_t2m_Iberia_${tempVar}.png`;
+      const wei = `${TEMP_BASE}/WEI_fore_${tempModel}-${TRIMESTRE}_t2m_Iberia_${tempVar}.png`;
+      setImg('temp-raw-img', raw);
+      setImg('temp-wei-img', wei);
+      cap.textContent = `${v.label} · ${model.label} · T2M · Iberia · ${PERIODO}`;
+    }
+  }
+
+  // ──────────────────────────────────────────────────────────
+  //  TAB 2 · PRECIPITACIÓN (EOF)
+  // ──────────────────────────────────────────────────────────
+  const PREC_BASE = 'images/weighting/precipitation';
+  const PREC_MODELS  = TEMP_MODELS;
+  const PREC_VARS    = TEMP_VARS;
+  const PREC_REGIONS = [
+    { id: 'Iberia', label: 'Iberia' },
+    { id: 'MedCOF', label: 'MedCOF' },
+  ];
+  let precModel  = PREC_MODELS[0].id;
+  let precVar    = PREC_VARS[0].id;
+  let precRegion = PREC_REGIONS[0].id;
+
+  function updatePrec() {
+    const pair   = document.getElementById('prec-pair');
+    const single = document.getElementById('prec-single');
+    const cap    = document.getElementById('prec-caption');
+    const model  = PREC_MODELS.find(m => m.id === precModel);
+    const v      = PREC_VARS.find(x => x.id === precVar);
+    const r      = PREC_REGIONS.find(x => x.id === precRegion);
+
+    if (precVar === 'TERCILES') {
+      pair.style.display   = 'none';
+      single.style.display = 'block';
+      const src = `${PREC_BASE}/terciles_tprate_${precModel.toLowerCase()}_${LEAD}_${TRIMESTRE}_${precRegion}.png`;
+      setImg('prec-single-img', src);
+      document.getElementById('prec-single-title').textContent =
+        `Probabilidad por terciles · ${model.label} · ${r.label}`;
+      cap.textContent = `Terciles · ${model.label} · Precipitación · ${r.label} · ${PERIODO}`;
+    } else {
+      pair.style.display   = 'grid';
+      single.style.display = 'none';
+      const raw = `${PREC_BASE}/RAW_fore_${precModel}-${TRIMESTRE}_tprate_${precRegion}_${precVar}.png`;
+      const wei = `${PREC_BASE}/WEI_fore_${precModel}-${TRIMESTRE}_tprate_${precRegion}_${precVar}.png`;
+      setImg('prec-raw-img', raw);
+      setImg('prec-wei-img', wei);
+      cap.textContent = `${v.label} · ${model.label} · Precipitación · ${r.label} · ${PERIODO}`;
+    }
+  }
+
+  // ──────────────────────────────────────────────────────────
+  //  TAB 3 · COMPARATIVA EOF vs PLS
+  // ──────────────────────────────────────────────────────────
+  const PLS_BASE = 'images/weighting/pls';
+
+  // Scorecards
+  const PLS_SCORE_VARS = [
+    { id: 't2m',    label: 'Temperatura' },
+    { id: 'tprate', label: 'Precipitación' },
+  ];
+  let plsScoreVar = PLS_SCORE_VARS[0].id;
+
+  function updatePlsScore() {
+    setImg('pls-score-left-img',  `${PLS_BASE}/EOF_minus_RAW_scorecard_${plsScoreVar}.png`);
+    setImg('pls-score-right-img', `${PLS_BASE}/PLS_minus_RAW_scorecard_${plsScoreVar}.png`);
+  }
+
+  // Diferencia de correlación
+  const PLS_2M_VARS = [
+    { id: 't2m',    label: 'Temperatura' },
+    { id: 'tprate', label: 'Precipitación' },
+    { id: 'msl',    label: 'Presión' },
+  ];
+  const PLS_2M_MONTHS = Array.from({length:12}, (_, i) => {
+    const mm = String(i+1).padStart(2,'0');
+    const labels = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    return { id: mm, label: `${mm} — ${labels[i]}` };
+  });
+  let pls2mVar   = PLS_2M_VARS[0].id;
+  let pls2mMonth = '01';
+
+  function updatePls2m() {
+    const v = PLS_2M_VARS.find(x => x.id === pls2mVar);
+    const src = `${PLS_BASE}/stmonth${pls2mMonth}/2methods_diff_corr_${pls2mVar}_Iberia.png`;
+    setImg('pls-2m-img', src);
+    document.getElementById('pls-2m-caption').textContent =
+      `Diferencia de correlación EOF–PLS · ${v.label} · Inicialización mes ${pls2mMonth}`;
+  }
+
+  // ──────────────────────────────────────────────────────────
+  //  LIGHTBOX
+  // ──────────────────────────────────────────────────────────
+  function openLightbox(src) {
+    const lb = document.getElementById('wt-lightbox');
+    document.getElementById('wt-lightbox-img').src = src;
+    const dl = document.getElementById('wt-lightbox-dl');
+    dl.href = src;
+    dl.download = src.split('/').pop();
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  document.getElementById('wt-lightbox').addEventListener('click', e => {
+    if (e.target.id === 'wt-lightbox') {
+      e.currentTarget.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.getElementById('wt-lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+  document.querySelectorAll('.wt-img').forEach(img => {
+    img.addEventListener('click', () => { if (img.src) openLightbox(img.src); });
+  });
+
+  // ──────────────────────────────────────────────────────────
+  //  INIT
+  // ──────────────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    // Tab 1
+    makeButtons('temp-models', TEMP_MODELS, () => tempModel, id => tempModel = id, updateTemp);
+    makeButtons('temp-vars',   TEMP_VARS,   () => tempVar,   id => tempVar   = id, updateTemp);
+    updateTemp();
+
+    // Tab 2
+    makeButtons('prec-models',  PREC_MODELS,  () => precModel,  id => precModel  = id, updatePrec);
+    makeButtons('prec-vars',    PREC_VARS,    () => precVar,    id => precVar    = id, updatePrec);
+    makeButtons('prec-regions', PREC_REGIONS, () => precRegion, id => precRegion = id, updatePrec);
+    updatePrec();
+
+    // Tab 3 · scorecards
+    makeButtons('pls-score-vars', PLS_SCORE_VARS, () => plsScoreVar, id => plsScoreVar = id, updatePlsScore);
+    updatePlsScore();
+
+    // Tab 3 · 2-methods
+    makeButtons('pls-2m-vars',   PLS_2M_VARS,   () => pls2mVar,   id => pls2mVar   = id, updatePls2m);
+    makeButtons('pls-2m-months', PLS_2M_MONTHS, () => pls2mMonth, id => pls2mMonth = id, updatePls2m);
+    updatePls2m();
+
+    // Tab 3 · scatter
+    makeButtons('scatter-methods', SCATTER_METHODS, () => scatterMethod, id => scatterMethod = id, renderScatter);
+    makeButtons('scatter-vars',    SCATTER_VARS,    () => scatterVar,    id => scatterVar    = id, renderScatter);
+    renderScatter();
+  });
+
+  // Redibujar al cambiar tamaño de ventana
+  let resizeT;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeT);
+    resizeT = setTimeout(renderScatter, 200);
+  });
+
+})();
+</script>
+
+
+
+</main> <!-- /main -->
+<!-- ── FOOTER  ─────────────── -->
+<footer id="site-footer">
+  <div id="footer-inner">
+
+    <!-- Créditos -->
+    <div id="footer-credits">
+      <p class="footer-credit-main">© 2026 · Encomienda de Predicción Estacional</p>
+      <p class="footer-credit-sub">AEMET – Tragsatec · 2024–2026</p>
+    </div>
+
+    <!-- Logos institucionales -->
+    <div id="footer-logos">
+      <img src="images/logos/logos-financiacion.png" alt="Financiado por la Unión Europea NextGenerationEU · Gobierno de España · Ministerio para la Transición Ecológica y el Reto Demográfico · AEMET · Plan de Recuperación, Transformación y Resiliencia">
+    </div>
+
+  </div>
+</footer>
+
+<style>
+.nav-footer, #quarto-footer { display: none !important; }
+
+#site-footer {
+  background: #0072bc;
+  color: white;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  padding: 1.2rem 1.5rem 1rem;
+  margin-top: 4rem;
+  box-sizing: border-box;
+  position: relative;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin-left: calc(-1 * (100vw - 100%) / 2);
+  margin-right: calc(-1 * (100vw - 100%) / 2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#footer-inner {
+  width: 100%;
+  max-width: 1100px;
+}
+
+html, body { overflow-x: hidden; }
+
+#footer-credits { text-align: center; }
+.footer-credit-main {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: white;
+}
+.footer-credit-sub {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.8);
+}
+
+#footer-logos {
+  margin-top: 1rem;
+  padding: 0.8rem 1.2rem;
+  background: white;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#footer-logos img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  #site-footer { padding: 1.8rem 1rem 1.5rem; }
+  #footer-logos { padding: 0.6rem 1rem; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const footer = document.getElementById('site-footer');
+  if (footer && footer.parentElement !== document.body) {
+    document.body.appendChild(footer);
+  }
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/sanfiz\.github\.io\/aemet-tragsatec-2026\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

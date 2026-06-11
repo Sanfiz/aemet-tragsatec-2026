@@ -1,0 +1,145 @@
+# Imágenes esperadas por weighting-resultados.qmd
+# Total: 81 archivos repartidos en 3 subcarpetas de images/weighting/
+
+# ═══════════════════════════════════════════════════════════════
+# CARPETA: images/weighting/temperature/
+# ═══════════════════════════════════════════════════════════════
+# (15 archivos)
+
+# --- ANOM y CORR: 3 modelos × 2 variables × 2 (RAW/WEI) = 12 ---
+RAW_fore_ECMWF-DJF_t2m_Iberia_ANOM.png
+WEI_fore_ECMWF-DJF_t2m_Iberia_ANOM.png
+RAW_fore_DWD-DJF_t2m_Iberia_ANOM.png
+WEI_fore_DWD-DJF_t2m_Iberia_ANOM.png
+RAW_fore_CMCC-DJF_t2m_Iberia_ANOM.png
+WEI_fore_CMCC-DJF_t2m_Iberia_ANOM.png
+
+RAW_fore_ECMWF-DJF_t2m_Iberia_CORR.png
+WEI_fore_ECMWF-DJF_t2m_Iberia_CORR.png
+RAW_fore_DWD-DJF_t2m_Iberia_CORR.png
+WEI_fore_DWD-DJF_t2m_Iberia_CORR.png
+RAW_fore_CMCC-DJF_t2m_Iberia_CORR.png
+WEI_fore_CMCC-DJF_t2m_Iberia_CORR.png
+
+# --- TERCILES: 3 modelos = 3 ---
+terciles_t2m_ecmwf_lead112025_DJF.png
+terciles_t2m_dwd_lead112025_DJF.png
+terciles_t2m_cmcc_lead112025_DJF.png
+
+
+# ═══════════════════════════════════════════════════════════════
+# CARPETA: images/weighting/precipitation/
+# ═══════════════════════════════════════════════════════════════
+# (30 archivos)
+
+# --- ANOM y CORR: 3 modelos × 2 variables × 2 regiones × 2 (RAW/WEI) = 24 ---
+RAW_fore_ECMWF-DJF_tprate_Iberia_ANOM.png
+WEI_fore_ECMWF-DJF_tprate_Iberia_ANOM.png
+RAW_fore_DWD-DJF_tprate_Iberia_ANOM.png
+WEI_fore_DWD-DJF_tprate_Iberia_ANOM.png
+RAW_fore_CMCC-DJF_tprate_Iberia_ANOM.png
+WEI_fore_CMCC-DJF_tprate_Iberia_ANOM.png
+
+RAW_fore_ECMWF-DJF_tprate_MedCOF_ANOM.png
+WEI_fore_ECMWF-DJF_tprate_MedCOF_ANOM.png
+RAW_fore_DWD-DJF_tprate_MedCOF_ANOM.png
+WEI_fore_DWD-DJF_tprate_MedCOF_ANOM.png
+RAW_fore_CMCC-DJF_tprate_MedCOF_ANOM.png
+WEI_fore_CMCC-DJF_tprate_MedCOF_ANOM.png
+
+RAW_fore_ECMWF-DJF_tprate_Iberia_CORR.png
+WEI_fore_ECMWF-DJF_tprate_Iberia_CORR.png
+RAW_fore_DWD-DJF_tprate_Iberia_CORR.png
+WEI_fore_DWD-DJF_tprate_Iberia_CORR.png
+RAW_fore_CMCC-DJF_tprate_Iberia_CORR.png
+WEI_fore_CMCC-DJF_tprate_Iberia_CORR.png
+
+RAW_fore_ECMWF-DJF_tprate_MedCOF_CORR.png
+WEI_fore_ECMWF-DJF_tprate_MedCOF_CORR.png
+RAW_fore_DWD-DJF_tprate_MedCOF_CORR.png
+WEI_fore_DWD-DJF_tprate_MedCOF_CORR.png
+RAW_fore_CMCC-DJF_tprate_MedCOF_CORR.png
+WEI_fore_CMCC-DJF_tprate_MedCOF_CORR.png
+
+# --- TERCILES: 3 modelos × 2 regiones = 6 ---
+terciles_tprate_ecmwf_lead112025_DJF_Iberia.png
+terciles_tprate_dwd_lead112025_DJF_Iberia.png
+terciles_tprate_cmcc_lead112025_DJF_Iberia.png
+terciles_tprate_ecmwf_lead112025_DJF_MedCOF.png
+terciles_tprate_dwd_lead112025_DJF_MedCOF.png
+terciles_tprate_cmcc_lead112025_DJF_MedCOF.png
+
+
+# ═══════════════════════════════════════════════════════════════
+# CARPETA: images/weighting/pls/
+# ═══════════════════════════════════════════════════════════════
+# (40 archivos)
+
+# --- Scorecards: 4 archivos en la raíz de la carpeta ---
+EOF_minus_RAW_scorecard_t2m.png
+PLS_minus_RAW_scorecard_t2m.png
+EOF_minus_RAW_scorecard_tprate.png
+PLS_minus_RAW_scorecard_tprate.png
+
+# --- 2methods_diff_corr: 12 meses × 3 variables = 36 archivos ---
+# Estructura: stmonth<MM>/2methods_diff_corr_<var>_Iberia.png
+
+# stmonth01/
+stmonth01/2methods_diff_corr_t2m_Iberia.png
+stmonth01/2methods_diff_corr_tprate_Iberia.png
+stmonth01/2methods_diff_corr_msl_Iberia.png
+
+# stmonth02/
+stmonth02/2methods_diff_corr_t2m_Iberia.png
+stmonth02/2methods_diff_corr_tprate_Iberia.png
+stmonth02/2methods_diff_corr_msl_Iberia.png
+
+# stmonth03/
+stmonth03/2methods_diff_corr_t2m_Iberia.png
+stmonth03/2methods_diff_corr_tprate_Iberia.png
+stmonth03/2methods_diff_corr_msl_Iberia.png
+
+# stmonth04/
+stmonth04/2methods_diff_corr_t2m_Iberia.png
+stmonth04/2methods_diff_corr_tprate_Iberia.png
+stmonth04/2methods_diff_corr_msl_Iberia.png
+
+# stmonth05/
+stmonth05/2methods_diff_corr_t2m_Iberia.png
+stmonth05/2methods_diff_corr_tprate_Iberia.png
+stmonth05/2methods_diff_corr_msl_Iberia.png
+
+# stmonth06/
+stmonth06/2methods_diff_corr_t2m_Iberia.png
+stmonth06/2methods_diff_corr_tprate_Iberia.png
+stmonth06/2methods_diff_corr_msl_Iberia.png
+
+# stmonth07/
+stmonth07/2methods_diff_corr_t2m_Iberia.png
+stmonth07/2methods_diff_corr_tprate_Iberia.png
+stmonth07/2methods_diff_corr_msl_Iberia.png
+
+# stmonth08/
+stmonth08/2methods_diff_corr_t2m_Iberia.png
+stmonth08/2methods_diff_corr_tprate_Iberia.png
+stmonth08/2methods_diff_corr_msl_Iberia.png
+
+# stmonth09/
+stmonth09/2methods_diff_corr_t2m_Iberia.png
+stmonth09/2methods_diff_corr_tprate_Iberia.png
+stmonth09/2methods_diff_corr_msl_Iberia.png
+
+# stmonth10/
+stmonth10/2methods_diff_corr_t2m_Iberia.png
+stmonth10/2methods_diff_corr_tprate_Iberia.png
+stmonth10/2methods_diff_corr_msl_Iberia.png
+
+# stmonth11/
+stmonth11/2methods_diff_corr_t2m_Iberia.png
+stmonth11/2methods_diff_corr_tprate_Iberia.png
+stmonth11/2methods_diff_corr_msl_Iberia.png
+
+# stmonth12/
+stmonth12/2methods_diff_corr_t2m_Iberia.png
+stmonth12/2methods_diff_corr_tprate_Iberia.png
+stmonth12/2methods_diff_corr_msl_Iberia.png

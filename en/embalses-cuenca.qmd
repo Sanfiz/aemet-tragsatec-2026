@@ -1,0 +1,837 @@
+---
+title: "Embalses · Análisis por cuenca"
+toc: false
+---
+
+```{=html}
+<div class="emb-header">
+  <div class="emb-eyebrow">PREDICCIÓN ESTACIONAL · ROCIO_IBEB · ECMWF SEAS5.1 + DWD GCFS2.1 · QM</div>
+  <h1>Análisis por demarcación hidrográfica</h1>
+  <p class="emb-lead">Distribución del skill por demarcación en los dos sistemas de predicción estacional. Selecciona una métrica y un modelo, o ve a la pestaña <strong>Comparación</strong> para contrastar ECMWF con DWD embalse a embalse.</p>
+</div>
+
+<div class="cuenca-controls">
+  <div class="cuenca-control-group">
+    <label>MÉTRICA:</label>
+    <select id="sel-metrica">
+      <option value="r" selected>Correlación r</option>
+      <option value="hit_rate">Hit rate</option>
+      <option value="BSS_lower">BSS lower (T1 seco)</option>
+      <option value="BSS_upper">BSS upper (T3 húmedo)</option>
+      <option value="AUC_lower">AUC lower (T1 seco)</option>
+      <option value="AUC_upper">AUC upper (T3 húmedo)</option>
+    </select>
+  </div>
+
+  <div class="cuenca-tabs">
+    <button class="cuenca-tab-btn active" data-modelo="ecmwf">ECMWF SEAS5.1</button>
+    <button class="cuenca-tab-btn"        data-modelo="dwd">DWD GCFS2.1</button>
+    <button class="cuenca-tab-btn"        data-modelo="comparacion">Comparación</button>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- VISTA UN MODELO (ECMWF o DWD) — visible cuando modeloActual != comparacion -->
+<!-- ============================================================== -->
+<div id="vista-modelo">
+  <div class="cuenca-main">
+    <div class="cuenca-mapa-card">
+      <div class="cuenca-card-title">Distribución espacial — <span id="metrica-titulo">Correlación r</span> · <span id="modelo-titulo">ECMWF</span></div>
+      <svg id="mapa-cuencas" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="cuenca-leyenda">
+        <div class="cuenca-leyenda-titulo">Mediana por cuenca</div>
+        <div class="cuenca-leyenda-gradient" id="leyenda-grad"></div>
+        <div class="cuenca-leyenda-labels">
+          <span id="leyenda-min">—</span>
+          <span id="leyenda-mid">—</span>
+          <span id="leyenda-max">—</span>
+        </div>
+        <div class="cuenca-leyenda-nodata">
+          <span class="cuenca-color-nodata"></span> Sin datos
+        </div>
+      </div>
+    </div>
+
+    <div class="cuenca-detail-card" id="cuenca-detail">
+      <div class="cuenca-detail-placeholder">
+        Haz clic en una cuenca del mapa para ver sus métricas detalladas
+      </div>
+    </div>
+  </div>
+
+  <div class="cuenca-boxplots-card">
+    <div class="cuenca-card-title">Distribución de skill por cuenca · <span id="boxplot-modelo">ECMWF</span></div>
+    <svg id="boxplots-cuencas" viewBox="0 0 1100 380" preserveAspectRatio="xMidYMid meet"></svg>
+  </div>
+
+  <div class="cuenca-tabla-card">
+    <div class="cuenca-card-title">Resumen por demarcación · <span id="tabla-modelo">ECMWF</span></div>
+    <table class="cuenca-tabla" id="tabla-cuencas">
+      <thead><tr>
+        <th>Demarcación</th><th>N</th><th>r</th><th>Hit rate</th>
+        <th>BSS lower</th><th>BSS upper</th><th>AUC lower</th><th>AUC upper</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- VISTA COMPARACIÓN — visible cuando modeloActual == comparacion -->
+<!-- ============================================================== -->
+<div id="vista-comparacion" style="display:none">
+
+  <div class="comp-summary-card">
+    <div class="cuenca-card-title">Comparativa global · <span id="comp-metrica-titulo">Correlación r</span></div>
+    <div id="comp-resumen" class="comp-resumen-grid">
+      <div class="comp-stat-card">
+        <span class="comp-stat-val" id="comp-stat-ecmwf">—</span>
+        <span class="comp-stat-lbl">Mediana ECMWF</span>
+      </div>
+      <div class="comp-stat-card">
+        <span class="comp-stat-val" id="comp-stat-dwd">—</span>
+        <span class="comp-stat-lbl">Mediana DWD</span>
+      </div>
+      <div class="comp-stat-card">
+        <span class="comp-stat-val" id="comp-stat-dwd-mejor">—</span>
+        <span class="comp-stat-lbl">DWD mejor que ECMWF</span>
+      </div>
+      <div class="comp-stat-card">
+        <span class="comp-stat-val" id="comp-stat-ecmwf-mejor">—</span>
+        <span class="comp-stat-lbl">ECMWF mejor que DWD</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="comp-main">
+    <div class="comp-scatter-card">
+      <div class="cuenca-card-title">ECMWF vs DWD — todos los embalses</div>
+      <svg id="comp-scatter" viewBox="0 0 700 600" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="comp-leyenda">
+        Cada punto es un embalse, coloreado por su demarcación. 
+        Diagonal punteada = igualdad. Puntos sobre la diagonal: <strong>DWD mejor</strong>. 
+        Puntos bajo la diagonal: <strong>ECMWF mejor</strong>.
+      </div>
+    </div>
+
+    <div class="comp-tabla-card">
+      <div class="cuenca-card-title">Resumen comparativo por demarcación</div>
+      <table class="cuenca-tabla comp-tabla">
+        <thead><tr>
+          <th rowspan="2">Demarcación</th>
+          <th rowspan="2">N</th>
+          <th colspan="2">ECMWF</th>
+          <th colspan="2">DWD</th>
+          <th rowspan="2">Mejor</th>
+        </tr><tr>
+          <th>Mediana</th><th>P75</th>
+          <th>Mediana</th><th>P75</th>
+        </tr></thead>
+        <tbody id="comp-tabla-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+.emb-header { padding: 0 1.5rem; max-width: 1300px; margin: 1rem auto 1.5rem; }
+.emb-eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: #0072bc; text-transform: uppercase; margin-bottom: 0.3rem; }
+.emb-header h1 { color: #003087; font-size: 2rem; margin: 0 0 0.5rem; font-weight: 700; border-bottom: 1px solid #dde3ed; padding-bottom: 0.5rem; }
+.emb-lead { color: #4a5568; font-size: 0.95rem; max-width: 800px; margin: 0; }
+
+.cuenca-controls { max-width: 1300px; margin: 0 auto 1rem; padding: 0 1.5rem; display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+.cuenca-control-group { display: inline-flex; align-items: center; gap: 0.6rem; }
+.cuenca-control-group label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: #4a5568; text-transform: uppercase; }
+.cuenca-control-group select { padding: 0.4rem 0.7rem; font-size: 0.85rem; border: 1px solid #cbd5e0; border-radius: 4px; background: white; cursor: pointer; }
+
+.cuenca-tabs { display: inline-flex; gap: 4px; background: #f1f5f9; padding: 4px; border-radius: 8px; }
+.cuenca-tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.15s;
+}
+.cuenca-tab-btn:hover { background: #e2e8f0; }
+.cuenca-tab-btn.active {
+  background: #003087;
+  color: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.cuenca-main { display: grid; grid-template-columns: 1.3fr 1fr; gap: 1.2rem; max-width: 1300px; margin: 0 auto 1.5rem; padding: 0 1.5rem; }
+.cuenca-mapa-card, .cuenca-detail-card, .cuenca-boxplots-card, .cuenca-tabla-card,
+.comp-summary-card, .comp-scatter-card, .comp-tabla-card {
+  background: white; border: 1px solid #dde3ed; border-radius: 8px; padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.cuenca-card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #003087; margin-bottom: 0.8rem; padding-bottom: 0.4rem; border-bottom: 1px solid #dde3ed; }
+
+#mapa-cuencas { 
+  width: 100%; 
+  height: 580px; 
+  display: block; 
+  background: #f0f5fa; 
+  border-radius: 4px;
+  border: 1px solid #dde3ed;
+}
+.pais-bg { 
+  fill: #c4c8cc; 
+  stroke: #8a8e92; 
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+.cuenca-poly { 
+  stroke: #6b7280; 
+  stroke-width: 1px; 
+  vector-effect: non-scaling-stroke;
+  cursor: pointer; 
+  transition: opacity 0.15s, filter 0.15s; 
+}
+.cuenca-poly:hover { opacity: 0.85; filter: brightness(1.05); }
+.cuenca-poly.selected { stroke: #003087; stroke-width: 2.5px; }
+.cuenca-poly.nodata { fill: #a0a0a0; cursor: default; }
+.cuenca-poly.nodata:hover { opacity: 1; filter: none; }
+.rio-line { 
+  fill: none; 
+  stroke: #6ba6d4; 
+  stroke-linecap: round; 
+  vector-effect: non-scaling-stroke;
+  pointer-events: none; 
+  opacity: 0.7;
+}
+
+.cuenca-leyenda { margin-top: 0.8rem; padding: 0.6rem; background: #f8fafc; border-radius: 4px; }
+.cuenca-leyenda-titulo { font-size: 0.65rem; font-weight: 700; color: #4a5568; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+.cuenca-leyenda-gradient { height: 14px; border-radius: 99px; background: linear-gradient(to right, #dc2626, #f59e0b, #10b981); }
+.cuenca-leyenda-labels { display: flex; justify-content: space-between; margin-top: 0.2rem; font-size: 0.7rem; color: #4a5568; }
+.cuenca-leyenda-nodata { margin-top: 0.5rem; font-size: 0.7rem; color: #4a5568; display: flex; align-items: center; gap: 0.4rem; }
+.cuenca-color-nodata { display: inline-block; width: 14px; height: 14px; background: #a0a0a0; border-radius: 3px; border: 1px solid #6b7280; }
+
+.cuenca-detail-placeholder { color: #9ca3af; text-align: center; padding: 4rem 1rem; font-style: italic; font-size: 0.9rem; }
+.cuenca-detail-title { font-size: 1.25rem; font-weight: 700; color: #003087; margin-bottom: 0.2rem; }
+.cuenca-detail-sub { font-size: 0.8rem; color: #6b7280; margin-bottom: 1rem; }
+.cuenca-detail-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.8rem; }
+.cuenca-detail-metric-card { background: #f8fafc; padding: 0.6rem; border-radius: 6px; text-align: center; border: 1px solid #e5e7eb; }
+.cuenca-detail-metric-val { display: block; font-size: 1.3rem; font-weight: 700; }
+.cuenca-detail-metric-lbl { font-size: 0.65rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em; }
+.cuenca-detail-rank { margin-top: 0.8rem; }
+.cuenca-detail-rank-title { font-size: 0.7rem; font-weight: 700; color: #4a5568; text-transform: uppercase; margin-bottom: 0.4rem; }
+.cuenca-detail-rank-row { display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; padding: 0.3rem 0.4rem; border-bottom: 1px solid #f3f4f6; font-size: 0.78rem; align-items: center; }
+.cuenca-detail-rank-row:hover { background: #f8fafc; }
+.cuenca-detail-rank-nombre { color: #1a2332; }
+.cuenca-detail-rank-val { font-weight: 700; font-family: 'JetBrains Mono', Consolas, monospace; }
+.cuenca-detail-list { max-height: 280px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 4px; }
+
+#boxplots-cuencas { width: 100%; height: 380px; display: block; }
+.box-rect { stroke: #003087; stroke-width: 1; fill: rgba(0,114,188,0.3); }
+.box-median { stroke: #003087; stroke-width: 2; }
+.box-whisker { stroke: #003087; stroke-width: 1; fill: none; }
+.box-outlier { fill: #dc2626; opacity: 0.6; }
+.box-ref-line { stroke: #dc2626; stroke-width: 1; stroke-dasharray: 3,2; }
+.box-axis-label { font-size: 10px; fill: #4a5568; font-family: sans-serif; }
+.box-title { font-size: 12px; fill: #003087; font-family: sans-serif; font-weight: 700; }
+
+.cuenca-tabla-card, .comp-tabla-card { max-width: 1300px; margin: 0 auto 2rem; }
+.cuenca-tabla { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.cuenca-tabla th { background: #003087; color: white; padding: 0.6rem; text-align: left; font-weight: 600; font-size: 0.78rem; }
+.cuenca-tabla td { padding: 0.5rem 0.6rem; border-bottom: 1px solid #e5e7eb; }
+.cuenca-tabla tr:hover { background: #f8fafc; cursor: pointer; }
+.cuenca-tabla tr.selected-row { background: #dbeafe !important; }
+.cuenca-tabla td.metrica { font-family: 'JetBrains Mono', Consolas, monospace; font-weight: 700; }
+
+/* ─── Comparación ─── */
+.comp-summary-card { max-width: 1300px; margin: 0 auto 1.2rem; padding: 1rem 1.5rem; }
+.comp-resumen-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; }
+.comp-stat-card { background: #f8fafc; padding: 0.8rem; border-radius: 6px; text-align: center; border: 1px solid #e5e7eb; }
+.comp-stat-val { display: block; font-size: 1.4rem; font-weight: 700; color: #003087; font-family: 'JetBrains Mono', Consolas, monospace; }
+.comp-stat-lbl { font-size: 0.72rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.2rem; display: block; }
+
+.comp-main { display: grid; grid-template-columns: 1.1fr 1fr; gap: 1.2rem; max-width: 1300px; margin: 0 auto 1.5rem; padding: 0 1.5rem; }
+#comp-scatter { width: 100%; height: 600px; display: block; }
+.comp-leyenda { font-size: 0.78rem; color: #4a5568; margin-top: 0.6rem; padding: 0.6rem; background: #f8fafc; border-radius: 4px; line-height: 1.5; }
+.comp-scatter-pt { stroke: #1f2937; stroke-width: 0.3; cursor: pointer; }
+.comp-scatter-pt:hover { stroke-width: 1.5; stroke: #000; }
+.comp-scatter-axis { stroke: #6b7280; stroke-width: 1; }
+.comp-scatter-grid { stroke: #e5e7eb; stroke-width: 0.5; stroke-dasharray: 2,2; }
+.comp-scatter-diag { stroke: #4a5568; stroke-width: 1.5; stroke-dasharray: 6,3; fill: none; }
+.comp-scatter-label { font-size: 11px; fill: #4a5568; font-family: sans-serif; }
+.comp-scatter-title { font-size: 13px; fill: #003087; font-family: sans-serif; font-weight: 700; }
+.comp-scatter-legend-rect { stroke: #6b7280; stroke-width: 0.5; }
+.comp-scatter-legend-text { font-size: 10px; fill: #1a2332; font-family: sans-serif; }
+
+.comp-tabla th { font-size: 0.72rem; }
+.comp-tabla td:not(:first-child):not(.cuenca-mejor) { font-family: 'JetBrains Mono', Consolas, monospace; font-weight: 600; text-align: right; }
+.comp-tabla td.cuenca-mejor { font-weight: 700; text-align: center; }
+.cuenca-mejor.ecmwf { color: #c2410c; background: #ffedd5; }
+.cuenca-mejor.dwd   { color: #b45309; background: #fef3c7; }
+.cuenca-mejor.empate { color: #6b7280; background: #f1f5f9; }
+
+@media (max-width: 900px) { 
+  .cuenca-main, .comp-main { grid-template-columns: 1fr; }
+  .comp-resumen-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+
+<script>
+// ============================================================
+// DATA_CUENCAS — PEGAR AQUÍ EL CONTENIDO DE DATA_CUENCAS_inline.js
+// ============================================================
+
+const DATA_CUENCAS = {"ES018":{"cod":"ES018","nombre":"CANTÁBRICO OCCIDENTAL","n_embalses":8,"medianas":{"r_ecmwf":0.146,"hit_rate_ecmwf":0.405,"BS_total_ecmwf":0.225,"BSS_lower_ecmwf":-0.066,"BSS_upper_ecmwf":0.023,"AUC_lower_ecmwf":0.525,"AUC_upper_ecmwf":0.596,"r_dwd":-0.011,"hit_rate_dwd":0.379,"BS_total_dwd":0.221,"BSS_lower_dwd":0.001,"BSS_upper_dwd":0.017,"AUC_lower_dwd":0.584,"AUC_upper_dwd":0.551},"valores":{"r_ecmwf":[0.039,-0.12,0.08,-0.045,0.212,0.305,0.241,0.228],"hit_rate_ecmwf":[0.556,0.211,0.389,0.316,0.421,0.579,0.421,0.316],"BS_total_ecmwf":[0.208,0.255,0.242,0.255,0.219,0.189,0.227,0.224],"BSS_lower_ecmwf":[-0.062,-0.202,-0.027,-0.16,-0.057,0.197,-0.069,-0.082],"BSS_upper_ecmwf":[0.013,-0.037,-0.154,-0.151,0.033,0.122,0.052,0.081],"AUC_lower_ecmwf":[0.465,0.369,0.521,0.47,0.565,0.786,0.548,0.53],"AUC_upper_ecmwf":[0.701,0.59,0.396,0.365,0.583,0.673,0.603,0.603],"r_dwd":[-0.092,-0.271,-0.289,-0.262,0.085,0.141,0.07,0.22],"hit_rate_dwd":[0.222,0.316,0.389,0.368,0.526,0.421,0.474,0.316],"BS_total_dwd":[0.243,0.256,0.235,0.225,0.212,0.205,0.217,0.213],"BSS_lower_dwd":[-0.037,-0.113,-0.082,-0.096,0.099,0.085,0.039,0.094],"BSS_upper_dwd":[-0.023,-0.084,-0.088,0.043,-0.002,0.084,0.036,0.052],"AUC_lower_dwd":[0.514,0.506,0.431,0.464,0.75,0.762,0.655,0.774],"AUC_upper_dwd":[0.507,0.423,0.417,0.635,0.538,0.641,0.564,0.59]},"embalses":[{"ref_ceh":1231,"nombre":"ALSA - MEDIAJO","lon":-3.9994,"lat":43.095,"r_ecmwf":0.039,"hit_rate_ecmwf":0.556,"BS_total_ecmwf":0.208,"BSS_lower_ecmwf":-0.062,"BSS_upper_ecmwf":0.013,"AUC_lower_ecmwf":0.465,"AUC_upper_ecmwf":0.701,"r_dwd":-0.092,"hit_rate_dwd":0.222,"BS_total_dwd":0.243,"BSS_lower_dwd":-0.037,"BSS_upper_dwd":-0.023,"AUC_lower_dwd":0.514,"AUC_upper_dwd":0.507},{"ref_ceh":1253,"nombre":"COHILLA, LA","lon":-4.3889,"lat":43.1328,"r_ecmwf":-0.12,"hit_rate_ecmwf":0.211,"BS_total_ecmwf":0.255,"BSS_lower_ecmwf":-0.202,"BSS_upper_ecmwf":-0.037,"AUC_lower_ecmwf":0.369,"AUC_upper_ecmwf":0.59,"r_dwd":-0.271,"hit_rate_dwd":0.316,"BS_total_dwd":0.256,"BSS_lower_dwd":-0.113,"BSS_upper_dwd":-0.084,"AUC_lower_dwd":0.506,"AUC_upper_dwd":0.423},{"ref_ceh":1346,"nombre":"PROAZA (VALDEMURRIO)","lon":-6.0175,"lat":43.2489,"r_ecmwf":0.08,"hit_rate_ecmwf":0.389,"BS_total_ecmwf":0.242,"BSS_lower_ecmwf":-0.027,"BSS_upper_ecmwf":-0.154,"AUC_lower_ecmwf":0.521,"AUC_upper_ecmwf":0.396,"r_dwd":-0.289,"hit_rate_dwd":0.389,"BS_total_dwd":0.235,"BSS_lower_dwd":-0.082,"BSS_upper_dwd":-0.088,"AUC_lower_dwd":0.431,"AUC_upper_dwd":0.417},{"ref_ceh":1340,"nombre":"PRIAÑES","lon":-5.9753,"lat":43.3828,"r_ecmwf":-0.045,"hit_rate_ecmwf":0.316,"BS_total_ecmwf":0.255,"BSS_lower_ecmwf":-0.16,"BSS_upper_ecmwf":-0.151,"AUC_lower_ecmwf":0.47,"AUC_upper_ecmwf":0.365,"r_dwd":-0.262,"hit_rate_dwd":0.368,"BS_total_dwd":0.225,"BSS_lower_dwd":-0.096,"BSS_upper_dwd":0.043,"AUC_lower_dwd":0.464,"AUC_upper_dwd":0.635},{"ref_ceh":1356,"nombre":"BARCA, LA","lon":-6.3039,"lat":43.3206,"r_ecmwf":0.212,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.219,"BSS_lower_ecmwf":-0.057,"BSS_upper_ecmwf":0.033,"AUC_lower_ecmwf":0.565,"AUC_upper_ecmwf":0.583,"r_dwd":0.085,"hit_rate_dwd":0.526,"BS_total_dwd":0.212,"BSS_lower_dwd":0.099,"BSS_upper_dwd":-0.002,"AUC_lower_dwd":0.75,"AUC_upper_dwd":0.538},{"ref_ceh":1406,"nombre":"SALIME","lon":-6.8475,"lat":43.2364,"r_ecmwf":0.305,"hit_rate_ecmwf":0.579,"BS_total_ecmwf":0.189,"BSS_lower_ecmwf":0.197,"BSS_upper_ecmwf":0.122,"AUC_lower_ecmwf":0.786,"AUC_upper_ecmwf":0.673,"r_dwd":0.141,"hit_rate_dwd":0.421,"BS_total_dwd":0.205,"BSS_lower_dwd":0.085,"BSS_upper_dwd":0.084,"AUC_lower_dwd":0.762,"AUC_upper_dwd":0.641},{"ref_ceh":1408,"nombre":"DOIRAS","lon":-6.8247,"lat":43.3858,"r_ecmwf":0.241,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.227,"BSS_lower_ecmwf":-0.069,"BSS_upper_ecmwf":0.052,"AUC_lower_ecmwf":0.548,"AUC_upper_ecmwf":0.603,"r_dwd":0.07,"hit_rate_dwd":0.474,"BS_total_dwd":0.217,"BSS_lower_dwd":0.039,"BSS_upper_dwd":0.036,"AUC_lower_dwd":0.655,"AUC_upper_dwd":0.564},{"ref_ceh":1409,"nombre":"ARBON","lon":-6.7303,"lat":43.4769,"r_ecmwf":0.228,"hit_rate_ecmwf":0.316,"BS_total_ecmwf":0.224,"BSS_lower_ecmwf":-0.082,"BSS_upper_ecmwf":0.081,"AUC_lower_ecmwf":0.53,"AUC_upper_ecmwf":0.603,"r_dwd":0.22,"hit_rate_dwd":0.316,"BS_total_dwd":0.213,"BSS_lower_dwd":0.094,"BSS_upper_dwd":0.052,"AUC_lower_dwd":0.774,"AUC_upper_dwd":0.59}]},"ES020":{"cod":"ES020","nombre":"DUERO","n_embalses":27,"medianas":{"r_ecmwf":0.305,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.201,"BSS_lower_ecmwf":0.119,"BSS_upper_ecmwf":0.169,"AUC_lower_ecmwf":0.732,"AUC_upper_ecmwf":0.75,"r_dwd":0.19,"hit_rate_dwd":0.474,"BS_total_dwd":0.209,"BSS_lower_dwd":0.085,"BSS_upper_dwd":0.053,"AUC_lower_dwd":0.774,"AUC_upper_dwd":0.59},"valores":{"r_ecmwf":[0.329,0.282,0.184,0.252,0.282,0.211,0.332,0.375,0.364,0.342,0.305,-0.177,-0.199,0.309,0.296,0.302,0.497,0.39,0.374,0.312,0.331,0.319,0.299,0.281,0.204,0.442,0.243],"hit_rate_ecmwf":[0.474,0.316,0.368,0.421,0.474,0.526,0.579,0.579,0.526,0.474,0.526,0.278,0.316,0.421,0.368,0.474,0.526,0.421,0.421,0.579,0.474,0.632,0.579,0.526,0.526,0.684,0.526],"BS_total_ecmwf":[0.201,0.224,0.221,0.218,0.229,0.201,0.212,0.191,0.201,0.194,0.191,0.27,0.241,0.217,0.235,0.199,0.193,0.22,0.203,0.185,0.201,0.2,0.205,0.201,0.197,0.188,0.201],"BSS_lower_ecmwf":[0.094,-0.107,-0.066,0.022,-0.021,0.141,0.154,0.146,0.119,0.215,0.211,-0.12,-0.146,-0.053,-0.109,0.137,0.058,0.073,0.119,0.141,0.101,0.157,0.123,0.13,0.094,0.149,0.122],"BSS_upper_ecmwf":[0.211,0.058,0.084,0.053,0.071,0.089,0.015,0.211,0.186,0.169,0.145,-0.303,-0.135,0.107,-0.014,0.191,0.323,0.007,0.216,0.308,0.229,0.208,0.235,0.258,0.122,0.201,0.181],"AUC_lower_ecmwf":[0.714,0.488,0.565,0.732,0.595,0.839,0.768,0.762,0.732,0.851,0.863,0.424,0.405,0.595,0.506,0.75,0.696,0.738,0.81,0.863,0.81,0.845,0.732,0.744,0.732,0.732,0.792],"AUC_upper_ecmwf":[0.827,0.609,0.679,0.641,0.673,0.686,0.545,0.853,0.801,0.75,0.769,0.333,0.34,0.667,0.545,0.769,0.942,0.532,0.814,0.904,0.827,0.897,0.872,0.885,0.679,0.776,0.744],"r_dwd":[0.198,0.171,0.133,0.113,0.019,0.233,0.217,0.289,0.284,0.19,0.207,0.122,-0.079,0.121,0.116,0.138,0.328,0.247,0.234,0.198,0.212,0.198,0.171,0.116,0.137,0.28,0.171],"hit_rate_dwd":[0.421,0.368,0.368,0.316,0.421,0.368,0.579,0.474,0.632,0.579,0.316,0.5,0.526,0.421,0.421,0.684,0.526,0.474,0.368,0.474,0.474,0.474,0.474,0.526,0.474,0.526,0.421],"BS_total_dwd":[0.205,0.22,0.219,0.218,0.233,0.207,0.197,0.206,0.218,0.19,0.217,0.213,0.206,0.202,0.218,0.183,0.204,0.207,0.224,0.209,0.212,0.198,0.226,0.224,0.211,0.203,0.208],"BSS_lower_dwd":[0.102,-0.017,-0.021,0.096,-0.003,0.06,0.138,0.103,0.066,0.141,0.12,0.109,0.065,0.091,-0.005,0.133,0.082,0.018,0.071,0.082,0.108,0.121,-0.036,-0.021,0.085,0.14,0.116],"BSS_upper_dwd":[0.103,0.023,0.024,-0.038,-0.065,0.067,0.029,0.06,0.098,0.14,-0.046,-0.08,0.018,0.076,0.011,0.168,0.155,0.078,-0.007,0.079,0.046,0.132,0.088,0.087,-0.056,0.053,0.039],"AUC_lower_dwd":[0.768,0.679,0.643,0.875,0.637,0.756,0.833,0.774,0.762,0.845,0.827,0.722,0.714,0.774,0.589,0.845,0.774,0.72,0.839,0.851,0.869,0.869,0.69,0.726,0.72,0.774,0.881],"AUC_upper_dwd":[0.66,0.545,0.603,0.506,0.481,0.667,0.538,0.59,0.718,0.724,0.551,0.521,0.526,0.673,0.558,0.718,0.692,0.622,0.506,0.571,0.564,0.712,0.699,0.686,0.462,0.59,0.583]},"embalses":[{"ref_ceh":2001,"nombre":"CUERDA DEL POZO","lon":-2.7047,"lat":41.8758,"r_ecmwf":0.329,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.201,"BSS_lower_ecmwf":0.094,"BSS_upper_ecmwf":0.211,"AUC_lower_ecmwf":0.714,"AUC_upper_ecmwf":0.827,"r_dwd":0.198,"hit_rate_dwd":0.421,"BS_total_dwd":0.205,"BSS_lower_dwd":0.102,"BSS_upper_dwd":0.103,"AUC_lower_dwd":0.768,"AUC_upper_dwd":0.66},{"ref_ceh":2036,"nombre":"LINARES DEL ARROYO","lon":-3.5558,"lat":41.5272,"r_ecmwf":0.282,"hit_rate_ecmwf":0.316,"BS_total_ecmwf":0.224,"BSS_lower_ecmwf":-0.107,"BSS_upper_ecmwf":0.058,"AUC_lower_ecmwf":0.488,"AUC_upper_ecmwf":0.609,"r_dwd":0.171,"hit_rate_dwd":0.368,"BS_total_dwd":0.22,"BSS_lower_dwd":-0.017,"BSS_upper_dwd":0.023,"AUC_lower_dwd":0.679,"AUC_upper_dwd":0.545},{"ref_ceh":2037,"nombre":"BURGOMILLODO","lon":-3.8853,"lat":41.3375,"r_ecmwf":0.184,"hit_rate_ecmwf":0.368,"BS_total_ecmwf":0.221,"BSS_lower_ecmwf":-0.066,"BSS_upper_ecmwf":0.084,"AUC_lower_ecmwf":0.565,"AUC_upper_ecmwf":0.679,"r_dwd":0.133,"hit_rate_dwd":0.368,"BS_total_dwd":0.219,"BSS_lower_dwd":-0.021,"BSS_upper_dwd":0.024,"AUC_lower_dwd":0.643,"AUC_upper_dwd":0.603},{"ref_ceh":2040,"nombre":"VENCIAS, LAS","lon":-3.9647,"lat":41.4286,"r_ecmwf":0.252,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.218,"BSS_lower_ecmwf":0.022,"BSS_upper_ecmwf":0.053,"AUC_lower_ecmwf":0.732,"AUC_upper_ecmwf":0.641,"r_dwd":0.113,"hit_rate_dwd":0.316,"BS_total_dwd":0.218,"BSS_lower_dwd":0.096,"BSS_upper_dwd":-0.038,"AUC_lower_dwd":0.875,"AUC_upper_dwd":0.506},{"ref_ceh":2013,"nombre":"REQUEJADA, LA","lon":-4.53,"lat":42.9067,"r_ecmwf":0.282,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.229,"BSS_lower_ecmwf":-0.021,"BSS_upper_ecmwf":0.071,"AUC_lower_ecmwf":0.595,"AUC_upper_ecmwf":0.673,"r_dwd":0.019,"hit_rate_dwd":0.421,"BS_total_dwd":0.233,"BSS_lower_dwd":-0.003,"BSS_upper_dwd":-0.065,"AUC_lower_dwd":0.637,"AUC_upper_dwd":0.481},{"ref_ceh":2012,"nombre":"CERVERA DE RUESGA","lon":-4.5278,"lat":42.8656,"r_ecmwf":0.211,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.201,"BSS_lower_ecmwf":0.141,"BSS_upper_ecmwf":0.089,"AUC_lower_ecmwf":0.839,"AUC_upper_ecmwf":0.686,"r_dwd":0.233,"hit_rate_dwd":0.368,"BS_total_dwd":0.207,"BSS_lower_dwd":0.06,"BSS_upper_dwd":0.067,"AUC_lower_dwd":0.756,"AUC_upper_dwd":0.667},{"ref_ceh":2016,"nombre":"AGUILAR DE CAMPOO","lon":-4.2878,"lat":42.7944,"r_ecmwf":0.332,"hit_rate_ecmwf":0.579,"BS_total_ecmwf":0.212,"BSS_lower_ecmwf":0.154,"BSS_upper_ecmwf":0.015,"AUC_lower_ecmwf":0.768,"AUC_upper_ecmwf":0.545,"r_dwd":0.217,"hit_rate_dwd":0.579,"BS_total_dwd":0.197,"BSS_lower_dwd":0.138,"BSS_upper_dwd":0.029,"AUC_lower_dwd":0.833,"AUC_upper_dwd":0.538},{"ref_ceh":2010,"nombre":"UZQUIZA","lon":-3.3686,"lat":42.3053,"r_ecmwf":0.375,"hit_rate_ecmwf":0.579,"BS_total_ecmwf":0.191,"BSS_lower_ecmwf":0.146,"BSS_upper_ecmwf":0.211,"AUC_lower_ecmwf":0.762,"AUC_upper_ecmwf":0.853,"r_dwd":0.289,"hit_rate_dwd":0.474,"BS_total_dwd":0.206,"BSS_lower_dwd":0.103,"BSS_upper_dwd":0.06,"AUC_lower_dwd":0.774,"AUC_upper_dwd":0.59},{"ref_ceh":2011,"nombre":"ARLANZON","lon":-3.3394,"lat":42.2639,"r_ecmwf":0.364,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.201,"BSS_lower_ecmwf":0.119,"BSS_upper_ecmwf":0.186,"AUC_lower_ecmwf":0.732,"AUC_upper_ecmwf":0.801,"r_dwd":0.284,"hit_rate_dwd":0.632,"BS_total_dwd":0.218,"BSS_lower_dwd":0.066,"BSS_upper_dwd":0.098,"AUC_lower_dwd":0.762,"AUC_upper_dwd":0.718},{"ref_ceh":2014,"nombre":"CAMPORREDONDO","lon":-4.7375,"lat":42.8994,"r_ecmwf":0.342,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.194,"BSS_lower_ecmwf":0.215,"BSS_upper_ecmwf":0.169,"AUC_lower_ecmwf":0.851,"AUC_upper_ecmwf":0.75,"r_dwd":0.19,"hit_rate_dwd":0.579,"BS_total_dwd":0.19,"BSS_lower_dwd":0.141,"BSS_upper_dwd":0.14,"AUC_lower_dwd":0.845,"AUC_upper_dwd":0.724},{"ref_ceh":2015,"nombre":"COMPUERTO","lon":-4.8272,"lat":42.8608,"r_ecmwf":0.305,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.191,"BSS_lower_ecmwf":0.211,"BSS_upper_ecmwf":0.145,"AUC_lower_ecmwf":0.863,"AUC_upper_ecmwf":0.769,"r_dwd":0.207,"hit_rate_dwd":0.316,"BS_total_dwd":0.217,"BSS_lower_dwd":0.12,"BSS_upper_dwd":-0.046,"AUC_lower_dwd":0.827,"AUC_upper_dwd":0.551},{"ref_ceh":2042,"nombre":"CASTRO DE LAS COGOTAS","lon":-4.6978,"lat":40.7256,"r_ecmwf":-0.177,"hit_rate_ecmwf":0.278,"BS_total_ecmwf":0.27,"BSS_lower_ecmwf":-0.12,"BSS_upper_ecmwf":-0.303,"AUC_lower_ecmwf":0.424,"AUC_upper_ecmwf":0.333,"r_dwd":0.122,"hit_rate_dwd":0.5,"BS_total_dwd":0.213,"BSS_lower_dwd":0.109,"BSS_upper_dwd":-0.08,"AUC_lower_dwd":0.722,"AUC_upper_dwd":0.521},{"ref_ceh":2043,"nombre":"PONTON ALTO","lon":-4.0367,"lat":40.9147,"r_ecmwf":-0.199,"hit_rate_ecmwf":0.316,"BS_total_ecmwf":0.241,"BSS_lower_ecmwf":-0.146,"BSS_upper_ecmwf":-0.135,"AUC_lower_ecmwf":0.405,"AUC_upper_ecmwf":0.34,"r_dwd":-0.079,"hit_rate_dwd":0.526,"BS_total_dwd":0.206,"BSS_lower_dwd":0.065,"BSS_upper_dwd":0.018,"AUC_lower_dwd":0.714,"AUC_upper_dwd":0.526},{"ref_ceh":2032,"nombre":"RIAÑO","lon":-5.0847,"lat":42.9336,"r_ecmwf":0.309,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.217,"BSS_lower_ecmwf":-0.053,"BSS_upper_ecmwf":0.107,"AUC_lower_ecmwf":0.595,"AUC_upper_ecmwf":0.667,"r_dwd":0.121,"hit_rate_dwd":0.421,"BS_total_dwd":0.202,"BSS_lower_dwd":0.091,"BSS_upper_dwd":0.076,"AUC_lower_dwd":0.774,"AUC_upper_dwd":0.673},{"ref_ceh":2030,"nombre":"PORMA / JUAN BENET","lon":-5.2933,"lat":42.9292,"r_ecmwf":0.296,"hit_rate_ecmwf":0.368,"BS_total_ecmwf":0.235,"BSS_lower_ecmwf":-0.109,"BSS_upper_ecmwf":-0.014,"AUC_lower_ecmwf":0.506,"AUC_upper_ecmwf":0.545,"r_dwd":0.116,"hit_rate_dwd":0.421,"BS_total_dwd":0.218,"BSS_lower_dwd":-0.005,"BSS_upper_dwd":0.011,"AUC_lower_dwd":0.589,"AUC_upper_dwd":0.558},{"ref_ceh":2026,"nombre":"BARRIOS DE LUNA","lon":-5.8636,"lat":42.8497,"r_ecmwf":0.302,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.199,"BSS_lower_ecmwf":0.137,"BSS_upper_ecmwf":0.191,"AUC_lower_ecmwf":0.75,"AUC_upper_ecmwf":0.769,"r_dwd":0.138,"hit_rate_dwd":0.684,"BS_total_dwd":0.183,"BSS_lower_dwd":0.133,"BSS_upper_dwd":0.168,"AUC_lower_dwd":0.845,"AUC_upper_dwd":0.718},{"ref_ceh":2027,"nombre":"VILLAMECA","lon":-6.0728,"lat":42.6486,"r_ecmwf":0.497,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.193,"BSS_lower_ecmwf":0.058,"BSS_upper_ecmwf":0.323,"AUC_lower_ecmwf":0.696,"AUC_upper_ecmwf":0.942,"r_dwd":0.328,"hit_rate_dwd":0.526,"BS_total_dwd":0.204,"BSS_lower_dwd":0.082,"BSS_upper_dwd":0.155,"AUC_lower_dwd":0.774,"AUC_upper_dwd":0.692},{"ref_ceh":2028,"nombre":"MONCABRIL (SISTEMA)","lon":-6.7489,"lat":42.1222,"r_ecmwf":0.39,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.22,"BSS_lower_ecmwf":0.073,"BSS_upper_ecmwf":0.007,"AUC_lower_ecmwf":0.738,"AUC_upper_ecmwf":0.532,"r_dwd":0.247,"hit_rate_dwd":0.474,"BS_total_dwd":0.207,"BSS_lower_dwd":0.018,"BSS_upper_dwd":0.078,"AUC_lower_dwd":0.72,"AUC_upper_dwd":0.622},{"ref_ceh":2031,"nombre":"CERNADILLA","lon":-6.4589,"lat":42.0197,"r_ecmwf":0.374,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.203,"BSS_lower_ecmwf":0.119,"BSS_upper_ecmwf":0.216,"AUC_lower_ecmwf":0.81,"AUC_upper_ecmwf":0.814,"r_dwd":0.234,"hit_rate_dwd":0.368,"BS_total_dwd":0.224,"BSS_lower_dwd":0.071,"BSS_upper_dwd":-0.007,"AUC_lower_dwd":0.839,"AUC_upper_dwd":0.506},{"ref_ceh":2033,"nombre":"VALPARAISO","lon":-6.2708,"lat":41.9931,"r_ecmwf":0.312,"hit_rate_ecmwf":0.579,"BS_total_ecmwf":0.185,"BSS_lower_ecmwf":0.141,"BSS_upper_ecmwf":0.308,"AUC_lower_ecmwf":0.863,"AUC_upper_ecmwf":0.904,"r_dwd":0.198,"hit_rate_dwd":0.474,"BS_total_dwd":0.209,"BSS_lower_dwd":0.082,"BSS_upper_dwd":0.079,"AUC_lower_dwd":0.851,"AUC_upper_dwd":0.571},{"ref_ceh":2034,"nombre":"NUESTRA SEÑORA DEL AGAVANZAL","lon":-6.1408,"lat":41.9778,"r_ecmwf":0.331,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.201,"BSS_lower_ecmwf":0.101,"BSS_upper_ecmwf":0.229,"AUC_lower_ecmwf":0.81,"AUC_upper_ecmwf":0.827,"r_dwd":0.212,"hit_rate_dwd":0.474,"BS_total_dwd":0.212,"BSS_lower_dwd":0.108,"BSS_upper_dwd":0.046,"AUC_lower_dwd":0.869,"AUC_upper_dwd":0.564},{"ref_ceh":2029,"nombre":"RICOBAYO","lon":-5.9853,"lat":41.5272,"r_ecmwf":0.319,"hit_rate_ecmwf":0.632,"BS_total_ecmwf":0.2,"BSS_lower_ecmwf":0.157,"BSS_upper_ecmwf":0.208,"AUC_lower_ecmwf":0.845,"AUC_upper_ecmwf":0.897,"r_dwd":0.198,"hit_rate_dwd":0.474,"BS_total_dwd":0.198,"BSS_lower_dwd":0.121,"BSS_upper_dwd":0.132,"AUC_lower_dwd":0.869,"AUC_upper_dwd":0.712},{"ref_ceh":2002,"nombre":"VILLALCAMPO","lon":-6.0847,"lat":41.4914,"r_ecmwf":0.299,"hit_rate_ecmwf":0.579,"BS_total_ecmwf":0.205,"BSS_lower_ecmwf":0.123,"BSS_upper_ecmwf":0.235,"AUC_lower_ecmwf":0.732,"AUC_upper_ecmwf":0.872,"r_dwd":0.171,"hit_rate_dwd":0.474,"BS_total_dwd":0.226,"BSS_lower_dwd":-0.036,"BSS_upper_dwd":0.088,"AUC_lower_dwd":0.69,"AUC_upper_dwd":0.699},{"ref_ceh":2003,"nombre":"CASTRO","lon":-6.1875,"lat":41.5756,"r_ecmwf":0.281,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.201,"BSS_lower_ecmwf":0.13,"BSS_upper_ecmwf":0.258,"AUC_lower_ecmwf":0.744,"AUC_upper_ecmwf":0.885,"r_dwd":0.116,"hit_rate_dwd":0.526,"BS_total_dwd":0.224,"BSS_lower_dwd":-0.021,"BSS_upper_dwd":0.087,"AUC_lower_dwd":0.726,"AUC_upper_dwd":0.686},{"ref_ceh":2038,"nombre":"SANTA TERESA","lon":-5.6017,"lat":40.6669,"r_ecmwf":0.204,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.197,"BSS_lower_ecmwf":0.094,"BSS_upper_ecmwf":0.122,"AUC_lower_ecmwf":0.732,"AUC_upper_ecmwf":0.679,"r_dwd":0.137,"hit_rate_dwd":0.474,"BS_total_dwd":0.211,"BSS_lower_dwd":0.085,"BSS_upper_dwd":-0.056,"AUC_lower_dwd":0.72,"AUC_upper_dwd":0.462},{"ref_ceh":2041,"nombre":"ALMENDRA","lon":-6.3186,"lat":41.2725,"r_ecmwf":0.442,"hit_rate_ecmwf":0.684,"BS_total_ecmwf":0.188,"BSS_lower_ecmwf":0.149,"BSS_upper_ecmwf":0.201,"AUC_lower_ecmwf":0.732,"AUC_upper_ecmwf":0.776,"r_dwd":0.28,"hit_rate_dwd":0.526,"BS_total_dwd":0.203,"BSS_lower_dwd":0.14,"BSS_upper_dwd":0.053,"AUC_lower_dwd":0.774,"AUC_upper_dwd":0.59},{"ref_ceh":2039,"nombre":"AGUEDA","lon":-6.4817,"lat":40.5297,"r_ecmwf":0.243,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.201,"BSS_lower_ecmwf":0.122,"BSS_upper_ecmwf":0.181,"AUC_lower_ecmwf":0.792,"AUC_upper_ecmwf":0.744,"r_dwd":0.171,"hit_rate_dwd":0.421,"BS_total_dwd":0.208,"BSS_lower_dwd":0.116,"BSS_upper_dwd":0.039,"AUC_lower_dwd":0.881,"AUC_upper_dwd":0.583}]},"ES050":{"cod":"ES050","nombre":"GUADALQUIVIR","n_embalses":54,"medianas":{"r_ecmwf":0.046,"hit_rate_ecmwf":0.316,"BS_total_ecmwf":0.24,"BSS_lower_ecmwf":-0.171,"BSS_upper_ecmwf":-0.078,"AUC_lower_ecmwf":0.461,"AUC_upper_ecmwf":0.545,"r_dwd":0.209,"hit_rate_dwd":0.364,"BS_total_dwd":0.23,"BSS_lower_dwd":-0.058,"BSS_upper_dwd":-0.088,"AUC_lower_dwd":0.592,"AUC_upper_dwd":0.525},"valores":{"r_ecmwf":[-0.004,-0.04,0.08,0.018,-0.014,-0.087,0.247,0.331,0.01,0.033,0.008,-0.187,-0.095,-0.193,-0.166,0.212,-0.198,0.093,0.275,-0.084,0.305,-0.185,0.03,-0.013,0.118,-0.308,-0.023,-0.048,0.051,0.196,0.033,0.037,0.154,0.107,0.049,0.069,-0.014,0.059,0.039,-0.025,0.144,0.258,0.18,0.328,0.419,0.116,0.215,0.106,0.294,0.043,-0.04,0.126,0.133,0.089],"hit_rate_ecmwf":[0.158,0.158,0.333,0.211,0.263,0.294,0.455,0.308,0.316,0.263,0.471,0.25,0.2,0.25,0.357,0.455,0.286,0.278,0.167,0.267,0.364,0.188,0.286,0.364,0.368,0.455,0.375,0.25,0.333,0.333,0.333,0.333,0.316,0.368,0.263,0.263,0.263,0.316,0.353,0.286,0.353,0.364,0.333,0.308,0.588,0.368,0.333,0.389,0.353,0.294,0.364,0.235,0.235,0.211],"BS_total_ecmwf":[0.284,0.259,0.236,0.249,0.248,0.235,0.258,0.242,0.243,0.243,0.216,0.246,0.246,0.267,0.24,0.232,0.239,0.242,0.277,0.233,0.251,0.262,0.237,0.214,0.223,0.218,0.261,0.264,0.225,0.262,0.24,0.281,0.218,0.225,0.246,0.252,0.248,0.239,0.23,0.238,0.22,0.261,0.231,0.264,0.198,0.23,0.22,0.223,0.236,0.218,0.251,0.24,0.237,0.258],"BSS_lower_ecmwf":[-0.258,-0.246,0.1,-0.262,-0.181,-0.119,-0.201,-0.168,-0.26,-0.174,-0.11,-0.289,-0.247,-0.312,-0.281,-0.389,-0.099,-0.082,-0.267,-0.093,-0.2,-0.471,-0.136,-0.093,-0.184,0.04,-0.248,-0.308,-0.05,-0.036,-0.036,0.11,-0.154,-0.109,-0.296,-0.283,-0.238,-0.263,-0.069,-0.156,-0.025,-0.289,-0.061,-0.286,0.118,-0.237,-0.04,-0.056,-0.11,-0.014,-0.344,-0.112,-0.135,-0.268],"BSS_upper_ecmwf":[-0.102,-0.064,-0.149,0.008,-0.01,-0.08,-0.329,-0.092,0.002,-0.199,-0.025,-0.121,-0.131,-0.081,-0.077,0.021,-0.135,-0.123,-0.321,-0.073,-0.337,-0.095,-0.038,-0.009,0.079,-0.258,-0.29,-0.204,-0.053,-0.337,-0.218,-0.505,0.05,0.055,-0.063,-0.13,-0.014,-0.025,-0.112,-0.179,0.018,-0.291,-0.034,-0.185,0.021,-0.005,0.002,-0.043,0.002,-0.067,-0.097,-0.134,-0.05,-0.025],"AUC_lower_ecmwf":[0.369,0.351,0.7,0.363,0.494,0.424,0.5,0.575,0.333,0.458,0.545,0.325,0.31,0.375,0.333,0.286,0.522,0.444,0.312,0.42,0.518,0.15,0.467,0.536,0.44,0.625,0.358,0.35,0.48,0.531,0.535,0.719,0.47,0.53,0.339,0.345,0.363,0.381,0.485,0.467,0.583,0.375,0.479,0.425,0.75,0.399,0.556,0.521,0.485,0.598,0.464,0.477,0.439,0.351],"AUC_upper_ecmwf":[0.449,0.442,0.43,0.545,0.615,0.485,0.607,0.569,0.603,0.538,0.606,0.427,0.47,0.578,0.567,0.643,0.489,0.444,0.438,0.55,0.536,0.436,0.644,0.589,0.66,0.339,0.455,0.4,0.54,0.5,0.521,0.453,0.641,0.628,0.577,0.487,0.526,0.596,0.432,0.411,0.621,0.554,0.521,0.569,0.659,0.583,0.576,0.542,0.659,0.561,0.518,0.545,0.598,0.545],"r_dwd":[0.292,0.335,0.375,0.444,0.37,0.479,0.106,0.548,0.463,0.357,0.086,0.054,-0.059,0.401,0.019,0.065,0.091,0.602,0.116,0.009,0.087,-0.171,0.122,0.511,0.4,-0.336,0.069,-0.227,0.172,0.196,0.06,0.179,0.346,0.395,0.491,0.404,0.502,0.466,0.278,0.167,-0.093,0.121,0.403,0.56,0.074,0.219,0.27,0.08,0.15,0.205,-0.196,0.458,0.421,0.214],"hit_rate_dwd":[0.316,0.368,0.6,0.474,0.421,0.294,0.364,0.538,0.368,0.316,0.235,0.25,0.4,0.333,0.143,0.364,0.429,0.333,0.5,0.2,0.455,0.188,0.643,0.364,0.211,0.455,0.375,0.312,0.267,0.333,0.333,0.417,0.316,0.316,0.316,0.316,0.316,0.421,0.412,0.357,0.412,0.455,0.389,0.462,0.412,0.263,0.389,0.278,0.353,0.176,0.364,0.294,0.529,0.368],"BS_total_dwd":[0.237,0.225,0.188,0.199,0.229,0.221,0.265,0.227,0.221,0.236,0.241,0.231,0.226,0.23,0.24,0.234,0.23,0.223,0.242,0.229,0.225,0.257,0.201,0.225,0.248,0.217,0.249,0.245,0.226,0.249,0.259,0.279,0.239,0.247,0.224,0.24,0.231,0.223,0.208,0.229,0.218,0.254,0.215,0.243,0.224,0.232,0.228,0.232,0.222,0.235,0.249,0.222,0.21,0.221],"BSS_lower_dwd":[-0.136,-0.069,0.174,-0.061,-0.17,-0.101,-0.278,-0.099,-0.061,-0.059,-0.047,-0.068,0.062,-0.127,-0.057,0.004,0.082,0.05,-0.039,0.103,0.041,-0.234,0.206,-0.124,-0.109,-0.018,0.067,-0.004,0.139,0.179,0.054,0.08,-0.076,-0.095,-0.081,-0.116,-0.071,-0.087,0.073,-0.072,0.064,-0.109,0.079,-0.117,0.011,-0.113,0.024,0.083,-0.07,0.028,-0.392,0.047,0.037,-0.096],"BSS_upper_dwd":[0.014,-0.03,0.09,0.153,0.052,0.031,-0.296,-0.012,0.063,-0.087,-0.177,-0.089,-0.138,0.052,-0.192,-0.186,-0.171,-0.059,-0.134,-0.129,-0.226,-0.108,-0.027,-0.006,-0.132,-0.128,-0.336,-0.229,-0.052,-0.338,-0.302,-0.388,-0.131,-0.111,0.021,-0.106,0.013,0.044,-0.03,-0.129,-0.11,-0.319,0.067,-0.137,-0.039,-0.034,-0.077,-0.157,-0.021,-0.159,-0.008,-0.039,0.046,0.096],"AUC_lower_dwd":[0.577,0.637,0.84,0.649,0.601,0.371,0.196,0.55,0.595,0.589,0.561,0.55,0.68,0.578,0.511,0.696,0.744,0.694,0.484,0.68,0.714,0.383,0.878,0.482,0.518,0.554,0.883,0.625,0.75,0.875,0.701,0.688,0.583,0.536,0.554,0.512,0.548,0.512,0.682,0.567,0.727,0.5,0.778,0.588,0.583,0.601,0.722,0.785,0.492,0.72,0.321,0.705,0.697,0.589],"AUC_upper_dwd":[0.609,0.474,0.62,0.705,0.609,0.621,0.482,0.569,0.571,0.66,0.318,0.482,0.44,0.656,0.389,0.321,0.4,0.528,0.562,0.39,0.536,0.382,0.544,0.607,0.397,0.429,0.418,0.391,0.4,0.531,0.368,0.641,0.423,0.365,0.667,0.551,0.519,0.635,0.545,0.467,0.447,0.429,0.646,0.556,0.523,0.417,0.438,0.347,0.561,0.386,0.661,0.53,0.667,0.615]},"embalses":[{"ref_ceh":5001,"nombre":"TRANCO DE BEAS","lon":-2.7961,"lat":38.1739,"r_ecmwf":-0.004,"hit_rate_ecmwf":0.158,"BS_total_ecmwf":0.284,"BSS_lower_ecmwf":-0.258,"BSS_upper_ecmwf":-0.102,"AUC_lower_ecmwf":0.369,"AUC_upper_ecmwf":0.449,"r_dwd":0.292,"hit_rate_dwd":0.316,"BS_total_dwd":0.237,"BSS_lower_dwd":-0.136,"BSS_upper_dwd":0.014,"AUC_lower_dwd":0.577,"AUC_upper_dwd":0.609},{"ref_ceh":5060,"nombre":"SAN CLEMENTE","lon":-2.6478,"lat":37.8583,"r_ecmwf":-0.04,"hit_rate_ecmwf":0.158,"BS_total_ecmwf":0.259,"BSS_lower_ecmwf":-0.246,"BSS_upper_ecmwf":-0.064,"AUC_lower_ecmwf":0.351,"AUC_upper_ecmwf":0.442,"r_dwd":0.335,"hit_rate_dwd":0.368,"BS_total_dwd":0.225,"BSS_lower_dwd":-0.069,"BSS_upper_dwd":-0.03,"AUC_lower_dwd":0.637,"AUC_upper_dwd":0.474},{"ref_ceh":5071,"nombre":"PORTILLO, EL","lon":-2.7875,"lat":37.8056,"r_ecmwf":0.08,"hit_rate_ecmwf":0.333,"BS_total_ecmwf":0.236,"BSS_lower_ecmwf":0.1,"BSS_upper_ecmwf":-0.149,"AUC_lower_ecmwf":0.7,"AUC_upper_ecmwf":0.43,"r_dwd":0.375,"hit_rate_dwd":0.6,"BS_total_dwd":0.188,"BSS_lower_dwd":0.174,"BSS_upper_dwd":0.09,"AUC_lower_dwd":0.84,"AUC_upper_dwd":0.62},{"ref_ceh":5029,"nombre":"BOLERA, LA","lon":-2.9031,"lat":37.7622,"r_ecmwf":0.018,"hit_rate_ecmwf":0.211,"BS_total_ecmwf":0.249,"BSS_lower_ecmwf":-0.262,"BSS_upper_ecmwf":0.008,"AUC_lower_ecmwf":0.363,"AUC_upper_ecmwf":0.545,"r_dwd":0.444,"hit_rate_dwd":0.474,"BS_total_dwd":0.199,"BSS_lower_dwd":-0.061,"BSS_upper_dwd":0.153,"AUC_lower_dwd":0.649,"AUC_upper_dwd":0.705},{"ref_ceh":5043,"nombre":"NEGRATIN","lon":-2.9547,"lat":37.5611,"r_ecmwf":-0.014,"hit_rate_ecmwf":0.263,"BS_total_ecmwf":0.248,"BSS_lower_ecmwf":-0.181,"BSS_upper_ecmwf":-0.01,"AUC_lower_ecmwf":0.494,"AUC_upper_ecmwf":0.615,"r_dwd":0.37,"hit_rate_dwd":0.421,"BS_total_dwd":0.229,"BSS_lower_dwd":-0.17,"BSS_upper_dwd":0.052,"AUC_lower_dwd":0.601,"AUC_upper_dwd":0.609},{"ref_ceh":5068,"nombre":"FRANCISCO ABELLAN-PEÑON DE LOS GITANOS","lon":-3.2558,"lat":37.3128,"r_ecmwf":-0.087,"hit_rate_ecmwf":0.294,"BS_total_ecmwf":0.235,"BSS_lower_ecmwf":-0.119,"BSS_upper_ecmwf":-0.08,"AUC_lower_ecmwf":0.424,"AUC_upper_ecmwf":0.485,"r_dwd":0.479,"hit_rate_dwd":0.294,"BS_total_dwd":0.221,"BSS_lower_dwd":-0.101,"BSS_upper_dwd":0.031,"AUC_lower_dwd":0.371,"AUC_upper_dwd":0.621},{"ref_ceh":5002,"nombre":"DOÑA ALDONZA","lon":-3.3136,"lat":37.9253,"r_ecmwf":0.247,"hit_rate_ecmwf":0.455,"BS_total_ecmwf":0.258,"BSS_lower_ecmwf":-0.201,"BSS_upper_ecmwf":-0.329,"AUC_lower_ecmwf":0.5,"AUC_upper_ecmwf":0.607,"r_dwd":0.106,"hit_rate_dwd":0.364,"BS_total_dwd":0.265,"BSS_lower_dwd":-0.278,"BSS_upper_dwd":-0.296,"AUC_lower_dwd":0.196,"AUC_upper_dwd":0.482},{"ref_ceh":5003,"nombre":"PEDRO MARIN","lon":-3.4128,"lat":37.9092,"r_ecmwf":0.331,"hit_rate_ecmwf":0.308,"BS_total_ecmwf":0.242,"BSS_lower_ecmwf":-0.168,"BSS_upper_ecmwf":-0.092,"AUC_lower_ecmwf":0.575,"AUC_upper_ecmwf":0.569,"r_dwd":0.548,"hit_rate_dwd":0.538,"BS_total_dwd":0.227,"BSS_lower_dwd":-0.099,"BSS_upper_dwd":-0.012,"AUC_lower_dwd":0.55,"AUC_upper_dwd":0.569},{"ref_ceh":5018,"nombre":"GUADALMENA","lon":-2.9139,"lat":38.3636,"r_ecmwf":0.01,"hit_rate_ecmwf":0.316,"BS_total_ecmwf":0.243,"BSS_lower_ecmwf":-0.26,"BSS_upper_ecmwf":0.002,"AUC_lower_ecmwf":0.333,"AUC_upper_ecmwf":0.603,"r_dwd":0.463,"hit_rate_dwd":0.368,"BS_total_dwd":0.221,"BSS_lower_dwd":-0.061,"BSS_upper_dwd":0.063,"AUC_lower_dwd":0.595,"AUC_upper_dwd":0.571},{"ref_ceh":5070,"nombre":"GIRIBAILE","lon":-3.5103,"lat":38.0881,"r_ecmwf":0.033,"hit_rate_ecmwf":0.263,"BS_total_ecmwf":0.243,"BSS_lower_ecmwf":-0.174,"BSS_upper_ecmwf":-0.199,"AUC_lower_ecmwf":0.458,"AUC_upper_ecmwf":0.538,"r_dwd":0.357,"hit_rate_dwd":0.316,"BS_total_dwd":0.236,"BSS_lower_dwd":-0.059,"BSS_upper_dwd":-0.087,"AUC_lower_dwd":0.589,"AUC_upper_dwd":0.66},{"ref_ceh":5044,"nombre":"DAÑADOR","lon":-3.0392,"lat":38.4078,"r_ecmwf":0.008,"hit_rate_ecmwf":0.471,"BS_total_ecmwf":0.216,"BSS_lower_ecmwf":-0.11,"BSS_upper_ecmwf":-0.025,"AUC_lower_ecmwf":0.545,"AUC_upper_ecmwf":0.606,"r_dwd":0.086,"hit_rate_dwd":0.235,"BS_total_dwd":0.241,"BSS_lower_dwd":-0.047,"BSS_upper_dwd":-0.177,"AUC_lower_dwd":0.561,"AUC_upper_dwd":0.318},{"ref_ceh":5004,"nombre":"GUADALEN","lon":-3.4775,"lat":38.1617,"r_ecmwf":-0.187,"hit_rate_ecmwf":0.25,"BS_total_ecmwf":0.246,"BSS_lower_ecmwf":-0.289,"BSS_upper_ecmwf":-0.121,"AUC_lower_ecmwf":0.325,"AUC_upper_ecmwf":0.427,"r_dwd":0.054,"hit_rate_dwd":0.25,"BS_total_dwd":0.231,"BSS_lower_dwd":-0.068,"BSS_upper_dwd":-0.089,"AUC_lower_dwd":0.55,"AUC_upper_dwd":0.482},{"ref_ceh":5052,"nombre":"FERNANDINA, LA","lon":-3.5706,"lat":38.1797,"r_ecmwf":-0.095,"hit_rate_ecmwf":0.2,"BS_total_ecmwf":0.246,"BSS_lower_ecmwf":-0.247,"BSS_upper_ecmwf":-0.131,"AUC_lower_ecmwf":0.31,"AUC_upper_ecmwf":0.47,"r_dwd":-0.059,"hit_rate_dwd":0.4,"BS_total_dwd":0.226,"BSS_lower_dwd":0.062,"BSS_upper_dwd":-0.138,"AUC_lower_dwd":0.68,"AUC_upper_dwd":0.44},{"ref_ceh":5039,"nombre":"QUIEBRAJANO","lon":-3.7283,"lat":37.6328,"r_ecmwf":-0.193,"hit_rate_ecmwf":0.25,"BS_total_ecmwf":0.267,"BSS_lower_ecmwf":-0.312,"BSS_upper_ecmwf":-0.081,"AUC_lower_ecmwf":0.375,"AUC_upper_ecmwf":0.578,"r_dwd":0.401,"hit_rate_dwd":0.333,"BS_total_dwd":0.23,"BSS_lower_dwd":-0.127,"BSS_upper_dwd":0.052,"AUC_lower_dwd":0.578,"AUC_upper_dwd":0.656},{"ref_ceh":5005,"nombre":"RUMBLAR","lon":-3.8056,"lat":38.1603,"r_ecmwf":-0.166,"hit_rate_ecmwf":0.357,"BS_total_ecmwf":0.24,"BSS_lower_ecmwf":-0.281,"BSS_upper_ecmwf":-0.077,"AUC_lower_ecmwf":0.333,"AUC_upper_ecmwf":0.567,"r_dwd":0.019,"hit_rate_dwd":0.143,"BS_total_dwd":0.24,"BSS_lower_dwd":-0.057,"BSS_upper_dwd":-0.192,"AUC_lower_dwd":0.511,"AUC_upper_dwd":0.389},{"ref_ceh":5059,"nombre":"FRESNEDA, LA (AZUD)","lon":-3.6811,"lat":38.6164,"r_ecmwf":0.212,"hit_rate_ecmwf":0.455,"BS_total_ecmwf":0.232,"BSS_lower_ecmwf":-0.389,"BSS_upper_ecmwf":0.021,"AUC_lower_ecmwf":0.286,"AUC_upper_ecmwf":0.643,"r_dwd":0.065,"hit_rate_dwd":0.364,"BS_total_dwd":0.234,"BSS_lower_dwd":0.004,"BSS_upper_dwd":-0.186,"AUC_lower_dwd":0.696,"AUC_upper_dwd":0.321},{"ref_ceh":5006,"nombre":"MONTORO III","lon":-4.1003,"lat":38.5253,"r_ecmwf":-0.198,"hit_rate_ecmwf":0.286,"BS_total_ecmwf":0.239,"BSS_lower_ecmwf":-0.099,"BSS_upper_ecmwf":-0.135,"AUC_lower_ecmwf":0.522,"AUC_upper_ecmwf":0.489,"r_dwd":0.091,"hit_rate_dwd":0.429,"BS_total_dwd":0.23,"BSS_lower_dwd":0.082,"BSS_upper_dwd":-0.171,"AUC_lower_dwd":0.744,"AUC_upper_dwd":0.4},{"ref_ceh":5007,"nombre":"JANDULA","lon":-3.9742,"lat":38.2247,"r_ecmwf":0.093,"hit_rate_ecmwf":0.278,"BS_total_ecmwf":0.242,"BSS_lower_ecmwf":-0.082,"BSS_upper_ecmwf":-0.123,"AUC_lower_ecmwf":0.444,"AUC_upper_ecmwf":0.444,"r_dwd":0.602,"hit_rate_dwd":0.333,"BS_total_dwd":0.223,"BSS_lower_dwd":0.05,"BSS_upper_dwd":-0.059,"AUC_lower_dwd":0.694,"AUC_upper_dwd":0.528},{"ref_ceh":5032,"nombre":"MARMOLEJO","lon":-4.1867,"lat":38.0586,"r_ecmwf":0.275,"hit_rate_ecmwf":0.167,"BS_total_ecmwf":0.277,"BSS_lower_ecmwf":-0.267,"BSS_upper_ecmwf":-0.321,"AUC_lower_ecmwf":0.312,"AUC_upper_ecmwf":0.438,"r_dwd":0.116,"hit_rate_dwd":0.5,"BS_total_dwd":0.242,"BSS_lower_dwd":-0.039,"BSS_upper_dwd":-0.134,"AUC_lower_dwd":0.484,"AUC_upper_dwd":0.562},{"ref_ceh":5049,"nombre":"YEGUAS","lon":-4.2506,"lat":38.0669,"r_ecmwf":-0.084,"hit_rate_ecmwf":0.267,"BS_total_ecmwf":0.233,"BSS_lower_ecmwf":-0.093,"BSS_upper_ecmwf":-0.073,"AUC_lower_ecmwf":0.42,"AUC_upper_ecmwf":0.55,"r_dwd":0.009,"hit_rate_dwd":0.2,"BS_total_dwd":0.229,"BSS_lower_dwd":0.103,"BSS_upper_dwd":-0.129,"AUC_lower_dwd":0.68,"AUC_upper_dwd":0.39},{"ref_ceh":5033,"nombre":"CARPIO, EL","lon":-4.4922,"lat":37.9744,"r_ecmwf":0.305,"hit_rate_ecmwf":0.364,"BS_total_ecmwf":0.251,"BSS_lower_ecmwf":-0.2,"BSS_upper_ecmwf":-0.337,"AUC_lower_ecmwf":0.518,"AUC_upper_ecmwf":0.536,"r_dwd":0.087,"hit_rate_dwd":0.455,"BS_total_dwd":0.225,"BSS_lower_dwd":0.041,"BSS_upper_dwd":-0.226,"AUC_lower_dwd":0.714,"AUC_upper_dwd":0.536},{"ref_ceh":5051,"nombre":"SAN RAFAEL DE NAVALLANA","lon":-4.6253,"lat":37.9592,"r_ecmwf":-0.185,"hit_rate_ecmwf":0.188,"BS_total_ecmwf":0.262,"BSS_lower_ecmwf":-0.471,"BSS_upper_ecmwf":-0.095,"AUC_lower_ecmwf":0.15,"AUC_upper_ecmwf":0.436,"r_dwd":-0.171,"hit_rate_dwd":0.188,"BS_total_dwd":0.257,"BSS_lower_dwd":-0.234,"BSS_upper_dwd":-0.108,"AUC_lower_dwd":0.383,"AUC_upper_dwd":0.382},{"ref_ceh":5062,"nombre":"GUADALMELLATO","lon":-4.6744,"lat":38.0469,"r_ecmwf":0.03,"hit_rate_ecmwf":0.286,"BS_total_ecmwf":0.237,"BSS_lower_ecmwf":-0.136,"BSS_upper_ecmwf":-0.038,"AUC_lower_ecmwf":0.467,"AUC_upper_ecmwf":0.644,"r_dwd":0.122,"hit_rate_dwd":0.643,"BS_total_dwd":0.201,"BSS_lower_dwd":0.206,"BSS_upper_dwd":-0.027,"AUC_lower_dwd":0.878,"AUC_upper_dwd":0.544},{"ref_ceh":5108,"nombre":"VIBORAS","lon":-4.0119,"lat":37.6392,"r_ecmwf":-0.013,"hit_rate_ecmwf":0.364,"BS_total_ecmwf":0.214,"BSS_lower_ecmwf":-0.093,"BSS_upper_ecmwf":-0.009,"AUC_lower_ecmwf":0.536,"AUC_upper_ecmwf":0.589,"r_dwd":0.511,"hit_rate_dwd":0.364,"BS_total_dwd":0.225,"BSS_lower_dwd":-0.124,"BSS_upper_dwd":-0.006,"AUC_lower_dwd":0.482,"AUC_upper_dwd":0.607},{"ref_ceh":5066,"nombre":"VADOMOJON","lon":-4.2267,"lat":37.6389,"r_ecmwf":0.118,"hit_rate_ecmwf":0.368,"BS_total_ecmwf":0.223,"BSS_lower_ecmwf":-0.184,"BSS_upper_ecmwf":0.079,"AUC_lower_ecmwf":0.44,"AUC_upper_ecmwf":0.66,"r_dwd":0.4,"hit_rate_dwd":0.211,"BS_total_dwd":0.248,"BSS_lower_dwd":-0.109,"BSS_upper_dwd":-0.132,"AUC_lower_dwd":0.518,"AUC_upper_dwd":0.397},{"ref_ceh":5036,"nombre":"PUENTE NUEVO","lon":-4.925,"lat":38.0864,"r_ecmwf":-0.308,"hit_rate_ecmwf":0.455,"BS_total_ecmwf":0.218,"BSS_lower_ecmwf":0.04,"BSS_upper_ecmwf":-0.258,"AUC_lower_ecmwf":0.625,"AUC_upper_ecmwf":0.339,"r_dwd":-0.336,"hit_rate_dwd":0.455,"BS_total_dwd":0.217,"BSS_lower_dwd":-0.018,"BSS_upper_dwd":-0.128,"AUC_lower_dwd":0.554,"AUC_upper_dwd":0.429},{"ref_ceh":5037,"nombre":"SIERRA BOYERA","lon":-5.2228,"lat":38.2583,"r_ecmwf":-0.023,"hit_rate_ecmwf":0.375,"BS_total_ecmwf":0.261,"BSS_lower_ecmwf":-0.248,"BSS_upper_ecmwf":-0.29,"AUC_lower_ecmwf":0.358,"AUC_upper_ecmwf":0.455,"r_dwd":0.069,"hit_rate_dwd":0.375,"BS_total_dwd":0.249,"BSS_lower_dwd":0.067,"BSS_upper_dwd":-0.336,"AUC_lower_dwd":0.883,"AUC_upper_dwd":0.418},{"ref_ceh":5010,"nombre":"BREÑA II, LA","lon":-5.0433,"lat":37.8275,"r_ecmwf":-0.048,"hit_rate_ecmwf":0.25,"BS_total_ecmwf":0.264,"BSS_lower_ecmwf":-0.308,"BSS_upper_ecmwf":-0.204,"AUC_lower_ecmwf":0.35,"AUC_upper_ecmwf":0.4,"r_dwd":-0.227,"hit_rate_dwd":0.312,"BS_total_dwd":0.245,"BSS_lower_dwd":-0.004,"BSS_upper_dwd":-0.229,"AUC_lower_dwd":0.625,"AUC_upper_dwd":0.391},{"ref_ceh":5012,"nombre":"BEMBEZAR","lon":-5.2108,"lat":37.9019,"r_ecmwf":0.051,"hit_rate_ecmwf":0.333,"BS_total_ecmwf":0.225,"BSS_lower_ecmwf":-0.05,"BSS_upper_ecmwf":-0.053,"AUC_lower_ecmwf":0.48,"AUC_upper_ecmwf":0.54,"r_dwd":0.172,"hit_rate_dwd":0.267,"BS_total_dwd":0.226,"BSS_lower_dwd":0.139,"BSS_upper_dwd":-0.052,"AUC_lower_dwd":0.75,"AUC_upper_dwd":0.4},{"ref_ceh":5015,"nombre":"HORNACHUELOS","lon":-5.2386,"lat":37.8264,"r_ecmwf":0.196,"hit_rate_ecmwf":0.333,"BS_total_ecmwf":0.262,"BSS_lower_ecmwf":-0.036,"BSS_upper_ecmwf":-0.337,"AUC_lower_ecmwf":0.531,"AUC_upper_ecmwf":0.5,"r_dwd":0.196,"hit_rate_dwd":0.333,"BS_total_dwd":0.249,"BSS_lower_dwd":0.179,"BSS_upper_dwd":-0.338,"AUC_lower_dwd":0.875,"AUC_upper_dwd":0.531},{"ref_ceh":5017,"nombre":"RETORTILLO","lon":-5.3492,"lat":37.8411,"r_ecmwf":0.033,"hit_rate_ecmwf":0.333,"BS_total_ecmwf":0.24,"BSS_lower_ecmwf":-0.036,"BSS_upper_ecmwf":-0.218,"AUC_lower_ecmwf":0.535,"AUC_upper_ecmwf":0.521,"r_dwd":0.06,"hit_rate_dwd":0.333,"BS_total_dwd":0.259,"BSS_lower_dwd":0.054,"BSS_upper_dwd":-0.302,"AUC_lower_dwd":0.701,"AUC_upper_dwd":0.368},{"ref_ceh":5041,"nombre":"RETORTILLO (DERIVACION)","lon":-5.31,"lat":37.7453,"r_ecmwf":0.037,"hit_rate_ecmwf":0.333,"BS_total_ecmwf":0.281,"BSS_lower_ecmwf":0.11,"BSS_upper_ecmwf":-0.505,"AUC_lower_ecmwf":0.719,"AUC_upper_ecmwf":0.453,"r_dwd":0.179,"hit_rate_dwd":0.417,"BS_total_dwd":0.279,"BSS_lower_dwd":0.08,"BSS_upper_dwd":-0.388,"AUC_lower_dwd":0.688,"AUC_upper_dwd":0.641},{"ref_ceh":5048,"nombre":"CANALES","lon":-3.4761,"lat":37.1594,"r_ecmwf":0.154,"hit_rate_ecmwf":0.316,"BS_total_ecmwf":0.218,"BSS_lower_ecmwf":-0.154,"BSS_upper_ecmwf":0.05,"AUC_lower_ecmwf":0.47,"AUC_upper_ecmwf":0.641,"r_dwd":0.346,"hit_rate_dwd":0.316,"BS_total_dwd":0.239,"BSS_lower_dwd":-0.076,"BSS_upper_dwd":-0.131,"AUC_lower_dwd":0.583,"AUC_upper_dwd":0.423},{"ref_ceh":5038,"nombre":"QUENTAR","lon":-3.4381,"lat":37.2033,"r_ecmwf":0.107,"hit_rate_ecmwf":0.368,"BS_total_ecmwf":0.225,"BSS_lower_ecmwf":-0.109,"BSS_upper_ecmwf":0.055,"AUC_lower_ecmwf":0.53,"AUC_upper_ecmwf":0.628,"r_dwd":0.395,"hit_rate_dwd":0.316,"BS_total_dwd":0.247,"BSS_lower_dwd":-0.095,"BSS_upper_dwd":-0.111,"AUC_lower_dwd":0.536,"AUC_upper_dwd":0.365},{"ref_ceh":5020,"nombre":"CUBILLAS","lon":-3.6822,"lat":37.2756,"r_ecmwf":0.049,"hit_rate_ecmwf":0.263,"BS_total_ecmwf":0.246,"BSS_lower_ecmwf":-0.296,"BSS_upper_ecmwf":-0.063,"AUC_lower_ecmwf":0.339,"AUC_upper_ecmwf":0.577,"r_dwd":0.491,"hit_rate_dwd":0.316,"BS_total_dwd":0.224,"BSS_lower_dwd":-0.081,"BSS_upper_dwd":0.021,"AUC_lower_dwd":0.554,"AUC_upper_dwd":0.667},{"ref_ceh":5050,"nombre":"COLOMERA","lon":-3.7211,"lat":37.4003,"r_ecmwf":0.069,"hit_rate_ecmwf":0.263,"BS_total_ecmwf":0.252,"BSS_lower_ecmwf":-0.283,"BSS_upper_ecmwf":-0.13,"AUC_lower_ecmwf":0.345,"AUC_upper_ecmwf":0.487,"r_dwd":0.404,"hit_rate_dwd":0.316,"BS_total_dwd":0.24,"BSS_lower_dwd":-0.116,"BSS_upper_dwd":-0.106,"AUC_lower_dwd":0.512,"AUC_upper_dwd":0.551},{"ref_ceh":5021,"nombre":"BERMEJALES, LOS","lon":-3.8933,"lat":36.9961,"r_ecmwf":-0.014,"hit_rate_ecmwf":0.263,"BS_total_ecmwf":0.248,"BSS_lower_ecmwf":-0.238,"BSS_upper_ecmwf":-0.014,"AUC_lower_ecmwf":0.363,"AUC_upper_ecmwf":0.526,"r_dwd":0.502,"hit_rate_dwd":0.316,"BS_total_dwd":0.231,"BSS_lower_dwd":-0.071,"BSS_upper_dwd":0.013,"AUC_lower_dwd":0.548,"AUC_upper_dwd":0.519},{"ref_ceh":5026,"nombre":"IZNAJAR","lon":-4.3867,"lat":37.2758,"r_ecmwf":0.059,"hit_rate_ecmwf":0.316,"BS_total_ecmwf":0.239,"BSS_lower_ecmwf":-0.263,"BSS_upper_ecmwf":-0.025,"AUC_lower_ecmwf":0.381,"AUC_upper_ecmwf":0.596,"r_dwd":0.466,"hit_rate_dwd":0.421,"BS_total_dwd":0.223,"BSS_lower_dwd":-0.087,"BSS_upper_dwd":0.044,"AUC_lower_dwd":0.512,"AUC_upper_dwd":0.635},{"ref_ceh":5055,"nombre":"JOSE TORAN","lon":-5.4847,"lat":37.7478,"r_ecmwf":0.039,"hit_rate_ecmwf":0.353,"BS_total_ecmwf":0.23,"BSS_lower_ecmwf":-0.069,"BSS_upper_ecmwf":-0.112,"AUC_lower_ecmwf":0.485,"AUC_upper_ecmwf":0.432,"r_dwd":0.278,"hit_rate_dwd":0.412,"BS_total_dwd":0.208,"BSS_lower_dwd":0.073,"BSS_upper_dwd":-0.03,"AUC_lower_dwd":0.682,"AUC_upper_dwd":0.545},{"ref_ceh":5061,"nombre":"PUEBLA DE CAZALLA","lon":-5.2436,"lat":37.1297,"r_ecmwf":-0.025,"hit_rate_ecmwf":0.286,"BS_total_ecmwf":0.238,"BSS_lower_ecmwf":-0.156,"BSS_upper_ecmwf":-0.179,"AUC_lower_ecmwf":0.467,"AUC_upper_ecmwf":0.411,"r_dwd":0.167,"hit_rate_dwd":0.357,"BS_total_dwd":0.229,"BSS_lower_dwd":-0.072,"BSS_upper_dwd":-0.129,"AUC_lower_dwd":0.567,"AUC_upper_dwd":0.467},{"ref_ceh":5056,"nombre":"HUESNA","lon":-5.6856,"lat":37.77,"r_ecmwf":0.144,"hit_rate_ecmwf":0.353,"BS_total_ecmwf":0.22,"BSS_lower_ecmwf":-0.025,"BSS_upper_ecmwf":0.018,"AUC_lower_ecmwf":0.583,"AUC_upper_ecmwf":0.621,"r_dwd":-0.093,"hit_rate_dwd":0.412,"BS_total_dwd":0.218,"BSS_lower_dwd":0.064,"BSS_upper_dwd":-0.11,"AUC_lower_dwd":0.727,"AUC_upper_dwd":0.447},{"ref_ceh":5034,"nombre":"CANTILLANA","lon":-5.8114,"lat":37.5922,"r_ecmwf":0.258,"hit_rate_ecmwf":0.364,"BS_total_ecmwf":0.261,"BSS_lower_ecmwf":-0.289,"BSS_upper_ecmwf":-0.291,"AUC_lower_ecmwf":0.375,"AUC_upper_ecmwf":0.554,"r_dwd":0.121,"hit_rate_dwd":0.455,"BS_total_dwd":0.254,"BSS_lower_dwd":-0.109,"BSS_upper_dwd":-0.319,"AUC_lower_dwd":0.5,"AUC_upper_dwd":0.429},{"ref_ceh":5011,"nombre":"PINTADO, EL","lon":-5.9536,"lat":37.9839,"r_ecmwf":0.18,"hit_rate_ecmwf":0.333,"BS_total_ecmwf":0.231,"BSS_lower_ecmwf":-0.061,"BSS_upper_ecmwf":-0.034,"AUC_lower_ecmwf":0.479,"AUC_upper_ecmwf":0.521,"r_dwd":0.403,"hit_rate_dwd":0.389,"BS_total_dwd":0.215,"BSS_lower_dwd":0.079,"BSS_upper_dwd":0.067,"AUC_lower_dwd":0.778,"AUC_upper_dwd":0.646},{"ref_ceh":5035,"nombre":"ALCALA DEL RIO","lon":-5.9761,"lat":37.5186,"r_ecmwf":0.328,"hit_rate_ecmwf":0.308,"BS_total_ecmwf":0.264,"BSS_lower_ecmwf":-0.286,"BSS_upper_ecmwf":-0.185,"AUC_lower_ecmwf":0.425,"AUC_upper_ecmwf":0.569,"r_dwd":0.56,"hit_rate_dwd":0.462,"BS_total_dwd":0.243,"BSS_lower_dwd":-0.117,"BSS_upper_dwd":-0.137,"AUC_lower_dwd":0.588,"AUC_upper_dwd":0.556},{"ref_ceh":5016,"nombre":"ARACENA","lon":-6.4517,"lat":37.9081,"r_ecmwf":0.419,"hit_rate_ecmwf":0.588,"BS_total_ecmwf":0.198,"BSS_lower_ecmwf":0.118,"BSS_upper_ecmwf":0.021,"AUC_lower_ecmwf":0.75,"AUC_upper_ecmwf":0.659,"r_dwd":0.074,"hit_rate_dwd":0.412,"BS_total_dwd":0.224,"BSS_lower_dwd":0.011,"BSS_upper_dwd":-0.039,"AUC_lower_dwd":0.583,"AUC_upper_dwd":0.523},{"ref_ceh":5013,"nombre":"MINILLA, LA","lon":-6.1853,"lat":37.6664,"r_ecmwf":0.116,"hit_rate_ecmwf":0.368,"BS_total_ecmwf":0.23,"BSS_lower_ecmwf":-0.237,"BSS_upper_ecmwf":-0.005,"AUC_lower_ecmwf":0.399,"AUC_upper_ecmwf":0.583,"r_dwd":0.219,"hit_rate_dwd":0.263,"BS_total_dwd":0.232,"BSS_lower_dwd":-0.113,"BSS_upper_dwd":-0.034,"AUC_lower_dwd":0.601,"AUC_upper_dwd":0.417},{"ref_ceh":5054,"nombre":"ZUFRE","lon":-6.2808,"lat":37.7969,"r_ecmwf":0.215,"hit_rate_ecmwf":0.333,"BS_total_ecmwf":0.22,"BSS_lower_ecmwf":-0.04,"BSS_upper_ecmwf":0.002,"AUC_lower_ecmwf":0.556,"AUC_upper_ecmwf":0.576,"r_dwd":0.27,"hit_rate_dwd":0.389,"BS_total_dwd":0.228,"BSS_lower_dwd":0.024,"BSS_upper_dwd":-0.077,"AUC_lower_dwd":0.722,"AUC_upper_dwd":0.438},{"ref_ceh":5014,"nombre":"CALA","lon":-6.0881,"lat":37.7178,"r_ecmwf":0.106,"hit_rate_ecmwf":0.389,"BS_total_ecmwf":0.223,"BSS_lower_ecmwf":-0.056,"BSS_upper_ecmwf":-0.043,"AUC_lower_ecmwf":0.521,"AUC_upper_ecmwf":0.542,"r_dwd":0.08,"hit_rate_dwd":0.278,"BS_total_dwd":0.232,"BSS_lower_dwd":0.083,"BSS_upper_dwd":-0.157,"AUC_lower_dwd":0.785,"AUC_upper_dwd":0.347},{"ref_ceh":5042,"nombre":"GERGAL","lon":-6.0497,"lat":37.5672,"r_ecmwf":0.294,"hit_rate_ecmwf":0.353,"BS_total_ecmwf":0.236,"BSS_lower_ecmwf":-0.11,"BSS_upper_ecmwf":0.002,"AUC_lower_ecmwf":0.485,"AUC_upper_ecmwf":0.659,"r_dwd":0.15,"hit_rate_dwd":0.353,"BS_total_dwd":0.222,"BSS_lower_dwd":-0.07,"BSS_upper_dwd":-0.021,"AUC_lower_dwd":0.492,"AUC_upper_dwd":0.561},{"ref_ceh":5058,"nombre":"AGRIO","lon":-6.2842,"lat":37.5322,"r_ecmwf":0.043,"hit_rate_ecmwf":0.294,"BS_total_ecmwf":0.218,"BSS_lower_ecmwf":-0.014,"BSS_upper_ecmwf":-0.067,"AUC_lower_ecmwf":0.598,"AUC_upper_ecmwf":0.561,"r_dwd":0.205,"hit_rate_dwd":0.176,"BS_total_dwd":0.235,"BSS_lower_dwd":0.028,"BSS_upper_dwd":-0.159,"AUC_lower_dwd":0.72,"AUC_upper_dwd":0.386},{"ref_ceh":5022,"nombre":"TORRE DEL AGUILA","lon":-5.7581,"lat":37.0417,"r_ecmwf":-0.04,"hit_rate_ecmwf":0.364,"BS_total_ecmwf":0.251,"BSS_lower_ecmwf":-0.344,"BSS_upper_ecmwf":-0.097,"AUC_lower_ecmwf":0.464,"AUC_upper_ecmwf":0.518,"r_dwd":-0.196,"hit_rate_dwd":0.364,"BS_total_dwd":0.249,"BSS_lower_dwd":-0.392,"BSS_upper_dwd":-0.008,"AUC_lower_dwd":0.321,"AUC_upper_dwd":0.661},{"ref_ceh":5047,"nombre":"MARTIN GONZALO","lon":-4.34,"lat":38.0925,"r_ecmwf":0.126,"hit_rate_ecmwf":0.235,"BS_total_ecmwf":0.24,"BSS_lower_ecmwf":-0.112,"BSS_upper_ecmwf":-0.134,"AUC_lower_ecmwf":0.477,"AUC_upper_ecmwf":0.545,"r_dwd":0.458,"hit_rate_dwd":0.294,"BS_total_dwd":0.222,"BSS_lower_dwd":0.047,"BSS_upper_dwd":-0.039,"AUC_lower_dwd":0.705,"AUC_upper_dwd":0.53},{"ref_ceh":5046,"nombre":"GUADANUÑO-CERRO MURIANO","lon":-4.7992,"lat":38.0206,"r_ecmwf":0.133,"hit_rate_ecmwf":0.235,"BS_total_ecmwf":0.237,"BSS_lower_ecmwf":-0.135,"BSS_upper_ecmwf":-0.05,"AUC_lower_ecmwf":0.439,"AUC_upper_ecmwf":0.598,"r_dwd":0.421,"hit_rate_dwd":0.529,"BS_total_dwd":0.21,"BSS_lower_dwd":0.037,"BSS_upper_dwd":0.046,"AUC_lower_dwd":0.697,"AUC_upper_dwd":0.667},{"ref_ceh":5045,"nombre":"AGUASCEBAS","lon":-2.9519,"lat":38.045,"r_ecmwf":0.089,"hit_rate_ecmwf":0.211,"BS_total_ecmwf":0.258,"BSS_lower_ecmwf":-0.268,"BSS_upper_ecmwf":-0.025,"AUC_lower_ecmwf":0.351,"AUC_upper_ecmwf":0.545,"r_dwd":0.214,"hit_rate_dwd":0.368,"BS_total_dwd":0.221,"BSS_lower_dwd":-0.096,"BSS_upper_dwd":0.096,"AUC_lower_dwd":0.589,"AUC_upper_dwd":0.615}]},"ES040":{"cod":"ES040","nombre":"GUADIANA","n_embalses":11,"medianas":{"r_ecmwf":0.259,"hit_rate_ecmwf":0.375,"BS_total_ecmwf":0.231,"BSS_lower_ecmwf":-0.077,"BSS_upper_ecmwf":0.008,"AUC_lower_ecmwf":0.55,"AUC_upper_ecmwf":0.583,"r_dwd":0.223,"hit_rate_dwd":0.333,"BS_total_dwd":0.225,"BSS_lower_dwd":0.007,"BSS_upper_dwd":0.02,"AUC_lower_dwd":0.694,"AUC_upper_dwd":0.627},"valores":{"r_ecmwf":[0.356,0.353,0.002,0.094,0.316,0.294,0.259,0.205,0.18,0.399,0.15],"hit_rate_ecmwf":[0.375,0.333,0.438,0.3,0.455,0.5,0.438,0.312,0.333,0.389,0.333],"BS_total_ecmwf":[0.243,0.223,0.248,0.266,0.213,0.211,0.25,0.217,0.236,0.231,0.221],"BSS_lower_ecmwf":[-0.051,-0.084,-0.238,-0.486,-0.077,-0.011,-0.181,-0.041,-0.159,-0.049,0.0],"BSS_upper_ecmwf":[-0.059,0.102,-0.125,0.056,0.109,0.019,-0.154,0.001,0.047,0.008,-0.031],"AUC_lower_ecmwf":[0.65,0.516,0.442,0.271,0.554,0.675,0.5,0.575,0.516,0.556,0.55],"AUC_upper_ecmwf":[0.5,0.703,0.655,0.571,0.679,0.627,0.445,0.536,0.625,0.583,0.56],"r_dwd":[0.601,0.653,0.012,0.196,0.391,0.223,0.077,0.11,0.203,0.308,0.308],"hit_rate_dwd":[0.25,0.5,0.312,0.5,0.364,0.438,0.312,0.375,0.333,0.333,0.333],"BS_total_dwd":[0.225,0.239,0.239,0.234,0.229,0.212,0.23,0.217,0.221,0.22,0.224],"BSS_lower_dwd":[-0.092,-0.005,-0.178,-0.028,-0.245,0.056,0.007,0.042,0.02,0.069,0.108],"BSS_upper_dwd":[0.097,0.019,-0.127,0.02,0.133,0.026,-0.079,0.003,0.06,0.036,-0.114],"AUC_lower_dwd":[0.542,0.625,0.467,0.75,0.536,0.792,0.725,0.783,0.625,0.694,0.74],"AUC_upper_dwd":[0.7,0.719,0.627,0.548,0.893,0.582,0.536,0.509,0.703,0.639,0.42]},"embalses":[{"ref_ceh":4001,"nombre":"PEÑARROYA","lon":-3.0069,"lat":39.0611,"r_ecmwf":0.356,"hit_rate_ecmwf":0.375,"BS_total_ecmwf":0.243,"BSS_lower_ecmwf":-0.051,"BSS_upper_ecmwf":-0.059,"AUC_lower_ecmwf":0.65,"AUC_upper_ecmwf":0.5,"r_dwd":0.601,"hit_rate_dwd":0.25,"BS_total_dwd":0.225,"BSS_lower_dwd":-0.092,"BSS_upper_dwd":0.097,"AUC_lower_dwd":0.542,"AUC_upper_dwd":0.7},{"ref_ceh":4050,"nombre":"PUERTO VALLEHERMOSO","lon":-3.1689,"lat":38.8689,"r_ecmwf":0.353,"hit_rate_ecmwf":0.333,"BS_total_ecmwf":0.223,"BSS_lower_ecmwf":-0.084,"BSS_upper_ecmwf":0.102,"AUC_lower_ecmwf":0.516,"AUC_upper_ecmwf":0.703,"r_dwd":0.653,"hit_rate_dwd":0.5,"BS_total_dwd":0.239,"BSS_lower_dwd":-0.005,"BSS_upper_dwd":0.019,"AUC_lower_dwd":0.625,"AUC_upper_dwd":0.719},{"ref_ceh":4008,"nombre":"VICARIO, EL","lon":-3.9972,"lat":39.0594,"r_ecmwf":0.002,"hit_rate_ecmwf":0.438,"BS_total_ecmwf":0.248,"BSS_lower_ecmwf":-0.238,"BSS_upper_ecmwf":-0.125,"AUC_lower_ecmwf":0.442,"AUC_upper_ecmwf":0.655,"r_dwd":0.012,"hit_rate_dwd":0.312,"BS_total_dwd":0.239,"BSS_lower_dwd":-0.178,"BSS_upper_dwd":-0.127,"AUC_lower_dwd":0.467,"AUC_upper_dwd":0.627},{"ref_ceh":4041,"nombre":"MARISANCHEZ (CABEZUELA, LA)","lon":-3.2767,"lat":38.6917,"r_ecmwf":0.094,"hit_rate_ecmwf":0.3,"BS_total_ecmwf":0.266,"BSS_lower_ecmwf":-0.486,"BSS_upper_ecmwf":0.056,"AUC_lower_ecmwf":0.271,"AUC_upper_ecmwf":0.571,"r_dwd":0.196,"hit_rate_dwd":0.5,"BS_total_dwd":0.234,"BSS_lower_dwd":-0.028,"BSS_upper_dwd":0.02,"AUC_lower_dwd":0.75,"AUC_upper_dwd":0.548},{"ref_ceh":4007,"nombre":"TORRE DE ABRAHAM","lon":-4.2544,"lat":39.3683,"r_ecmwf":0.316,"hit_rate_ecmwf":0.455,"BS_total_ecmwf":0.213,"BSS_lower_ecmwf":-0.077,"BSS_upper_ecmwf":0.109,"AUC_lower_ecmwf":0.554,"AUC_upper_ecmwf":0.679,"r_dwd":0.391,"hit_rate_dwd":0.364,"BS_total_dwd":0.229,"BSS_lower_dwd":-0.245,"BSS_upper_dwd":0.133,"AUC_lower_dwd":0.536,"AUC_upper_dwd":0.893},{"ref_ceh":4002,"nombre":"CIJARA","lon":-5.0147,"lat":39.3731,"r_ecmwf":0.294,"hit_rate_ecmwf":0.5,"BS_total_ecmwf":0.211,"BSS_lower_ecmwf":-0.011,"BSS_upper_ecmwf":0.019,"AUC_lower_ecmwf":0.675,"AUC_upper_ecmwf":0.627,"r_dwd":0.223,"hit_rate_dwd":0.438,"BS_total_dwd":0.212,"BSS_lower_dwd":0.056,"BSS_upper_dwd":0.026,"AUC_lower_dwd":0.792,"AUC_upper_dwd":0.582},{"ref_ceh":4003,"nombre":"GARCIA DE SOLA","lon":-5.1847,"lat":39.1444,"r_ecmwf":0.259,"hit_rate_ecmwf":0.438,"BS_total_ecmwf":0.25,"BSS_lower_ecmwf":-0.181,"BSS_upper_ecmwf":-0.154,"AUC_lower_ecmwf":0.5,"AUC_upper_ecmwf":0.445,"r_dwd":0.077,"hit_rate_dwd":0.312,"BS_total_dwd":0.23,"BSS_lower_dwd":0.007,"BSS_upper_dwd":-0.079,"AUC_lower_dwd":0.725,"AUC_upper_dwd":0.536},{"ref_ceh":4017,"nombre":"MOLINOS DE MATACHEL, LOS","lon":-6.1211,"lat":38.5331,"r_ecmwf":0.205,"hit_rate_ecmwf":0.312,"BS_total_ecmwf":0.217,"BSS_lower_ecmwf":-0.041,"BSS_upper_ecmwf":0.001,"AUC_lower_ecmwf":0.575,"AUC_upper_ecmwf":0.536,"r_dwd":0.11,"hit_rate_dwd":0.375,"BS_total_dwd":0.217,"BSS_lower_dwd":0.042,"BSS_upper_dwd":0.003,"AUC_lower_dwd":0.783,"AUC_upper_dwd":0.509},{"ref_ceh":4011,"nombre":"ALANGE","lon":-6.2681,"lat":38.7875,"r_ecmwf":0.18,"hit_rate_ecmwf":0.333,"BS_total_ecmwf":0.236,"BSS_lower_ecmwf":-0.159,"BSS_upper_ecmwf":0.047,"AUC_lower_ecmwf":0.516,"AUC_upper_ecmwf":0.625,"r_dwd":0.203,"hit_rate_dwd":0.333,"BS_total_dwd":0.221,"BSS_lower_dwd":0.02,"BSS_upper_dwd":0.06,"AUC_lower_dwd":0.625,"AUC_upper_dwd":0.703},{"ref_ceh":4016,"nombre":"MONTIJO","lon":-6.4289,"lat":38.9236,"r_ecmwf":0.399,"hit_rate_ecmwf":0.389,"BS_total_ecmwf":0.231,"BSS_lower_ecmwf":-0.049,"BSS_upper_ecmwf":0.008,"AUC_lower_ecmwf":0.556,"AUC_upper_ecmwf":0.583,"r_dwd":0.308,"hit_rate_dwd":0.333,"BS_total_dwd":0.22,"BSS_lower_dwd":0.069,"BSS_upper_dwd":0.036,"AUC_lower_dwd":0.694,"AUC_upper_dwd":0.639},{"ref_ceh":4012,"nombre":"CHANZA","lon":-7.5208,"lat":37.5581,"r_ecmwf":0.15,"hit_rate_ecmwf":0.333,"BS_total_ecmwf":0.221,"BSS_lower_ecmwf":0.0,"BSS_upper_ecmwf":-0.031,"AUC_lower_ecmwf":0.55,"AUC_upper_ecmwf":0.56,"r_dwd":0.308,"hit_rate_dwd":0.333,"BS_total_dwd":0.224,"BSS_lower_dwd":0.108,"BSS_upper_dwd":-0.114,"AUC_lower_dwd":0.74,"AUC_upper_dwd":0.42}]},"ES080":{"cod":"ES080","nombre":"JÚCAR","n_embalses":3,"medianas":{"r_ecmwf":0.267,"hit_rate_ecmwf":0.316,"BS_total_ecmwf":0.227,"BSS_lower_ecmwf":-0.159,"BSS_upper_ecmwf":0.093,"AUC_lower_ecmwf":0.524,"AUC_upper_ecmwf":0.628,"r_dwd":0.185,"hit_rate_dwd":0.211,"BS_total_dwd":0.253,"BSS_lower_dwd":-0.147,"BSS_upper_dwd":-0.083,"AUC_lower_dwd":0.47,"AUC_upper_dwd":0.397},"valores":{"r_ecmwf":[0.37,0.267,0.238],"hit_rate_ecmwf":[0.316,0.421,0.316],"BS_total_ecmwf":[0.204,0.227,0.227],"BSS_lower_ecmwf":[0.062,-0.17,-0.159],"BSS_upper_ecmwf":[0.16,0.075,0.093],"AUC_lower_ecmwf":[0.696,0.524,0.488],"AUC_upper_ecmwf":[0.769,0.622,0.628],"r_dwd":[0.165,0.185,0.243],"hit_rate_dwd":[0.263,0.211,0.211],"BS_total_dwd":[0.228,0.257,0.253],"BSS_lower_dwd":[-0.017,-0.147,-0.223],"BSS_upper_dwd":[-0.05,-0.149,-0.083],"AUC_lower_dwd":[0.637,0.47,0.423],"AUC_upper_dwd":[0.474,0.34,0.397]},"embalses":[{"ref_ceh":8001,"nombre":"ALARCON","lon":-2.1119,"lat":39.5647,"r_ecmwf":0.37,"hit_rate_ecmwf":0.316,"BS_total_ecmwf":0.204,"BSS_lower_ecmwf":0.062,"BSS_upper_ecmwf":0.16,"AUC_lower_ecmwf":0.696,"AUC_upper_ecmwf":0.769,"r_dwd":0.165,"hit_rate_dwd":0.263,"BS_total_dwd":0.228,"BSS_lower_dwd":-0.017,"BSS_upper_dwd":-0.05,"AUC_lower_dwd":0.637,"AUC_upper_dwd":0.474},{"ref_ceh":8009,"nombre":"CONTRERAS","lon":-1.5028,"lat":39.5436,"r_ecmwf":0.267,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.227,"BSS_lower_ecmwf":-0.17,"BSS_upper_ecmwf":0.075,"AUC_lower_ecmwf":0.524,"AUC_upper_ecmwf":0.622,"r_dwd":0.185,"hit_rate_dwd":0.211,"BS_total_dwd":0.257,"BSS_lower_dwd":-0.147,"BSS_upper_dwd":-0.149,"AUC_lower_dwd":0.47,"AUC_upper_dwd":0.34},{"ref_ceh":8006,"nombre":"ARQUILLO DE SAN BLAS","lon":-1.205,"lat":40.3642,"r_ecmwf":0.238,"hit_rate_ecmwf":0.316,"BS_total_ecmwf":0.227,"BSS_lower_ecmwf":-0.159,"BSS_upper_ecmwf":0.093,"AUC_lower_ecmwf":0.488,"AUC_upper_ecmwf":0.628,"r_dwd":0.243,"hit_rate_dwd":0.211,"BS_total_dwd":0.253,"BSS_lower_dwd":-0.223,"BSS_upper_dwd":-0.083,"AUC_lower_dwd":0.423,"AUC_upper_dwd":0.397}]},"ES010":{"cod":"ES010","nombre":"MIÑO-SIL","n_embalses":32,"medianas":{"r_ecmwf":0.285,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.199,"BSS_lower_ecmwf":0.145,"BSS_upper_ecmwf":0.193,"AUC_lower_ecmwf":0.744,"AUC_upper_ecmwf":0.786,"r_dwd":0.269,"hit_rate_dwd":0.474,"BS_total_dwd":0.205,"BSS_lower_dwd":0.061,"BSS_upper_dwd":0.128,"AUC_lower_dwd":0.735,"AUC_upper_dwd":0.744},"valores":{"r_ecmwf":[0.224,0.197,0.307,0.316,0.268,0.299,0.314,0.291,0.3,0.273,0.321,0.111,0.245,0.184,0.256,0.292,0.4,0.259,0.344,0.29,0.203,0.288,0.29,0.281,0.255,0.293,0.265,0.29,0.293,0.258,0.244,0.152],"hit_rate_ecmwf":[0.526,0.579,0.526,0.474,0.421,0.526,0.474,0.526,0.421,0.474,0.474,0.474,0.421,0.5,0.389,0.579,0.526,0.474,0.579,0.579,0.214,0.526,0.5,0.579,0.474,0.474,0.421,0.474,0.474,0.526,0.474,0.538],"BS_total_ecmwf":[0.193,0.211,0.19,0.204,0.197,0.193,0.194,0.194,0.2,0.203,0.194,0.216,0.217,0.225,0.207,0.189,0.201,0.204,0.181,0.198,0.247,0.2,0.193,0.197,0.197,0.195,0.205,0.192,0.205,0.195,0.207,0.225],"BSS_lower_ecmwf":[0.131,0.037,0.127,0.042,0.166,0.167,0.134,0.158,0.134,0.158,0.143,-0.009,0.124,0.05,0.163,0.181,0.196,0.15,0.139,0.155,0.032,0.146,0.126,0.149,0.147,0.154,0.165,0.16,0.069,0.148,0.023,0.055],"BSS_upper_ecmwf":[0.164,0.117,0.181,0.261,0.204,0.234,0.248,0.234,0.217,0.084,0.248,0.146,0.037,0.092,0.054,0.246,0.086,0.078,0.305,0.228,-0.242,0.21,0.274,0.23,0.226,0.228,0.073,0.243,0.139,0.137,0.141,-0.144],"AUC_lower_ecmwf":[0.738,0.619,0.714,0.625,0.774,0.768,0.744,0.756,0.744,0.774,0.762,0.631,0.726,0.576,0.722,0.786,0.81,0.744,0.786,0.756,0.667,0.738,0.674,0.738,0.75,0.744,0.762,0.762,0.679,0.774,0.685,0.738],"AUC_upper_ecmwf":[0.718,0.647,0.731,0.859,0.833,0.833,0.846,0.846,0.814,0.647,0.865,0.731,0.603,0.764,0.632,0.859,0.737,0.647,0.917,0.865,0.356,0.808,0.903,0.859,0.84,0.84,0.635,0.846,0.705,0.705,0.731,0.667],"r_dwd":[0.31,0.243,0.307,0.246,0.216,0.28,0.282,0.27,0.287,0.273,0.268,0.21,0.269,0.122,0.302,0.281,0.213,0.308,0.209,0.257,0.366,0.263,0.332,0.26,0.247,0.282,0.283,0.286,0.266,0.269,0.189,0.113],"hit_rate_dwd":[0.526,0.526,0.526,0.526,0.474,0.526,0.526,0.526,0.474,0.316,0.421,0.474,0.421,0.444,0.389,0.368,0.526,0.579,0.316,0.474,0.5,0.526,0.444,0.474,0.579,0.474,0.526,0.474,0.263,0.263,0.474,0.308],"BS_total_dwd":[0.191,0.218,0.192,0.209,0.198,0.195,0.188,0.193,0.191,0.204,0.226,0.208,0.218,0.22,0.207,0.217,0.209,0.198,0.222,0.198,0.209,0.197,0.229,0.196,0.197,0.197,0.201,0.199,0.24,0.227,0.209,0.256],"BSS_lower_dwd":[0.131,-0.056,0.128,-0.045,0.06,0.064,0.123,0.071,0.106,0.077,0.056,0.037,0.069,-0.084,0.114,0.064,0.056,0.071,0.001,0.076,0.036,0.067,-0.013,0.05,0.073,0.062,0.098,0.045,-0.063,0.042,0.017,-0.235],"BSS_upper_dwd":[0.179,0.07,0.165,0.188,0.177,0.188,0.187,0.198,0.161,0.119,-0.009,0.111,0.016,0.133,0.116,0.037,0.112,0.151,0.074,0.166,-0.046,0.169,0.061,0.185,0.194,0.189,0.122,0.181,-0.095,-0.074,0.121,-0.108],"AUC_lower_dwd":[0.786,0.637,0.821,0.655,0.72,0.756,0.815,0.762,0.804,0.768,0.732,0.702,0.75,0.549,0.757,0.744,0.744,0.762,0.69,0.75,0.678,0.732,0.653,0.726,0.756,0.738,0.78,0.732,0.601,0.69,0.613,0.45],"AUC_upper_dwd":[0.782,0.603,0.75,0.814,0.808,0.776,0.795,0.788,0.801,0.692,0.487,0.737,0.551,0.75,0.715,0.571,0.737,0.724,0.59,0.827,0.567,0.801,0.632,0.827,0.788,0.788,0.737,0.763,0.41,0.442,0.756,0.694]},"embalses":[{"ref_ceh":1627,"nombre":"BELESAR","lon":-7.7125,"lat":42.6286,"r_ecmwf":0.224,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.193,"BSS_lower_ecmwf":0.131,"BSS_upper_ecmwf":0.164,"AUC_lower_ecmwf":0.738,"AUC_upper_ecmwf":0.718,"r_dwd":0.31,"hit_rate_dwd":0.526,"BS_total_dwd":0.191,"BSS_lower_dwd":0.131,"BSS_upper_dwd":0.179,"AUC_lower_dwd":0.786,"AUC_upper_dwd":0.782},{"ref_ceh":1629,"nombre":"PEARES, LOS","lon":-7.7242,"lat":42.465,"r_ecmwf":0.197,"hit_rate_ecmwf":0.579,"BS_total_ecmwf":0.211,"BSS_lower_ecmwf":0.037,"BSS_upper_ecmwf":0.117,"AUC_lower_ecmwf":0.619,"AUC_upper_ecmwf":0.647,"r_dwd":0.243,"hit_rate_dwd":0.526,"BS_total_dwd":0.218,"BSS_lower_dwd":-0.056,"BSS_upper_dwd":0.07,"AUC_lower_dwd":0.637,"AUC_upper_dwd":0.603},{"ref_ceh":1709,"nombre":"BARCENA","lon":-6.5603,"lat":42.5775,"r_ecmwf":0.307,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.19,"BSS_lower_ecmwf":0.127,"BSS_upper_ecmwf":0.181,"AUC_lower_ecmwf":0.714,"AUC_upper_ecmwf":0.731,"r_dwd":0.307,"hit_rate_dwd":0.526,"BS_total_dwd":0.192,"BSS_lower_dwd":0.128,"BSS_upper_dwd":0.165,"AUC_lower_dwd":0.821,"AUC_upper_dwd":0.75},{"ref_ceh":1710,"nombre":"FUENTE DEL AZUFRE","lon":-6.5828,"lat":42.5619,"r_ecmwf":0.316,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.204,"BSS_lower_ecmwf":0.042,"BSS_upper_ecmwf":0.261,"AUC_lower_ecmwf":0.625,"AUC_upper_ecmwf":0.859,"r_dwd":0.246,"hit_rate_dwd":0.526,"BS_total_dwd":0.209,"BSS_lower_dwd":-0.045,"BSS_upper_dwd":0.188,"AUC_lower_dwd":0.655,"AUC_upper_dwd":0.814},{"ref_ceh":1718,"nombre":"MONTEARENAS","lon":-6.5508,"lat":42.555,"r_ecmwf":0.268,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.197,"BSS_lower_ecmwf":0.166,"BSS_upper_ecmwf":0.204,"AUC_lower_ecmwf":0.774,"AUC_upper_ecmwf":0.833,"r_dwd":0.216,"hit_rate_dwd":0.474,"BS_total_dwd":0.198,"BSS_lower_dwd":0.06,"BSS_upper_dwd":0.177,"AUC_lower_dwd":0.72,"AUC_upper_dwd":0.808},{"ref_ceh":1712,"nombre":"PEÑARRUBIA","lon":-6.8192,"lat":42.4564,"r_ecmwf":0.299,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.193,"BSS_lower_ecmwf":0.167,"BSS_upper_ecmwf":0.234,"AUC_lower_ecmwf":0.768,"AUC_upper_ecmwf":0.833,"r_dwd":0.28,"hit_rate_dwd":0.526,"BS_total_dwd":0.195,"BSS_lower_dwd":0.064,"BSS_upper_dwd":0.188,"AUC_lower_dwd":0.756,"AUC_upper_dwd":0.776},{"ref_ceh":1716,"nombre":"PUMARES","lon":-6.8597,"lat":42.4031,"r_ecmwf":0.314,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.194,"BSS_lower_ecmwf":0.134,"BSS_upper_ecmwf":0.248,"AUC_lower_ecmwf":0.744,"AUC_upper_ecmwf":0.846,"r_dwd":0.282,"hit_rate_dwd":0.526,"BS_total_dwd":0.188,"BSS_lower_dwd":0.123,"BSS_upper_dwd":0.187,"AUC_lower_dwd":0.815,"AUC_upper_dwd":0.795},{"ref_ceh":1713,"nombre":"SANTIAGO","lon":-7.0783,"lat":42.4039,"r_ecmwf":0.291,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.194,"BSS_lower_ecmwf":0.158,"BSS_upper_ecmwf":0.234,"AUC_lower_ecmwf":0.756,"AUC_upper_ecmwf":0.846,"r_dwd":0.27,"hit_rate_dwd":0.526,"BS_total_dwd":0.193,"BSS_lower_dwd":0.071,"BSS_upper_dwd":0.198,"AUC_lower_dwd":0.762,"AUC_upper_dwd":0.788},{"ref_ceh":1740,"nombre":"SAN MARTIN","lon":-7.1731,"lat":42.3906,"r_ecmwf":0.3,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.2,"BSS_lower_ecmwf":0.134,"BSS_upper_ecmwf":0.217,"AUC_lower_ecmwf":0.744,"AUC_upper_ecmwf":0.814,"r_dwd":0.287,"hit_rate_dwd":0.474,"BS_total_dwd":0.191,"BSS_lower_dwd":0.106,"BSS_upper_dwd":0.161,"AUC_lower_dwd":0.804,"AUC_upper_dwd":0.801},{"ref_ceh":1741,"nombre":"SAN SEBASTIAN","lon":-6.9472,"lat":42.1453,"r_ecmwf":0.273,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.203,"BSS_lower_ecmwf":0.158,"BSS_upper_ecmwf":0.084,"AUC_lower_ecmwf":0.774,"AUC_upper_ecmwf":0.647,"r_dwd":0.273,"hit_rate_dwd":0.316,"BS_total_dwd":0.204,"BSS_lower_dwd":0.077,"BSS_upper_dwd":0.119,"AUC_lower_dwd":0.768,"AUC_upper_dwd":0.692},{"ref_ceh":1745,"nombre":"PIAS O SAN AGUSTIN","lon":-6.9903,"lat":42.1025,"r_ecmwf":0.321,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.194,"BSS_lower_ecmwf":0.143,"BSS_upper_ecmwf":0.248,"AUC_lower_ecmwf":0.762,"AUC_upper_ecmwf":0.865,"r_dwd":0.268,"hit_rate_dwd":0.421,"BS_total_dwd":0.226,"BSS_lower_dwd":0.056,"BSS_upper_dwd":-0.009,"AUC_lower_dwd":0.732,"AUC_upper_dwd":0.487},{"ref_ceh":1770,"nombre":"PORTAS, LAS","lon":-7.2094,"lat":42.1147,"r_ecmwf":0.111,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.216,"BSS_lower_ecmwf":-0.009,"BSS_upper_ecmwf":0.146,"AUC_lower_ecmwf":0.631,"AUC_upper_ecmwf":0.731,"r_dwd":0.21,"hit_rate_dwd":0.474,"BS_total_dwd":0.208,"BSS_lower_dwd":0.037,"BSS_upper_dwd":0.111,"AUC_lower_dwd":0.702,"AUC_upper_dwd":0.737},{"ref_ceh":1781,"nombre":"EDRADA-CONSO","lon":-7.2292,"lat":42.1447,"r_ecmwf":0.245,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.217,"BSS_lower_ecmwf":0.124,"BSS_upper_ecmwf":0.037,"AUC_lower_ecmwf":0.726,"AUC_upper_ecmwf":0.603,"r_dwd":0.269,"hit_rate_dwd":0.421,"BS_total_dwd":0.218,"BSS_lower_dwd":0.069,"BSS_upper_dwd":0.016,"AUC_lower_dwd":0.75,"AUC_upper_dwd":0.551},{"ref_ceh":1743,"nombre":"BAO","lon":-7.1672,"lat":42.2464,"r_ecmwf":0.184,"hit_rate_ecmwf":0.5,"BS_total_ecmwf":0.225,"BSS_lower_ecmwf":0.05,"BSS_upper_ecmwf":0.092,"AUC_lower_ecmwf":0.576,"AUC_upper_ecmwf":0.764,"r_dwd":0.122,"hit_rate_dwd":0.444,"BS_total_dwd":0.22,"BSS_lower_dwd":-0.084,"BSS_upper_dwd":0.133,"AUC_lower_dwd":0.549,"AUC_upper_dwd":0.75},{"ref_ceh":1791,"nombre":"PRADA","lon":-7.04,"lat":42.3108,"r_ecmwf":0.256,"hit_rate_ecmwf":0.389,"BS_total_ecmwf":0.207,"BSS_lower_ecmwf":0.163,"BSS_upper_ecmwf":0.054,"AUC_lower_ecmwf":0.722,"AUC_upper_ecmwf":0.632,"r_dwd":0.302,"hit_rate_dwd":0.389,"BS_total_dwd":0.207,"BSS_lower_dwd":0.114,"BSS_upper_dwd":0.116,"AUC_lower_dwd":0.757,"AUC_upper_dwd":0.715},{"ref_ceh":1792,"nombre":"SANTA EULALIA","lon":-7.0639,"lat":42.3486,"r_ecmwf":0.292,"hit_rate_ecmwf":0.579,"BS_total_ecmwf":0.189,"BSS_lower_ecmwf":0.181,"BSS_upper_ecmwf":0.246,"AUC_lower_ecmwf":0.786,"AUC_upper_ecmwf":0.859,"r_dwd":0.281,"hit_rate_dwd":0.368,"BS_total_dwd":0.217,"BSS_lower_dwd":0.064,"BSS_upper_dwd":0.037,"AUC_lower_dwd":0.744,"AUC_upper_dwd":0.571},{"ref_ceh":1748,"nombre":"GUISTOLAS","lon":-7.3003,"lat":42.3444,"r_ecmwf":0.4,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.201,"BSS_lower_ecmwf":0.196,"BSS_upper_ecmwf":0.086,"AUC_lower_ecmwf":0.81,"AUC_upper_ecmwf":0.737,"r_dwd":0.213,"hit_rate_dwd":0.526,"BS_total_dwd":0.209,"BSS_lower_dwd":0.056,"BSS_upper_dwd":0.112,"AUC_lower_dwd":0.744,"AUC_upper_dwd":0.737},{"ref_ceh":1790,"nombre":"CHANDREJA","lon":-7.3864,"lat":42.2628,"r_ecmwf":0.259,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.204,"BSS_lower_ecmwf":0.15,"BSS_upper_ecmwf":0.078,"AUC_lower_ecmwf":0.744,"AUC_upper_ecmwf":0.647,"r_dwd":0.308,"hit_rate_dwd":0.579,"BS_total_dwd":0.198,"BSS_lower_dwd":0.071,"BSS_upper_dwd":0.151,"AUC_lower_dwd":0.762,"AUC_upper_dwd":0.724},{"ref_ceh":1744,"nombre":"MONTEFURADO","lon":-7.2181,"lat":42.3908,"r_ecmwf":0.344,"hit_rate_ecmwf":0.579,"BS_total_ecmwf":0.181,"BSS_lower_ecmwf":0.139,"BSS_upper_ecmwf":0.305,"AUC_lower_ecmwf":0.786,"AUC_upper_ecmwf":0.917,"r_dwd":0.209,"hit_rate_dwd":0.316,"BS_total_dwd":0.222,"BSS_lower_dwd":0.001,"BSS_upper_dwd":0.074,"AUC_lower_dwd":0.69,"AUC_upper_dwd":0.59},{"ref_ceh":1751,"nombre":"SEQUEIROS","lon":-7.2514,"lat":42.4508,"r_ecmwf":0.29,"hit_rate_ecmwf":0.579,"BS_total_ecmwf":0.198,"BSS_lower_ecmwf":0.155,"BSS_upper_ecmwf":0.228,"AUC_lower_ecmwf":0.756,"AUC_upper_ecmwf":0.865,"r_dwd":0.257,"hit_rate_dwd":0.474,"BS_total_dwd":0.198,"BSS_lower_dwd":0.076,"BSS_upper_dwd":0.166,"AUC_lower_dwd":0.75,"AUC_upper_dwd":0.827},{"ref_ceh":1795,"nombre":"LEBOREIRO-MAO","lon":-7.5231,"lat":42.3264,"r_ecmwf":0.203,"hit_rate_ecmwf":0.214,"BS_total_ecmwf":0.247,"BSS_lower_ecmwf":0.032,"BSS_upper_ecmwf":-0.242,"AUC_lower_ecmwf":0.667,"AUC_upper_ecmwf":0.356,"r_dwd":0.366,"hit_rate_dwd":0.5,"BS_total_dwd":0.209,"BSS_lower_dwd":0.036,"BSS_upper_dwd":-0.046,"AUC_lower_dwd":0.678,"AUC_upper_dwd":0.567},{"ref_ceh":1768,"nombre":"SAN ESTEBAN","lon":-7.6497,"lat":42.4139,"r_ecmwf":0.288,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.2,"BSS_lower_ecmwf":0.146,"BSS_upper_ecmwf":0.21,"AUC_lower_ecmwf":0.738,"AUC_upper_ecmwf":0.808,"r_dwd":0.263,"hit_rate_dwd":0.526,"BS_total_dwd":0.197,"BSS_lower_dwd":0.067,"BSS_upper_dwd":0.169,"AUC_lower_dwd":0.732,"AUC_upper_dwd":0.801},{"ref_ceh":1796,"nombre":"VILASOUTO","lon":-7.4225,"lat":42.6619,"r_ecmwf":0.29,"hit_rate_ecmwf":0.5,"BS_total_ecmwf":0.193,"BSS_lower_ecmwf":0.126,"BSS_upper_ecmwf":0.274,"AUC_lower_ecmwf":0.674,"AUC_upper_ecmwf":0.903,"r_dwd":0.332,"hit_rate_dwd":0.444,"BS_total_dwd":0.229,"BSS_lower_dwd":-0.013,"BSS_upper_dwd":0.061,"AUC_lower_dwd":0.653,"AUC_upper_dwd":0.632},{"ref_ceh":1769,"nombre":"SAN PEDRO","lon":-7.7139,"lat":42.4525,"r_ecmwf":0.281,"hit_rate_ecmwf":0.579,"BS_total_ecmwf":0.197,"BSS_lower_ecmwf":0.149,"BSS_upper_ecmwf":0.23,"AUC_lower_ecmwf":0.738,"AUC_upper_ecmwf":0.859,"r_dwd":0.26,"hit_rate_dwd":0.474,"BS_total_dwd":0.196,"BSS_lower_dwd":0.05,"BSS_upper_dwd":0.185,"AUC_lower_dwd":0.726,"AUC_upper_dwd":0.827},{"ref_ceh":1631,"nombre":"VELLE","lon":-7.8514,"lat":42.3581,"r_ecmwf":0.255,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.197,"BSS_lower_ecmwf":0.147,"BSS_upper_ecmwf":0.226,"AUC_lower_ecmwf":0.75,"AUC_upper_ecmwf":0.84,"r_dwd":0.247,"hit_rate_dwd":0.579,"BS_total_dwd":0.197,"BSS_lower_dwd":0.073,"BSS_upper_dwd":0.194,"AUC_lower_dwd":0.756,"AUC_upper_dwd":0.788},{"ref_ceh":1634,"nombre":"CASTRELO","lon":-8.1164,"lat":42.2925,"r_ecmwf":0.293,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.195,"BSS_lower_ecmwf":0.154,"BSS_upper_ecmwf":0.228,"AUC_lower_ecmwf":0.744,"AUC_upper_ecmwf":0.84,"r_dwd":0.282,"hit_rate_dwd":0.474,"BS_total_dwd":0.197,"BSS_lower_dwd":0.062,"BSS_upper_dwd":0.189,"AUC_lower_dwd":0.738,"AUC_upper_dwd":0.788},{"ref_ceh":1637,"nombre":"ALBARELLOS","lon":-8.1919,"lat":42.3997,"r_ecmwf":0.265,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.205,"BSS_lower_ecmwf":0.165,"BSS_upper_ecmwf":0.073,"AUC_lower_ecmwf":0.762,"AUC_upper_ecmwf":0.635,"r_dwd":0.283,"hit_rate_dwd":0.526,"BS_total_dwd":0.201,"BSS_lower_dwd":0.098,"BSS_upper_dwd":0.122,"AUC_lower_dwd":0.78,"AUC_upper_dwd":0.737},{"ref_ceh":1641,"nombre":"FRIEIRA","lon":-8.1928,"lat":42.1558,"r_ecmwf":0.29,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.192,"BSS_lower_ecmwf":0.16,"BSS_upper_ecmwf":0.243,"AUC_lower_ecmwf":0.762,"AUC_upper_ecmwf":0.846,"r_dwd":0.286,"hit_rate_dwd":0.474,"BS_total_dwd":0.199,"BSS_lower_dwd":0.045,"BSS_upper_dwd":0.181,"AUC_lower_dwd":0.732,"AUC_upper_dwd":0.763},{"ref_ceh":1808,"nombre":"CONCHAS, LAS","lon":-8.0347,"lat":41.9444,"r_ecmwf":0.293,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.205,"BSS_lower_ecmwf":0.069,"BSS_upper_ecmwf":0.139,"AUC_lower_ecmwf":0.679,"AUC_upper_ecmwf":0.705,"r_dwd":0.266,"hit_rate_dwd":0.263,"BS_total_dwd":0.24,"BSS_lower_dwd":-0.063,"BSS_upper_dwd":-0.095,"AUC_lower_dwd":0.601,"AUC_upper_dwd":0.41},{"ref_ceh":1807,"nombre":"SALAS, LAS","lon":-7.9428,"lat":41.9242,"r_ecmwf":0.258,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.195,"BSS_lower_ecmwf":0.148,"BSS_upper_ecmwf":0.137,"AUC_lower_ecmwf":0.774,"AUC_upper_ecmwf":0.705,"r_dwd":0.269,"hit_rate_dwd":0.263,"BS_total_dwd":0.227,"BSS_lower_dwd":0.042,"BSS_upper_dwd":-0.074,"AUC_lower_dwd":0.69,"AUC_upper_dwd":0.442},{"ref_ceh":1782,"nombre":"CENZA","lon":-7.245,"lat":42.1947,"r_ecmwf":0.244,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.207,"BSS_lower_ecmwf":0.023,"BSS_upper_ecmwf":0.141,"AUC_lower_ecmwf":0.685,"AUC_upper_ecmwf":0.731,"r_dwd":0.189,"hit_rate_dwd":0.474,"BS_total_dwd":0.209,"BSS_lower_dwd":0.017,"BSS_upper_dwd":0.121,"AUC_lower_dwd":0.613,"AUC_upper_dwd":0.756},{"ref_ceh":1711,"nombre":"CAMPAÑANA","lon":-6.7697,"lat":42.4981,"r_ecmwf":0.152,"hit_rate_ecmwf":0.538,"BS_total_ecmwf":0.225,"BSS_lower_ecmwf":0.055,"BSS_upper_ecmwf":-0.144,"AUC_lower_ecmwf":0.738,"AUC_upper_ecmwf":0.667,"r_dwd":0.113,"hit_rate_dwd":0.308,"BS_total_dwd":0.256,"BSS_lower_dwd":-0.235,"BSS_upper_dwd":-0.108,"AUC_lower_dwd":0.45,"AUC_upper_dwd":0.694}]},"ES070":{"cod":"ES070","nombre":"SEGURA","n_embalses":6,"medianas":{"r_ecmwf":-0.001,"hit_rate_ecmwf":0.342,"BS_total_ecmwf":0.254,"BSS_lower_ecmwf":-0.171,"BSS_upper_ecmwf":-0.096,"AUC_lower_ecmwf":0.53,"AUC_upper_ecmwf":0.522,"r_dwd":0.201,"hit_rate_dwd":0.368,"BS_total_dwd":0.232,"BSS_lower_dwd":-0.23,"BSS_upper_dwd":0.009,"AUC_lower_dwd":0.384,"AUC_upper_dwd":0.574},"valores":{"r_ecmwf":[-0.005,-0.067,-0.025,0.004,0.063,0.065],"hit_rate_ecmwf":[0.211,0.211,0.421,0.316,0.474,0.368],"BS_total_ecmwf":[0.272,0.267,0.259,0.249,0.218,0.229],"BSS_lower_ecmwf":[-0.217,-0.191,-0.221,-0.151,-0.029,-0.089],"BSS_upper_ecmwf":[-0.117,-0.114,-0.078,-0.149,0.052,-0.025],"AUC_lower_ecmwf":[0.5,0.536,0.458,0.524,0.649,0.607],"AUC_upper_ecmwf":[0.34,0.321,0.5,0.564,0.609,0.545],"r_dwd":[0.075,0.057,0.327,0.36,0.341,-0.137],"hit_rate_dwd":[0.421,0.421,0.368,0.316,0.316,0.368],"BS_total_dwd":[0.231,0.232,0.233,0.243,0.221,0.248],"BSS_lower_dwd":[-0.185,-0.248,-0.258,-0.216,-0.203,-0.245],"BSS_upper_dwd":[-0.032,0.021,0.072,-0.077,0.194,-0.003],"AUC_lower_dwd":[0.506,0.417,0.339,0.399,0.369,0.339],"AUC_upper_dwd":[0.5,0.577,0.622,0.571,0.827,0.551]},"embalses":[{"ref_ceh":7001,"nombre":"ANCHURICAS","lon":-2.5317,"lat":38.2047,"r_ecmwf":-0.005,"hit_rate_ecmwf":0.211,"BS_total_ecmwf":0.272,"BSS_lower_ecmwf":-0.217,"BSS_upper_ecmwf":-0.117,"AUC_lower_ecmwf":0.5,"AUC_upper_ecmwf":0.34,"r_dwd":0.075,"hit_rate_dwd":0.421,"BS_total_dwd":0.231,"BSS_lower_dwd":-0.185,"BSS_upper_dwd":-0.032,"AUC_lower_dwd":0.506,"AUC_upper_dwd":0.5},{"ref_ceh":7004,"nombre":"VIEJA, LA O NOVIA, LA","lon":-2.4578,"lat":38.1767,"r_ecmwf":-0.067,"hit_rate_ecmwf":0.211,"BS_total_ecmwf":0.267,"BSS_lower_ecmwf":-0.191,"BSS_upper_ecmwf":-0.114,"AUC_lower_ecmwf":0.536,"AUC_upper_ecmwf":0.321,"r_dwd":0.057,"hit_rate_dwd":0.421,"BS_total_dwd":0.232,"BSS_lower_dwd":-0.248,"BSS_upper_dwd":0.021,"AUC_lower_dwd":0.417,"AUC_upper_dwd":0.577},{"ref_ceh":7002,"nombre":"FUENSANTA","lon":-2.2078,"lat":38.3914,"r_ecmwf":-0.025,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.259,"BSS_lower_ecmwf":-0.221,"BSS_upper_ecmwf":-0.078,"AUC_lower_ecmwf":0.458,"AUC_upper_ecmwf":0.5,"r_dwd":0.327,"hit_rate_dwd":0.368,"BS_total_dwd":0.233,"BSS_lower_dwd":-0.258,"BSS_upper_dwd":0.072,"AUC_lower_dwd":0.339,"AUC_upper_dwd":0.622},{"ref_ceh":7017,"nombre":"TAIBILLA","lon":-2.2622,"lat":38.1917,"r_ecmwf":0.004,"hit_rate_ecmwf":0.316,"BS_total_ecmwf":0.249,"BSS_lower_ecmwf":-0.151,"BSS_upper_ecmwf":-0.149,"AUC_lower_ecmwf":0.524,"AUC_upper_ecmwf":0.564,"r_dwd":0.36,"hit_rate_dwd":0.316,"BS_total_dwd":0.243,"BSS_lower_dwd":-0.216,"BSS_upper_dwd":-0.077,"AUC_lower_dwd":0.399,"AUC_upper_dwd":0.571},{"ref_ceh":7003,"nombre":"CENAJO","lon":-1.7761,"lat":38.3656,"r_ecmwf":0.063,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.218,"BSS_lower_ecmwf":-0.029,"BSS_upper_ecmwf":0.052,"AUC_lower_ecmwf":0.649,"AUC_upper_ecmwf":0.609,"r_dwd":0.341,"hit_rate_dwd":0.316,"BS_total_dwd":0.221,"BSS_lower_dwd":-0.203,"BSS_upper_dwd":0.194,"AUC_lower_dwd":0.369,"AUC_upper_dwd":0.827},{"ref_ceh":7010,"nombre":"SANTOMERA","lon":-1.0886,"lat":38.0953,"r_ecmwf":0.065,"hit_rate_ecmwf":0.368,"BS_total_ecmwf":0.229,"BSS_lower_ecmwf":-0.089,"BSS_upper_ecmwf":-0.025,"AUC_lower_ecmwf":0.607,"AUC_upper_ecmwf":0.545,"r_dwd":-0.137,"hit_rate_dwd":0.368,"BS_total_dwd":0.248,"BSS_lower_dwd":-0.245,"BSS_upper_dwd":-0.003,"AUC_lower_dwd":0.339,"AUC_upper_dwd":0.551}]},"ES030":{"cod":"ES030","nombre":"TAJO","n_embalses":42,"medianas":{"r_ecmwf":0.245,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.212,"BSS_lower_ecmwf":0.018,"BSS_upper_ecmwf":0.114,"AUC_lower_ecmwf":0.631,"AUC_upper_ecmwf":0.686,"r_dwd":0.129,"hit_rate_dwd":0.368,"BS_total_dwd":0.22,"BSS_lower_dwd":0.044,"BSS_upper_dwd":-0.008,"AUC_lower_dwd":0.682,"AUC_upper_dwd":0.51},"valores":{"r_ecmwf":[0.258,0.319,0.342,0.233,0.213,0.253,0.221,0.159,0.188,0.272,0.286,0.251,0.257,0.334,0.241,0.243,0.286,0.15,0.145,0.005,0.052,-0.003,-0.057,0.087,0.224,0.206,0.184,0.265,0.246,0.163,0.369,0.103,0.262,0.161,0.297,0.324,0.316,0.249,0.324,0.26,0.237,0.403],"hit_rate_ecmwf":[0.421,0.556,0.474,0.474,0.368,0.421,0.316,0.316,0.421,0.421,0.421,0.474,0.421,0.474,0.421,0.526,0.389,0.421,0.368,0.526,0.471,0.368,0.263,0.316,0.368,0.421,0.368,0.474,0.632,0.474,0.421,0.421,0.632,0.474,0.526,0.421,0.526,0.474,0.471,0.368,0.316,0.579],"BS_total_ecmwf":[0.2,0.202,0.198,0.205,0.225,0.212,0.215,0.223,0.214,0.207,0.219,0.211,0.231,0.208,0.233,0.227,0.225,0.213,0.218,0.232,0.22,0.223,0.24,0.231,0.219,0.219,0.227,0.209,0.183,0.206,0.206,0.219,0.198,0.198,0.197,0.199,0.194,0.204,0.207,0.209,0.228,0.188],"BSS_lower_ecmwf":[0.066,0.083,0.042,0.042,0.036,0.022,0.003,-0.096,-0.075,0.042,0.064,-0.003,0.09,0.077,-0.051,-0.001,-0.078,-0.001,0.044,-0.056,-0.051,-0.032,-0.036,-0.058,-0.045,-0.102,-0.159,0.009,0.153,0.064,-0.034,0.047,0.051,0.014,0.067,0.028,0.108,-0.002,0.074,0.03,-0.038,0.181],"BSS_upper_ecmwf":[0.15,0.171,0.156,0.153,-0.032,0.061,0.054,0.065,0.103,0.123,0.019,0.134,-0.108,0.138,0.011,0.071,0.104,0.095,0.077,0.007,0.005,0.019,-0.113,0.012,0.163,0.13,0.175,0.155,0.199,0.192,0.202,0.001,0.245,0.183,0.191,0.179,0.245,0.195,-0.021,0.09,0.102,0.205],"AUC_lower_ecmwf":[0.696,0.632,0.679,0.589,0.625,0.649,0.613,0.524,0.518,0.637,0.679,0.601,0.72,0.649,0.56,0.625,0.486,0.595,0.661,0.583,0.492,0.583,0.583,0.554,0.554,0.5,0.423,0.655,0.792,0.714,0.595,0.708,0.667,0.673,0.78,0.726,0.756,0.631,0.667,0.637,0.589,0.821],"AUC_upper_ecmwf":[0.673,0.868,0.769,0.718,0.506,0.603,0.609,0.628,0.647,0.737,0.673,0.699,0.41,0.769,0.513,0.66,0.764,0.641,0.596,0.519,0.53,0.571,0.442,0.609,0.737,0.744,0.769,0.763,0.827,0.718,0.763,0.538,0.885,0.853,0.801,0.782,0.859,0.75,0.621,0.628,0.622,0.833],"r_dwd":[0.208,0.17,0.217,0.148,-0.001,0.019,0.129,0.067,0.079,0.192,0.142,0.206,0.272,0.13,0.204,0.133,0.123,0.169,0.042,-0.055,-0.083,-0.028,-0.041,-0.034,0.174,0.168,0.087,0.231,0.113,0.094,0.462,-0.027,0.12,-0.01,0.101,0.162,0.139,0.154,-0.006,0.146,0.064,0.186],"hit_rate_dwd":[0.474,0.5,0.368,0.421,0.316,0.211,0.316,0.421,0.421,0.421,0.316,0.421,0.421,0.421,0.421,0.421,0.333,0.211,0.474,0.368,0.294,0.368,0.368,0.263,0.316,0.368,0.316,0.263,0.368,0.368,0.474,0.368,0.421,0.368,0.421,0.316,0.526,0.526,0.412,0.368,0.421,0.474],"BS_total_dwd":[0.202,0.223,0.208,0.215,0.233,0.228,0.23,0.222,0.215,0.217,0.23,0.235,0.213,0.205,0.214,0.208,0.228,0.223,0.224,0.228,0.23,0.24,0.217,0.25,0.237,0.209,0.219,0.229,0.213,0.227,0.214,0.223,0.201,0.218,0.209,0.224,0.201,0.213,0.204,0.229,0.221,0.211],"BSS_lower_dwd":[0.113,-0.034,0.081,0.11,-0.018,-0.001,-0.019,-0.01,0.015,0.07,-0.025,0.015,0.029,0.091,0.05,0.04,-0.051,0.023,0.04,0.037,0.077,0.087,0.076,-0.045,-0.018,0.072,-0.028,-0.082,0.127,-0.004,0.048,0.062,0.109,0.09,0.103,0.041,0.093,0.072,0.059,0.066,0.034,0.111],"BSS_upper_dwd":[0.033,0.057,0.025,-0.001,-0.072,-0.032,-0.006,-0.024,0.018,0.032,-0.035,-0.059,0.084,0.018,0.06,0.093,0.025,0.018,-0.089,-0.077,-0.152,-0.238,-0.07,-0.202,-0.059,0.033,0.003,0.034,-0.079,-0.035,0.05,-0.075,0.079,-0.084,0.004,-0.072,0.069,-0.075,0.012,-0.147,-0.011,-0.049],"AUC_lower_dwd":[0.768,0.576,0.756,0.75,0.589,0.643,0.625,0.637,0.631,0.679,0.554,0.643,0.643,0.714,0.696,0.667,0.535,0.613,0.661,0.667,0.659,0.768,0.726,0.53,0.619,0.75,0.625,0.601,0.827,0.625,0.762,0.75,0.804,0.827,0.857,0.827,0.798,0.786,0.788,0.685,0.714,0.786],"AUC_upper_dwd":[0.577,0.632,0.571,0.487,0.468,0.513,0.506,0.449,0.538,0.609,0.545,0.436,0.712,0.538,0.692,0.731,0.688,0.564,0.449,0.442,0.417,0.231,0.353,0.314,0.436,0.596,0.538,0.628,0.417,0.436,0.59,0.474,0.628,0.5,0.59,0.462,0.679,0.41,0.598,0.333,0.474,0.41]},"embalses":[{"ref_ceh":3006,"nombre":"ENTREPEÑAS","lon":-2.7503,"lat":40.4928,"r_ecmwf":0.258,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.2,"BSS_lower_ecmwf":0.066,"BSS_upper_ecmwf":0.15,"AUC_lower_ecmwf":0.696,"AUC_upper_ecmwf":0.673,"r_dwd":0.208,"hit_rate_dwd":0.474,"BS_total_dwd":0.202,"BSS_lower_dwd":0.113,"BSS_upper_dwd":0.033,"AUC_lower_dwd":0.768,"AUC_upper_dwd":0.577},{"ref_ceh":3201,"nombre":"MOLINO DE CHINCHA","lon":-2.1781,"lat":40.5519,"r_ecmwf":0.319,"hit_rate_ecmwf":0.556,"BS_total_ecmwf":0.202,"BSS_lower_ecmwf":0.083,"BSS_upper_ecmwf":0.171,"AUC_lower_ecmwf":0.632,"AUC_upper_ecmwf":0.868,"r_dwd":0.17,"hit_rate_dwd":0.5,"BS_total_dwd":0.223,"BSS_lower_dwd":-0.034,"BSS_upper_dwd":0.057,"AUC_lower_dwd":0.576,"AUC_upper_dwd":0.632},{"ref_ceh":3043,"nombre":"BUENDIA","lon":-2.7839,"lat":40.3986,"r_ecmwf":0.342,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.198,"BSS_lower_ecmwf":0.042,"BSS_upper_ecmwf":0.156,"AUC_lower_ecmwf":0.679,"AUC_upper_ecmwf":0.769,"r_dwd":0.217,"hit_rate_dwd":0.368,"BS_total_dwd":0.208,"BSS_lower_dwd":0.081,"BSS_upper_dwd":0.025,"AUC_lower_dwd":0.756,"AUC_upper_dwd":0.571},{"ref_ceh":3050,"nombre":"VADO, EL","lon":-3.3008,"lat":41.0036,"r_ecmwf":0.233,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.205,"BSS_lower_ecmwf":0.042,"BSS_upper_ecmwf":0.153,"AUC_lower_ecmwf":0.589,"AUC_upper_ecmwf":0.718,"r_dwd":0.148,"hit_rate_dwd":0.421,"BS_total_dwd":0.215,"BSS_lower_dwd":0.11,"BSS_upper_dwd":-0.001,"AUC_lower_dwd":0.75,"AUC_upper_dwd":0.487},{"ref_ceh":3154,"nombre":"RIOSEQUILLO","lon":-3.6486,"lat":40.9847,"r_ecmwf":0.213,"hit_rate_ecmwf":0.368,"BS_total_ecmwf":0.225,"BSS_lower_ecmwf":0.036,"BSS_upper_ecmwf":-0.032,"AUC_lower_ecmwf":0.625,"AUC_upper_ecmwf":0.506,"r_dwd":-0.001,"hit_rate_dwd":0.316,"BS_total_dwd":0.233,"BSS_lower_dwd":-0.018,"BSS_upper_dwd":-0.072,"AUC_lower_dwd":0.589,"AUC_upper_dwd":0.468},{"ref_ceh":3196,"nombre":"PINILLA","lon":-3.7742,"lat":40.945,"r_ecmwf":0.253,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.212,"BSS_lower_ecmwf":0.022,"BSS_upper_ecmwf":0.061,"AUC_lower_ecmwf":0.649,"AUC_upper_ecmwf":0.603,"r_dwd":0.019,"hit_rate_dwd":0.211,"BS_total_dwd":0.228,"BSS_lower_dwd":-0.001,"BSS_upper_dwd":-0.032,"AUC_lower_dwd":0.643,"AUC_upper_dwd":0.513},{"ref_ceh":3155,"nombre":"PUENTES VIEJAS","lon":-3.5714,"lat":40.9933,"r_ecmwf":0.221,"hit_rate_ecmwf":0.316,"BS_total_ecmwf":0.215,"BSS_lower_ecmwf":0.003,"BSS_upper_ecmwf":0.054,"AUC_lower_ecmwf":0.613,"AUC_upper_ecmwf":0.609,"r_dwd":0.129,"hit_rate_dwd":0.316,"BS_total_dwd":0.23,"BSS_lower_dwd":-0.019,"BSS_upper_dwd":-0.006,"AUC_lower_dwd":0.625,"AUC_upper_dwd":0.506},{"ref_ceh":3195,"nombre":"VILLAR, EL","lon":-3.5631,"lat":40.9475,"r_ecmwf":0.159,"hit_rate_ecmwf":0.316,"BS_total_ecmwf":0.223,"BSS_lower_ecmwf":-0.096,"BSS_upper_ecmwf":0.065,"AUC_lower_ecmwf":0.524,"AUC_upper_ecmwf":0.628,"r_dwd":0.067,"hit_rate_dwd":0.421,"BS_total_dwd":0.222,"BSS_lower_dwd":-0.01,"BSS_upper_dwd":-0.024,"AUC_lower_dwd":0.637,"AUC_upper_dwd":0.449},{"ref_ceh":3156,"nombre":"ATAZAR, EL","lon":-3.4736,"lat":40.9122,"r_ecmwf":0.188,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.214,"BSS_lower_ecmwf":-0.075,"BSS_upper_ecmwf":0.103,"AUC_lower_ecmwf":0.518,"AUC_upper_ecmwf":0.647,"r_dwd":0.079,"hit_rate_dwd":0.421,"BS_total_dwd":0.215,"BSS_lower_dwd":0.015,"BSS_upper_dwd":0.018,"AUC_lower_dwd":0.631,"AUC_upper_dwd":0.538},{"ref_ceh":3157,"nombre":"VELLON, EL","lon":-3.6247,"lat":40.7564,"r_ecmwf":0.272,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.207,"BSS_lower_ecmwf":0.042,"BSS_upper_ecmwf":0.123,"AUC_lower_ecmwf":0.637,"AUC_upper_ecmwf":0.737,"r_dwd":0.192,"hit_rate_dwd":0.421,"BS_total_dwd":0.217,"BSS_lower_dwd":0.07,"BSS_upper_dwd":0.032,"AUC_lower_dwd":0.679,"AUC_upper_dwd":0.609},{"ref_ceh":3065,"nombre":"PALMACES","lon":-2.94,"lat":41.0506,"r_ecmwf":0.286,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.219,"BSS_lower_ecmwf":0.064,"BSS_upper_ecmwf":0.019,"AUC_lower_ecmwf":0.679,"AUC_upper_ecmwf":0.673,"r_dwd":0.142,"hit_rate_dwd":0.316,"BS_total_dwd":0.23,"BSS_lower_dwd":-0.025,"BSS_upper_dwd":-0.035,"AUC_lower_dwd":0.554,"AUC_upper_dwd":0.545},{"ref_ceh":3287,"nombre":"ALCORLO","lon":-3.0253,"lat":41.0086,"r_ecmwf":0.251,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.211,"BSS_lower_ecmwf":-0.003,"BSS_upper_ecmwf":0.134,"AUC_lower_ecmwf":0.601,"AUC_upper_ecmwf":0.699,"r_dwd":0.206,"hit_rate_dwd":0.421,"BS_total_dwd":0.235,"BSS_lower_dwd":0.015,"BSS_upper_dwd":-0.059,"AUC_lower_dwd":0.643,"AUC_upper_dwd":0.436},{"ref_ceh":3068,"nombre":"BELEÑA","lon":-3.1958,"lat":40.9339,"r_ecmwf":0.257,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.231,"BSS_lower_ecmwf":0.09,"BSS_upper_ecmwf":-0.108,"AUC_lower_ecmwf":0.72,"AUC_upper_ecmwf":0.41,"r_dwd":0.272,"hit_rate_dwd":0.421,"BS_total_dwd":0.213,"BSS_lower_dwd":0.029,"BSS_upper_dwd":0.084,"AUC_lower_dwd":0.643,"AUC_upper_dwd":0.712},{"ref_ceh":3189,"nombre":"NAVACERRADA","lon":-4.0053,"lat":40.715,"r_ecmwf":0.334,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.208,"BSS_lower_ecmwf":0.077,"BSS_upper_ecmwf":0.138,"AUC_lower_ecmwf":0.649,"AUC_upper_ecmwf":0.769,"r_dwd":0.13,"hit_rate_dwd":0.421,"BS_total_dwd":0.205,"BSS_lower_dwd":0.091,"BSS_upper_dwd":0.018,"AUC_lower_dwd":0.714,"AUC_upper_dwd":0.538},{"ref_ceh":3069,"nombre":"SANTILLANA","lon":-3.8186,"lat":40.7067,"r_ecmwf":0.241,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.233,"BSS_lower_ecmwf":-0.051,"BSS_upper_ecmwf":0.011,"AUC_lower_ecmwf":0.56,"AUC_upper_ecmwf":0.513,"r_dwd":0.204,"hit_rate_dwd":0.421,"BS_total_dwd":0.214,"BSS_lower_dwd":0.05,"BSS_upper_dwd":0.06,"AUC_lower_dwd":0.696,"AUC_upper_dwd":0.692},{"ref_ceh":3263,"nombre":"PARDO, EL","lon":-3.7889,"lat":40.5389,"r_ecmwf":0.243,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.227,"BSS_lower_ecmwf":-0.001,"BSS_upper_ecmwf":0.071,"AUC_lower_ecmwf":0.625,"AUC_upper_ecmwf":0.66,"r_dwd":0.133,"hit_rate_dwd":0.421,"BS_total_dwd":0.208,"BSS_lower_dwd":0.04,"BSS_upper_dwd":0.093,"AUC_lower_dwd":0.667,"AUC_upper_dwd":0.731},{"ref_ceh":3079,"nombre":"TAJERA, LA","lon":-2.6175,"lat":40.8392,"r_ecmwf":0.286,"hit_rate_ecmwf":0.389,"BS_total_ecmwf":0.225,"BSS_lower_ecmwf":-0.078,"BSS_upper_ecmwf":0.104,"AUC_lower_ecmwf":0.486,"AUC_upper_ecmwf":0.764,"r_dwd":0.123,"hit_rate_dwd":0.333,"BS_total_dwd":0.228,"BSS_lower_dwd":-0.051,"BSS_upper_dwd":0.025,"AUC_lower_dwd":0.535,"AUC_upper_dwd":0.688},{"ref_ceh":3151,"nombre":"CASTREJON","lon":-4.2953,"lat":39.8333,"r_ecmwf":0.15,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.213,"BSS_lower_ecmwf":-0.001,"BSS_upper_ecmwf":0.095,"AUC_lower_ecmwf":0.595,"AUC_upper_ecmwf":0.641,"r_dwd":0.169,"hit_rate_dwd":0.211,"BS_total_dwd":0.223,"BSS_lower_dwd":0.023,"BSS_upper_dwd":0.018,"AUC_lower_dwd":0.613,"AUC_upper_dwd":0.564},{"ref_ceh":3111,"nombre":"BURGUILLO, EL","lon":-4.5339,"lat":40.4247,"r_ecmwf":0.145,"hit_rate_ecmwf":0.368,"BS_total_ecmwf":0.218,"BSS_lower_ecmwf":0.044,"BSS_upper_ecmwf":0.077,"AUC_lower_ecmwf":0.661,"AUC_upper_ecmwf":0.596,"r_dwd":0.042,"hit_rate_dwd":0.474,"BS_total_dwd":0.224,"BSS_lower_dwd":0.04,"BSS_upper_dwd":-0.089,"AUC_lower_dwd":0.661,"AUC_upper_dwd":0.449},{"ref_ceh":3114,"nombre":"CHARCO DEL CURA (PUENTE NUEVO)","lon":-4.5028,"lat":40.4225,"r_ecmwf":0.005,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.232,"BSS_lower_ecmwf":-0.056,"BSS_upper_ecmwf":0.007,"AUC_lower_ecmwf":0.583,"AUC_upper_ecmwf":0.519,"r_dwd":-0.055,"hit_rate_dwd":0.368,"BS_total_dwd":0.228,"BSS_lower_dwd":0.037,"BSS_upper_dwd":-0.077,"AUC_lower_dwd":0.667,"AUC_upper_dwd":0.442},{"ref_ceh":3227,"nombre":"ACEÑA","lon":-4.2214,"lat":40.6125,"r_ecmwf":0.052,"hit_rate_ecmwf":0.471,"BS_total_ecmwf":0.22,"BSS_lower_ecmwf":-0.051,"BSS_upper_ecmwf":0.005,"AUC_lower_ecmwf":0.492,"AUC_upper_ecmwf":0.53,"r_dwd":-0.083,"hit_rate_dwd":0.294,"BS_total_dwd":0.23,"BSS_lower_dwd":0.077,"BSS_upper_dwd":-0.152,"AUC_lower_dwd":0.659,"AUC_upper_dwd":0.417},{"ref_ceh":3112,"nombre":"SAN JUAN","lon":-4.3119,"lat":40.3728,"r_ecmwf":-0.003,"hit_rate_ecmwf":0.368,"BS_total_ecmwf":0.223,"BSS_lower_ecmwf":-0.032,"BSS_upper_ecmwf":0.019,"AUC_lower_ecmwf":0.583,"AUC_upper_ecmwf":0.571,"r_dwd":-0.028,"hit_rate_dwd":0.368,"BS_total_dwd":0.24,"BSS_lower_dwd":0.087,"BSS_upper_dwd":-0.238,"AUC_lower_dwd":0.768,"AUC_upper_dwd":0.231},{"ref_ceh":3113,"nombre":"PICADAS","lon":-4.2492,"lat":40.3333,"r_ecmwf":-0.057,"hit_rate_ecmwf":0.263,"BS_total_ecmwf":0.24,"BSS_lower_ecmwf":-0.036,"BSS_upper_ecmwf":-0.113,"AUC_lower_ecmwf":0.583,"AUC_upper_ecmwf":0.442,"r_dwd":-0.041,"hit_rate_dwd":0.368,"BS_total_dwd":0.217,"BSS_lower_dwd":0.076,"BSS_upper_dwd":-0.07,"AUC_lower_dwd":0.726,"AUC_upper_dwd":0.353},{"ref_ceh":3115,"nombre":"CAZALEGAS","lon":-4.7064,"lat":40.0131,"r_ecmwf":0.087,"hit_rate_ecmwf":0.316,"BS_total_ecmwf":0.231,"BSS_lower_ecmwf":-0.058,"BSS_upper_ecmwf":0.012,"AUC_lower_ecmwf":0.554,"AUC_upper_ecmwf":0.609,"r_dwd":-0.034,"hit_rate_dwd":0.263,"BS_total_dwd":0.25,"BSS_lower_dwd":-0.045,"BSS_upper_dwd":-0.202,"AUC_lower_dwd":0.53,"AUC_upper_dwd":0.314},{"ref_ceh":3203,"nombre":"AZUTAN","lon":-5.0889,"lat":39.7781,"r_ecmwf":0.224,"hit_rate_ecmwf":0.368,"BS_total_ecmwf":0.219,"BSS_lower_ecmwf":-0.045,"BSS_upper_ecmwf":0.163,"AUC_lower_ecmwf":0.554,"AUC_upper_ecmwf":0.737,"r_dwd":0.174,"hit_rate_dwd":0.316,"BS_total_dwd":0.237,"BSS_lower_dwd":-0.018,"BSS_upper_dwd":-0.059,"AUC_lower_dwd":0.619,"AUC_upper_dwd":0.436},{"ref_ceh":3152,"nombre":"VALDECAÑAS","lon":-5.6119,"lat":39.7781,"r_ecmwf":0.206,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.219,"BSS_lower_ecmwf":-0.102,"BSS_upper_ecmwf":0.13,"AUC_lower_ecmwf":0.5,"AUC_upper_ecmwf":0.744,"r_dwd":0.168,"hit_rate_dwd":0.368,"BS_total_dwd":0.209,"BSS_lower_dwd":0.072,"BSS_upper_dwd":0.033,"AUC_lower_dwd":0.75,"AUC_upper_dwd":0.596},{"ref_ceh":3016,"nombre":"TORREJON-TAJO","lon":-5.9872,"lat":39.8333,"r_ecmwf":0.184,"hit_rate_ecmwf":0.368,"BS_total_ecmwf":0.227,"BSS_lower_ecmwf":-0.159,"BSS_upper_ecmwf":0.175,"AUC_lower_ecmwf":0.423,"AUC_upper_ecmwf":0.769,"r_dwd":0.087,"hit_rate_dwd":0.316,"BS_total_dwd":0.219,"BSS_lower_dwd":-0.028,"BSS_upper_dwd":0.003,"AUC_lower_dwd":0.625,"AUC_upper_dwd":0.538},{"ref_ceh":3199,"nombre":"NAVALCAN","lon":-5.1422,"lat":40.0481,"r_ecmwf":0.265,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.209,"BSS_lower_ecmwf":0.009,"BSS_upper_ecmwf":0.155,"AUC_lower_ecmwf":0.655,"AUC_upper_ecmwf":0.763,"r_dwd":0.231,"hit_rate_dwd":0.263,"BS_total_dwd":0.229,"BSS_lower_dwd":-0.082,"BSS_upper_dwd":0.034,"AUC_lower_dwd":0.601,"AUC_upper_dwd":0.628},{"ref_ceh":3127,"nombre":"ROSARITO","lon":-5.3239,"lat":40.11,"r_ecmwf":0.246,"hit_rate_ecmwf":0.632,"BS_total_ecmwf":0.183,"BSS_lower_ecmwf":0.153,"BSS_upper_ecmwf":0.199,"AUC_lower_ecmwf":0.792,"AUC_upper_ecmwf":0.827,"r_dwd":0.113,"hit_rate_dwd":0.368,"BS_total_dwd":0.213,"BSS_lower_dwd":0.127,"BSS_upper_dwd":-0.079,"AUC_lower_dwd":0.827,"AUC_upper_dwd":0.417},{"ref_ceh":3128,"nombre":"TORREJON-TIETAR","lon":-5.9914,"lat":39.8369,"r_ecmwf":0.163,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.206,"BSS_lower_ecmwf":0.064,"BSS_upper_ecmwf":0.192,"AUC_lower_ecmwf":0.714,"AUC_upper_ecmwf":0.718,"r_dwd":0.094,"hit_rate_dwd":0.368,"BS_total_dwd":0.227,"BSS_lower_dwd":-0.004,"BSS_upper_dwd":-0.035,"AUC_lower_dwd":0.625,"AUC_upper_dwd":0.436},{"ref_ceh":3264,"nombre":"GUADILOBA","lon":-6.2978,"lat":39.4869,"r_ecmwf":0.369,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.206,"BSS_lower_ecmwf":-0.034,"BSS_upper_ecmwf":0.202,"AUC_lower_ecmwf":0.595,"AUC_upper_ecmwf":0.763,"r_dwd":0.462,"hit_rate_dwd":0.474,"BS_total_dwd":0.214,"BSS_lower_dwd":0.048,"BSS_upper_dwd":0.05,"AUC_lower_dwd":0.762,"AUC_upper_dwd":0.59},{"ref_ceh":3141,"nombre":"GUIJO DE GRANADILLA","lon":-6.1422,"lat":40.1803,"r_ecmwf":0.103,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.219,"BSS_lower_ecmwf":0.047,"BSS_upper_ecmwf":0.001,"AUC_lower_ecmwf":0.708,"AUC_upper_ecmwf":0.538,"r_dwd":-0.027,"hit_rate_dwd":0.368,"BS_total_dwd":0.223,"BSS_lower_dwd":0.062,"BSS_upper_dwd":-0.075,"AUC_lower_dwd":0.75,"AUC_upper_dwd":0.474},{"ref_ceh":3142,"nombre":"GABRIEL Y GALAN","lon":-6.1331,"lat":40.2214,"r_ecmwf":0.262,"hit_rate_ecmwf":0.632,"BS_total_ecmwf":0.198,"BSS_lower_ecmwf":0.051,"BSS_upper_ecmwf":0.245,"AUC_lower_ecmwf":0.667,"AUC_upper_ecmwf":0.885,"r_dwd":0.12,"hit_rate_dwd":0.421,"BS_total_dwd":0.201,"BSS_lower_dwd":0.109,"BSS_upper_dwd":0.079,"AUC_lower_dwd":0.804,"AUC_upper_dwd":0.628},{"ref_ceh":3143,"nombre":"VALDEOBISPO","lon":-6.2508,"lat":40.0992,"r_ecmwf":0.161,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.198,"BSS_lower_ecmwf":0.014,"BSS_upper_ecmwf":0.183,"AUC_lower_ecmwf":0.673,"AUC_upper_ecmwf":0.853,"r_dwd":-0.01,"hit_rate_dwd":0.368,"BS_total_dwd":0.218,"BSS_lower_dwd":0.09,"BSS_upper_dwd":-0.084,"AUC_lower_dwd":0.827,"AUC_upper_dwd":0.5},{"ref_ceh":3145,"nombre":"JERTE-PLASENCIA","lon":-6.0417,"lat":40.0603,"r_ecmwf":0.297,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.197,"BSS_lower_ecmwf":0.067,"BSS_upper_ecmwf":0.191,"AUC_lower_ecmwf":0.78,"AUC_upper_ecmwf":0.801,"r_dwd":0.101,"hit_rate_dwd":0.421,"BS_total_dwd":0.209,"BSS_lower_dwd":0.103,"BSS_upper_dwd":0.004,"AUC_lower_dwd":0.857,"AUC_upper_dwd":0.59},{"ref_ceh":3148,"nombre":"BORBOLLON","lon":-6.5772,"lat":40.125,"r_ecmwf":0.324,"hit_rate_ecmwf":0.421,"BS_total_ecmwf":0.199,"BSS_lower_ecmwf":0.028,"BSS_upper_ecmwf":0.179,"AUC_lower_ecmwf":0.726,"AUC_upper_ecmwf":0.782,"r_dwd":0.162,"hit_rate_dwd":0.316,"BS_total_dwd":0.224,"BSS_lower_dwd":0.041,"BSS_upper_dwd":-0.072,"AUC_lower_dwd":0.827,"AUC_upper_dwd":0.462},{"ref_ceh":3160,"nombre":"RIVERA DE GATA","lon":-6.6331,"lat":40.1342,"r_ecmwf":0.316,"hit_rate_ecmwf":0.526,"BS_total_ecmwf":0.194,"BSS_lower_ecmwf":0.108,"BSS_upper_ecmwf":0.245,"AUC_lower_ecmwf":0.756,"AUC_upper_ecmwf":0.859,"r_dwd":0.139,"hit_rate_dwd":0.526,"BS_total_dwd":0.201,"BSS_lower_dwd":0.093,"BSS_upper_dwd":0.069,"AUC_lower_dwd":0.798,"AUC_upper_dwd":0.679},{"ref_ceh":3019,"nombre":"ALCANTARA","lon":-6.8844,"lat":39.7306,"r_ecmwf":0.249,"hit_rate_ecmwf":0.474,"BS_total_ecmwf":0.204,"BSS_lower_ecmwf":-0.002,"BSS_upper_ecmwf":0.195,"AUC_lower_ecmwf":0.631,"AUC_upper_ecmwf":0.75,"r_dwd":0.154,"hit_rate_dwd":0.526,"BS_total_dwd":0.213,"BSS_lower_dwd":0.072,"BSS_upper_dwd":-0.075,"AUC_lower_dwd":0.786,"AUC_upper_dwd":0.41},{"ref_ceh":3116,"nombre":"MORALES","lon":-4.52,"lat":40.3147,"r_ecmwf":0.324,"hit_rate_ecmwf":0.471,"BS_total_ecmwf":0.207,"BSS_lower_ecmwf":0.074,"BSS_upper_ecmwf":-0.021,"AUC_lower_ecmwf":0.667,"AUC_upper_ecmwf":0.621,"r_dwd":-0.006,"hit_rate_dwd":0.412,"BS_total_dwd":0.204,"BSS_lower_dwd":0.059,"BSS_upper_dwd":0.012,"AUC_lower_dwd":0.788,"AUC_upper_dwd":0.598},{"ref_ceh":3190,"nombre":"JAROSA, LA","lon":-4.1178,"lat":40.665,"r_ecmwf":0.26,"hit_rate_ecmwf":0.368,"BS_total_ecmwf":0.209,"BSS_lower_ecmwf":0.03,"BSS_upper_ecmwf":0.09,"AUC_lower_ecmwf":0.637,"AUC_upper_ecmwf":0.628,"r_dwd":0.146,"hit_rate_dwd":0.368,"BS_total_dwd":0.229,"BSS_lower_dwd":0.066,"BSS_upper_dwd":-0.147,"AUC_lower_dwd":0.685,"AUC_upper_dwd":0.333},{"ref_ceh":3191,"nombre":"NAVALMEDIO","lon":-4.0397,"lat":40.7492,"r_ecmwf":0.237,"hit_rate_ecmwf":0.316,"BS_total_ecmwf":0.228,"BSS_lower_ecmwf":-0.038,"BSS_upper_ecmwf":0.102,"AUC_lower_ecmwf":0.589,"AUC_upper_ecmwf":0.622,"r_dwd":0.064,"hit_rate_dwd":0.421,"BS_total_dwd":0.221,"BSS_lower_dwd":0.034,"BSS_upper_dwd":-0.011,"AUC_lower_dwd":0.714,"AUC_upper_dwd":0.474},{"ref_ceh":3247,"nombre":"NAVAMUÑO","lon":-5.7744,"lat":40.3481,"r_ecmwf":0.403,"hit_rate_ecmwf":0.579,"BS_total_ecmwf":0.188,"BSS_lower_ecmwf":0.181,"BSS_upper_ecmwf":0.205,"AUC_lower_ecmwf":0.821,"AUC_upper_ecmwf":0.833,"r_dwd":0.186,"hit_rate_dwd":0.474,"BS_total_dwd":0.211,"BSS_lower_dwd":0.111,"BSS_upper_dwd":-0.049,"AUC_lower_dwd":0.786,"AUC_upper_dwd":0.41}]}};
+
+// ============================================================
+// CONFIGURACIÓN
+// ============================================================
+const METRICA_CONFIG = {
+  r:         { label: 'r',         titulo: 'Correlación r',                min: -0.3, max: 0.5, ref: 0 },
+  hit_rate:  { label: 'Hit rate',  titulo: 'Hit rate',                      min: 0,    max: 0.7, ref: 0.333 },
+  BSS_lower: { label: 'BSS lower', titulo: 'BSS lower (tercil seco)',       min: -0.7, max: 0.3, ref: 0 },
+  BSS_upper: { label: 'BSS upper', titulo: 'BSS upper (tercil húmedo)',     min: -0.7, max: 0.3, ref: 0 },
+  AUC_lower: { label: 'AUC lower', titulo: 'AUC ROC lower (tercil seco)',   min: 0.3,  max: 0.9, ref: 0.5 },
+  AUC_upper: { label: 'AUC upper', titulo: 'AUC ROC upper (tercil húmedo)', min: 0.3,  max: 0.9, ref: 0.5 },
+};
+
+const MODELO_LABEL = {
+  ecmwf: 'ECMWF SEAS5.1',
+  dwd:   'DWD GCFS2.1',
+};
+
+// Colores por demarcación para el scatter
+const CUENCA_COLOR = {
+  ES010: '#0072bc',   // Miño-Sil
+  ES018: '#16a34a',   // Cantábrico
+  ES020: '#7c3aed',   // Duero
+  ES030: '#ef4444',   // Tajo
+  ES040: '#eab308',   // Guadiana
+  ES050: '#f97316',   // Guadalquivir
+  ES070: '#06b6d4',   // Segura
+  ES080: '#ec4899',   // Júcar
+};
+
+// ============================================================
+// ESTADO
+// ============================================================
+let geojsonCuencas = null;
+let geojsonRios = null;
+let geojsonPaises = null;
+let metricaBase = 'r';           // métrica seleccionada (sin sufijo)
+let modeloActual = 'ecmwf';      // 'ecmwf' | 'dwd' | 'comparacion'
+let cuencaSeleccionada = null;
+let viewBoxCalc = null;
+let LAT_FACTOR = 1.0;
+
+// Métrica con sufijo del modelo actual (solo aplica cuando no es comparación)
+function metKey() { return `${metricaBase}_${modeloActual}`; }
+
+// ============================================================
+// FUNCIONES DE COLOR
+// ============================================================
+function colorScale(value, min, max) {
+  if (value == null || isNaN(value)) return '#a0a0a0';
+  const t = Math.max(0, Math.min(1, (value - min) / (max - min)));
+  if (t < 0.5) {
+    const u = t * 2;
+    return `rgb(${Math.round(220 + 25*u)},${Math.round(38 + 120*u)},${Math.round(38 - 27*u)})`;
+  } else {
+    const u = (t - 0.5) * 2;
+    return `rgb(${Math.round(245 - 229*u)},${Math.round(158 + 27*u)},${Math.round(11 + 118*u)})`;
+  }
+}
+
+function rColor(v)   { return v == null ? '#9ca3af' : v > 0.3 ? '#16a34a' : v > 0.15 ? '#ca8a04' : '#dc2626'; }
+function hitColor(v) { return v == null ? '#9ca3af' : v > 0.45 ? '#16a34a' : v > 0.35 ? '#ca8a04' : '#dc2626'; }
+function bssColor(v) { return v == null ? '#9ca3af' : v > 0.05 ? '#16a34a' : v > -0.05 ? '#ca8a04' : '#dc2626'; }
+function aucColor(v) { return v == null ? '#9ca3af' : v > 0.65 ? '#16a34a' : v > 0.55 ? '#ca8a04' : '#dc2626'; }
+function fmt2s(v) { if (v == null) return '—'; return (v >= 0 ? '+' : '') + v.toFixed(2); }
+
+// ============================================================
+// PROYECCIÓN Y CARGA GEO
+// ============================================================
+function projX(lon) { return lon * LAT_FACTOR; }
+function projY(lat) { return -lat; }
+
+async function cargarDatos() {
+  try {
+    const [respC, respR, respP] = await Promise.all([
+      fetch('cuencas.geojson'),
+      fetch('rios.geojson'),
+      fetch('paises.geojson')
+    ]);
+    geojsonCuencas = await respC.json();
+    geojsonRios = await respR.json();
+    geojsonPaises = await respP.json();
+    calcularViewBox();
+    renderAll();
+  } catch (e) {
+    document.getElementById('mapa-cuencas').innerHTML = 
+      '<text x="0" y="0" font-size="20" fill="#dc2626">Error cargando geojson</text>';
+    console.error(e);
+  }
+}
+
+function calcularViewBox() {
+  let sumLat = 0, n = 0;
+  geojsonCuencas.features.forEach(f => {
+    const coords = f.geometry.type === 'MultiPolygon' 
+      ? f.geometry.coordinates.flat(2) : f.geometry.coordinates.flat(1);
+    coords.forEach(c => { sumLat += c[1]; n++; });
+  });
+  const latMedia = sumLat / n;
+  LAT_FACTOR = Math.cos(latMedia * Math.PI / 180);
+  
+  let minX=Infinity, maxX=-Infinity, minY=Infinity, maxY=-Infinity;
+  const updateBbox = (gj) => {
+    gj.features.forEach(f => {
+      const coords = f.geometry.type === 'MultiPolygon' 
+        ? f.geometry.coordinates.flat(2) : f.geometry.coordinates.flat(1);
+      coords.forEach(c => {
+        const x = projX(c[0]);
+        const y = projY(c[1]);
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+      });
+    });
+  };
+  if (geojsonPaises) updateBbox(geojsonPaises);
+  updateBbox(geojsonCuencas);
+  
+  const padX = (maxX-minX)*0.03;
+  const padY = (maxY-minY)*0.03;
+  viewBoxCalc = {
+    x: minX - padX,
+    y: minY - padY,
+    w: maxX - minX + 2*padX,
+    h: maxY - minY + 2*padY,
+  };
+}
+
+function ringToPath(ring) {
+  return ring.map((c, i) => `${i===0?'M':'L'}${projX(c[0])},${projY(c[1])}`).join(' ') + 'Z';
+}
+function lineToPath(coords) {
+  return coords.map((c, i) => `${i===0?'M':'L'}${projX(c[0])},${projY(c[1])}`).join(' ');
+}
+
+// ============================================================
+// RENDER MAPA (vista modelo único)
+// ============================================================
+function renderMapa() {
+  const svg = document.getElementById('mapa-cuencas');
+  const cfg = METRICA_CONFIG[metricaBase];
+  const mk = metKey();
+
+  svg.setAttribute('viewBox', `${viewBoxCalc.x} ${viewBoxCalc.y} ${viewBoxCalc.w} ${viewBoxCalc.h}`);
+  
+  let html = '';
+  
+  // 1. Países de fondo
+  if (geojsonPaises) {
+    geojsonPaises.features.forEach(f => {
+      const polys = f.geometry.type === 'MultiPolygon' 
+        ? f.geometry.coordinates : [f.geometry.coordinates];
+      polys.forEach(poly => {
+        poly.forEach(ring => {
+          html += `<path d="${ringToPath(ring)}" class="pais-bg"/>`;
+        });
+      });
+    });
+  }
+  
+  // 2. Cuencas
+  geojsonCuencas.features.forEach(f => {
+    const cod = f.properties.CodDemarc || f.properties.COD || f.properties.cod || f.properties.id;
+    const cuencaData = DATA_CUENCAS[cod];
+    const hasData = !!cuencaData;
+    const v = hasData ? cuencaData.medianas[mk] : null;
+    const color = hasData ? colorScale(v, cfg.min, cfg.max) : '#a0a0a0';
+    const isSel = cuencaSeleccionada === cod;
+    const classes = ['cuenca-poly'];
+    if (!hasData) classes.push('nodata');
+    if (isSel) classes.push('selected');
+    const tooltip = hasData 
+      ? `${cuencaData.nombre}: ${cfg.label}=${v.toFixed(2)} (N=${cuencaData.n_embalses})`
+      : `${cod} — sin datos`;
+    
+    const polys = f.geometry.type === 'MultiPolygon' 
+      ? f.geometry.coordinates : [f.geometry.coordinates];
+    polys.forEach(poly => {
+      poly.forEach(ring => {
+        html += `<path d="${ringToPath(ring)}" class="${classes.join(' ')}" fill="${color}" data-cod="${cod}" data-hasdata="${hasData}"><title>${tooltip}</title></path>`;
+      });
+    });
+  });
+  
+  // 3. Ríos
+  if (geojsonRios) {
+    geojsonRios.features.forEach(f => {
+      const ord = f.properties.ord || 7;
+      const sw = (ord >= 8 ? 1.8 : ord === 7 ? 1.2 : 0.8);
+      const lines = f.geometry.type === 'MultiLineString' ? f.geometry.coordinates : [f.geometry.coordinates];
+      lines.forEach(coords => {
+        html += `<path d="${lineToPath(coords)}" class="rio-line" style="stroke-width:${sw}px"/>`;
+      });
+    });
+  }
+  
+  svg.innerHTML = html;
+  svg.querySelectorAll('.cuenca-poly').forEach(p => {
+    p.addEventListener('click', () => {
+      if (p.dataset.hasdata === 'true') {
+        cuencaSeleccionada = p.dataset.cod;
+        renderMapa();
+        renderDetalle();
+        renderTabla();
+      }
+    });
+  });
+
+  // Actualizar leyenda y títulos
+  document.getElementById('metrica-titulo').textContent = cfg.titulo;
+  document.getElementById('modelo-titulo').textContent = MODELO_LABEL[modeloActual];
+  document.getElementById('leyenda-min').textContent = cfg.min.toFixed(2);
+  document.getElementById('leyenda-mid').textContent = ((cfg.min+cfg.max)/2).toFixed(2);
+  document.getElementById('leyenda-max').textContent = cfg.max.toFixed(2);
+}
+
+// ============================================================
+// PANEL DETALLE
+// ============================================================
+function renderDetalle() {
+  const panel = document.getElementById('cuenca-detail');
+  if (!cuencaSeleccionada || !DATA_CUENCAS[cuencaSeleccionada]) {
+    panel.innerHTML = '<div class="cuenca-detail-placeholder">Haz clic en una cuenca del mapa para ver sus métricas detalladas</div>';
+    return;
+  }
+  const d = DATA_CUENCAS[cuencaSeleccionada];
+  const m = d.medianas;
+  const mod = modeloActual;
+  const mk = metKey();
+  
+  // Top embalses ordenados por la métrica seleccionada
+  const sorted = [...d.embalses].sort((a,b) => (b[mk]||-Infinity) - (a[mk]||-Infinity));
+  const top = sorted.slice(0, 8);
+  
+  panel.innerHTML = `
+    <div class="cuenca-detail-title">${d.nombre}</div>
+    <div class="cuenca-detail-sub">${d.cod} · ${d.n_embalses} embalses · ${MODELO_LABEL[mod]}</div>
+    <div class="cuenca-detail-metrics">
+      <div class="cuenca-detail-metric-card"><span class="cuenca-detail-metric-val" style="color:${rColor(m[`r_${mod}`])}">${m[`r_${mod}`].toFixed(2)}</span><span class="cuenca-detail-metric-lbl">r mediana</span></div>
+      <div class="cuenca-detail-metric-card"><span class="cuenca-detail-metric-val" style="color:${hitColor(m[`hit_rate_${mod}`])}">${(m[`hit_rate_${mod}`]*100).toFixed(1)}%</span><span class="cuenca-detail-metric-lbl">Hit rate</span></div>
+      <div class="cuenca-detail-metric-card"><span class="cuenca-detail-metric-val" style="color:${bssColor(m[`BSS_lower_${mod}`])}">${fmt2s(m[`BSS_lower_${mod}`])}</span><span class="cuenca-detail-metric-lbl">BSS lower (seco)</span></div>
+      <div class="cuenca-detail-metric-card"><span class="cuenca-detail-metric-val" style="color:${bssColor(m[`BSS_upper_${mod}`])}">${fmt2s(m[`BSS_upper_${mod}`])}</span><span class="cuenca-detail-metric-lbl">BSS upper (húmedo)</span></div>
+      <div class="cuenca-detail-metric-card"><span class="cuenca-detail-metric-val" style="color:${aucColor(m[`AUC_lower_${mod}`])}">${m[`AUC_lower_${mod}`].toFixed(2)}</span><span class="cuenca-detail-metric-lbl">AUC lower (seco)</span></div>
+      <div class="cuenca-detail-metric-card"><span class="cuenca-detail-metric-val" style="color:${aucColor(m[`AUC_upper_${mod}`])}">${m[`AUC_upper_${mod}`].toFixed(2)}</span><span class="cuenca-detail-metric-lbl">AUC upper (húmedo)</span></div>
+    </div>
+    <div class="cuenca-detail-rank">
+      <div class="cuenca-detail-rank-title">Top embalses por ${METRICA_CONFIG[metricaBase].label}</div>
+      <div class="cuenca-detail-list">
+        ${top.map(e => `<div class="cuenca-detail-rank-row"><span class="cuenca-detail-rank-nombre">${e.nombre}</span><span class="cuenca-detail-rank-val" style="color:${rColor(e[mk])}">${(e[mk]).toFixed(2)}</span></div>`).join('')}
+      </div>
+    </div>`;
+}
+
+// ============================================================
+// BOXPLOTS (vista modelo único)
+// ============================================================
+function renderBoxplots() {
+  const svg = document.getElementById('boxplots-cuencas');
+  const W = 1100, H = 380;
+  const mod = modeloActual;
+  const metricas = [`r_${mod}`, `hit_rate_${mod}`, `BSS_lower_${mod}`, `BSS_upper_${mod}`, `AUC_lower_${mod}`, `AUC_upper_${mod}`];
+  const metricasBase = ['r', 'hit_rate', 'BSS_lower', 'BSS_upper', 'AUC_lower', 'AUC_upper'];
+  
+  const cuencasOrden = Object.keys(DATA_CUENCAS).sort((a,b) => 
+    (DATA_CUENCAS[b].medianas[`r_${mod}`] || -999) - (DATA_CUENCAS[a].medianas[`r_${mod}`] || -999)
+  );
+  const panelW = (W - 60) / metricas.length;
+  const panelH = H - 80;
+  const top = 30, leftMargin = 50;
+  let html = '';
+  
+  metricas.forEach((metrica, mi) => {
+    const cfgBase = METRICA_CONFIG[metricasBase[mi]];
+    const px = leftMargin + mi * panelW;
+    const py = top;
+    html += `<text x="${px + panelW/2}" y="${py - 12}" text-anchor="middle" class="box-title">${cfgBase.label}</text>`;
+    const yMin = cfgBase.min, yMax = cfgBase.max;
+    const yScale = v => py + panelH - ((v - yMin) / (yMax - yMin)) * panelH;
+    const refY = yScale(cfgBase.ref);
+    html += `<line x1="${px+10}" y1="${refY}" x2="${px+panelW-10}" y2="${refY}" class="box-ref-line"/>`;
+    if (mi === 0) {
+      const nT = 5;
+      for (let i = 0; i <= nT; i++) {
+        const v = yMin + (yMax - yMin) * i / nT;
+        const y = yScale(v);
+        html += `<line x1="${px-3}" y1="${y}" x2="${px}" y2="${y}" stroke="#9ca3af" stroke-width="0.5"/>`;
+        html += `<text x="${px-6}" y="${y+3}" text-anchor="end" class="box-axis-label">${v.toFixed(2)}</text>`;
+      }
+    }
+    const boxW = (panelW - 20) / cuencasOrden.length * 0.7;
+    cuencasOrden.forEach((cod, ci) => {
+      const cx = px + 10 + (ci + 0.5) * ((panelW - 20) / cuencasOrden.length);
+      const vals = (DATA_CUENCAS[cod].valores[metrica] || []).filter(v => !isNaN(v));
+      if (vals.length === 0) return;
+      vals.sort((a,b) => a-b);
+      const q1 = vals[Math.floor(vals.length * 0.25)];
+      const q2 = vals[Math.floor(vals.length * 0.5)];
+      const q3 = vals[Math.floor(vals.length * 0.75)];
+      const iqr = q3 - q1;
+      const whLow = Math.max(vals[0], q1 - 1.5*iqr);
+      const whHigh = Math.min(vals[vals.length-1], q3 + 1.5*iqr);
+      const yQ1 = yScale(q1), yQ2 = yScale(q2), yQ3 = yScale(q3);
+      const yWL = yScale(whLow), yWH = yScale(whHigh);
+      html += `<rect x="${cx - boxW/2}" y="${yQ3}" width="${boxW}" height="${yQ1-yQ3}" class="box-rect"><title>${DATA_CUENCAS[cod].nombre} (N=${vals.length}) Q1=${q1.toFixed(2)} Q2=${q2.toFixed(2)} Q3=${q3.toFixed(2)}</title></rect>`;
+      html += `<line x1="${cx - boxW/2}" y1="${yQ2}" x2="${cx + boxW/2}" y2="${yQ2}" class="box-median"/>`;
+      html += `<line x1="${cx}" y1="${yWL}" x2="${cx}" y2="${yQ1}" class="box-whisker"/>`;
+      html += `<line x1="${cx}" y1="${yWH}" x2="${cx}" y2="${yQ3}" class="box-whisker"/>`;
+      html += `<line x1="${cx - boxW*0.3}" y1="${yWL}" x2="${cx + boxW*0.3}" y2="${yWL}" class="box-whisker"/>`;
+      html += `<line x1="${cx - boxW*0.3}" y1="${yWH}" x2="${cx + boxW*0.3}" y2="${yWH}" class="box-whisker"/>`;
+      vals.forEach(v => {
+        if (v < whLow || v > whHigh) {
+          html += `<circle cx="${cx}" cy="${yScale(v)}" r="2" class="box-outlier"/>`;
+        }
+      });
+    });
+  });
+  const legY = H - 40;
+  cuencasOrden.forEach((cod, ci) => {
+    const c = DATA_CUENCAS[cod];
+    const nombreCorto = c.nombre.length > 12 ? c.nombre.substr(0, 10) + '…' : c.nombre;
+    const x = leftMargin + ci * ((W - leftMargin) / cuencasOrden.length) + 5;
+    html += `<text x="${x}" y="${legY}" class="box-axis-label" style="font-size:9px">${ci+1}. ${nombreCorto}</text>`;
+    html += `<text x="${x}" y="${legY+12}" class="box-axis-label" style="font-size:8px;fill:#6b7280">N=${c.n_embalses}</text>`;
+  });
+  svg.innerHTML = html;
+  document.getElementById('boxplot-modelo').textContent = MODELO_LABEL[modeloActual];
+}
+
+// ============================================================
+// TABLA (vista modelo único)
+// ============================================================
+function renderTabla() {
+  const tbody = document.querySelector('#tabla-cuencas tbody');
+  const mod = modeloActual;
+  const sorted = Object.values(DATA_CUENCAS).sort((a,b) => 
+    b.medianas[`r_${mod}`] - a.medianas[`r_${mod}`]);
+  
+  tbody.innerHTML = sorted.map(d => {
+    const m = d.medianas;
+    return `
+    <tr data-cod="${d.cod}" class="${d.cod === cuencaSeleccionada ? 'selected-row' : ''}">
+      <td><strong>${d.nombre}</strong></td>
+      <td>${d.n_embalses}</td>
+      <td class="metrica" style="color:${rColor(m[`r_${mod}`])}">${m[`r_${mod}`].toFixed(2)}</td>
+      <td class="metrica" style="color:${hitColor(m[`hit_rate_${mod}`])}">${(m[`hit_rate_${mod}`]*100).toFixed(1)}%</td>
+      <td class="metrica" style="color:${bssColor(m[`BSS_lower_${mod}`])}">${fmt2s(m[`BSS_lower_${mod}`])}</td>
+      <td class="metrica" style="color:${bssColor(m[`BSS_upper_${mod}`])}">${fmt2s(m[`BSS_upper_${mod}`])}</td>
+      <td class="metrica" style="color:${aucColor(m[`AUC_lower_${mod}`])}">${m[`AUC_lower_${mod}`].toFixed(2)}</td>
+      <td class="metrica" style="color:${aucColor(m[`AUC_upper_${mod}`])}">${m[`AUC_upper_${mod}`].toFixed(2)}</td>
+    </tr>`;
+  }).join('');
+  
+  tbody.querySelectorAll('tr').forEach(r => {
+    r.addEventListener('click', () => {
+      cuencaSeleccionada = r.dataset.cod;
+      renderMapa();
+      renderDetalle();
+      renderTabla();
+    });
+  });
+  document.getElementById('tabla-modelo').textContent = MODELO_LABEL[modeloActual];
+}
+
+// ============================================================
+// VISTA COMPARACIÓN: scatter + resumen + tabla
+// ============================================================
+function renderComparacion() {
+  const cfg = METRICA_CONFIG[metricaBase];
+  document.getElementById('comp-metrica-titulo').textContent = cfg.titulo;
+
+  // Recolectar todos los embalses con ambas métricas
+  const todos = [];
+  Object.values(DATA_CUENCAS).forEach(c => {
+    c.embalses.forEach(e => {
+      const xe = e[`${metricaBase}_ecmwf`];
+      const xd = e[`${metricaBase}_dwd`];
+      if (xe != null && xd != null && !isNaN(xe) && !isNaN(xd)) {
+        todos.push({
+          ref_ceh: e.ref_ceh, nombre: e.nombre,
+          cuenca: c.cod, cuencaNombre: c.nombre,
+          ecmwf: xe, dwd: xd,
+        });
+      }
+    });
+  });
+
+  // Estadísticos globales
+  const valsE = todos.map(t => t.ecmwf).sort((a,b) => a-b);
+  const valsD = todos.map(t => t.dwd).sort((a,b) => a-b);
+  const medE = valsE[Math.floor(valsE.length/2)];
+  const medD = valsD[Math.floor(valsD.length/2)];
+  
+  // Para BS_total, "mejor" es menor; para el resto, mayor
+  const dwdMejor = todos.filter(t => t.dwd > t.ecmwf).length;
+  const ecmwfMejor = todos.filter(t => t.ecmwf > t.dwd).length;
+
+  document.getElementById('comp-stat-ecmwf').textContent = medE.toFixed(2);
+  document.getElementById('comp-stat-dwd').textContent = medD.toFixed(2);
+  document.getElementById('comp-stat-dwd-mejor').textContent = `${dwdMejor} / ${todos.length}`;
+  document.getElementById('comp-stat-ecmwf-mejor').textContent = `${ecmwfMejor} / ${todos.length}`;
+
+  // SCATTER
+  const svg = document.getElementById('comp-scatter');
+  const W = 700, H = 600;
+  const margin = { top: 50, right: 30, bottom: 80, left: 70 };
+  const plotW = W - margin.left - margin.right;
+  const plotH = H - margin.top - margin.bottom;
+  
+  const xMin = cfg.min, xMax = cfg.max;
+  const xScale = v => margin.left + ((v - xMin) / (xMax - xMin)) * plotW;
+  const yScale = v => margin.top + plotH - ((v - xMin) / (xMax - xMin)) * plotH;
+
+  let html = '';
+
+  // Título
+  html += `<text x="${W/2}" y="25" text-anchor="middle" class="comp-scatter-title">${cfg.titulo} — ECMWF (X) vs DWD (Y)</text>`;
+
+  // Grid
+  const nT = 6;
+  for (let i = 0; i <= nT; i++) {
+    const v = xMin + (xMax - xMin) * i / nT;
+    const x = xScale(v), y = yScale(v);
+    html += `<line x1="${x}" y1="${margin.top}" x2="${x}" y2="${margin.top + plotH}" class="comp-scatter-grid"/>`;
+    html += `<line x1="${margin.left}" y1="${y}" x2="${margin.left + plotW}" y2="${y}" class="comp-scatter-grid"/>`;
+    html += `<text x="${x}" y="${margin.top + plotH + 16}" text-anchor="middle" class="comp-scatter-label">${v.toFixed(1)}</text>`;
+    html += `<text x="${margin.left - 8}" y="${y + 4}" text-anchor="end" class="comp-scatter-label">${v.toFixed(1)}</text>`;
+  }
+  
+  // Línea de referencia (cuando aplica)
+  if (cfg.ref !== null && cfg.ref >= xMin && cfg.ref <= xMax) {
+    const xr = xScale(cfg.ref), yr = yScale(cfg.ref);
+    html += `<line x1="${xr}" y1="${margin.top}" x2="${xr}" y2="${margin.top + plotH}" stroke="#dc2626" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.6"/>`;
+    html += `<line x1="${margin.left}" y1="${yr}" x2="${margin.left + plotW}" y2="${yr}" stroke="#dc2626" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.6"/>`;
+  }
+
+  // Diagonal 1:1
+  html += `<line x1="${xScale(xMin)}" y1="${yScale(xMin)}" x2="${xScale(xMax)}" y2="${yScale(xMax)}" class="comp-scatter-diag"/>`;
+
+  // Ejes
+  html += `<line x1="${margin.left}" y1="${margin.top + plotH}" x2="${margin.left + plotW}" y2="${margin.top + plotH}" class="comp-scatter-axis"/>`;
+  html += `<line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + plotH}" class="comp-scatter-axis"/>`;
+
+  // Labels ejes
+  html += `<text x="${margin.left + plotW/2}" y="${margin.top + plotH + 45}" text-anchor="middle" class="comp-scatter-label" style="font-weight:600">${cfg.label} — ECMWF SEAS5.1</text>`;
+  html += `<text x="${margin.left - 50}" y="${margin.top + plotH/2}" text-anchor="middle" class="comp-scatter-label" style="font-weight:600" transform="rotate(-90 ${margin.left - 50} ${margin.top + plotH/2})">${cfg.label} — DWD GCFS2.1</text>`;
+
+  // Puntos
+  todos.forEach(t => {
+    const cx = xScale(t.ecmwf);
+    const cy = yScale(t.dwd);
+    const color = CUENCA_COLOR[t.cuenca] || '#6b7280';
+    const tooltip = `${t.nombre} (${t.cuencaNombre})\\nECMWF: ${t.ecmwf.toFixed(2)}\\nDWD: ${t.dwd.toFixed(2)}`;
+    html += `<circle cx="${cx}" cy="${cy}" r="3.5" class="comp-scatter-pt" fill="${color}" fill-opacity="0.75"><title>${tooltip}</title></circle>`;
+  });
+
+  // Leyenda (chips por cuenca)
+  const cuencasUsadas = [...new Set(todos.map(t => t.cuenca))];
+  let legX = margin.left;
+  const legY = H - 22;
+  html += `<text x="${legX - 8}" y="${legY + 4}" text-anchor="end" class="comp-scatter-label" style="font-weight:600">Cuencas:</text>`;
+  cuencasUsadas.forEach((cod, i) => {
+    const nm = DATA_CUENCAS[cod] ? DATA_CUENCAS[cod].nombre : cod;
+    const nmCorto = nm.length > 10 ? nm.substr(0,9) + '…' : nm;
+    html += `<rect x="${legX}" y="${legY - 6}" width="10" height="10" fill="${CUENCA_COLOR[cod]}" class="comp-scatter-legend-rect"/>`;
+    html += `<text x="${legX + 14}" y="${legY + 3}" class="comp-scatter-legend-text">${nmCorto}</text>`;
+    legX += 90;
+  });
+
+  svg.innerHTML = html;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+  // TABLA COMPARATIVA POR DEMARCACIÓN
+  const tbody = document.getElementById('comp-tabla-body');
+  const sorted = Object.values(DATA_CUENCAS).sort((a,b) => 
+    b.medianas[`${metricaBase}_ecmwf`] - a.medianas[`${metricaBase}_ecmwf`]);
+  
+  tbody.innerHTML = sorted.map(d => {
+    const valsE = (d.valores[`${metricaBase}_ecmwf`] || []).filter(v => !isNaN(v)).sort((a,b)=>a-b);
+    const valsD = (d.valores[`${metricaBase}_dwd`]   || []).filter(v => !isNaN(v)).sort((a,b)=>a-b);
+    if (valsE.length === 0 || valsD.length === 0) return '';
+    
+    const medianE = d.medianas[`${metricaBase}_ecmwf`];
+    const medianD = d.medianas[`${metricaBase}_dwd`];
+    const p75E = valsE[Math.floor(valsE.length * 0.75)];
+    const p75D = valsD[Math.floor(valsD.length * 0.75)];
+    
+    let mejorClass = 'empate', mejorTxt = '~';
+    const diff = medianD - medianE;
+    if (diff > 0.02) { mejorClass = 'dwd'; mejorTxt = 'DWD'; }
+    else if (diff < -0.02) { mejorClass = 'ecmwf'; mejorTxt = 'ECMWF'; }
+    
+    return `
+      <tr>
+        <td><strong>${d.nombre}</strong></td>
+        <td>${d.n_embalses}</td>
+        <td>${medianE.toFixed(2)}</td>
+        <td>${p75E.toFixed(2)}</td>
+        <td>${medianD.toFixed(2)}</td>
+        <td>${p75D.toFixed(2)}</td>
+        <td class="cuenca-mejor ${mejorClass}">${mejorTxt}</td>
+      </tr>`;
+  }).join('');
+}
+
+// ============================================================
+// RENDER ALL — orquestador
+// ============================================================
+function renderAll() {
+  const vistaModelo = document.getElementById('vista-modelo');
+  const vistaComp = document.getElementById('vista-comparacion');
+  
+  if (modeloActual === 'comparacion') {
+    vistaModelo.style.display = 'none';
+    vistaComp.style.display = 'block';
+    renderComparacion();
+  } else {
+    vistaModelo.style.display = 'block';
+    vistaComp.style.display = 'none';
+    renderMapa();
+    renderBoxplots();
+    renderTabla();
+    if (cuencaSeleccionada) renderDetalle();
+  }
+}
+
+// ============================================================
+// EVENT LISTENERS
+// ============================================================
+document.getElementById('sel-metrica').addEventListener('change', e => {
+  metricaBase = e.target.value;
+  renderAll();
+});
+
+document.querySelectorAll('.cuenca-tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cuenca-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    modeloActual = btn.dataset.modelo;
+    renderAll();
+  });
+});
+
+// ============================================================
+// INIT
+// ============================================================
+cargarDatos();
+</script>
+```
+
+:::

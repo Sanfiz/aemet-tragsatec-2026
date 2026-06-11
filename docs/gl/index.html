@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Tragsatec – Predicción Estacional · AEMET–Tragsatec</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../images/logos/favicon.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "/"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content column-page" id="quarto-document-content">
+<!-- ── BARRA BLANCA CON LOGOS ─────────────────────────── -->
+<div id="site-header">
+  <div id="header-logos">
+    <a href="https://www.aemet.es/es/portada" target="_blank">
+      <img src="images/logos/aemet.png" alt="AEMET">
+    </a>
+    <div class="header-sep"></div>
+    <a href="https://www.tragsa.es/es/Paginas/default.aspx" target="_blank">
+      <img src="images/logos/tragsatec.jpg" alt="Tragsatec">
+    </a>
+
+    <!-- ── Selector de idioma ── -->
+    <div id="header-lang" data-current="es">
+      <button id="header-lang-trigger" type="button" aria-label="Cambiar idioma">
+        <span class="header-lang-icon">
+          <svg viewbox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+        </span>
+        <span class="header-lang-current">ES</span>
+        <span class="header-lang-caret">▾</span>
+      </button>
+      <div class="header-lang-menu" id="header-lang-menu">
+        <a href="#" class="header-lang-option active" data-lang="es" data-path="">Español</a>
+        <a href="#" class="header-lang-option" data-lang="en" data-path="en/">English</a>
+        <a href="#" class="header-lang-option" data-lang="gl" data-path="gl/">Galego</a>
+      </div>
+    </div>
+
+    <!-- ── Buscador (lleva al buscador de Quarto) ── -->
+    <div id="header-search">
+      <button id="header-search-trigger" type="button" aria-label="Buscar en el sitio">
+        <span class="header-search-icon">
+          <svg viewbox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+        <span class="header-search-placeholder">Introduzca texto</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── BARRA AZUL DE NAVEGACIÓN ──────────────────────── -->
+<nav id="site-nav">
+  <div id="site-nav-inner">
+    <a href="index.html" class="nav-link">Inicio</a>
+    <div class="nav-dropdown">
+      <a href="el-proyecto.html" class="nav-link nav-link-dropdown">
+        Conócenos
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="el-proyecto.html" class="nav-dropdown-item">El Proyecto</a>
+        <a href="el-equipo.html" class="nav-dropdown-item">El Equipo</a>
+      </div>
+    </div>
+    <a href="datos.html" class="nav-link">Datos</a>
+    <div class="nav-dropdown">
+      <a href="downscaling-metodologia.html" class="nav-link nav-link-dropdown">
+        Downscaling
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="downscaling-resultados.html" class="nav-dropdown-item">Predicción Trimestral</a>
+        <a href="downscaling-metodologia.html" class="nav-dropdown-item">Acerca de</a>        
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <a href="weighting-metodologia.html" class="nav-link nav-link-dropdown">
+        Weighting
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="weighting-metodologia.html" class="nav-dropdown-item">Metodología</a>
+        <a href="weighting-resultados.html" class="nav-dropdown-item">Resultados</a>
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <a href="embalses-prediccion.html" class="nav-link nav-link-dropdown">
+        Embalses
+        <span class="nav-caret">▾</span>
+      </a>
+      <div class="nav-dropdown-menu">
+        <a href="embalses-acerca.html" class="nav-dropdown-item">Metodología</a>
+        <a href="embalses-cuenca.html" class="nav-dropdown-item">Predicción cuenca</a>
+        <a href="embalses-prediccion.html" class="nav-dropdown-item">Predicción embalse</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<style>
+.navbar { display: none !important; }
+#quarto-header { display: none !important; }
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+#site-header {
+  background: white;
+  border-bottom: 1px solid #dde3ed;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+#header-logos {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.6rem 2rem;
+  max-width: 100%;
+}
+
+#header-logos img {
+  height: 52px;
+  object-fit: contain;
+  transition: opacity 0.2s;
+}
+
+#header-logos img:hover { opacity: 0.85; }
+
+.header-sep {
+  width: 1px;
+  height: 44px;
+  background: #dde3ed;
+}
+
+/* ── Selector de idioma ── */
+#header-lang {
+  margin-left: auto;
+  margin-right: 0.6rem;
+  position: relative;
+}
+#header-lang-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.8rem;
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  color: #003087;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+#header-lang-trigger:hover {
+  border-color: #0072bc;
+  box-shadow: 0 2px 6px rgba(0,114,188,0.12);
+}
+.header-lang-icon { color: #0072bc; display: inline-flex; }
+.header-lang-caret { font-size: 0.7rem; opacity: 0.7; }
+.header-lang-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0,48,135,0.15);
+  min-width: 130px;
+  z-index: 1010;
+}
+.header-lang-menu.open { display: block; }
+.header-lang-option {
+  display: block;
+  padding: 0.5rem 0.9rem;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  font-size: 0.82rem;
+  color: #4a5568;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all 0.12s;
+}
+.header-lang-option:hover {
+  background: #f4f8fd;
+  color: #003087;
+  border-left-color: #0072bc;
+}
+.header-lang-option.active {
+  background: #f4f8fd;
+  color: #003087;
+  font-weight: 700;
+  border-left-color: #003087;
+}
+
+/* ── Buscador ── */
+#header-search {
+  display: flex;
+  align-items: center;
+  padding-right: 40rem;
+}
+#header-search-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.9rem 0.45rem 0.7rem;
+  background: white;
+  border: 1px solid #dde3ed;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  min-width: 220px;
+}
+#header-search-trigger:hover {
+  border-color: #0072bc;
+  box-shadow: 0 2px 6px rgba(0,114,188,0.12);
+}
+.header-search-icon { display: inline-flex; color: #0072bc; }
+.header-search-placeholder { color: #8892a4; font-size: 0.85rem; }
+
+#site-nav {
+  background: #003087;
+  border-bottom: 3px solid #0072bc;
+  box-shadow: 0 2px 8px rgba(0,48,135,0.2);
+  position: fixed;
+  top: 74px;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+#site-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+#site-nav .nav-link {
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  font-size: 0.89rem;
+  font-weight: 100;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  display: block;
+}
+
+#site-nav .nav-link:hover {
+  color: white;
+  border-bottom-color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.07);
+}
+
+#site-nav .nav-link.active {
+  color: white;
+  border-bottom-color: white;
+}
+
+.nav-dropdown { position: relative; }
+.nav-link-dropdown { display: flex !important; align-items: center; gap: 0.3rem; }
+.nav-caret { font-size: 0.7rem; transition: transform 0.2s; }
+.nav-dropdown:hover .nav-caret { transform: rotate(180deg); }
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #003087;
+  min-width: 220px;
+  box-shadow: 0 4px 12px rgba(0,48,135,0.3);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  z-index: 1001;
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: block; }
+.nav-dropdown-item {
+  display: block;
+  padding: 0.7rem 1.2rem;
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 100;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+}
+.nav-dropdown-item:hover {
+  background: rgba(255,255,255,0.08);
+  border-left-color: white;
+  color: white;
+}
+.nav-dropdown-item.active {
+  background: rgba(255,255,255,0.05);
+  border-left-color: white;
+  color: white;
+}
+
+#quarto-content { margin-top: 0 !important; padding-top: 0 !important; }
+body { padding-top: 1px !important; }
+
+@media (max-width: 768px) {
+  #header-logos { padding: 0.5rem 1rem; gap: 0.8rem; }
+  #header-logos img { height: 38px; }
+  #header-search-trigger { min-width: 0; padding: 0.4rem 0.6rem; }
+  .header-search-placeholder { display: none; }
+  #site-nav-inner { flex-wrap: wrap; padding: 0 1rem; }
+  #site-nav .nav-link { font-size: 0.78rem; padding: 0.6rem 0.7rem; }
+  .nav-dropdown-menu { position: static; box-shadow: none; min-width: auto; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const current = window.location.pathname.split('/').pop() || 'index.html';
+
+  document.querySelectorAll('#site-nav .nav-link').forEach(link => {
+    if (link.getAttribute('href') === current) link.classList.add('active');
+  });
+  document.querySelectorAll('.nav-dropdown-item').forEach(item => {
+    if (item.getAttribute('href') === current) {
+      item.classList.add('active');
+      const parent = item.closest('.nav-dropdown').querySelector('.nav-link-dropdown');
+      if (parent) parent.classList.add('active');
+    }
+  });
+
+  /* ── Buscador: dispara el modal de Quarto Search ── */
+  const trigger = document.getElementById('header-search-trigger');
+  if (trigger) {
+    trigger.addEventListener('click', function() {
+      const quartoBtn = document.querySelector('#quarto-search')
+                     || document.querySelector('[aria-label="Search"]')
+                     || document.querySelector('.aa-DetachedSearchButton');
+      if (quartoBtn) quartoBtn.click();
+    });
+  }
+
+  /* ── Selector de idioma ── */
+  const langTrigger = document.getElementById('header-lang-trigger');
+  const langMenu    = document.getElementById('header-lang-menu');
+
+  if (langTrigger && langMenu) {
+    langTrigger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      langMenu.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+      if (!langMenu.contains(e.target)) langMenu.classList.remove('open');
+    });
+
+    /* Cambiar de idioma manteniendo página actual cuando sea posible */
+    document.querySelectorAll('.header-lang-option').forEach(opt => {
+      opt.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetLang = this.dataset.lang;
+        const langPath   = this.dataset.path; // '', 'en/' o 'gl/'
+        const currentLang = document.getElementById('header-lang').dataset.current;
+        if (targetLang === currentLang) {
+          langMenu.classList.remove('open');
+          return;
+        }
+
+        // Obtener el nombre de la página actual (sin la carpeta de idioma)
+        const pathParts = window.location.pathname.split('/').filter(Boolean);
+        let pageName = pathParts[pathParts.length - 1] || 'index.html';
+        if (!pageName.endsWith('.html')) pageName = 'index.html';
+
+        // Construir nueva URL relativa
+        // Si estamos en raíz (currentLang='es'), subimos por 0 niveles; en en/ o gl/ subimos por 1
+        let newUrl;
+        if (currentLang === 'es') {
+          newUrl = langPath + pageName;
+        } else {
+          // estamos en /en/ o /gl/ → subimos un nivel
+          newUrl = '../' + langPath + pageName;
+        }
+        window.location.href = newUrl;
+      });
+    });
+  }
+});
+</script>
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Tragsatec</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div style="max-width:960px;margin:6rem auto;padding:0 1.5rem;">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<!-- ── HERO PRINCIPAL ─────────────────────────────────── -->
+<div class="cover" id="cover">
+
+  <!-- Partículas de fondo -->
+  <canvas id="particle-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.25;"></canvas>
+
+  <!-- Columna texto izquierda -->
+  <div class="cover-text" id="cover-text">
+    <span class="cover-eyebrow">Encargo de servicio · Tragsatec para AEMET</span>
+    <h1 class="cover-title">Predicción<br>Estacional</h1>
+    <div class="cover-line"></div>
+    <p class="cover-sub">
+      Área de Evaluación y Modelización del Clima<br>
+      <strong>AEMET · 2024–2026</strong>
+    </p>
+  </div>
+
+  <!-- Globo Three.js derecha -->
+  <div class="cover-globe">
+    <div id="earth-canvas" style="width:100%;height:100%;"></div>
+  </div>
+
+</div><!-- fin cover -->
+
+</div><!-- fin wrapper max-width -->
+
+
+
+<style>
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 900px) {
+  .cover { flex-direction: column; padding: 2rem; }
+  .cover-globe { flex: 0 0 280px; height: 280px; }
+  .cover-title { font-size: 3rem; }
+  .parallax-section { grid-template-columns: 1fr 1fr; padding: 2rem; }
+}
+</style>
+
+<script>
+/* ── Partículas ── */
+(function() {
+  const canvas = document.getElementById('particle-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  const particles = Array.from({length: 50}, () => ({
+    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+    r: Math.random() * 1.5 + 0.4,
+    vx: (Math.random() - 0.5) * 0.25, vy: (Math.random() - 0.5) * 0.25,
+    alpha: Math.random() * 0.5 + 0.2
+  }));
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(150,200,255,${p.alpha})`; ctx.fill();
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+    });
+    particles.forEach((p, i) => {
+      particles.slice(i+1).forEach(q => {
+        const d = Math.hypot(p.x-q.x, p.y-q.y);
+        if (d < 100) {
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = `rgba(150,200,255,${0.06*(1-d/100)})`; ctx.lineWidth = 0.5; ctx.stroke();
+        }
+      });
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── Parallax suave al mover el ratón ── */
+(function() {
+  const cards = document.querySelectorAll('.px-card[data-depth]');
+  document.addEventListener('mousemove', e => {
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    const dx = (e.clientX - cx) / cx;
+    const dy = (e.clientY - cy) / cy;
+    cards.forEach(card => {
+      const d = parseFloat(card.dataset.depth);
+      card.style.transform = `translate(${dx * d * 20}px, ${dy * d * 20}px)`;
+    });
+  });
+})();
+
+/* ── Globo Three.js con órbitas reales ── */
+(function() {
+  function initEarth() {
+    const mount = document.getElementById('earth-canvas');
+    if (!mount || mount.dataset.mounted === 'true') return;
+    mount.dataset.mounted = 'true';
+    const w = mount.clientWidth, h = mount.clientHeight;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, w/h, 0.1, 1000);
+    camera.position.z = 3.9;
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    mount.appendChild(renderer.domElement);
+    const loader = new THREE.TextureLoader();
+    const earthSolid = new THREE.Mesh(
+      new THREE.SphereGeometry(0.99, 48, 32),
+      new THREE.MeshBasicMaterial({
+        map: loader.load('https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/planets/earth_atmos_2048.jpg'),
+        transparent: true, opacity: 0.95
+      })
+    );
+    scene.add(earthSolid);
+    const earth = new THREE.Mesh(
+      new THREE.SphereGeometry(1, 48, 32),
+      new THREE.MeshBasicMaterial({ color: 0x4499ff, wireframe: true, transparent: true, opacity: 0.20 })
+    );
+    scene.add(earth);
+    const DEG = Math.PI / 180;
+    const orbitDefs = [
+      { name:'ISS',       a:1.12, inc:51.6, raan:0,   color:0x88ccff, r:0.022, phase:0.0 },
+      { name:'Polar Met', a:1.13, inc:90,   raan:60,  color:0xffffff, r:0.018, phase:1.2 },
+      { name:'Sentinel',  a:1.14, inc:98,   raan:130, color:0x88ff44, r:0.018, phase:2.5 },
+      { name:'GPS',       a:1.55, inc:55,   raan:200, color:0xffcc00, r:0.026, phase:0.8 },
+      { name:'GPS-2',     a:1.55, inc:55,   raan:320, color:0xffcc00, r:0.026, phase:3.5 },
+      { name:'GEO',       a:1.80, inc:0,    raan:0,   color:0xff6688, r:0.024, phase:0.0 },
+    ];
+    function orbitalToWorld(a, theta, incDeg, raanDeg) {
+      const inc = incDeg * DEG, raan = raanDeg * DEG;
+      const xO = a * Math.cos(theta), zO = a * Math.sin(theta);
+      const yI = zO * Math.sin(inc), zI = zO * Math.cos(inc);
+      return {
+        x: xO * Math.cos(raan) - zI * Math.sin(raan),
+        y: yI,
+        z: xO * Math.sin(raan) + zI * Math.cos(raan)
+      };
+    }
+    function createOrbitLine(def) {
+      const pts = [];
+      for (let i = 0; i <= 256; i++) {
+        const theta = (i/256) * Math.PI * 2;
+        const p = orbitalToWorld(def.a, theta, def.inc, def.raan);
+        pts.push(new THREE.Vector3(p.x, p.y, p.z));
+      }
+      return new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(pts),
+        new THREE.LineBasicMaterial({ color: def.color, transparent: true, opacity: 0.15 })
+      );
+    }
+    const wLEO = 0.012;
+    const sats = orbitDefs.map(def => {
+      scene.add(createOrbitLine(def));
+      const mesh = new THREE.Mesh(
+        new THREE.SphereGeometry(def.r, 8, 8),
+        new THREE.MeshBasicMaterial({ color: def.color })
+      );
+      const halo = new THREE.Mesh(
+        new THREE.SphereGeometry(def.r * 2, 8, 8),
+        new THREE.MeshBasicMaterial({ color: def.color, transparent: true, opacity: 0.2 })
+      );
+      mesh.add(halo);
+      scene.add(mesh);
+      return { mesh, def, phase: def.phase, w: wLEO * Math.pow(1.12/def.a, 1.5) };
+    });
+    const wEarth = wLEO * Math.pow(1.12/1.80, 1.5);
+    let t = 0, dragging = false, lastX = 0, lastY = 0, rx = 0.15, ry = 0;
+    renderer.domElement.addEventListener('mousedown', e => { dragging=true; lastX=e.clientX; lastY=e.clientY; });
+    window.addEventListener('mouseup', () => dragging=false);
+    window.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      ry += (e.clientX-lastX)*0.01; rx += (e.clientY-lastY)*0.01;
+      lastX=e.clientX; lastY=e.clientY;
+    });
+    function animate() {
+      t += 1;
+      if (!dragging) ry += wEarth;
+      earthSolid.rotation.y = ry; earthSolid.rotation.x = rx;
+      earth.rotation.y = ry; earth.rotation.x = rx;
+      sats.forEach(s => {
+        const theta = t * s.w + s.phase;
+        const p = orbitalToWorld(s.def.a, theta, s.def.inc, s.def.raan);
+        s.mesh.position.set(p.x, p.y, p.z);
+      });
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+    window.addEventListener('resize', () => {
+      const nw = mount.clientWidth, nh = mount.clientHeight;
+      if (!nw || !nh) return;
+      camera.aspect = nw/nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh);
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initEarth);
+  } else { setTimeout(initEarth, 100); }
+})();
+</script>
+
+
+<!-- ============================================================ -->
+<!-- ENLACES RELACIONADOS                                          -->
+<!-- ============================================================ -->
+<section class="enlaces-section">
+
+  <h2 class="enlaces-title anchored">Enlaces relacionados</h2>
+
+  <div class="enlaces-grid">
+
+    <a class="enlace-item" href="https://www.aemet.es/" target="_blank" rel="noopener">
+      <span class="enlace-url">aemet.es</span>
+      <span class="enlace-desc">Agencia Estatal de Meteorología</span>
+    </a>
+
+    <a class="enlace-item" href="https://www.aemet.es/es/serviciosclimaticos/prediccion_estacional" target="_blank" rel="noopener">
+      <span class="enlace-url">aemet.prediccionestacional</span>
+      <span class="enlace-desc">Predicción Estacional · AEMET</span>
+    </a>
+
+    <a class="enlace-item" href="https://embalses.aemet.es/embalses/sclimwareS5.html" target="_blank" rel="noopener">
+      <span class="enlace-url">embalses.aemet.es</span>
+      <span class="enlace-desc">Embalses · AEMET</span>
+    </a>
+
+    <a class="enlace-item" href="https://www.tragsa.es/" target="_blank" rel="noopener">
+      <span class="enlace-url">tragsa.es</span>
+      <span class="enlace-desc">Grupo Tragsa / Tragsatec</span>
+    </a>
+
+    <a class="enlace-item" href="https://www.miteco.gob.es/" target="_blank" rel="noopener">
+      <span class="enlace-url">miteco.gob.es</span>
+      <span class="enlace-desc">Ministerio para la Transición Ecológica</span>
+    </a>
+
+    <a class="enlace-item" href="https://www.ecmwf.int/" target="_blank" rel="noopener">
+      <span class="enlace-url">ecmwf.int</span>
+      <span class="enlace-desc">European Centre for Medium-Range Weather Forecasts</span>
+    </a>
+
+    <a class="enlace-item" href="https://climate.copernicus.eu/" target="_blank" rel="noopener">
+      <span class="enlace-url">climate.copernicus.eu</span>
+      <span class="enlace-desc">Copernicus Climate Change Service</span>
+    </a>
+
+    <a class="enlace-item" href="https://cds.climate.copernicus.eu/" target="_blank" rel="noopener">
+      <span class="enlace-url">cds.climate.copernicus.eu</span>
+      <span class="enlace-desc">Copernicus Climate Data Store</span>
+    </a>
+
+  </div>
+
+</section>
+
+
+<style>
+.enlaces-section {
+  max-width: 1100px;
+  margin: 3rem auto 4rem;
+  padding: 0 1.5rem;
+}
+
+.enlaces-title {
+  color: #003087;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.enlaces-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem 1.8rem;
+}
+
+.enlace-item {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  padding: 0.4rem 0;
+  border-left: 3px solid transparent;
+  padding-left: 0.6rem;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.enlace-item:hover {
+  border-left-color: #0072bc;
+  transform: translateX(2px);
+  text-decoration: none;
+}
+.enlace-url {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #003087;
+  letter-spacing: 0.01em;
+}
+.enlace-item:hover .enlace-url {
+  text-decoration: underline;
+}
+.enlace-desc {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #003087;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 0.15rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 900px) {
+  .enlaces-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 540px) {
+  .enlaces-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+
+
+</main> <!-- /main -->
+<!-- ── FOOTER  ─────────────── -->
+<footer id="site-footer">
+  <div id="footer-inner">
+
+    <!-- Créditos -->
+    <div id="footer-credits">
+      <p class="footer-credit-main">© 2026 · Encomienda de Predicción Estacional</p>
+      <p class="footer-credit-sub">AEMET – Tragsatec · 2024–2026</p>
+    </div>
+
+    <!-- Logos institucionales -->
+    <div id="footer-logos">
+      <img src="images/logos/logos-financiacion.png" alt="Financiado por la Unión Europea NextGenerationEU · Gobierno de España · Ministerio para la Transición Ecológica y el Reto Demográfico · AEMET · Plan de Recuperación, Transformación y Resiliencia">
+    </div>
+
+  </div>
+</footer>
+
+<style>
+.nav-footer, #quarto-footer { display: none !important; }
+
+#site-footer {
+  background: #0072bc;
+  color: white;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  padding: 1.2rem 1.5rem 1rem;
+  margin-top: 4rem;
+  box-sizing: border-box;
+  position: relative;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin-left: calc(-1 * (100vw - 100%) / 2);
+  margin-right: calc(-1 * (100vw - 100%) / 2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#footer-inner {
+  width: 100%;
+  max-width: 1100px;
+}
+
+html, body { overflow-x: hidden; }
+
+#footer-credits { text-align: center; }
+.footer-credit-main {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: white;
+}
+.footer-credit-sub {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.8);
+}
+
+#footer-logos {
+  margin-top: 1rem;
+  padding: 0.8rem 1.2rem;
+  background: white;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#footer-logos img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  #site-footer { padding: 1.8rem 1rem 1.5rem; }
+  #footer-logos { padding: 0.6rem 1rem; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const footer = document.getElementById('site-footer');
+  if (footer && footer.parentElement !== document.body) {
+    document.body.appendChild(footer);
+  }
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/sanfiz\.github\.io\/aemet-tragsatec-2026\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
