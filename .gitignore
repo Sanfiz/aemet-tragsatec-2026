@@ -1,1 +1,20 @@
 /.quarto/
+
+# Backups
+*.bak
+backups/
+
+# Quarto cache extra
+_freeze/
+
+# Sistema
+.DS_Store
+Thumbs.db
+.ipynb_checkpoints/
+
+# Logs y temporales
+*.log
+*.tmp
+
+# Archivos sueltos por error
+/git
