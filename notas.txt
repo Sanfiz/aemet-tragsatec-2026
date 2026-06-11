@@ -1,2 +1,0 @@
-cada vez que hagas cambios en algun header.html
-rm -rf docs/en && quarto render en/
