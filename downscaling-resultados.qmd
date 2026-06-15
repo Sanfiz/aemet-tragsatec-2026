@@ -25,8 +25,7 @@ toc: false
   <div class="ds-header-sep"></div>
   <div class="ds-header-block">
     <span class="ds-header-tag">Periodo Predicción</span>
-    <span class="ds-header-value" id="ds-init-display">JJA 2026</span>
-    <span class="ds-header-sub" id="ds-period-display">Inicialización · Mayo 2026</span>
+    <span class="ds-header-value" id="ds-init-display">Predicción Trimestral</span>
   </div>
 </div>
 
@@ -456,14 +455,14 @@ toc: false
     { id: 'jma',           label: 'JMA' },
   ];
 
-  // Tipos de gráfico (prefix = patrón en el nombre del fichero)
-  const GRAPHS = [
-    { id: 'terciles', label: 'Probabilidad por terciles', prefix: '3_terciles_',      caption: 'Probabilidad por terciles' },
-    { id: 'corr',     label: 'Correlación de Spearman',   prefix: '4_corr-spearman_', caption: 'Correlación de Spearman' },
-    { id: 'roc',      label: 'Curvas ROC',                prefix: '5_roc_3_pr_',      caption: 'Curvas ROC · Precipitación' },
-    { id: 'rps',      label: 'Ranked Probability Score',  prefix: '6_rps_pr_',        caption: 'Ranked Probability Score (RPS)' },
-    { id: 'bs',       label: 'Brier Score',               prefix: '7_bs_3_pr_',       caption: 'Brier Score' },
-  ];
+// Tipos de gráfico (prefix = patrón en el nombre del fichero)
+const GRAPHS = [
+  { id: 'terciles', label: 'Probabilidad por terciles', prefix: '3_terciles_pr_',      caption: 'Probabilidad por terciles' },
+  { id: 'corr',     label: 'Correlación de Spearman',   prefix: '4_corr-spearman_pr_', caption: 'Correlación de Spearman' },
+  { id: 'roc',      label: 'Curvas ROC',                prefix: '5_roc_3_pr_',         caption: 'Curvas ROC · Precipitación' },
+  { id: 'rps',      label: 'Ranked Probability Score',  prefix: '6_rps_pr_',           caption: 'Ranked Probability Score (RPS)' },
+  { id: 'bs',       label: 'Brier Score',               prefix: '7_bs_3_pr_',          caption: 'Brier Score' },
+];
 
   // Estado
   let currentModel = MODELS[0].id;
@@ -471,8 +470,7 @@ toc: false
 
   // Pintar cabecera
   document.getElementById('ds-var-display').textContent    = VARIABLE;
-  document.getElementById('ds-init-display').textContent   = PERIODO_VALIDO;
-  document.getElementById('ds-period-display').textContent = 'Inicialización · ' + INICIALIZACION;
+document.getElementById('ds-init-display').textContent   = 'Predicción Trimestral';
 
   // Construir botones
   function buildButtons(containerId, items, getCurrent, setCurrent) {
